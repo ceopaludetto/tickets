@@ -6,6 +6,7 @@ import {
   IsUrl,
   Length,
   IsOptional,
+  Matches,
 } from 'class-validator';
 
 import { EnumDiaPagamento, EnumPlanoHoras } from './empresa.entity';
@@ -15,6 +16,7 @@ export class InputEmpresaInsertOrUpdate {
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
+  @Matches(/[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}-?[0-9]{2}/)
   @Length(16, 20)
   public CNPJ?: string;
 

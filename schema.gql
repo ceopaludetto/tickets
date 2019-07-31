@@ -39,6 +39,10 @@ type Funcionario {
   Email: String!
   Password: String!
   Cargo: String!
+  Perfil: String!
+  Empresa: Empresa!
+  Criacao_Data: DateTime!
+  Atualizacao_Data: DateTime
 }
 
 input InputEmpresaInsertOrUpdate {
@@ -61,6 +65,8 @@ input InputFuncionarioInsertOrUpdate {
   Email: String
   Cargo: String
   Password: String
+  Perfil: Perfis
+  Empresa: String
 }
 
 type Mutation {
@@ -69,6 +75,17 @@ type Mutation {
   addFuncionario(input: InputFuncionarioInsertOrUpdate!): Funcionario!
   updateFuncionario(id: String!, input: InputFuncionarioInsertOrUpdate!): Funcionario!
   login(Password: String!, Email: String!): Funcionario!
+}
+
+enum Perfis {
+  USUARIO_FINAL
+  SUPORTE
+  ANALISTA
+  COORDENADOR
+  GERENTE
+  DIRETOR
+  CONSULTOR_EXTERNO
+  VIP
 }
 
 enum PlanoDeHoras {

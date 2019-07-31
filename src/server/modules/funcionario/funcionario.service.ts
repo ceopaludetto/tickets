@@ -25,28 +25,43 @@ export class FuncionarioService {
   }
 
   public async findAll(skip: number = 0, take: number = 100) {
-    const funcionarios = await this.funcionarioRepository.find({ skip, take });
-    return funcionarios;
+    try {
+      const funcionarios = await this.funcionarioRepository.find({
+        skip,
+        take,
+      });
+      return funcionarios;
+    } catch (err) {
+      throw new BadRequestException(err);
+    }
   }
 
   public async findOne(id: string) {
-    const funcionario = await this.funcionarioRepository.findOne(id);
-    return funcionario;
+    try {
+      const funcionario = await this.funcionarioRepository.findOne(id);
+      return funcionario;
+    } catch (err) {
+      throw new BadRequestException(err);
+    }
   }
 
   public async login({ Email, Password }: LoginFuncionario) {
-    const funcionario = await this.funcionarioRepository.findOne({
-      where: { Email },
-    });
-    if (!funcionario) {
-      throw new NotFoundException('Nenhum funcionário encontrado.');
-    }
+    try {
+      const funcionario = await this.funcionarioRepository.findOne({
+        where: { Email },
+      });
+      if (!funcionario) {
+        throw new NotFoundException('Nenhum funcionário encontrado.');
+      }
 
-    if (!(await funcionario.comparePasswords(Password))) {
-      throw new UnauthorizedException('Senha incorreta');
-    }
+      if (!(await funcionario.comparePasswords(Password))) {
+        throw new UnauthorizedException('Senha incorreta');
+      }
 
-    return funcionario;
+      return funcionario;
+    } catch (err) {
+      throw new BadRequestException(err);
+    }
   }
 
   public async createOrUpdate(
@@ -55,9 +70,9 @@ export class FuncionarioService {
   ) {
     if (!id) {
       try {
-        const funcionario = Object.assign(new Funcionario(), data);
-        const empresa = await this.funcionarioRepository.save(funcionario);
-        return empresa;
+        const assignedData = Object.assign(new Funcionario(), data);
+        const funcionario = await this.funcionarioRepository.save(assignedData);
+        return funcionario;
       } catch (err) {
         throw new BadRequestException(err);
       }
@@ -68,10 +83,10 @@ export class FuncionarioService {
       if (!funcionario) {
         throw new NotFoundException('Nenhum funcionário encontrado.');
       }
-      const res = await this.funcionarioRepository.save({
-        ...funcionario,
-        ...data,
-      });
+      const res = await this.funcionarioRepository.save(
+        Object.assign(funcionario, data),
+        { reload: true }
+      );
       return res;
     } catch (err) {
       throw new BadRequestException(err);

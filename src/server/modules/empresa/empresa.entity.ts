@@ -1,11 +1,13 @@
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  PrimaryGeneratedColumn,
 } from 'typeorm';
 import { ObjectType, Field, ID, registerEnumType } from 'type-graphql';
+
+import { GettersAndSetters } from '@/server/utils/setters';
 
 export enum EnumDiaPagamento {
   D7 = '7',
@@ -31,7 +33,7 @@ registerEnumType(EnumPlanoHoras, {
 
 @Entity('Empresa')
 @ObjectType()
-export class Empresa {
+export class Empresa extends GettersAndSetters {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   public ID: string;

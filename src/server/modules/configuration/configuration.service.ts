@@ -9,6 +9,7 @@ interface EnvConfig {
   USERNAME: string;
   PASSWORD: string;
   DATABASE: string;
+  SECRET: string;
 }
 
 export class ConfigurationService {
@@ -20,13 +21,14 @@ export class ConfigurationService {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public validateInput = (config: any) => {
+  private validateInput = (config: any) => {
     const EnvVarsSchema: Joi.ObjectSchema = Joi.object({
       PORT: Joi.number(),
       HOST: Joi.string(),
       USERNAME: Joi.string(),
       PASSWORD: Joi.string(),
       DATABASE: Joi.string(),
+      SECRET: Joi.string(),
     });
 
     const { error, value } = Joi.validate(config, EnvVarsSchema);
@@ -56,5 +58,9 @@ export class ConfigurationService {
 
   public get DATABASE() {
     return this.envConfig.DATABASE;
+  }
+
+  public get SECRET() {
+    return this.envConfig.SECRET;
   }
 }

@@ -21,7 +21,6 @@ const isProd = process.env.NODE_ENV === 'production' || false;
   imports: [
     ConfigurationModule,
     TypeOrmModule.forRootAsync({
-      imports: [ConfigurationModule],
       inject: [ConfigurationService],
       useFactory: (configService: ConfigurationService) => ({
         port: configService.PORT,
@@ -33,6 +32,7 @@ const isProd = process.env.NODE_ENV === 'production' || false;
         entities: [Empresa, Funcionario],
         synchronize: !isProd,
         keepConnectionAlive: !isProd,
+        uuidExtension: 'pgcrypto',
       }),
     }),
     GraphQLModule.forRoot({
@@ -45,7 +45,7 @@ const isProd = process.env.NODE_ENV === 'production' || false;
     AuthModule,
     EmpresaModule,
     FuncionarioModule,
-    ReactModule,
+    // ReactModule,
   ],
 })
 export class ApplicationModule {}

@@ -20,14 +20,12 @@ export class EmpresaService {
   }
 
   public async findAll(skip: number = 0, take: number = 100) {
-    const empresas = await this.empresaRepository.find({ skip, take });
-    if (!empresas) {
-      throw new BadRequestException('Erro ao retornar empresas.');
+    try {
+      const empresas = await this.empresaRepository.find({ skip, take });
+      return empresas;
+    } catch (err) {
+      throw new BadRequestException(err);
     }
-    if (!empresas.length) {
-      throw new NotFoundException('Nenhuma empresa encontrada.');
-    }
-    return empresas;
   }
 
   public async findOne(id: string) {
@@ -41,8 +39,9 @@ export class EmpresaService {
   public async createOrUpdate(data: InputEmpresaInsertOrUpdate, id?: string) {
     if (!id) {
       try {
-        const empresa = await this.empresaRepository.save(data);
-        return empresa;
+        const empresa = new Empresa().set(data);
+        const saved = await this.empresaRepository.save(empresa);
+        return saved;
       } catch (err) {
         throw new BadRequestException(err);
       }
@@ -51,9 +50,9 @@ export class EmpresaService {
     try {
       const empresa = await this.empresaRepository.findOne(id);
       if (!empresa) {
-        throw new NotFoundException('Nenhuma empresa encontrada.');
+        throw new NotFoundException('Empresa não encontrada');
       }
-      const res = await this.empresaRepository.save({ ...empresa, ...data });
+      const res = await this.empresaRepository.save(empresa.set(data));
       return res;
     } catch (err) {
       throw new BadRequestException(err);

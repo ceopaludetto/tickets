@@ -2,15 +2,37 @@ import { hash, compare } from 'bcryptjs';
 import {
   Entity,
   Column,
-  PrimaryGeneratedColumn,
   BeforeInsert,
   BeforeUpdate,
+  PrimaryGeneratedColumn,
+  ManyToOne,
+  JoinColumn,
+  CreateDateColumn,
+  UpdateDateColumn,
 } from 'typeorm';
-import { ObjectType, Field, ID } from 'type-graphql';
+import { ObjectType, Field, ID, registerEnumType } from 'type-graphql';
+
+import { Empresa } from '@/server/modules/empresa/empresa.entity';
+import { GettersAndSetters } from '@/server/utils/setters';
+
+export enum EnumPerfis {
+  USUARIO_FINAL = 'USUARIO_FINAL',
+  SUPORTE = 'SUPORTE',
+  ANALISTA = 'ANALISTA',
+  COORDENADOR = 'COORDENADOR',
+  GERENTE = 'GERENTE',
+  DIRETOR = 'DIRETOR',
+  CONSULTOR_EXTERNO = 'CONSULTOR_EXTERNO',
+  VIP = 'VIP',
+}
+
+registerEnumType(EnumPerfis, {
+  name: 'Perfis',
+});
 
 @Entity('Funcionario')
 @ObjectType()
-export class Funcionario {
+export class Funcionario extends GettersAndSetters {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   public ID: string;
@@ -34,6 +56,28 @@ export class Funcionario {
   @Field()
   @Column()
   public Cargo: string;
+
+  @Field()
+  @Column({ type: 'enum', enum: EnumPerfis, default: EnumPerfis.USUARIO_FINAL })
+  public Perfil: EnumPerfis;
+
+  @Field()
+  @ManyToOne(() => Empresa, {
+    eager: true,
+  })
+  @JoinColumn({
+    name: 'Empresa',
+    referencedColumnName: 'ID',
+  })
+  public Empresa: Empresa;
+
+  @Field()
+  @CreateDateColumn()
+  public readonly Criacao_Data: Date;
+
+  @Field({ nullable: true })
+  @UpdateDateColumn({ nullable: true })
+  public readonly Atualizacao_Data?: Date;
 
   @BeforeInsert()
   @BeforeUpdate()
