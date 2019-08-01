@@ -7,7 +7,7 @@ import { PayloadType } from '@/server/utils/common.dto';
 import { ConfigurationService } from '@/server/modules/configuration/configuration.service';
 
 @Injectable()
-export class JwtStrategy extends PassportStrategy(Strategy) {
+export class JwtStrategy extends PassportStrategy(Strategy, 'jwt') {
   public constructor(configService: ConfigurationService) {
     super({
       jwtFromRequest: ExtractAuthTokenFromCookie,
@@ -16,7 +16,7 @@ export class JwtStrategy extends PassportStrategy(Strategy) {
     });
   }
 
-  public validate = (payload: PayloadType) => {
-    return { ID: payload.ID, Email: payload.Email };
+  public validate = ({ ID, Email }: PayloadType) => {
+    return { ID, Email };
   };
 }

@@ -21,7 +21,10 @@ export class EmpresaService {
 
   public async findAll(skip: number = 0, take: number = 100) {
     try {
-      const empresas = await this.empresaRepository.find({ skip, take });
+      const empresas = await this.empresaRepository.find({
+        skip,
+        take,
+      });
       return empresas;
     } catch (err) {
       throw new BadRequestException(err);

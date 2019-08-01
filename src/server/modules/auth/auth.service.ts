@@ -20,28 +20,36 @@ export class AuthService {
   }
 
   public async login(Email: string, Password: string) {
-    const funcionario = await this.funcionarioService.login({
-      Email,
-      Password,
-    });
+    try {
+      const funcionario = await this.funcionarioService.login({
+        Email,
+        Password,
+      });
 
-    return funcionario;
+      return funcionario;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 
   public async generateAndRegisterToken(
     funcionario: Funcionario,
     context: ContextType
   ) {
-    const token = await this.jwtService.signAsync({
-      ID: funcionario.ID,
-      Email: funcionario.Email,
-    });
+    try {
+      const token = await this.jwtService.signAsync({
+        ID: funcionario.ID,
+        Email: funcionario.Email,
+      });
 
-    context.res.cookie('auth', token, {
-      maxAge: 1000 * 60 * 60,
-      path: '/',
-    });
+      context.res.cookie('auth', token, {
+        maxAge: 1000 * 60 * 60,
+        path: '/',
+      });
 
-    return token;
+      return token;
+    } catch (err) {
+      throw new Error(err);
+    }
   }
 }

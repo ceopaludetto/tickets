@@ -60,7 +60,7 @@ export class ReactService {
         </head>
         <body {...bodyAttrs}>
           {/* eslint-disable-next-line */}
-        <div id="app" dangerouslySetInnerHTML={{ __html: markup }} />
+          <div id="app" dangerouslySetInnerHTML={{ __html: markup }} />
           {scriptEls}
         </body>
       </html>

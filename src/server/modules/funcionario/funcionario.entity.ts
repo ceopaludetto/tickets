@@ -20,27 +20,27 @@ import { Empresa } from '@/server/modules/empresa/empresa.entity';
 export class Funcionario {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
-  public ID: string;
+  public readonly ID!: string;
 
   @Field()
   @Column()
-  public Nome: string;
+  public Nome!: string;
 
   @Field()
   @Column()
-  public Sobrenome: string;
+  public Sobrenome!: string;
 
   @Field()
   @Column({ unique: true })
-  public Email: string;
+  public Email!: string;
 
   @Field()
   @Column()
-  public Password: string;
+  public Password!: string;
 
   @Field()
   @Column()
-  public Cargo: string;
+  public Cargo!: string;
 
   @Field(() => Empresa)
   @ManyToOne(() => Empresa)
@@ -48,11 +48,11 @@ export class Funcionario {
     name: 'Empresa',
     referencedColumnName: 'ID',
   })
-  public Empresa: Empresa;
+  public Empresa!: Empresa;
 
   @Field()
   @CreateDateColumn()
-  public readonly Criacao_Data: Date;
+  public readonly Criacao_Data!: Date;
 
   @Field({ nullable: true })
   @UpdateDateColumn({ nullable: true })

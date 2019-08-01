@@ -7,14 +7,12 @@ import { ApplicationModule } from '@/server/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(ApplicationModule);
-  app.useGlobalPipes(
-    new ValidationPipe({ disableErrorMessages: true, transform: true })
-  );
-  app.use(CookieParser());
+  app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: true }));
   app.use(
     process.env.PUBLIC_PATH as string,
     ExpressStatic(process.env.STATIC_FOLDER as string)
   );
+  app.use(CookieParser());
   app.listen(process.env.PORT as string);
 
   if (module.hot) {

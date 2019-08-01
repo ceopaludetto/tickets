@@ -8,10 +8,8 @@
     "moduleResolution": "node",
     "module": "esnext",
     "strict": true,
-    "strictPropertyInitialization": false,
     "skipLibCheck": true,
     "noEmit": true,
-    "resolveJsonModule": true,
     "paths": {
       "@/*": ["src/*"]
     }

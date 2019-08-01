@@ -20,7 +20,7 @@ export class CommonFindOneArgs {
   @Field()
   @IsString()
   @IsUUID()
-  public id: string;
+  public id!: string;
 }
 
 export interface ContextType {

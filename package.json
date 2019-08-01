@@ -7,7 +7,8 @@
     "start": "node scripts/start.js",
     "start:server": "node scripts/start:server.js",
     "build": "node scripts/build.js",
-    "analyze": "source-map-explorer dist/static/js/*.js"
+    "analyze": "source-map-explorer dist/static/js/*.js",
+    "postinstall": "yarn-deduplicate"
   },
   "keywords": [],
   "author": "",
@@ -43,6 +44,7 @@
     "@types/loadable__component": "^5.9.0",
     "@types/loadable__server": "^5.9.1",
     "@types/mongodb": "^3.1.28",
+    "@types/mongoose": "^5.5.11",
     "@types/node": "^12.0.10",
     "@types/passport-jwt": "^3.0.1",
     "@types/react": "^16.8.22",
@@ -113,6 +115,8 @@
     "express": "^4.17.1",
     "graphql": "^14.4.2",
     "keyboardjs": "^2.5.1",
+    "mongoose": "^5.6.7",
+    "nestjs-typegoose": "^5.2.1",
     "passport": "^0.4.0",
     "passport-jwt": "^4.0.0",
     "pg": "^7.12.0",
@@ -125,6 +129,7 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.2",
     "type-graphql": "^0.17.4",
+    "typegoose": "^5.9.0",
     "typeorm": "^0.2.18"
   }
 }

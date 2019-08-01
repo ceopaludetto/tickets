@@ -14,31 +14,31 @@ import { EnumDiaPagamento, EnumPlanoHoras } from './empresa.dto';
 export class Empresa {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
-  public ID: string;
+  public readonly ID!: string;
 
   @Field()
   @Column({ unique: true })
-  public CNPJ: string;
+  public CNPJ!: string;
 
   @Field()
   @Column()
-  public Razao_Social: string;
+  public Razao_Social!: string;
 
   @Field()
   @Column()
-  public Nome_Fantasia: string;
+  public Nome_Fantasia!: string;
 
   @Field()
   @Column()
-  public Endereco: string;
+  public Endereco!: string;
 
   @Field()
   @Column()
-  public CEP: string;
+  public CEP!: string;
 
   @Field()
   @Column()
-  public Telefone: string;
+  public Telefone!: string;
 
   @Field({ nullable: true })
   @Column({ nullable: true })
@@ -50,7 +50,7 @@ export class Empresa {
 
   @Field()
   @Column()
-  public Email: string;
+  public Email!: string;
 
   @Field(() => EnumDiaPagamento)
   @Column({
@@ -58,15 +58,15 @@ export class Empresa {
     enum: EnumDiaPagamento,
     default: EnumDiaPagamento.D7,
   })
-  public Dia_Pagamento: EnumDiaPagamento;
+  public Dia_Pagamento!: EnumDiaPagamento;
 
   @Field(() => EnumPlanoHoras)
   @Column({ type: 'enum', enum: EnumPlanoHoras, default: EnumPlanoHoras.H20 })
-  public Plano_De_Horas: EnumPlanoHoras;
+  public Plano_De_Horas!: EnumPlanoHoras;
 
   @Field()
   @CreateDateColumn()
-  public readonly Criacao_Data: Date;
+  public readonly Criacao_Data!: Date;
 
   @Field({ nullable: true })
   @UpdateDateColumn({ nullable: true })
