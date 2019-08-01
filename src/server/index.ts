@@ -7,7 +7,9 @@ import { ApplicationModule } from '@/server/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(ApplicationModule);
-  app.useGlobalPipes(new ValidationPipe());
+  app.useGlobalPipes(
+    new ValidationPipe({ disableErrorMessages: true, transform: true })
+  );
   app.use(CookieParser());
   app.use(
     process.env.PUBLIC_PATH as string,

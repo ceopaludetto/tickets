@@ -7,7 +7,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Empresa } from './empresa.entity';
-import { InputEmpresaInsertOrUpdate } from './empresa.dto';
+import { InputEmpresa } from './empresa.dto';
 
 @Injectable()
 export class EmpresaService {
@@ -29,19 +29,23 @@ export class EmpresaService {
   }
 
   public async findOne(id: string) {
-    const empresa = await this.empresaRepository.findOne(id);
-    if (!empresa) {
-      throw new NotFoundException('Empresa não encontrada.');
+    try {
+      const empresa = await this.empresaRepository.findOne(id);
+      if (!empresa) {
+        throw new NotFoundException('Empresa não encontrada.');
+      }
+      return empresa;
+    } catch (err) {
+      throw new BadRequestException(err);
     }
-    return empresa;
   }
 
-  public async createOrUpdate(data: InputEmpresaInsertOrUpdate, id?: string) {
+  public async createOrUpdate(data: InputEmpresa, id?: string) {
     if (!id) {
       try {
-        const empresa = new Empresa().set(data);
-        const saved = await this.empresaRepository.save(empresa);
-        return saved;
+        const empresa = this.empresaRepository.create(data);
+        const res = await this.empresaRepository.save(empresa);
+        return res;
       } catch (err) {
         throw new BadRequestException(err);
       }
@@ -52,7 +56,9 @@ export class EmpresaService {
       if (!empresa) {
         throw new NotFoundException('Empresa não encontrada');
       }
-      const res = await this.empresaRepository.save(empresa.set(data));
+      const res = await this.empresaRepository.save(
+        Object.assign(empresa, data)
+      );
       return res;
     } catch (err) {
       throw new BadRequestException(err);

@@ -26,8 +26,8 @@ type Empresa {
   Site: String
   Nome_Completo: String
   Email: String!
-  Dia_Pagamento: String!
-  Plano_De_Horas: String!
+  Dia_Pagamento: DiaDePagamento!
+  Plano_De_Horas: PlanoDeHoras!
   Criacao_Data: DateTime!
   Atualizacao_Data: DateTime
 }
@@ -39,13 +39,12 @@ type Funcionario {
   Email: String!
   Password: String!
   Cargo: String!
-  Perfil: String!
   Empresa: Empresa!
   Criacao_Data: DateTime!
   Atualizacao_Data: DateTime
 }
 
-input InputEmpresaInsertOrUpdate {
+input InputEmpresa {
   CNPJ: String
   Razao_Social: String
   Nome_Fantasia: String
@@ -59,33 +58,21 @@ input InputEmpresaInsertOrUpdate {
   Plano_De_Horas: PlanoDeHoras
 }
 
-input InputFuncionarioInsertOrUpdate {
+input InputFuncionario {
   Nome: String
   Sobrenome: String
   Email: String
   Cargo: String
   Password: String
-  Perfil: Perfis
   Empresa: String
 }
 
 type Mutation {
-  addEmpresa(input: InputEmpresaInsertOrUpdate!): Empresa!
-  updateEmpresa(id: String!, input: InputEmpresaInsertOrUpdate!): Empresa!
-  addFuncionario(input: InputFuncionarioInsertOrUpdate!): Funcionario!
-  updateFuncionario(id: String!, input: InputFuncionarioInsertOrUpdate!): Funcionario!
+  addEmpresa(input: InputEmpresa!): Empresa!
+  updateEmpresa(id: String!, input: InputEmpresa!): Empresa!
+  addFuncionario(input: InputFuncionario!): Funcionario!
+  updateFuncionario(id: String!, input: InputFuncionario!): Funcionario!
   login(Password: String!, Email: String!): Funcionario!
-}
-
-enum Perfis {
-  USUARIO_FINAL
-  SUPORTE
-  ANALISTA
-  COORDENADOR
-  GERENTE
-  DIRETOR
-  CONSULTOR_EXTERNO
-  VIP
 }
 
 enum PlanoDeHoras {

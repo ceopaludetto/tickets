@@ -1,15 +1,17 @@
 import { ArgsType, Field, Int } from 'type-graphql';
-import { IsInt, IsString, IsUUID } from 'class-validator';
+import { IsInt, IsString, IsUUID, IsOptional } from 'class-validator';
 import { Request, Response } from 'express';
 
 @ArgsType()
 export class CommonFindAllArgs {
   @Field(() => Int)
   @IsInt()
+  @IsOptional()
   public skip?: number = 0;
 
   @Field(() => Int)
   @IsInt()
+  @IsOptional()
   public take?: number = 100;
 }
 

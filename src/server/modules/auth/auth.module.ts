@@ -16,6 +16,9 @@ import { ConfigurationService } from '@/server/modules/configuration/configurati
       inject: [ConfigurationService],
       useFactory: (configService: ConfigurationService) => ({
         secret: configService.SECRET,
+        signOptions: {
+          expiresIn: '1h',
+        },
       }),
     }),
   ],

@@ -28,11 +28,11 @@ export class AuthService {
     return funcionario;
   }
 
-  public generateAndRegisterToken(
+  public async generateAndRegisterToken(
     funcionario: Funcionario,
     context: ContextType
   ) {
-    const token = this.jwtService.sign({
+    const token = await this.jwtService.signAsync({
       ID: funcionario.ID,
       Email: funcionario.Email,
     });

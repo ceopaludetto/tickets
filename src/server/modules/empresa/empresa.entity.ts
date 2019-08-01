@@ -5,35 +5,13 @@ import {
   UpdateDateColumn,
   PrimaryGeneratedColumn,
 } from 'typeorm';
-import { ObjectType, Field, ID, registerEnumType } from 'type-graphql';
+import { ObjectType, Field, ID } from 'type-graphql';
 
-import { GettersAndSetters } from '@/server/utils/setters';
-
-export enum EnumDiaPagamento {
-  D7 = '7',
-  D10 = '10',
-  D15 = '15',
-  D20 = '20',
-}
-
-export enum EnumPlanoHoras {
-  H20 = '20',
-  H40 = '40',
-  H60 = '60',
-  H80 = '80',
-}
-
-registerEnumType(EnumDiaPagamento, {
-  name: 'DiaDePagamento',
-});
-
-registerEnumType(EnumPlanoHoras, {
-  name: 'PlanoDeHoras',
-});
+import { EnumDiaPagamento, EnumPlanoHoras } from './empresa.dto';
 
 @Entity('Empresa')
 @ObjectType()
-export class Empresa extends GettersAndSetters {
+export class Empresa {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   public ID: string;
@@ -74,7 +52,7 @@ export class Empresa extends GettersAndSetters {
   @Column()
   public Email: string;
 
-  @Field()
+  @Field(() => EnumDiaPagamento)
   @Column({
     type: 'enum',
     enum: EnumDiaPagamento,
@@ -82,7 +60,7 @@ export class Empresa extends GettersAndSetters {
   })
   public Dia_Pagamento: EnumDiaPagamento;
 
-  @Field()
+  @Field(() => EnumPlanoHoras)
   @Column({ type: 'enum', enum: EnumPlanoHoras, default: EnumPlanoHoras.H20 })
   public Plano_De_Horas: EnumPlanoHoras;
 

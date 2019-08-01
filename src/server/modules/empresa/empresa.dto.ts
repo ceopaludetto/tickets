@@ -1,4 +1,4 @@
-import { Field, InputType } from 'type-graphql';
+import { Field, InputType, registerEnumType } from 'type-graphql';
 import {
   IsString,
   IsEnum,
@@ -9,10 +9,30 @@ import {
   Matches,
 } from 'class-validator';
 
-import { EnumDiaPagamento, EnumPlanoHoras } from './empresa.entity';
+export enum EnumDiaPagamento {
+  D7 = '7',
+  D10 = '10',
+  D15 = '15',
+  D20 = '20',
+}
+
+export enum EnumPlanoHoras {
+  H20 = '20',
+  H40 = '40',
+  H60 = '60',
+  H80 = '80',
+}
+
+registerEnumType(EnumDiaPagamento, {
+  name: 'DiaDePagamento',
+});
+
+registerEnumType(EnumPlanoHoras, {
+  name: 'PlanoDeHoras',
+});
 
 @InputType()
-export class InputEmpresaInsertOrUpdate {
+export class InputEmpresa {
   @Field({ nullable: true })
   @IsOptional()
   @IsString()

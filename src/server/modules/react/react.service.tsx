@@ -33,7 +33,7 @@ export class ReactService {
 
     const helmet = Helmet.renderStatic();
     return res.send(
-      '<!doctype HTML>'.concat(this.html(markup, helmet, extractor))
+      '<!DOCTYPE html>'.concat(this.html(markup, helmet, extractor))
     );
   }
 

@@ -6,12 +6,12 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
-    jest: true
   },
   extends: [
     "airbnb",
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
+    "plugin:security/recommended",
     "prettier",
     "prettier/react",
     "prettier/@typescript-eslint"
@@ -29,10 +29,10 @@ module.exports = {
     sourceType: "module",
     projects: [
       path.resolve("src", "client", "tsconfig.json"),
-      path.resolve("src", "client", "tsconfig.json")
+      path.resolve("src", "server", "tsconfig.json")
     ]
   },
-  plugins: ["@typescript-eslint", "import", "react", "react-hooks", "prettier"],
+  plugins: ["@typescript-eslint", "import", "react", "react-hooks", "prettier", "security"],
   rules: {
     "no-param-reassign": "off",
     "@typescript-eslint/interface-name-prefix": "off",
@@ -41,7 +41,7 @@ module.exports = {
     "@typescript-eslint/no-empty-interface": "off",
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
-    "import/no-cycle": [2, { maxDepth: 1 }],
+    "import/no-cycle": ["error", { maxDepth: 1 }],
     "react/jsx-filename-extension": [
       "warn",
       {

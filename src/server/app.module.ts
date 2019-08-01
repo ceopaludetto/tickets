@@ -3,9 +3,10 @@ import { GraphQLModule } from '@nestjs/graphql';
 import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ContextType } from '@/server/utils/common.dto';
+import { IS_PRODUCTION } from '@/server/utils/constants';
 
 import {
-  ReactModule,
+  // ReactModule,
   EmpresaModule,
   Empresa,
   Funcionario,
@@ -14,8 +15,6 @@ import {
   ConfigurationModule,
   ConfigurationService,
 } from '@/server/modules';
-
-const isProd = process.env.NODE_ENV === 'production' || false;
 
 @Module({
   imports: [
@@ -30,16 +29,17 @@ const isProd = process.env.NODE_ENV === 'production' || false;
         password: configService.PASSWORD,
         database: configService.DATABASE,
         entities: [Empresa, Funcionario],
-        synchronize: !isProd,
-        keepConnectionAlive: !isProd,
+        synchronize: !IS_PRODUCTION,
+        keepConnectionAlive: !IS_PRODUCTION,
         uuidExtension: 'pgcrypto',
       }),
     }),
     GraphQLModule.forRoot({
-      playground: !isProd,
-      tracing: false,
-      debug: false,
+      playground: !IS_PRODUCTION,
+      tracing: !IS_PRODUCTION,
+      debug: !IS_PRODUCTION,
       autoSchemaFile: './schema.gql',
+      installSubscriptionHandlers: true,
       context: ({ req, res }: ContextType) => ({ req, res }),
     }),
     AuthModule,

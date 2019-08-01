@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 
 import { FuncionarioService } from './funcionario.service';
 import { Funcionario } from './funcionario.entity';
-import { InputFuncionarioInsertOrUpdate } from './funcionario.dto';
+import { InputFuncionario } from './funcionario.dto';
 import { CommonFindAllArgs } from '@/server/utils/common.dto';
 import { GqlAuthGuard } from '@/server/modules/auth/auth.guard';
 
@@ -41,9 +41,7 @@ export class FuncionarioResolver {
   }
 
   @Mutation(() => Funcionario)
-  public async addFuncionario(
-    @Args('input') data: InputFuncionarioInsertOrUpdate
-  ) {
+  public async addFuncionario(@Args('input') data: InputFuncionario) {
     const funcionario = this.funcionarioService.createOrUpdate(data);
     return funcionario;
   }
@@ -51,7 +49,7 @@ export class FuncionarioResolver {
   @Mutation(() => Funcionario)
   public async updateFuncionario(
     @Args('input')
-    data: InputFuncionarioInsertOrUpdate,
+    data: InputFuncionario,
     @Args('id')
     id: string
   ) {

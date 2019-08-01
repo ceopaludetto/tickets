@@ -8,10 +8,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { Repository } from 'typeorm';
 
 import { Funcionario } from './funcionario.entity';
-import {
-  InputFuncionarioInsertOrUpdate,
-  LoginFuncionario,
-} from './funcionario.dto';
+import { InputFuncionario, LoginFuncionario } from './funcionario.dto';
 
 @Injectable()
 export class FuncionarioService {
@@ -29,6 +26,7 @@ export class FuncionarioService {
       const funcionarios = await this.funcionarioRepository.find({
         skip,
         take,
+        relations: ['Empresa'],
       });
       return funcionarios;
     } catch (err) {
@@ -38,7 +36,9 @@ export class FuncionarioService {
 
   public async findOne(id: string) {
     try {
-      const funcionario = await this.funcionarioRepository.findOne(id);
+      const funcionario = await this.funcionarioRepository.findOne(id, {
+        relations: ['Empresa'],
+      });
       return funcionario;
     } catch (err) {
       throw new BadRequestException(err);
@@ -49,7 +49,9 @@ export class FuncionarioService {
     try {
       const funcionario = await this.funcionarioRepository.findOne({
         where: { Email },
+        relations: ['Empresa'],
       });
+
       if (!funcionario) {
         throw new NotFoundException('Nenhum funcionário encontrado.');
       }
@@ -64,10 +66,7 @@ export class FuncionarioService {
     }
   }
 
-  public async createOrUpdate(
-    data: InputFuncionarioInsertOrUpdate,
-    id?: string
-  ) {
+  public async createOrUpdate(data: InputFuncionario, id?: string) {
     if (!id) {
       try {
         const assignedData = Object.assign(new Funcionario(), data);
@@ -84,8 +83,7 @@ export class FuncionarioService {
         throw new NotFoundException('Nenhum funcionário encontrado.');
       }
       const res = await this.funcionarioRepository.save(
-        Object.assign(funcionario, data),
-        { reload: true }
+        Object.assign(funcionario, data)
       );
       return res;
     } catch (err) {

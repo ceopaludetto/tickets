@@ -9,30 +9,15 @@ import {
   JoinColumn,
   CreateDateColumn,
   UpdateDateColumn,
+  AfterLoad,
 } from 'typeorm';
-import { ObjectType, Field, ID, registerEnumType } from 'type-graphql';
+import { ObjectType, Field, ID } from 'type-graphql';
 
 import { Empresa } from '@/server/modules/empresa/empresa.entity';
-import { GettersAndSetters } from '@/server/utils/setters';
-
-export enum EnumPerfis {
-  USUARIO_FINAL = 'USUARIO_FINAL',
-  SUPORTE = 'SUPORTE',
-  ANALISTA = 'ANALISTA',
-  COORDENADOR = 'COORDENADOR',
-  GERENTE = 'GERENTE',
-  DIRETOR = 'DIRETOR',
-  CONSULTOR_EXTERNO = 'CONSULTOR_EXTERNO',
-  VIP = 'VIP',
-}
-
-registerEnumType(EnumPerfis, {
-  name: 'Perfis',
-});
 
 @Entity('Funcionario')
 @ObjectType()
-export class Funcionario extends GettersAndSetters {
+export class Funcionario {
   @Field(() => ID)
   @PrimaryGeneratedColumn('uuid')
   public ID: string;
@@ -57,14 +42,8 @@ export class Funcionario extends GettersAndSetters {
   @Column()
   public Cargo: string;
 
-  @Field()
-  @Column({ type: 'enum', enum: EnumPerfis, default: EnumPerfis.USUARIO_FINAL })
-  public Perfil: EnumPerfis;
-
-  @Field()
-  @ManyToOne(() => Empresa, {
-    eager: true,
-  })
+  @Field(() => Empresa)
+  @ManyToOne(() => Empresa)
   @JoinColumn({
     name: 'Empresa',
     referencedColumnName: 'ID',
@@ -79,10 +58,17 @@ export class Funcionario extends GettersAndSetters {
   @UpdateDateColumn({ nullable: true })
   public readonly Atualizacao_Data?: Date;
 
+  private TempPassword: string;
+
+  @AfterLoad()
+  private loadTempPassword(): void {
+    this.TempPassword = this.Password;
+  }
+
   @BeforeInsert()
   @BeforeUpdate()
   public async hashPassword() {
-    if (this.Password) {
+    if (this.Password !== this.TempPassword) {
       const newPassword = await hash(this.Password, 10);
       this.Password = newPassword;
     }

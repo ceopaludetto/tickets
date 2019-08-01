@@ -25,7 +25,7 @@ export class AuthResolver {
   ) {
     const funcionario = await this.authService.login(Email, Password);
     if (funcionario) {
-      this.authService.generateAndRegisterToken(funcionario, context);
+      await this.authService.generateAndRegisterToken(funcionario, context);
     }
     return funcionario;
   }

@@ -2,7 +2,7 @@ import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 
 import { EmpresaService } from './empresa.service';
 import { Empresa } from './empresa.entity';
-import { InputEmpresaInsertOrUpdate } from './empresa.dto';
+import { InputEmpresa } from './empresa.dto';
 import { CommonFindAllArgs } from '@/server/utils/common.dto';
 
 @Resolver(() => Empresa)
@@ -26,7 +26,7 @@ export class EmpresaResolver {
   }
 
   @Mutation(() => Empresa)
-  public async addEmpresa(@Args('input') data: InputEmpresaInsertOrUpdate) {
+  public async addEmpresa(@Args('input') data: InputEmpresa) {
     const empresa = this.empresaService.createOrUpdate(data);
     return empresa;
   }
@@ -34,7 +34,7 @@ export class EmpresaResolver {
   @Mutation(() => Empresa)
   public async updateEmpresa(
     @Args('input')
-    data: InputEmpresaInsertOrUpdate,
+    data: InputEmpresa,
     @Args('id')
     id: string
   ) {

@@ -1,11 +1,8 @@
 import { Field, InputType } from 'type-graphql';
-import { IsString, IsEmail, IsOptional, IsEnum } from 'class-validator';
-
-import { EnumPerfis } from './funcionario.entity';
-import { Empresa } from '@/server/modules/empresa/empresa.entity';
+import { IsString, IsEmail, IsOptional, IsUUID } from 'class-validator';
 
 @InputType()
-export class InputFuncionarioInsertOrUpdate {
+export class InputFuncionario {
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
@@ -32,14 +29,11 @@ export class InputFuncionarioInsertOrUpdate {
   @IsString()
   public Password?: string;
 
-  @Field(() => EnumPerfis, { nullable: true })
+  @Field({ nullable: true })
   @IsOptional()
-  @IsEnum(EnumPerfis)
-  public Perfil?: EnumPerfis;
-
-  @Field(() => Empresa, { nullable: true })
-  @IsOptional()
-  public Empresa?: Empresa;
+  @IsString()
+  @IsUUID()
+  public Empresa?: string;
 }
 
 export interface LoginFuncionario {
