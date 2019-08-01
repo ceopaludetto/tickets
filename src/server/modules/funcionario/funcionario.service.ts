@@ -3,30 +3,30 @@ import {
   BadRequestException,
   NotFoundException,
   UnauthorizedException,
+  Inject,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
-import { Funcionario } from './funcionario.entity';
+import { Funcionario, FUNCIONARIO_PROVIDER } from './funcionario.entity';
 import { InputFuncionario, LoginFuncionario } from './funcionario.dto';
+
+import { Empresa } from '@/server/modules/empresa/empresa.entity';
 
 @Injectable()
 export class FuncionarioService {
-  private readonly funcionarioRepository: Repository<Funcionario>;
+  private readonly funcionarioRepository: typeof Funcionario;
 
   public constructor(
-    @InjectRepository(Funcionario)
-    funcionarioRepository: Repository<Funcionario>
+    @Inject(FUNCIONARIO_PROVIDER)
+    funcionarioRepository: typeof Funcionario
   ) {
     this.funcionarioRepository = funcionarioRepository;
   }
 
   public async findAll(skip: number = 0, take: number = 100) {
     try {
-      const funcionarios = await this.funcionarioRepository.find({
-        skip,
-        take,
-        relations: ['Empresa'],
+      const funcionarios = await this.funcionarioRepository.findAll({
+        offset: skip,
+        limit: take,
       });
       return funcionarios;
     } catch (err) {
@@ -36,9 +36,7 @@ export class FuncionarioService {
 
   public async findOne(id: string) {
     try {
-      const funcionario = await this.funcionarioRepository.findOne(id, {
-        relations: ['Empresa'],
-      });
+      const funcionario = await this.funcionarioRepository.findByPk(id);
       return funcionario;
     } catch (err) {
       throw new BadRequestException(err);
@@ -49,7 +47,6 @@ export class FuncionarioService {
     try {
       const funcionario = await this.funcionarioRepository.findOne({
         where: { Email },
-        relations: ['Empresa'],
       });
 
       if (!funcionario) {
@@ -69,8 +66,7 @@ export class FuncionarioService {
   public async createOrUpdate(data: InputFuncionario, id?: string) {
     if (!id) {
       try {
-        const assignedData = Object.assign(new Funcionario(), data);
-        const funcionario = await this.funcionarioRepository.save(assignedData);
+        const funcionario = await this.funcionarioRepository.create(data);
         return funcionario;
       } catch (err) {
         throw new BadRequestException(err);
@@ -78,13 +74,13 @@ export class FuncionarioService {
     }
 
     try {
-      const funcionario = await this.funcionarioRepository.findOne(id);
+      const funcionario = await this.funcionarioRepository.findByPk(id, {
+        include: [{ model: Empresa, as: 'Empresa' }],
+      });
       if (!funcionario) {
         throw new NotFoundException('Nenhum funcionário encontrado.');
       }
-      const res = await this.funcionarioRepository.save(
-        Object.assign(funcionario, data)
-      );
+      const res = await funcionario.update(data);
       return res;
     } catch (err) {
       throw new BadRequestException(err);

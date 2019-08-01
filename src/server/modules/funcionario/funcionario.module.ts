@@ -1,12 +1,16 @@
 import { Module } from '@nestjs/common';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
+import { DatabaseModule } from '@/server/modules/database/database.module';
 import { FuncionarioResolver } from './funcionario.resolver';
 import { FuncionarioService } from './funcionario.service';
-import { Funcionario } from './funcionario.entity';
+import { Funcionario, FUNCIONARIO_PROVIDER } from './funcionario.entity';
 
 @Module({
-  imports: [TypeOrmModule.forFeature([Funcionario])],
+  imports: [
+    DatabaseModule.forFeature([
+      { model: Funcionario, name: FUNCIONARIO_PROVIDER },
+    ]),
+  ],
   providers: [FuncionarioResolver, FuncionarioService],
   exports: [FuncionarioService],
 })
