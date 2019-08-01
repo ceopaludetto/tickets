@@ -26,6 +26,7 @@ type Empresa {
   Site: String
   Nome_Completo: String
   Email: String!
+  Funcionarios: [Funcionario!]!
   Dia_Pagamento: DiaDePagamento!
   Plano_De_Horas: PlanoDeHoras!
   Criacao_Data: DateTime!
@@ -64,7 +65,7 @@ input InputFuncionario {
   Email: String
   Cargo: String
   Password: String
-  Empresa: String
+  Empresa_ID: String
 }
 
 type Mutation {

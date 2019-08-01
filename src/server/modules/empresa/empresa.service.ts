@@ -2,28 +2,27 @@ import {
   Injectable,
   BadRequestException,
   NotFoundException,
+  Inject,
 } from '@nestjs/common';
-import { InjectRepository } from '@nestjs/typeorm';
-import { Repository } from 'typeorm';
 
-import { Empresa } from './empresa.entity';
+import { Empresa, EMPRESA_PROVIDER } from './empresa.entity';
 import { InputEmpresa } from './empresa.dto';
 
 @Injectable()
 export class EmpresaService {
-  private readonly empresaRepository: Repository<Empresa>;
+  private readonly empresaRepository: typeof Empresa;
 
   public constructor(
-    @InjectRepository(Empresa) empresaRepository: Repository<Empresa>
+    @Inject(EMPRESA_PROVIDER) empresaRepository: typeof Empresa
   ) {
     this.empresaRepository = empresaRepository;
   }
 
   public async findAll(skip: number = 0, take: number = 100) {
     try {
-      const empresas = await this.empresaRepository.find({
-        skip,
-        take,
+      const empresas = await this.empresaRepository.findAll({
+        limit: take,
+        offset: skip,
       });
       return empresas;
     } catch (err) {
@@ -33,7 +32,7 @@ export class EmpresaService {
 
   public async findOne(id: string) {
     try {
-      const empresa = await this.empresaRepository.findOne(id);
+      const empresa = await this.empresaRepository.findByPk(id);
       if (!empresa) {
         throw new NotFoundException('Empresa não encontrada.');
       }
@@ -46,22 +45,20 @@ export class EmpresaService {
   public async createOrUpdate(data: InputEmpresa, id?: string) {
     if (!id) {
       try {
-        const empresa = this.empresaRepository.create(data);
-        const res = await this.empresaRepository.save(empresa);
-        return res;
+        const empresa = await this.empresaRepository.create(data);
+        // const res = await this.empresaRepository.save(empresa);
+        return empresa;
       } catch (err) {
         throw new BadRequestException(err);
       }
     }
 
     try {
-      const empresa = await this.empresaRepository.findOne(id);
+      const empresa = await this.empresaRepository.findByPk(id);
       if (!empresa) {
         throw new NotFoundException('Empresa não encontrada');
       }
-      const res = await this.empresaRepository.save(
-        Object.assign(empresa, data)
-      );
+      const res = await empresa.update(data);
       return res;
     } catch (err) {
       throw new BadRequestException(err);

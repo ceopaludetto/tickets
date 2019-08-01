@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
-import { TypeOrmModule } from '@nestjs/typeorm';
 
 import { ContextType } from '@/server/utils/common.dto';
 import { IS_PRODUCTION } from '@/server/utils/constants';
@@ -13,27 +12,13 @@ import {
   FuncionarioModule,
   AuthModule,
   ConfigurationModule,
-  ConfigurationService,
+  DatabaseModule,
 } from '@/server/modules';
 
 @Module({
   imports: [
     ConfigurationModule,
-    TypeOrmModule.forRootAsync({
-      inject: [ConfigurationService],
-      useFactory: (configService: ConfigurationService) => ({
-        port: configService.PORT,
-        type: 'postgres',
-        host: configService.HOST,
-        username: configService.USERNAME,
-        password: configService.PASSWORD,
-        database: configService.DATABASE,
-        entities: [Empresa, Funcionario],
-        synchronize: !IS_PRODUCTION,
-        keepConnectionAlive: !IS_PRODUCTION,
-        uuidExtension: 'pgcrypto',
-      }),
-    }),
+    DatabaseModule.forRoot([Empresa, Funcionario]),
     GraphQLModule.forRoot({
       playground: !IS_PRODUCTION,
       tracing: !IS_PRODUCTION,

@@ -33,7 +33,7 @@ export class InputFuncionario {
   @IsOptional()
   @IsString()
   @IsUUID()
-  public Empresa?: string;
+  public Empresa_ID?: string;
 }
 
 export interface LoginFuncionario {
