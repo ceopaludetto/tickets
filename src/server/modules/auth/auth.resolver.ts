@@ -3,6 +3,7 @@ import { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
 import { Funcionario } from '@/server/modules/funcionario/funcionario.entity';
+import { LoginFuncionario } from '@/server/modules/funcionario/funcionario.dto';
 
 interface ContextType {
   req: Request;
@@ -19,11 +20,10 @@ export class AuthResolver {
 
   @Mutation(() => Funcionario)
   public async login(
-    @Args('Email') Email: string,
-    @Args('Password') Password: string,
+    @Args() { email, senha }: LoginFuncionario,
     @Context() context: ContextType
   ) {
-    const funcionario = await this.authService.login(Email, Password);
+    const funcionario = await this.authService.login(email, senha);
     if (funcionario) {
       await this.authService.generateAndRegisterToken(funcionario, context);
     }

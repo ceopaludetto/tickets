@@ -3,27 +3,29 @@ import {
   BadRequestException,
   NotFoundException,
 } from '@nestjs/common';
+import { InjectModel } from 'nestjs-typegoose';
+import { ModelType } from 'typegoose';
 
-import { InjectRepository } from '@/server/modules/database/database.utils';
 import { Empresa } from './empresa.entity';
 import { InputEmpresa } from './empresa.dto';
 
 @Injectable()
 export class EmpresaService {
-  private readonly empresaRepository: typeof Empresa;
+  private readonly empresaRepository: ModelType<Empresa>;
 
   public constructor(
-    @InjectRepository(Empresa) empresaRepository: typeof Empresa
+    @InjectModel(Empresa) empresaRepository: ModelType<Empresa>
   ) {
     this.empresaRepository = empresaRepository;
   }
 
   public async findAll(skip: number = 0, take: number = 100) {
     try {
-      const empresas = await this.empresaRepository.findAll({
-        limit: take,
-        offset: skip,
-      });
+      const empresas = await this.empresaRepository
+        .find()
+        .skip(skip)
+        .limit(take)
+        .exec();
       return empresas;
     } catch (err) {
       throw new BadRequestException(err);
@@ -32,7 +34,7 @@ export class EmpresaService {
 
   public async findOne(id: string) {
     try {
-      const empresa = await this.empresaRepository.findByPk(id);
+      const empresa = await this.empresaRepository.findById(id);
       if (!empresa) {
         throw new NotFoundException('Empresa não encontrada.');
       }
@@ -46,7 +48,6 @@ export class EmpresaService {
     if (!id) {
       try {
         const empresa = await this.empresaRepository.create(data);
-        // const res = await this.empresaRepository.save(empresa);
         return empresa;
       } catch (err) {
         throw new BadRequestException(err);
@@ -54,7 +55,7 @@ export class EmpresaService {
     }
 
     try {
-      const empresa = await this.empresaRepository.findByPk(id);
+      const empresa = await this.empresaRepository.findById(id);
       if (!empresa) {
         throw new NotFoundException('Empresa não encontrada');
       }

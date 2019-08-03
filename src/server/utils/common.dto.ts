@@ -1,6 +1,6 @@
 import { ArgsType, Field, Int } from 'type-graphql';
-import { IsInt, IsString, IsUUID, IsOptional } from 'class-validator';
-import { Request, Response, NextFunction } from 'express';
+import { IsInt, IsString, IsOptional, IsMongoId } from 'class-validator';
+import { Request, Response } from 'express';
 
 @ArgsType()
 export class CommonFindAllArgs {
@@ -19,17 +19,16 @@ export class CommonFindAllArgs {
 export class CommonFindOneArgs {
   @Field()
   @IsString()
-  @IsUUID()
-  public id!: string;
+  @IsMongoId()
+  public _id!: string;
 }
 
 export interface ContextType {
   req: Request;
   res: Response;
-  next: NextFunction;
 }
 
 export interface PayloadType {
-  ID: string;
-  Email: string;
+  _id: string;
+  email: string;
 }

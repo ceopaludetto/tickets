@@ -10,5 +10,3 @@ export { AuthModule } from './auth/auth.module';
 
 export { ConfigurationModule } from './configuration/configuration.module';
 export { ConfigurationService } from './configuration/configuration.service';
-
-export { DatabaseModule } from './database/database.module';

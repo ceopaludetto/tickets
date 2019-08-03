@@ -3,11 +3,6 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-"""
-The javascript `Date` as string. Type represents date and time as the ISO Date string.
-"""
-scalar DateTime
-
 enum DiaDePagamento {
   D7
   D10
@@ -16,56 +11,51 @@ enum DiaDePagamento {
 }
 
 type Empresa {
-  ID: ID!
-  CNPJ: String!
-  Razao_Social: String!
-  Nome_Fantasia: String!
-  Endereco: String!
-  CEP: String!
-  Telefone: String!
-  Site: String
-  Nome_Completo: String
-  Email: String!
-  Funcionarios: [Funcionario!]!
-  Dia_Pagamento: DiaDePagamento!
-  Plano_De_Horas: PlanoDeHoras!
-  Criacao_Data: DateTime!
-  Atualizacao_Data: DateTime
+  _id: ID!
+  cnpj: String!
+  razaoSocial: String!
+  nomeFantasia: String!
+  endereco: String!
+  cep: String!
+  telefone: String!
+  site: String
+  nomeCompleto: String
+  email: String!
+  diaPagamento: DiaDePagamento!
+  planoHoras: PlanoDeHoras!
 }
 
 type Funcionario {
-  ID: ID!
-  Nome: String!
-  Sobrenome: String!
-  Email: String!
-  Password: String!
-  Cargo: String!
-  Empresa: Empresa!
-  Criacao_Data: DateTime!
-  Atualizacao_Data: DateTime
+  _id: ID!
+  nome: String!
+  sobrenome: String!
+  email: String!
+  senha: String!
+  cargo: String!
+  empresa: Empresa!
 }
 
 input InputEmpresa {
-  CNPJ: String
-  Razao_Social: String
-  Nome_Fantasia: String
-  Endereco: String
-  CEP: String
-  Telefone: String
-  Site: String
-  Nome_Completo: String
-  Email: String
-  Dia_Pagamento: DiaDePagamento
-  Plano_De_Horas: PlanoDeHoras
+  cnpj: String
+  razaoSocial: String
+  nomeFantasia: String
+  endereco: String
+  cep: String
+  telefone: String
+  site: String
+  nomeCompleto: String
+  email: String
+  diaPagamento: DiaDePagamento
+  planoHoras: PlanoDeHoras
 }
 
 input InputFuncionario {
-  Nome: String
-  Sobrenome: String
-  Email: String
-  Cargo: String
-  Password: String
-  Empresa_ID: String
+  nome: String
+  sobrenome: String
+  email: String
+  cargo: String
+  senha: String
+  empresa: String
 }
 
 type Mutation {
@@ -73,7 +63,7 @@ type Mutation {
   updateEmpresa(id: String!, input: InputEmpresa!): Empresa!
   addFuncionario(input: InputFuncionario!): Funcionario!
   updateFuncionario(id: String!, input: InputFuncionario!): Funcionario!
-  login(Password: String!, Email: String!): Funcionario!
+  login(email: String!, senha: String!): Funcionario!
 }
 
 enum PlanoDeHoras {

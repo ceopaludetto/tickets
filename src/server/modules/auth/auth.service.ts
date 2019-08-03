@@ -19,11 +19,11 @@ export class AuthService {
     this.jwtService = jwtService;
   }
 
-  public async login(Email: string, Password: string) {
+  public async login(email: string, senha: string) {
     try {
       const funcionario = await this.funcionarioService.login({
-        Email,
-        Password,
+        email,
+        senha,
       });
 
       return funcionario;
@@ -33,16 +33,16 @@ export class AuthService {
   }
 
   public async generateAndRegisterToken(
-    funcionario: Funcionario,
-    context: ContextType
+    { _id, email }: Funcionario,
+    { res }: ContextType
   ) {
     try {
       const token = await this.jwtService.signAsync({
-        ID: funcionario.ID,
-        Email: funcionario.Email,
+        _id,
+        email,
       });
 
-      context.res.cookie('auth', token, {
+      res.cookie('auth', token, {
         maxAge: 1000 * 60 * 60,
         path: '/',
       });
