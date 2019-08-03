@@ -25,7 +25,7 @@ import {
       debug: !IS_PRODUCTION,
       autoSchemaFile: './schema.gql',
       installSubscriptionHandlers: true,
-      context: ({ req, res }: ContextType) => ({ req, res }),
+      context: ({ req, res, next }: ContextType) => ({ req, res, next }),
     }),
     AuthModule,
     EmpresaModule,

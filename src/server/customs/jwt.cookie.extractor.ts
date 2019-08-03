@@ -1,8 +1,7 @@
 import { UnauthorizedException } from '@nestjs/common';
+import { Request } from 'express';
 
-import { ContextType } from '@/server/utils/common.dto';
-
-export function ExtractAuthTokenFromCookie({ req }: ContextType) {
+export function ExtractAuthTokenFromCookie(req: Request) {
   const authCookie = req.cookies.auth;
 
   if (!authCookie) {

@@ -97,5 +97,3 @@ export class Funcionario extends Model<Funcionario> {
     return isValid;
   }
 }
-
-export { FUNCIONARIO_PROVIDER } from '@/server/utils/constants';

@@ -3,11 +3,11 @@ import {
   BadRequestException,
   NotFoundException,
   UnauthorizedException,
-  Inject,
 } from '@nestjs/common';
 
-import { Funcionario, FUNCIONARIO_PROVIDER } from './funcionario.entity';
+import { Funcionario } from './funcionario.entity';
 import { InputFuncionario, LoginFuncionario } from './funcionario.dto';
+import { InjectRepository } from '@/server/modules/database/database.utils';
 
 import { Empresa } from '@/server/modules/empresa/empresa.entity';
 
@@ -16,7 +16,7 @@ export class FuncionarioService {
   private readonly funcionarioRepository: typeof Funcionario;
 
   public constructor(
-    @Inject(FUNCIONARIO_PROVIDER)
+    @InjectRepository(Funcionario)
     funcionarioRepository: typeof Funcionario
   ) {
     this.funcionarioRepository = funcionarioRepository;

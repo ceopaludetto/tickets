@@ -1,12 +1,10 @@
-import { Module, Global, DynamicModule } from '@nestjs/common';
+import { Module, DynamicModule } from '@nestjs/common';
 
 import {
   generateRootProviders,
   generateFeatureProviders,
-  ModelInjection,
 } from './database.providers';
 
-@Global()
 @Module({})
 export class DatabaseModule {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -21,7 +19,7 @@ export class DatabaseModule {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  public static forFeature(models: ModelInjection[]): DynamicModule {
+  public static forFeature<T>(models: T[]): DynamicModule {
     const FeatureProviders = generateFeatureProviders(models);
 
     return {

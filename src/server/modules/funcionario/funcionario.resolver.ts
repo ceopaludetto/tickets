@@ -33,10 +33,10 @@ export class FuncionarioResolver {
     return funcionario;
   }
 
-  @UseGuards(GqlAuthGuard)
   @Query(() => Funcionario)
+  @UseGuards(GqlAuthGuard)
   public async profile(@Context() { req }: ContextType) {
-    const funcionario = await this.funcionarioService.findOne(req.user);
+    const funcionario = await this.funcionarioService.findOne(req.user.ID);
     return funcionario;
   }
 

@@ -1,6 +1,6 @@
 import { ArgsType, Field, Int } from 'type-graphql';
 import { IsInt, IsString, IsUUID, IsOptional } from 'class-validator';
-import { Request, Response } from 'express';
+import { Request, Response, NextFunction } from 'express';
 
 @ArgsType()
 export class CommonFindAllArgs {
@@ -26,6 +26,7 @@ export class CommonFindOneArgs {
 export interface ContextType {
   req: Request;
   res: Response;
+  next: NextFunction;
 }
 
 export interface PayloadType {

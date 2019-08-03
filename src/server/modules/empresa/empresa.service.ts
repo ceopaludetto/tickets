@@ -2,10 +2,10 @@ import {
   Injectable,
   BadRequestException,
   NotFoundException,
-  Inject,
 } from '@nestjs/common';
 
-import { Empresa, EMPRESA_PROVIDER } from './empresa.entity';
+import { InjectRepository } from '@/server/modules/database/database.utils';
+import { Empresa } from './empresa.entity';
 import { InputEmpresa } from './empresa.dto';
 
 @Injectable()
@@ -13,7 +13,7 @@ export class EmpresaService {
   private readonly empresaRepository: typeof Empresa;
 
   public constructor(
-    @Inject(EMPRESA_PROVIDER) empresaRepository: typeof Empresa
+    @InjectRepository(Empresa) empresaRepository: typeof Empresa
   ) {
     this.empresaRepository = empresaRepository;
   }

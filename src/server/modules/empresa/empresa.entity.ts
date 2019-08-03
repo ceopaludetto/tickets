@@ -115,5 +115,3 @@ export class Empresa extends Model<Empresa> {
   @Column
   public readonly Atualizacao_Data?: Date;
 }
-
-export { EMPRESA_PROVIDER } from '@/server/utils/constants';
