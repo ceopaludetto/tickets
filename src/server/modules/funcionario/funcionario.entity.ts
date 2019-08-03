@@ -3,7 +3,6 @@ import { Typegoose, Ref, prop, instanceMethod, pre } from 'typegoose';
 import { ObjectType, Field, ID } from 'type-graphql';
 import { Schema } from 'mongoose';
 
-// eslint-disable-next-line import/no-cycle
 import { Empresa } from '@/server/modules/empresa/empresa.entity';
 
 @pre<Funcionario>('save', async function preSave(next) {
