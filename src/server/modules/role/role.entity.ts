@@ -1,6 +1,8 @@
-import { Typegoose, prop } from 'typegoose';
+import { Typegoose, prop, arrayProp } from 'typegoose';
 import { Schema } from 'mongoose';
 import { ObjectType, Field, ID } from 'type-graphql';
+
+import { Permissao } from './permissao.entity';
 
 @ObjectType()
 export class Role extends Typegoose {
@@ -9,5 +11,9 @@ export class Role extends Typegoose {
 
   @Field()
   @prop({ required: true })
-  public Nome!: string;
+  public nome!: string;
+
+  @Field()
+  @arrayProp({ itemsRef: Permissao, required: true })
+  public permissoes!: Permissao[];
 }
