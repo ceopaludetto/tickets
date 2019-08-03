@@ -38,7 +38,7 @@ type Funcionario {
   Nome: String!
   Sobrenome: String!
   Email: String!
-  Password: String!
+  Senha: String!
   Cargo: String!
   Empresa: Empresa!
   Criacao_Data: DateTime!
@@ -64,7 +64,7 @@ input InputFuncionario {
   Sobrenome: String
   Email: String
   Cargo: String
-  Password: String
+  Senha: String
   Empresa_ID: String
 }
 
@@ -73,7 +73,7 @@ type Mutation {
   updateEmpresa(id: String!, input: InputEmpresa!): Empresa!
   addFuncionario(input: InputFuncionario!): Funcionario!
   updateFuncionario(id: String!, input: InputFuncionario!): Funcionario!
-  login(Password: String!, Email: String!): Funcionario!
+  login(Email: String!, Senha: String!): Funcionario!
 }
 
 enum PlanoDeHoras {

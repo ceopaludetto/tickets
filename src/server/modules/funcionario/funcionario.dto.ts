@@ -1,5 +1,12 @@
-import { Field, InputType } from 'type-graphql';
-import { IsString, IsEmail, IsOptional, IsUUID } from 'class-validator';
+import { Field, InputType, ArgsType } from 'type-graphql';
+import {
+  IsString,
+  IsEmail,
+  IsOptional,
+  IsUUID,
+  IsNotEmpty,
+  IsDefined,
+} from 'class-validator';
 
 @InputType()
 export class InputFuncionario {
@@ -27,7 +34,7 @@ export class InputFuncionario {
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  public Password?: string;
+  public Senha?: string;
 
   @Field({ nullable: true })
   @IsOptional()
@@ -36,7 +43,23 @@ export class InputFuncionario {
   public Empresa_ID?: string;
 }
 
-export interface LoginFuncionario {
+@ArgsType()
+export class LoginFuncionario {
+  @Field()
+  @IsString()
+  @IsEmail()
+  @IsNotEmpty()
+  @IsDefined()
+  public Email!: string;
+
+  @Field()
+  @IsString()
+  @IsNotEmpty()
+  @IsDefined()
+  public Senha!: string;
+}
+
+export interface ILoginFuncionario {
   Email: string;
-  Password: string;
+  Senha: string;
 }

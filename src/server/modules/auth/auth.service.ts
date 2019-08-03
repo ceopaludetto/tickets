@@ -19,11 +19,11 @@ export class AuthService {
     this.jwtService = jwtService;
   }
 
-  public async login(Email: string, Password: string) {
+  public async login(Email: string, Senha: string) {
     try {
       const funcionario = await this.funcionarioService.login({
         Email,
-        Password,
+        Senha,
       });
 
       return funcionario;

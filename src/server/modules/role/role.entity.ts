@@ -7,6 +7,7 @@ import {
   PrimaryKey,
   CreatedAt,
   UpdatedAt,
+  AllowNull,
 } from 'sequelize-typescript';
 import { ObjectType, Field, ID } from 'type-graphql';
 
@@ -21,4 +22,19 @@ export class Role extends Model<Role> {
   @Column(DataType.UUID)
   @PrimaryKey
   public ID!: string;
+
+  @Field()
+  @Column
+  public Nome!: string;
+
+  @Field()
+  @AllowNull(false)
+  @CreatedAt
+  @Column
+  public Criacao_Data!: Date;
+
+  @Field({ nullable: true })
+  @UpdatedAt
+  @Column
+  public Atualizacao_Data?: Date;
 }

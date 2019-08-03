@@ -6,7 +6,7 @@ import {
 } from '@nestjs/common';
 
 import { Funcionario } from './funcionario.entity';
-import { InputFuncionario, LoginFuncionario } from './funcionario.dto';
+import { InputFuncionario, ILoginFuncionario } from './funcionario.dto';
 import { InjectRepository } from '@/server/modules/database/database.utils';
 
 import { Empresa } from '@/server/modules/empresa/empresa.entity';
@@ -43,7 +43,7 @@ export class FuncionarioService {
     }
   }
 
-  public async login({ Email, Password }: LoginFuncionario) {
+  public async login({ Email, Senha }: ILoginFuncionario) {
     try {
       const funcionario = await this.funcionarioRepository.findOne({
         where: { Email },
@@ -53,7 +53,7 @@ export class FuncionarioService {
         throw new NotFoundException('Nenhum funcionário encontrado.');
       }
 
-      if (!(await funcionario.comparePasswords(Password))) {
+      if (!(await funcionario.comparePasswords(Senha))) {
         throw new UnauthorizedException('Senha incorreta');
       }
 

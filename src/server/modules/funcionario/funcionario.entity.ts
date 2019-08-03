@@ -56,7 +56,7 @@ export class Funcionario extends Model<Funcionario> {
   @Field()
   @AllowNull(false)
   @Column
-  public Password!: string;
+  public Senha!: string;
 
   @Field()
   @AllowNull(false)
@@ -86,14 +86,14 @@ export class Funcionario extends Model<Funcionario> {
   @BeforeCreate
   @BeforeUpdate
   public static async hashPassword(instance: Funcionario) {
-    if (instance.changed('Password')) {
-      const newPassword = await hash(instance.Password, 10);
-      instance.Password = newPassword;
+    if (instance.changed('Senha')) {
+      const newPassword = await hash(instance.Senha, 10);
+      instance.Senha = newPassword;
     }
   }
 
   public async comparePasswords(password: string) {
-    const isValid = await compare(password, this.Password);
+    const isValid = await compare(password, this.Senha);
     return isValid;
   }
 }
