@@ -3,12 +3,8 @@ import dotenv from 'dotenv';
 import fs from 'fs';
 
 interface EnvConfig {
-  [key: string]: string | number;
-  PORT: number;
-  HOST: string;
-  USERNAME: string;
-  PASSWORD: string;
-  DATABASE: string;
+  [key: string]: string;
+  MONGO_URI: string;
   SECRET: string;
 }
 
@@ -24,11 +20,7 @@ export class ConfigurationService {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private validateInput = (config: any) => {
     const EnvVarsSchema: Joi.ObjectSchema = Joi.object({
-      PORT: Joi.number(),
-      HOST: Joi.string(),
-      USERNAME: Joi.string(),
-      PASSWORD: Joi.string(),
-      DATABASE: Joi.string(),
+      MONGO_URI: Joi.string(),
       SECRET: Joi.string(),
     });
 
@@ -41,27 +33,11 @@ export class ConfigurationService {
     return value as EnvConfig;
   };
 
-  public get PORT() {
-    return this.envConfig.PORT;
-  }
-
-  public get HOST() {
-    return this.envConfig.HOST;
-  }
-
-  public get USERNAME() {
-    return this.envConfig.USERNAME;
-  }
-
-  public get PASSWORD() {
-    return this.envConfig.PASSWORD;
-  }
-
-  public get DATABASE() {
-    return this.envConfig.DATABASE;
-  }
-
   public get SECRET() {
     return this.envConfig.SECRET;
+  }
+
+  public get MONGO_URI() {
+    return this.envConfig.MONGO_URI;
   }
 }

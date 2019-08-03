@@ -4,30 +4,31 @@ import {
   NotFoundException,
   UnauthorizedException,
 } from '@nestjs/common';
+import { InjectModel } from 'nestjs-typegoose';
+import { ModelType } from 'typegoose';
 
 import { Funcionario } from './funcionario.entity';
-import { InputFuncionario, ILoginFuncionario } from './funcionario.dto';
-import { InjectRepository } from '@/server/modules/database/database.utils';
-
-import { Empresa } from '@/server/modules/empresa/empresa.entity';
+import { InputFuncionario, LoginFuncionario } from './funcionario.dto';
 
 @Injectable()
 export class FuncionarioService {
-  private readonly funcionarioRepository: typeof Funcionario;
+  private readonly funcionarioRepository: ModelType<Funcionario>;
 
   public constructor(
-    @InjectRepository(Funcionario)
-    funcionarioRepository: typeof Funcionario
+    @InjectModel(Funcionario)
+    funcionarioRepository: ModelType<Funcionario>
   ) {
     this.funcionarioRepository = funcionarioRepository;
   }
 
   public async findAll(skip: number = 0, take: number = 100) {
     try {
-      const funcionarios = await this.funcionarioRepository.findAll({
-        offset: skip,
-        limit: take,
-      });
+      const funcionarios = await this.funcionarioRepository
+        .find()
+        .skip(skip)
+        .limit(take)
+        .populate('empresa')
+        .exec();
       return funcionarios;
     } catch (err) {
       throw new BadRequestException(err);
@@ -36,24 +37,27 @@ export class FuncionarioService {
 
   public async findOne(id: string) {
     try {
-      const funcionario = await this.funcionarioRepository.findByPk(id);
+      const funcionario = await this.funcionarioRepository
+        .findById(id)
+        .populate('empresa')
+        .exec();
       return funcionario;
     } catch (err) {
       throw new BadRequestException(err);
     }
   }
 
-  public async login({ Email, Senha }: ILoginFuncionario) {
+  public async login({ email, senha }: LoginFuncionario) {
     try {
       const funcionario = await this.funcionarioRepository.findOne({
-        where: { Email },
+        email,
       });
 
       if (!funcionario) {
         throw new NotFoundException('Nenhum funcionário encontrado.');
       }
 
-      if (!(await funcionario.comparePasswords(Senha))) {
+      if (!(await funcionario.comparePasswords(senha))) {
         throw new UnauthorizedException('Senha incorreta');
       }
 
@@ -74,9 +78,10 @@ export class FuncionarioService {
     }
 
     try {
-      const funcionario = await this.funcionarioRepository.findByPk(id, {
-        include: [{ model: Empresa, as: 'Empresa' }],
-      });
+      const funcionario = await this.funcionarioRepository
+        .findById(id)
+        .populate('empresa')
+        .exec();
       if (!funcionario) {
         throw new NotFoundException('Nenhum funcionário encontrado.');
       }

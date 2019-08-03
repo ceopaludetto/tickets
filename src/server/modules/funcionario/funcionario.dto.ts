@@ -3,9 +3,9 @@ import {
   IsString,
   IsEmail,
   IsOptional,
-  IsUUID,
   IsNotEmpty,
   IsDefined,
+  IsMongoId,
 } from 'class-validator';
 
 @InputType()
@@ -13,34 +13,34 @@ export class InputFuncionario {
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  public Nome?: string;
+  public nome?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  public Sobrenome?: string;
+  public sobrenome?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
   @IsEmail()
-  public Email?: string;
+  public email?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  public Cargo?: string;
+  public cargo?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  public Senha?: string;
+  public senha?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  @IsUUID()
-  public Empresa_ID?: string;
+  @IsMongoId()
+  public empresa?: string;
 }
 
 @ArgsType()
@@ -50,16 +50,11 @@ export class LoginFuncionario {
   @IsEmail()
   @IsNotEmpty()
   @IsDefined()
-  public Email!: string;
+  public email!: string;
 
   @Field()
   @IsString()
   @IsNotEmpty()
   @IsDefined()
-  public Senha!: string;
-}
-
-export interface ILoginFuncionario {
-  Email: string;
-  Senha: string;
+  public senha!: string;
 }

@@ -1,117 +1,61 @@
-import {
-  Table,
-  Column,
-  CreatedAt,
-  UpdatedAt,
-  PrimaryKey,
-  Model,
-  DataType,
-  Default,
-  AllowNull,
-  HasMany,
-} from 'sequelize-typescript';
+import { Typegoose, prop } from 'typegoose';
 import { ObjectType, Field, ID } from 'type-graphql';
+import { Schema } from 'mongoose';
 
 import { EnumDiaPagamento, EnumPlanoHoras } from './empresa.dto';
-// eslint-disable-next-line import/no-cycle
-import { Funcionario } from '@/server/modules/funcionario/funcionario.entity';
 
-@Table({
-  tableName: 'Empresa',
-  modelName: 'Empresa',
-  freezeTableName: true,
-  underscored: false,
-  underscoredAll: false,
-})
 @ObjectType()
-export class Empresa extends Model<Empresa> {
+export class Empresa extends Typegoose {
   @Field(() => ID)
-  @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
-  public readonly ID!: string;
+  public readonly _id!: Schema.Types.ObjectId;
 
   @Field()
-  @AllowNull(false)
-  @Column({ unique: true })
-  public CNPJ!: string;
+  @prop({ unique: true, required: true })
+  public cnpj!: string;
 
   @Field()
-  @AllowNull(false)
-  @Column
-  public Razao_Social!: string;
+  @prop({ required: true })
+  public razaoSocial!: string;
 
   @Field()
-  @AllowNull(false)
-  @Column
-  public Nome_Fantasia!: string;
+  @prop({ required: true })
+  public nomeFantasia!: string;
 
   @Field()
-  @AllowNull(false)
-  @Column
-  public Endereco!: string;
+  @prop({ required: true })
+  public endereco!: string;
 
   @Field()
-  @AllowNull(false)
-  @Column
-  public CEP!: string;
+  @prop({ required: true })
+  public cep!: string;
 
   @Field()
-  @AllowNull(false)
-  @Column
-  public Telefone!: string;
+  @prop({ required: true })
+  public telefone!: string;
 
   @Field({ nullable: true })
-  @Column
-  public Site?: string;
+  @prop()
+  public site?: string;
 
   @Field({ nullable: true })
-  @Column
-  public Nome_Completo?: string;
+  @prop()
+  public nomeCompleto?: string;
 
   @Field()
-  @Column
-  public Email!: string;
-
-  @Field(() => [Funcionario])
-  @HasMany(() => Funcionario, {
-    foreignKey: 'Empresa_ID',
-    as: 'Funcionarios',
-  })
-  public Funcionarios!: Funcionario[];
+  @prop({ required: true, unique: true })
+  public email!: string;
 
   @Field(() => EnumDiaPagamento)
-  @Default(EnumDiaPagamento.D7)
-  @Column(
-    DataType.ENUM(
-      EnumDiaPagamento.D7,
-      EnumDiaPagamento.D10,
-      EnumDiaPagamento.D15,
-      EnumDiaPagamento.D20
-    )
-  )
-  public Dia_Pagamento!: EnumDiaPagamento;
+  @prop({
+    enum: EnumDiaPagamento,
+    default: EnumDiaPagamento.D7,
+  })
+  public diaPagamento!: string;
 
   @Field(() => EnumPlanoHoras)
-  @Default(EnumPlanoHoras.H20)
-  @Column(
-    DataType.ENUM(
-      EnumPlanoHoras.H20,
-      EnumPlanoHoras.H40,
-      EnumPlanoHoras.H60,
-      EnumPlanoHoras.H80
-    )
-  )
-  public Plano_De_Horas!: EnumPlanoHoras;
-
-  @Field()
-  @AllowNull(false)
-  @CreatedAt
-  @Column
-  public readonly Criacao_Data!: Date;
-
-  @Field({ nullable: true })
-  @UpdatedAt
-  @Column
-  public readonly Atualizacao_Data?: Date;
+  @prop({
+    enum: EnumPlanoHoras,
+    default: EnumPlanoHoras.H20,
+  })
+  public planoHoras!: string;
 }

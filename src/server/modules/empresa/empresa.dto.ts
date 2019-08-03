@@ -38,57 +38,57 @@ export class InputEmpresa {
   @IsString()
   @Matches(/[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}-?[0-9]{2}/)
   @Length(16, 20)
-  public CNPJ?: string;
+  public cnpj?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  public Razao_Social?: string;
+  public razaoSocial?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  public Nome_Fantasia?: string;
+  public nomeFantasia?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  public Endereco?: string;
+  public endereco?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  public CEP?: string;
+  public cep?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  public Telefone?: string;
+  public telefone?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
   @IsUrl()
-  public Site?: string;
+  public site?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
-  public Nome_Completo?: string;
+  public nomeCompleto?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
   @IsEmail()
-  public Email?: string;
+  public email?: string;
 
   @Field(() => EnumDiaPagamento, { nullable: true })
   @IsOptional()
   @IsEnum(EnumDiaPagamento)
-  public Dia_Pagamento?: EnumDiaPagamento;
+  public diaPagamento?: EnumDiaPagamento;
 
   @Field(() => EnumPlanoHoras, { nullable: true })
   @IsOptional()
   @IsEnum(EnumPlanoHoras)
-  public Plano_De_Horas?: EnumPlanoHoras;
+  public planoHoras?: EnumPlanoHoras;
 }

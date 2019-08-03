@@ -1,40 +1,13 @@
-import {
-  Table,
-  Column,
-  Default,
-  DataType,
-  Model,
-  PrimaryKey,
-  CreatedAt,
-  UpdatedAt,
-  AllowNull,
-} from 'sequelize-typescript';
+import { Typegoose, prop } from 'typegoose';
+import { Schema } from 'mongoose';
 import { ObjectType, Field, ID } from 'type-graphql';
 
-@Table({
-  tableName: 'Role',
-  modelName: 'Role',
-})
 @ObjectType()
-export class Role extends Model<Role> {
+export class Role extends Typegoose {
   @Field(() => ID)
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
-  @PrimaryKey
-  public ID!: string;
+  public _id!: Schema.Types.ObjectId;
 
   @Field()
-  @Column
+  @prop({ required: true })
   public Nome!: string;
-
-  @Field()
-  @AllowNull(false)
-  @CreatedAt
-  @Column
-  public Criacao_Data!: Date;
-
-  @Field({ nullable: true })
-  @UpdatedAt
-  @Column
-  public Atualizacao_Data?: Date;
 }

@@ -1,19 +1,20 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
+import { InjectModel } from 'nestjs-typegoose';
+import { ModelType } from 'typegoose';
 
 import { Role } from './role.entity';
-import { InjectRepository } from '@/server/modules/database/database.utils';
 
 @Injectable()
 export class RoleService {
-  private readonly RoleRepository: typeof Role;
+  private readonly RoleRepository: ModelType<Role>;
 
-  public constructor(@InjectRepository(Role) roleRepository: typeof Role) {
+  public constructor(@InjectModel(Role) roleRepository: ModelType<Role>) {
     this.RoleRepository = roleRepository;
   }
 
   public async findAll() {
     try {
-      const roles = await this.RoleRepository.findAll();
+      const roles = await this.RoleRepository.find().exec();
       return roles;
     } catch (err) {
       throw new BadRequestException('Falha ao listar roles.', err);
@@ -22,7 +23,7 @@ export class RoleService {
 
   public async findOne(id: string) {
     try {
-      const role = await this.RoleRepository.findByPk(id);
+      const role = await this.RoleRepository.findById(id).exec();
       return role;
     } catch (err) {
       throw new BadRequestException('Falha ao encontrar role.', err);

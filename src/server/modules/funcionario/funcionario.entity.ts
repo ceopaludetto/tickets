@@ -1,99 +1,50 @@
 import { hash, compare } from 'bcryptjs';
-import {
-  Table,
-  Column,
-  BeforeCreate,
-  BeforeUpdate,
-  PrimaryKey,
-  BelongsTo,
-  CreatedAt,
-  UpdatedAt,
-  AllowNull,
-  Default,
-  DataType,
-  Model,
-  DefaultScope,
-} from 'sequelize-typescript';
+import { Typegoose, Ref, prop, instanceMethod, pre } from 'typegoose';
 import { ObjectType, Field, ID } from 'type-graphql';
+import { Schema } from 'mongoose';
 
 // eslint-disable-next-line import/no-cycle
 import { Empresa } from '@/server/modules/empresa/empresa.entity';
 
-@Table({
-  tableName: 'Funcionario',
-  modelName: 'Funcionario',
-  freezeTableName: true,
-  underscored: false,
-  underscoredAll: false,
-})
-@DefaultScope({
-  include: [{ model: () => Empresa, as: 'Empresa' }],
+@pre<Funcionario>('save', async function preSave(next) {
+  if (this.isModified('senha')) {
+    const newPassword = await hash(this.senha, 10);
+    this.senha = newPassword;
+  }
+  next();
 })
 @ObjectType()
-export class Funcionario extends Model<Funcionario> {
+export class Funcionario extends Typegoose {
   @Field(() => ID)
-  @Default(DataType.UUIDV4)
-  @PrimaryKey
-  @AllowNull(false)
-  @Column(DataType.UUID)
-  public readonly ID!: string;
+  public readonly _id!: Schema.Types.ObjectId;
 
   @Field()
-  @AllowNull(false)
-  @Column
-  public Nome!: string;
+  @prop({ required: true })
+  public nome!: string;
 
   @Field()
-  @AllowNull(false)
-  @Column
-  public Sobrenome!: string;
+  @prop({ required: true })
+  public sobrenome!: string;
 
   @Field()
-  @AllowNull(false)
-  @Column({ unique: true })
-  public Email!: string;
+  @prop({ required: true, unique: true })
+  public email!: string;
 
   @Field()
-  @AllowNull(false)
-  @Column
-  public Senha!: string;
+  @prop({ required: true })
+  public senha!: string;
 
   @Field()
-  @AllowNull(false)
-  @Column
-  public Cargo!: string;
+  @prop({ required: true })
+  public cargo!: string;
 
   @Field(() => Empresa)
-  public Empresa!: Empresa;
+  @prop({ ref: Empresa })
+  public empresa!: Ref<Empresa>;
 
-  @BelongsTo(() => Empresa, {
-    foreignKey: 'Empresa_ID',
-    as: 'Empresa',
-  })
-  public Empresa_ID!: string;
-
-  @Field()
-  @AllowNull(false)
-  @CreatedAt
-  @Column
-  public readonly Criacao_Data!: Date;
-
-  @Field({ nullable: true })
-  @UpdatedAt
-  @Column
-  public readonly Atualizacao_Data?: Date;
-
-  @BeforeCreate
-  @BeforeUpdate
-  public static async hashPassword(instance: Funcionario) {
-    if (instance.changed('Senha')) {
-      const newPassword = await hash(instance.Senha, 10);
-      instance.Senha = newPassword;
-    }
-  }
-
+  @instanceMethod
   public async comparePasswords(password: string) {
-    const isValid = await compare(password, this.Senha);
+    const isValid = await compare(password, this.senha);
     return isValid;
   }
 }

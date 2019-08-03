@@ -20,10 +20,10 @@ export class AuthResolver {
 
   @Mutation(() => Funcionario)
   public async login(
-    @Args() { Email, Senha }: LoginFuncionario,
+    @Args() { email, senha }: LoginFuncionario,
     @Context() context: ContextType
   ) {
-    const funcionario = await this.authService.login(Email, Senha);
+    const funcionario = await this.authService.login(email, senha);
     if (funcionario) {
       await this.authService.generateAndRegisterToken(funcionario, context);
     }
