@@ -13,7 +13,7 @@ export class Role extends Typegoose {
   @prop({ required: true })
   public nome!: string;
 
-  @Field()
+  @Field(() => Permissao)
   @arrayProp({ itemsRef: Permissao, required: true })
   public permissoes!: Permissao[];
 }

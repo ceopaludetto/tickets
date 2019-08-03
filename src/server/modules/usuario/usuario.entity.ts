@@ -5,7 +5,7 @@ import { Schema } from 'mongoose';
 
 import { Empresa } from '@/server/modules/empresa/empresa.entity';
 
-@pre<Funcionario>('save', async function preSave(next) {
+@pre<Usuario>('save', async function preSave(next) {
   if (this.isModified('senha')) {
     const newPassword = await hash(this.senha, 10);
     this.senha = newPassword;
@@ -13,7 +13,7 @@ import { Empresa } from '@/server/modules/empresa/empresa.entity';
   next();
 })
 @ObjectType()
-export class Funcionario extends Typegoose {
+export class Usuario extends Typegoose {
   @Field(() => ID)
   public readonly _id!: Schema.Types.ObjectId;
 

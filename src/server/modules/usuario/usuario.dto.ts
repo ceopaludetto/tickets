@@ -9,7 +9,7 @@ import {
 } from 'class-validator';
 
 @InputType()
-export class InputFuncionario {
+export class InputUsuario {
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
@@ -44,7 +44,7 @@ export class InputFuncionario {
 }
 
 @ArgsType()
-export class LoginFuncionario {
+export class LoginUsuario {
   @Field()
   @IsString()
   @IsEmail()

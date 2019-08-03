@@ -7,29 +7,29 @@ import {
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
 
-import { Funcionario } from './funcionario.entity';
-import { InputFuncionario, LoginFuncionario } from './funcionario.dto';
+import { Usuario } from './usuario.entity';
+import { InputUsuario, LoginUsuario } from './usuario.dto';
 
 @Injectable()
-export class FuncionarioService {
-  private readonly funcionarioRepository: ModelType<Funcionario>;
+export class UsuarioService {
+  private readonly userRepository: ModelType<Usuario>;
 
   public constructor(
-    @InjectModel(Funcionario)
-    funcionarioRepository: ModelType<Funcionario>
+    @InjectModel(Usuario)
+    userRepository: ModelType<Usuario>
   ) {
-    this.funcionarioRepository = funcionarioRepository;
+    this.userRepository = userRepository;
   }
 
   public async findAll(skip: number = 0, take: number = 100) {
     try {
-      const funcionarios = await this.funcionarioRepository
+      const usuarios = await this.userRepository
         .find()
         .skip(skip)
         .limit(take)
         .populate('empresa')
         .exec();
-      return funcionarios;
+      return usuarios;
     } catch (err) {
       throw new BadRequestException(err);
     }
@@ -37,55 +37,55 @@ export class FuncionarioService {
 
   public async findOne(id: string) {
     try {
-      const funcionario = await this.funcionarioRepository
+      const usuario = await this.userRepository
         .findById(id)
         .populate('empresa')
         .exec();
-      return funcionario;
+      return usuario;
     } catch (err) {
       throw new BadRequestException(err);
     }
   }
 
-  public async login({ email, senha }: LoginFuncionario) {
+  public async login({ email, senha }: LoginUsuario) {
     try {
-      const funcionario = await this.funcionarioRepository.findOne({
+      const usuario = await this.userRepository.findOne({
         email,
       });
 
-      if (!funcionario) {
+      if (!usuario) {
         throw new NotFoundException('Nenhum funcionário encontrado.');
       }
 
-      if (!(await funcionario.comparePasswords(senha))) {
+      if (!(await usuario.comparePasswords(senha))) {
         throw new UnauthorizedException('Senha incorreta');
       }
 
-      return funcionario;
+      return usuario;
     } catch (err) {
       throw new BadRequestException(err);
     }
   }
 
-  public async createOrUpdate(data: InputFuncionario, id?: string) {
+  public async createOrUpdate(data: InputUsuario, id?: string) {
     if (!id) {
       try {
-        const funcionario = await this.funcionarioRepository.create(data);
-        return funcionario;
+        const usuario = await this.userRepository.create(data);
+        return usuario;
       } catch (err) {
         throw new BadRequestException(err);
       }
     }
 
     try {
-      const funcionario = await this.funcionarioRepository
+      const usuario = await this.userRepository
         .findById(id)
         .populate('empresa')
         .exec();
-      if (!funcionario) {
+      if (!usuario) {
         throw new NotFoundException('Nenhum funcionário encontrado.');
       }
-      const res = await funcionario.update(data);
+      const res = await usuario.update(data);
       return res;
     } catch (err) {
       throw new BadRequestException(err);
