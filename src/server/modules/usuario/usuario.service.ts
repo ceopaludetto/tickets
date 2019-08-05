@@ -79,14 +79,10 @@ export class UsuarioService {
 
     try {
       const usuario = await this.userRepository
-        .findById(id)
+        .findByIdAndUpdate(id, data, { new: true })
         .populate('empresa')
         .exec();
-      if (!usuario) {
-        throw new NotFoundException('Nenhum funcionário encontrado.');
-      }
-      const res = await usuario.update(data);
-      return res;
+      return usuario;
     } catch (err) {
       throw new BadRequestException(err);
     }

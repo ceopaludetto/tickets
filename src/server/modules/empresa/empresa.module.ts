@@ -6,7 +6,16 @@ import { EmpresaService } from './empresa.service';
 import { Empresa } from './empresa.entity';
 
 @Module({
-  imports: [TypegooseModule.forFeature([Empresa])],
+  imports: [
+    TypegooseModule.forFeature([
+      {
+        typegooseClass: Empresa,
+        schemaOptions: {
+          timestamps: true,
+        },
+      },
+    ]),
+  ],
   providers: [EmpresaResolver, EmpresaService],
 })
 export class EmpresaModule {}

@@ -45,14 +45,14 @@ export class Empresa extends Typegoose {
   @prop({ required: true, unique: true })
   public email!: string;
 
-  @Field(() => EnumDiaPagamento)
+  @Field(() => EnumDiaPagamento, { defaultValue: EnumDiaPagamento.D7 })
   @prop({
     enum: EnumDiaPagamento,
     default: EnumDiaPagamento.D7,
   })
   public diaPagamento!: string;
 
-  @Field(() => EnumPlanoHoras)
+  @Field(() => EnumPlanoHoras, { defaultValue: EnumPlanoHoras.H20 })
   @prop({
     enum: EnumPlanoHoras,
     default: EnumPlanoHoras.H20,

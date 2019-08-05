@@ -6,7 +6,10 @@ import {
   IsNotEmpty,
   IsDefined,
   IsMongoId,
+  IsEnum,
 } from 'class-validator';
+
+import { Permissao } from '@/server/modules/auth/auth.roles';
 
 @InputType()
 export class InputUsuario {
@@ -41,6 +44,11 @@ export class InputUsuario {
   @IsString()
   @IsMongoId()
   public empresa?: string;
+
+  @Field(() => Permissao, { nullable: true })
+  @IsOptional()
+  @IsEnum(Permissao)
+  public permissao?: Permissao;
 }
 
 @ArgsType()

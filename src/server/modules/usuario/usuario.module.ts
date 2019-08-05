@@ -7,7 +7,16 @@ import { UsuarioService } from './usuario.service';
 import { Usuario } from './usuario.entity';
 
 @Module({
-  imports: [TypegooseModule.forFeature([Usuario])],
+  imports: [
+    TypegooseModule.forFeature([
+      {
+        typegooseClass: Usuario,
+        schemaOptions: {
+          timestamps: true,
+        },
+      },
+    ]),
+  ],
   providers: [UsuarioResolver, UsuarioService],
   exports: [UsuarioService],
 })

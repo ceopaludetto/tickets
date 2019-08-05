@@ -30,13 +30,14 @@ export class AuthService {
   }
 
   public async generateAndRegisterToken(
-    { _id, email }: Usuario,
+    { _id, email, permissao }: Usuario,
     { res }: ContextType
   ) {
     try {
       const token = await this.jwtService.signAsync({
         _id,
         email,
+        permissao,
       });
 
       res.cookie('auth', token, {

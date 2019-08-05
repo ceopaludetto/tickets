@@ -21,18 +21,8 @@ type Empresa {
   site: String
   nomeCompleto: String
   email: String!
-  diaPagamento: DiaDePagamento!
-  planoHoras: PlanoDeHoras!
-}
-
-type Funcionario {
-  _id: ID!
-  nome: String!
-  sobrenome: String!
-  email: String!
-  senha: String!
-  cargo: String!
-  empresa: Empresa!
+  diaPagamento: DiaDePagamento
+  planoHoras: PlanoDeHoras
 }
 
 input InputEmpresa {
@@ -49,21 +39,33 @@ input InputEmpresa {
   planoHoras: PlanoDeHoras
 }
 
-input InputFuncionario {
+input InputUsuario {
   nome: String
   sobrenome: String
   email: String
   cargo: String
   senha: String
   empresa: String
+  permissao: Permissao
 }
 
 type Mutation {
   addEmpresa(input: InputEmpresa!): Empresa!
   updateEmpresa(id: String!, input: InputEmpresa!): Empresa!
-  addFuncionario(input: InputFuncionario!): Funcionario!
-  updateFuncionario(id: String!, input: InputFuncionario!): Funcionario!
-  login(email: String!, senha: String!): Funcionario!
+  addUsuario(input: InputUsuario!): Usuario!
+  updateUsuario(id: String!, input: InputUsuario!): Usuario!
+  login(email: String!, senha: String!): Usuario!
+}
+
+enum Permissao {
+  User
+  Suporte
+  Analista
+  Coordenador
+  Gerente
+  Diretor
+  ConsultorExterno
+  VIP
 }
 
 enum PlanoDeHoras {
@@ -76,7 +78,18 @@ enum PlanoDeHoras {
 type Query {
   findAllEmpresas(skip: Int = 0, take: Int = 100): [Empresa!]!
   findEmpresa(id: String!): Empresa!
-  findAllFuncionarios(skip: Int = 0, take: Int = 100): [Funcionario!]!
-  findFuncionario(id: String!): Funcionario!
-  profile: Funcionario!
+  findAllUsuarios(skip: Int = 0, take: Int = 100): [Usuario!]!
+  findUsuario(id: String!): Usuario!
+  profile: Usuario!
+}
+
+type Usuario {
+  _id: ID!
+  nome: String!
+  sobrenome: String!
+  email: String!
+  senha: String!
+  cargo: String!
+  empresa: Empresa
+  permissao: Permissao
 }

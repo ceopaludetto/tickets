@@ -1,12 +1,14 @@
 import { Resolver, Query, Args, Mutation, Context } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
+import { UseRoles } from 'nest-access-control';
 
 import { UsuarioService } from './usuario.service';
 import { Usuario } from './usuario.entity';
 import { InputUsuario } from './usuario.dto';
 import { CommonFindAllArgs } from '@/server/utils/common.dto';
-import { GqlAuthGuard } from '@/server/modules/auth/auth.guard';
+import { GqlAuthGuard, GqlACGuard } from '@/server/modules/auth/auth.guard';
+import { Recurso } from '@/server/modules/auth/auth.roles';
 
 interface ContextType {
   req: Request;
@@ -47,6 +49,12 @@ export class UsuarioResolver {
     return usuario;
   }
 
+  @UseGuards(GqlAuthGuard, GqlACGuard)
+  @UseRoles({
+    resource: Recurso.Perfil,
+    possession: 'own',
+    action: 'update',
+  })
   @Mutation(() => Usuario)
   public async updateUsuario(
     @Args('input')

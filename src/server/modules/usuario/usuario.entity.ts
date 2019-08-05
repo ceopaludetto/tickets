@@ -4,6 +4,7 @@ import { ObjectType, Field, ID } from 'type-graphql';
 import { Schema } from 'mongoose';
 
 import { Empresa } from '@/server/modules/empresa/empresa.entity';
+import { Permissao } from '@/server/modules/auth/auth.roles';
 
 @pre<Usuario>('save', async function preSave(next) {
   if (this.isModified('senha')) {
@@ -37,9 +38,13 @@ export class Usuario extends Typegoose {
   @prop({ required: true })
   public cargo!: string;
 
-  @Field(() => Empresa)
+  @Field(() => Empresa, { nullable: true })
   @prop({ ref: Empresa })
-  public empresa!: Ref<Empresa>;
+  public empresa?: Ref<Empresa>;
+
+  @Field(() => Permissao, { defaultValue: Permissao.User })
+  @prop({ enum: Permissao, default: Permissao.User })
+  public permissao!: string;
 
   @instanceMethod
   public async comparePasswords(password: string) {

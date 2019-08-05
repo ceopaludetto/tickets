@@ -55,12 +55,10 @@ export class EmpresaService {
     }
 
     try {
-      const empresa = await this.empresaRepository.findById(id);
-      if (!empresa) {
-        throw new NotFoundException('Empresa não encontrada');
-      }
-      const res = await empresa.update(data);
-      return res;
+      const empresa = await this.empresaRepository
+        .findByIdAndUpdate(id, data, { new: true })
+        .exec();
+      return empresa;
     } catch (err) {
       throw new BadRequestException(err);
     }

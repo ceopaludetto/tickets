@@ -3,8 +3,8 @@ export { ReactModule } from './react/react.module';
 export { EmpresaModule } from './empresa/empresa.module';
 export { Empresa } from './empresa/empresa.entity';
 
-export { FuncionarioModule } from './funcionario/funcionario.module';
-export { Funcionario } from './funcionario/funcionario.entity';
+export { UsuarioModule } from './usuario/usuario.module';
+export { Usuario } from './usuario/usuario.entity';
 
 export { AuthModule } from './auth/auth.module';
 

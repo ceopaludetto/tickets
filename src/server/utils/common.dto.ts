@@ -2,6 +2,8 @@ import { ArgsType, Field, Int } from 'type-graphql';
 import { IsInt, IsString, IsOptional, IsMongoId } from 'class-validator';
 import { Request, Response } from 'express';
 
+import { Permissao } from '@/server/modules/auth/auth.roles';
+
 @ArgsType()
 export class CommonFindAllArgs {
   @Field(() => Int)
@@ -31,4 +33,5 @@ export interface ContextType {
 export interface PayloadType {
   _id: string;
   email: string;
+  permissao: Permissao;
 }
