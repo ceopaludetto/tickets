@@ -1,14 +1,23 @@
 import { Resolver, Query, Args, Mutation, Context } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 import { Request, Response } from 'express';
-import { UseRoles } from 'nest-access-control';
 
 import { UsuarioService } from './usuario.service';
-import { Usuario } from './usuario.entity';
-import { InputUsuario } from './usuario.dto';
-import { CommonFindAllArgs } from '@/server/utils/common.dto';
-import { GqlAuthGuard, GqlACGuard } from '@/server/modules/auth/auth.guard';
-import { Recurso } from '@/server/modules/auth/auth.roles';
+import {
+  Usuario,
+  UsuarioInput,
+  UsuarioUpdateArgs,
+  AcaoEnum,
+  PerfilEnum,
+  RecursoEnum,
+} from '@/server/models';
+import {
+  CommonFindAllArgs,
+  CommonFindOneArgs,
+} from '@/server/utils/common.dto';
+import { GqlAuthGuard } from '@/server/modules/auth/auth.guard';
+import { SecurityGuard } from '@/server/modules/security/security.guard';
+import { UseRole } from '@/server/modules/security/security.decorators';
 
 interface ContextType {
   req: Request;
@@ -30,8 +39,8 @@ export class UsuarioResolver {
   }
 
   @Query(() => Usuario)
-  public async findUsuario(@Args('id') id: string) {
-    const usuario = await this.userService.findOne(id);
+  public async findUsuario(@Args() { _id }: CommonFindOneArgs) {
+    const usuario = await this.userService.findOne(_id);
     return usuario;
   }
 
@@ -44,25 +53,15 @@ export class UsuarioResolver {
   }
 
   @Mutation(() => Usuario)
-  public async addUsuario(@Args('input') data: InputUsuario) {
-    const usuario = this.userService.createOrUpdate(data);
+  public async addUsuario(@Args('input') input: UsuarioInput) {
+    const usuario = this.userService.createOrUpdate(input);
     return usuario;
   }
 
-  @UseGuards(GqlAuthGuard, GqlACGuard)
-  @UseRoles({
-    resource: Recurso.Perfil,
-    possession: 'own',
-    action: 'update',
-  })
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => Usuario)
-  public async updateUsuario(
-    @Args('input')
-    data: InputUsuario,
-    @Args('id')
-    id: string
-  ) {
-    const usuario = this.userService.createOrUpdate(data, id);
+  public async updateUsuario(@Args() { input, _id }: UsuarioUpdateArgs) {
+    const usuario = this.userService.createOrUpdate(input, _id);
     return usuario;
   }
 }

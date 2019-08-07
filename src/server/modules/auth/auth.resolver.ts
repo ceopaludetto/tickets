@@ -2,8 +2,7 @@ import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
-import { Usuario } from '@/server/modules/usuario/usuario.entity';
-import { LoginUsuario } from '@/server/modules/usuario/usuario.dto';
+import { Usuario, LoginUsuario } from '@/server/models';
 
 interface ContextType {
   req: Request;

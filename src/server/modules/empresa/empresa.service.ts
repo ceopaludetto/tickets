@@ -6,8 +6,8 @@ import {
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
 
-import { Empresa } from './empresa.entity';
-import { InputEmpresa } from './empresa.dto';
+import { Empresa, EmpresaInput } from '@/server/models';
+import { ID } from '@/server/utils/common.dto';
 
 @Injectable()
 export class EmpresaService {
@@ -32,7 +32,7 @@ export class EmpresaService {
     }
   }
 
-  public async findOne(id: string) {
+  public async findOne(id: ID) {
     try {
       const empresa = await this.empresaRepository.findById(id);
       if (!empresa) {
@@ -44,7 +44,7 @@ export class EmpresaService {
     }
   }
 
-  public async createOrUpdate(data: InputEmpresa, id?: string) {
+  public async createOrUpdate(data: EmpresaInput, id?: ID) {
     if (!id) {
       try {
         const empresa = await this.empresaRepository.create(data);

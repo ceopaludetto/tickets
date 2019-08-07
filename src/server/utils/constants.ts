@@ -12,4 +12,4 @@ export const APP_NAME = 'tickets';
 /**
  * SecurityModule
  */
-export const SECURITY_ROOT_PROVIDER = 'SECURITY_ACL_PROVIDER';
+export const SECURITY_ROLE_DECORATOR = 'SECURITY_ROLE';

@@ -5,14 +5,15 @@ import {
   IsOptional,
   IsNotEmpty,
   IsDefined,
-  IsMongoId,
-  IsEnum,
+  IsArray,
+  ValidateNested,
 } from 'class-validator';
 
-import { Permissao } from '@/server/modules/auth/auth.roles';
+import { CommonFindOneArgs } from '@/server/utils/common.dto';
+import { AssociacaoInput } from '../associacao/associacao.dto';
 
 @InputType()
-export class InputUsuario {
+export class UsuarioInput {
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
@@ -39,16 +40,13 @@ export class InputUsuario {
   @IsString()
   public senha?: string;
 
-  @Field({ nullable: true })
+  @Field(() => [AssociacaoInput], { nullable: true })
   @IsOptional()
-  @IsString()
-  @IsMongoId()
-  public empresa?: string;
-
-  @Field(() => Permissao, { nullable: true })
-  @IsOptional()
-  @IsEnum(Permissao)
-  public permissao?: Permissao;
+  @IsArray({
+    each: true,
+  })
+  @ValidateNested()
+  public associacoes?: AssociacaoInput[];
 }
 
 @ArgsType()
@@ -65,4 +63,10 @@ export class LoginUsuario {
   @IsNotEmpty()
   @IsDefined()
   public senha!: string;
+}
+
+@ArgsType()
+export class UsuarioUpdateArgs extends CommonFindOneArgs {
+  @Field(() => UsuarioInput)
+  public input!: UsuarioInput;
 }

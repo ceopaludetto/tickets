@@ -2,7 +2,7 @@ import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { UsuarioService } from '@/server/modules/usuario/usuario.service';
-import { Usuario } from '@/server/modules/usuario/usuario.entity';
+import { Usuario } from '@/server/models';
 import { ContextType } from '@/server/utils/common.dto';
 
 @Injectable()
@@ -30,14 +30,13 @@ export class AuthService {
   }
 
   public async generateAndRegisterToken(
-    { _id, email, permissao }: Usuario,
+    { _id, email }: Usuario,
     { res }: ContextType
   ) {
     try {
       const token = await this.jwtService.signAsync({
         _id,
         email,
-        permissao,
       });
 
       res.cookie('auth', token, {

@@ -2,17 +2,26 @@ import { NestFactory } from '@nestjs/core';
 import { ValidationPipe } from '@nestjs/common';
 import { static as ExpressStatic } from 'express';
 import CookieParser from 'cookie-parser';
+import RateLimit from 'express-rate-limit';
+import Helmet from 'helmet';
 
 import { ApplicationModule } from '@/server/app.module';
 
 async function bootstrap() {
   const app = await NestFactory.create(ApplicationModule);
-  app.useGlobalPipes(new ValidationPipe({ disableErrorMessages: true }));
+  app.use(Helmet());
+  app.use(CookieParser());
+  app.use(
+    new RateLimit({
+      windowMs: 5 * 60 * 1000,
+      max: 100,
+    })
+  );
   app.use(
     process.env.PUBLIC_PATH as string,
     ExpressStatic(process.env.STATIC_FOLDER as string)
   );
-  app.use(CookieParser());
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.listen(process.env.PORT as string);
 
   if (module.hot) {

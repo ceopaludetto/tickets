@@ -7,8 +7,8 @@ import {
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
 
-import { Usuario } from './usuario.entity';
-import { InputUsuario, LoginUsuario } from './usuario.dto';
+import { Usuario, UsuarioInput, LoginUsuario } from '@/server/models';
+import { ID } from '@/server/utils/common.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -27,19 +27,30 @@ export class UsuarioService {
         .find()
         .skip(skip)
         .limit(take)
-        .populate('empresa')
+        .populate({
+          path: 'associacoes.perfil',
+          populate: {
+            path: 'politicas',
+          },
+        })
         .exec();
+      console.log(usuarios);
       return usuarios;
     } catch (err) {
       throw new BadRequestException(err);
     }
   }
 
-  public async findOne(id: string) {
+  public async findOne(id: ID) {
     try {
       const usuario = await this.userRepository
         .findById(id)
-        .populate('empresa')
+        .populate({
+          path: 'associacoes',
+          populate: {
+            path: 'perfil',
+          },
+        })
         .exec();
       return usuario;
     } catch (err) {
@@ -67,7 +78,7 @@ export class UsuarioService {
     }
   }
 
-  public async createOrUpdate(data: InputUsuario, id?: string) {
+  public async createOrUpdate(data: UsuarioInput, id?: ID) {
     if (!id) {
       try {
         const usuario = await this.userRepository.create(data);
@@ -80,7 +91,7 @@ export class UsuarioService {
     try {
       const usuario = await this.userRepository
         .findByIdAndUpdate(id, data, { new: true })
-        .populate('empresa')
+        .populate('associacoes')
         .exec();
       return usuario;
     } catch (err) {
