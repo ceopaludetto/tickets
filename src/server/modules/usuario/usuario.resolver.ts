@@ -7,17 +7,17 @@ import {
   Usuario,
   UsuarioInput,
   UsuarioUpdateArgs,
-  AcaoEnum,
-  PerfilEnum,
-  RecursoEnum,
+  // AcaoEnum,
+  // PerfilEnum,
+  // RecursoEnum,
 } from '@/server/models';
 import {
   CommonFindAllArgs,
   CommonFindOneArgs,
 } from '@/server/utils/common.dto';
 import { GqlAuthGuard } from '@/server/modules/auth/auth.guard';
-import { SecurityGuard } from '@/server/modules/security/security.guard';
-import { UseRole } from '@/server/modules/security/security.decorators';
+// import { SecurityGuard } from '@/server/modules/security/security.guard';
+// import { UseRole } from '@/server/modules/security/security.decorators';
 
 interface ContextType {
   req: Request;

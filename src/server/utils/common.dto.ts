@@ -47,3 +47,9 @@ export interface Role {
   recurso: RecursoEnum;
   acao: AcaoEnum;
 }
+
+export interface Erro {
+  status: number;
+  message?: string;
+  error?: string;
+}
