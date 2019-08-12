@@ -10,6 +10,6 @@ export const VERSION = '1';
 export const APP_NAME = 'tickets';
 
 /**
- * Sequelize
+ * SecurityModule
  */
-export const ROOT_PROVIDER = 'SEQUELIZE';
+export const SECURITY_ROLE_DECORATOR = 'SECURITY_ROLE';

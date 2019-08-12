@@ -1,6 +1,15 @@
-import { ArgsType, Field, Int } from 'type-graphql';
-import { IsInt, IsString, IsOptional, IsMongoId } from 'class-validator';
+import { ArgsType, Field, Int, ID } from 'type-graphql';
+import {
+  IsInt,
+  IsString,
+  IsOptional,
+  IsMongoId,
+  IsDefined,
+} from 'class-validator';
 import { Request, Response } from 'express';
+import { Schema } from 'mongoose';
+
+import { Usuario, RecursoEnum, AcaoEnum } from '@/server/models';
 
 @ArgsType()
 export class CommonFindAllArgs {
@@ -17,10 +26,11 @@ export class CommonFindAllArgs {
 
 @ArgsType()
 export class CommonFindOneArgs {
-  @Field()
+  @Field(() => ID)
   @IsString()
   @IsMongoId()
-  public _id!: string;
+  @IsDefined()
+  public _id!: Schema.Types.ObjectId;
 }
 
 export interface ContextType {
@@ -28,7 +38,21 @@ export interface ContextType {
   res: Response;
 }
 
-export interface PayloadType {
-  _id: string;
-  email: string;
+export type ID = Schema.Types.ObjectId;
+
+export type PayloadType = Pick<Usuario, '_id' | 'email'>;
+
+export interface Role {
+  recurso: RecursoEnum;
+  acao: AcaoEnum;
+}
+
+export interface Args {
+  empresa?: Schema.Types.ObjectId;
+}
+
+export interface Erro {
+  status: number;
+  message?: string;
+  error?: string;
 }

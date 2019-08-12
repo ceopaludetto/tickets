@@ -1,9 +1,11 @@
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 
 import { EmpresaService } from './empresa.service';
-import { Empresa } from './empresa.entity';
-import { InputEmpresa } from './empresa.dto';
-import { CommonFindAllArgs } from '@/server/utils/common.dto';
+import { Empresa, EmpresaInput, EmpresaArgs } from '@/server/models';
+import {
+  CommonFindAllArgs,
+  CommonFindOneArgs,
+} from '@/server/utils/common.dto';
 
 @Resolver(() => Empresa)
 export class EmpresaResolver {
@@ -20,25 +22,20 @@ export class EmpresaResolver {
   }
 
   @Query(() => Empresa)
-  public async findEmpresa(@Args('id') id: string) {
-    const empresas = await this.empresaService.findOne(id);
+  public async findEmpresa(@Args() { _id }: CommonFindOneArgs) {
+    const empresas = await this.empresaService.findOne(_id);
     return empresas;
   }
 
   @Mutation(() => Empresa)
-  public async addEmpresa(@Args('input') data: InputEmpresa) {
-    const empresa = this.empresaService.createOrUpdate(data);
+  public async addEmpresa(@Args('input') input: EmpresaInput) {
+    const empresa = this.empresaService.createOrUpdate(input);
     return empresa;
   }
 
   @Mutation(() => Empresa)
-  public async updateEmpresa(
-    @Args('input')
-    data: InputEmpresa,
-    @Args('id')
-    id: string
-  ) {
-    const empresa = this.empresaService.createOrUpdate(data, id);
+  public async updateEmpresa(@Args() { input, _id }: EmpresaArgs) {
+    const empresa = this.empresaService.createOrUpdate(input, _id);
     return empresa;
   }
 }

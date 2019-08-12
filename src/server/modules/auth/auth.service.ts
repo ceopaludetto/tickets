@@ -1,27 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { FuncionarioService } from '@/server/modules/funcionario/funcionario.service';
-import { Funcionario } from '@/server/modules/funcionario/funcionario.entity';
+import { UsuarioService } from '@/server/modules/usuario/usuario.service';
+import { Usuario } from '@/server/models';
 import { ContextType } from '@/server/utils/common.dto';
 
 @Injectable()
 export class AuthService {
-  private readonly funcionarioService: FuncionarioService;
+  private readonly userService: UsuarioService;
 
   private readonly jwtService: JwtService;
 
-  public constructor(
-    funcionarioService: FuncionarioService,
-    jwtService: JwtService
-  ) {
-    this.funcionarioService = funcionarioService;
+  public constructor(userService: UsuarioService, jwtService: JwtService) {
+    this.userService = userService;
     this.jwtService = jwtService;
   }
 
   public async login(email: string, senha: string) {
     try {
-      const funcionario = await this.funcionarioService.login({
+      const funcionario = await this.userService.login({
         email,
         senha,
       });
@@ -33,7 +30,7 @@ export class AuthService {
   }
 
   public async generateAndRegisterToken(
-    { _id, email }: Funcionario,
+    { _id, email }: Usuario,
     { res }: ContextType
   ) {
     try {

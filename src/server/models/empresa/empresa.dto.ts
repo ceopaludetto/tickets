@@ -1,4 +1,4 @@
-import { Field, InputType, registerEnumType } from 'type-graphql';
+import { Field, InputType, registerEnumType, ArgsType } from 'type-graphql';
 import {
   IsString,
   IsEnum,
@@ -8,6 +8,8 @@ import {
   IsOptional,
   Matches,
 } from 'class-validator';
+
+import { CommonFindOneArgs } from '@/server/utils/common.dto';
 
 export enum EnumDiaPagamento {
   D7 = '7',
@@ -24,15 +26,15 @@ export enum EnumPlanoHoras {
 }
 
 registerEnumType(EnumDiaPagamento, {
-  name: 'DiaDePagamento',
+  name: 'DiaDePagamentoEnum',
 });
 
 registerEnumType(EnumPlanoHoras, {
-  name: 'PlanoDeHoras',
+  name: 'PlanoDeHorasEnum',
 });
 
 @InputType()
-export class InputEmpresa {
+export class EmpresaInput {
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
@@ -91,4 +93,10 @@ export class InputEmpresa {
   @IsOptional()
   @IsEnum(EnumPlanoHoras)
   public planoHoras?: EnumPlanoHoras;
+}
+
+@ArgsType()
+export class EmpresaArgs extends CommonFindOneArgs {
+  @Field(() => EmpresaInput)
+  public input!: EmpresaInput;
 }

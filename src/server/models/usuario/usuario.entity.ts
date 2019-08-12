@@ -1,11 +1,11 @@
 import { hash, compare } from 'bcryptjs';
-import { Typegoose, Ref, prop, instanceMethod, pre } from 'typegoose';
+import { Typegoose, prop, instanceMethod, pre, arrayProp } from 'typegoose';
 import { ObjectType, Field, ID } from 'type-graphql';
 import { Schema } from 'mongoose';
 
-import { Empresa } from '@/server/modules/empresa/empresa.entity';
+import { Associacao } from '../associacao/associacao.entity';
 
-@pre<Funcionario>('save', async function preSave(next) {
+@pre<Usuario>('save', async function preSave(next) {
   if (this.isModified('senha')) {
     const newPassword = await hash(this.senha, 10);
     this.senha = newPassword;
@@ -13,7 +13,7 @@ import { Empresa } from '@/server/modules/empresa/empresa.entity';
   next();
 })
 @ObjectType()
-export class Funcionario extends Typegoose {
+export class Usuario extends Typegoose {
   @Field(() => ID)
   public readonly _id!: Schema.Types.ObjectId;
 
@@ -37,9 +37,13 @@ export class Funcionario extends Typegoose {
   @prop({ required: true })
   public cargo!: string;
 
-  @Field(() => Empresa)
-  @prop({ ref: Empresa })
-  public empresa!: Ref<Empresa>;
+  @Field(() => [Associacao])
+  @arrayProp({ items: Associacao, required: true })
+  public associacoes!: Associacao[];
+
+  @Field()
+  @prop({ required: true, default: false })
+  public sysAdmin!: boolean;
 
   @instanceMethod
   public async comparePasswords(password: string) {

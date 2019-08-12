@@ -3,7 +3,31 @@
 # !!!   DO NOT MODIFY THIS FILE BY YOURSELF   !!!
 # -----------------------------------------------
 
-enum DiaDePagamento {
+enum AcaoEnum {
+  Ler
+  Criar
+  Atualizar
+  Excluir
+}
+
+type Associacao {
+  empresa: Empresa!
+  perfil: Perfil!
+  tipo: AssociacaoEnum
+}
+
+enum AssociacaoEnum {
+  Funcionario
+  Independente
+}
+
+input AssociacaoInput {
+  empresa: String
+  perfil: String
+  tipo: AssociacaoEnum
+}
+
+enum DiaDePagamentoEnum {
   D7
   D10
   D15
@@ -21,21 +45,11 @@ type Empresa {
   site: String
   nomeCompleto: String
   email: String!
-  diaPagamento: DiaDePagamento!
-  planoHoras: PlanoDeHoras!
+  diaPagamento: DiaDePagamentoEnum
+  planoHoras: PlanoDeHorasEnum
 }
 
-type Funcionario {
-  _id: ID!
-  nome: String!
-  sobrenome: String!
-  email: String!
-  senha: String!
-  cargo: String!
-  empresa: Empresa!
-}
-
-input InputEmpresa {
+input EmpresaInput {
   cnpj: String
   razaoSocial: String
   nomeFantasia: String
@@ -45,38 +59,95 @@ input InputEmpresa {
   site: String
   nomeCompleto: String
   email: String
-  diaPagamento: DiaDePagamento
-  planoHoras: PlanoDeHoras
-}
-
-input InputFuncionario {
-  nome: String
-  sobrenome: String
-  email: String
-  cargo: String
-  senha: String
-  empresa: String
+  diaPagamento: DiaDePagamentoEnum
+  planoHoras: PlanoDeHorasEnum
 }
 
 type Mutation {
-  addEmpresa(input: InputEmpresa!): Empresa!
-  updateEmpresa(id: String!, input: InputEmpresa!): Empresa!
-  addFuncionario(input: InputFuncionario!): Funcionario!
-  updateFuncionario(id: String!, input: InputFuncionario!): Funcionario!
-  login(email: String!, senha: String!): Funcionario!
+  addEmpresa(input: EmpresaInput!): Empresa!
+  updateEmpresa(_id: ID!, input: EmpresaInput!): Empresa!
+  addUsuario(input: UsuarioInput!): Usuario!
+  updateUsuario(_id: ID!, input: UsuarioInput!): Usuario!
+  login(email: String!, senha: String!): Usuario!
+  addPerfil(input: PerfilInput!): Perfil!
+  updatePerfil(_id: ID!, input: PerfilInput!): Perfil!
 }
 
-enum PlanoDeHoras {
+type Perfil {
+  _id: ID!
+  nome: PerfilEnum!
+  descricao: String
+  herda: Perfil
+  politicas: [Politica!]!
+  empresa: Empresa!
+}
+
+enum PerfilEnum {
+  Suporte
+  Analista
+  Coordenador
+  Gerente
+  Diretor
+  ConsultorExterno
+  VIP
+}
+
+input PerfilInput {
+  nome: PerfilEnum
+  descricao: String
+  herda: String
+  empresa: String
+  politicas: [PoliticaInput!]
+}
+
+enum PlanoDeHorasEnum {
   H20
   H40
   H60
   H80
 }
 
+type Politica {
+  _id: ID!
+  recurso: RecursoEnum!
+  acao: AcaoEnum!
+}
+
+input PoliticaInput {
+  recurso: RecursoEnum
+  acao: AcaoEnum
+}
+
 type Query {
   findAllEmpresas(skip: Int = 0, take: Int = 100): [Empresa!]!
-  findEmpresa(id: String!): Empresa!
-  findAllFuncionarios(skip: Int = 0, take: Int = 100): [Funcionario!]!
-  findFuncionario(id: String!): Funcionario!
-  profile: Funcionario!
+  findEmpresa(_id: ID!): Empresa!
+  findAllUsuarios(skip: Int = 0, take: Int = 100): [Usuario!]!
+  findUsuario(_id: ID!): Usuario!
+  profile: Usuario!
+  findAllPerfis(skip: Int = 0, take: Int = 100): [Perfil!]!
+  findPerfil(_id: ID!): Perfil!
+}
+
+enum RecursoEnum {
+  Perfil
+}
+
+type Usuario {
+  _id: ID!
+  nome: String!
+  sobrenome: String!
+  email: String!
+  senha: String!
+  cargo: String!
+  associacoes: [Associacao!]!
+  sysAdmin: Boolean!
+}
+
+input UsuarioInput {
+  nome: String
+  sobrenome: String
+  email: String
+  cargo: String
+  senha: String
+  associacoes: [AssociacaoInput!]
 }

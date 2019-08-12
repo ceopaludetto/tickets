@@ -2,8 +2,7 @@ import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
 import { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
-import { Funcionario } from '@/server/modules/funcionario/funcionario.entity';
-import { LoginFuncionario } from '@/server/modules/funcionario/funcionario.dto';
+import { Usuario, LoginUsuario } from '@/server/models';
 
 interface ContextType {
   req: Request;
@@ -18,9 +17,9 @@ export class AuthResolver {
     this.authService = authService;
   }
 
-  @Mutation(() => Funcionario)
+  @Mutation(() => Usuario)
   public async login(
-    @Args() { email, senha }: LoginFuncionario,
+    @Args() { email, senha }: LoginUsuario,
     @Context() context: ContextType
   ) {
     const funcionario = await this.authService.login(email, senha);
