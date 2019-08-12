@@ -37,6 +37,8 @@ module.exports = (isServer = false) => ({
         cache: true,
         parallel: true,
         terserOptions: {
+          keep_classnames: isServer,
+          keep_fnames: isServer,
           output: {
             ecma: isServer ? 6 : 5,
             comments: false,
@@ -52,10 +54,7 @@ module.exports = (isServer = false) => ({
             ? {
                 safari10: true,
               }
-            : {
-                keep_classnames: true,
-                keep_fnames: true,
-              },
+            : null,
         },
       }),
       // new OptimizeCSSAssetsPlugin({

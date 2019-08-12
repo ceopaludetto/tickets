@@ -29,6 +29,7 @@ async function bootstrap() {
   );
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.useGlobalFilters(new ExceptionFilter());
+  // app.use(EmpresaMiddleware);
   app.listen(process.env.PORT as string);
 
   if (module.hot) {

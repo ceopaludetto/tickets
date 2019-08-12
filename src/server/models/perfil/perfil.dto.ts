@@ -12,7 +12,6 @@ import { PoliticaInput } from '../politica/politica.dto';
 import { CommonFindOneArgs } from '@/server/utils/common.dto';
 
 export enum PerfilEnum {
-  User = 'USER',
   Suporte = 'SUPORTE',
   Analista = 'ANALISTA',
   Coordenador = 'COORDENADOR',

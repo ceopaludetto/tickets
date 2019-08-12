@@ -5,11 +5,13 @@ import {
   UnauthorizedException,
 } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GqlExecutionContext } from '@nestjs/graphql';
+import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
+import { Request } from 'express';
 
 import { ContextType, PayloadType, Role } from '@/server/utils/common.dto';
 import { SECURITY_ROLE_DECORATOR } from '@/server/utils/constants';
 import { UsuarioService } from '@/server/modules/usuario/usuario.service';
+import { SecurityMatcher } from './security.matcher';
 
 @Injectable()
 export class SecurityGuard implements CanActivate {
@@ -17,24 +19,33 @@ export class SecurityGuard implements CanActivate {
 
   private readonly reflector: Reflector;
 
+  private readonly securityMatcher = new SecurityMatcher();
+
   public constructor(usuarioService: UsuarioService, reflector: Reflector) {
     this.usuarioService = usuarioService;
     this.reflector = reflector;
   }
 
-  private getRequest = (context: ExecutionContext) => {
+  private createContext = (context: ExecutionContext) => {
     const ctx = GqlExecutionContext.create(context);
+    return ctx;
+  };
+
+  private getRequest = (ctx: GraphQLExecutionContext) => {
     const { req } = ctx.getContext<ContextType>();
     return req;
   };
 
-  public async canActivate(context: ExecutionContext) {
-    const role = this.reflector.get<Role>(
-      SECURITY_ROLE_DECORATOR,
-      context.getHandler()
-    );
+  private getEmpresa = (req: Request) => {
+    const { empresa } = req;
+    return empresa;
+  };
 
-    const req = this.getRequest(context);
+  public async canActivate(context: ExecutionContext) {
+    const ctx = this.createContext(context);
+    const req = this.getRequest(ctx);
+    const empresa = this.getEmpresa(req);
+
     if (!req.user) {
       throw new UnauthorizedException('Usuário inválido');
     }
@@ -48,10 +59,17 @@ export class SecurityGuard implements CanActivate {
       return false;
     }
 
-    if (usuario.sysAdmin) {
-      return true;
-    }
+    const role = this.reflector.get<Role>(
+      SECURITY_ROLE_DECORATOR,
+      context.getHandler()
+    );
 
-    return usuario.compareRole(role);
+    const isValid = await this.securityMatcher.isValid({
+      usuario,
+      role,
+      empresa,
+    });
+
+    return isValid;
   }
 }

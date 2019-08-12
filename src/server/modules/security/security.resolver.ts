@@ -38,12 +38,11 @@ export class SecurityResolver {
     return perfil;
   }
 
-  @UseGuards(GqlAuthGuard, SecurityGuard)
-  @UseRole({
-    acao: AcaoEnum.Ler,
-    perfil: PerfilEnum.VIP,
-    recurso: RecursoEnum.Perfil,
-  })
+  // @UseGuards(GqlAuthGuard, SecurityGuard)
+  // @UseRole({
+  //   acao: AcaoEnum.Ler,
+  //   recurso: RecursoEnum.Perfil,
+  // })
   @Mutation(() => Perfil)
   public async addPerfil(@Args('input') input: PerfilInput) {
     const perfil = await this.securityService.addOrUpdate(input);

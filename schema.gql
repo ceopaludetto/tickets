@@ -11,7 +11,7 @@ enum AcaoEnum {
 }
 
 type Associacao {
-  empresa: Empresa
+  empresa: Empresa!
   perfil: Perfil!
   tipo: AssociacaoEnum
 }
@@ -83,7 +83,6 @@ type Perfil {
 }
 
 enum PerfilEnum {
-  User
   Suporte
   Analista
   Coordenador

@@ -9,7 +9,7 @@ import {
 import { Request, Response } from 'express';
 import { Schema } from 'mongoose';
 
-import { Usuario, PerfilEnum, RecursoEnum, AcaoEnum } from '@/server/models';
+import { Usuario, RecursoEnum, AcaoEnum } from '@/server/models';
 
 @ArgsType()
 export class CommonFindAllArgs {
@@ -43,9 +43,12 @@ export type ID = Schema.Types.ObjectId;
 export type PayloadType = Pick<Usuario, '_id' | 'email'>;
 
 export interface Role {
-  perfil: PerfilEnum;
   recurso: RecursoEnum;
   acao: AcaoEnum;
+}
+
+export interface Args {
+  empresa?: Schema.Types.ObjectId;
 }
 
 export interface Erro {

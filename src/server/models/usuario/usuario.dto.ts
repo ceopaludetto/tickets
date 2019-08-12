@@ -42,9 +42,7 @@ export class UsuarioInput {
 
   @Field(() => [AssociacaoInput], { nullable: true })
   @IsOptional()
-  @IsArray({
-    each: true,
-  })
+  @IsArray()
   @ValidateNested()
   public associacoes?: AssociacaoInput[];
 }

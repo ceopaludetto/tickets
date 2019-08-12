@@ -7,9 +7,9 @@ import { AssociacaoEnum } from './associacao.dto';
 
 @ObjectType()
 export class Associacao extends Typegoose {
-  @Field(() => Empresa, { nullable: true })
-  @prop({ ref: Empresa })
-  public empresa?: Ref<Empresa>;
+  @Field(() => Empresa)
+  @prop({ ref: Empresa, required: true })
+  public empresa!: Ref<Empresa>;
 
   @Field(() => Perfil)
   @prop({ ref: Perfil, required: true })

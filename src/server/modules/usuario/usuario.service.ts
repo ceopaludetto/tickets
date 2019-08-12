@@ -30,11 +30,11 @@ export class UsuarioService {
         .populate({
           path: 'associacoes.perfil',
           populate: {
-            path: 'politicas',
+            path: 'herda',
           },
         })
+        .populate('associacoes.empresa')
         .exec();
-      console.log(usuarios);
       return usuarios;
     } catch (err) {
       throw new BadRequestException(err);
@@ -46,11 +46,12 @@ export class UsuarioService {
       const usuario = await this.userRepository
         .findById(id)
         .populate({
-          path: 'associacoes',
+          path: 'associacoes.perfil',
           populate: {
-            path: 'perfil',
+            path: 'herda',
           },
         })
+        .populate('associacoes.empresa')
         .exec();
       return usuario;
     } catch (err) {
@@ -60,9 +61,13 @@ export class UsuarioService {
 
   public async login({ email, senha }: LoginUsuario) {
     try {
-      const usuario = await this.userRepository.findOne({
-        email,
-      });
+      const usuario = await this.userRepository
+        .findOne({
+          email,
+        })
+        .populate('associacoes.perfil')
+        .populate('associacoes.empresa')
+        .exec();
 
       if (!usuario) {
         throw new NotFoundException('Nenhum funcionário encontrado.');
@@ -91,7 +96,13 @@ export class UsuarioService {
     try {
       const usuario = await this.userRepository
         .findByIdAndUpdate(id, data, { new: true })
-        .populate('associacoes')
+        .populate({
+          path: 'associacoes.perfil',
+          populate: {
+            path: 'herda',
+          },
+        })
+        .populate('associacoes.empresa')
         .exec();
       return usuario;
     } catch (err) {
