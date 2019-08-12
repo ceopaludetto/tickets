@@ -22,10 +22,6 @@ export class SecurityMatcher {
     return false;
   };
 
-  // private findEmpresa = ({}: SecurityMatcherOptions) => {
-
-  // }
-
   public async isValid({ usuario, role, empresa }: SecurityMatcherOptions) {
     if (usuario.sysAdmin) {
       return true;
@@ -40,7 +36,6 @@ export class SecurityMatcher {
       if (!assoc) {
         return false;
       }
-
       return this.compare(assoc.perfil as PerfilInstance, role);
     }
 
