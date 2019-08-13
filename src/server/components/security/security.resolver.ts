@@ -6,7 +6,6 @@ import {
   PerfilInput,
   PerfilUpdateArgs,
   AcaoEnum,
-  PerfilEnum,
   RecursoEnum,
 } from '@/server/models';
 import {

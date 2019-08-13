@@ -2,7 +2,6 @@ import { ObjectType, Field, ID } from 'type-graphql';
 import { Typegoose, Ref, prop, arrayProp } from 'typegoose';
 import { Schema } from 'mongoose';
 
-import { PerfilEnum } from './perfil.dto';
 import { Politica } from '../politica/politica.entity';
 import { Empresa } from '../empresa/empresa.entity';
 
@@ -11,8 +10,8 @@ export class Perfil extends Typegoose {
   @Field(() => ID)
   public _id!: Schema.Types.ObjectId;
 
-  @Field(() => PerfilEnum)
-  @prop({ required: true, enum: PerfilEnum, unique: true })
+  @Field()
+  @prop({ required: true })
   public nome!: string;
 
   @Field({ nullable: true })

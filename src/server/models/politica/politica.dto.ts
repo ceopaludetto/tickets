@@ -1,5 +1,5 @@
 import { registerEnumType, InputType, Field } from 'type-graphql';
-import { IsOptional, IsEnum } from 'class-validator';
+import { IsOptional, IsEnum, IsBoolean } from 'class-validator';
 
 export enum RecursoEnum {
   Perfil = 'PERFIL',
@@ -31,4 +31,9 @@ export class PoliticaInput {
   @IsOptional()
   @IsEnum(AcaoEnum)
   public acao?: AcaoEnum;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsBoolean()
+  public isDeny?: boolean;
 }

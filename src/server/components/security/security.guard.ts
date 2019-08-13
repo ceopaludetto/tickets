@@ -70,6 +70,10 @@ export class SecurityGuard implements CanActivate {
       empresa,
     });
 
-    return isValid;
+    if (isValid) {
+      return true;
+    }
+
+    throw new UnauthorizedException('Permissão inválida');
   }
 }

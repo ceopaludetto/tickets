@@ -12,6 +12,9 @@ export class SecurityMatcher {
     );
 
     if (politica) {
+      if (politica.isDeny) {
+        return false;
+      }
       return true;
     }
 
@@ -36,6 +39,7 @@ export class SecurityMatcher {
       if (!assoc) {
         return false;
       }
+
       return this.compare(assoc.perfil as PerfilInstance, role);
     }
 

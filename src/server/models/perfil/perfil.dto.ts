@@ -1,37 +1,22 @@
-import { InputType, Field, ArgsType, registerEnumType } from 'type-graphql';
+import { InputType, Field, ArgsType } from 'type-graphql';
 import {
   IsString,
   IsMongoId,
   IsOptional,
   IsNotEmpty,
-  IsEnum,
   IsArray,
 } from 'class-validator';
 
 import { PoliticaInput } from '../politica/politica.dto';
 import { CommonFindOneArgs } from '@/server/utils/common.dto';
 
-export enum PerfilEnum {
-  Suporte = 'SUPORTE',
-  Analista = 'ANALISTA',
-  Coordenador = 'COORDENADOR',
-  Gerente = 'GERENTE',
-  Diretor = 'DIRETOR',
-  ConsultorExterno = 'CONSULTOR_EXTERNO',
-  VIP = 'VIP',
-}
-
-registerEnumType(PerfilEnum, {
-  name: 'PerfilEnum',
-});
-
 @InputType()
 export class PerfilInput {
-  @Field(() => PerfilEnum, { nullable: true })
+  @Field({ nullable: true })
   @IsOptional()
-  @IsEnum(PerfilEnum)
+  @IsString()
   @IsNotEmpty()
-  public nome?: PerfilEnum;
+  public nome?: string;
 
   @Field({ nullable: true })
   @IsOptional()
