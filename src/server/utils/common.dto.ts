@@ -9,7 +9,7 @@ import {
 import { Request, Response } from 'express';
 import { Schema } from 'mongoose';
 
-import { Usuario, RecursoEnum, AcaoEnum } from '@/server/models';
+import { Usuario, RecursoEnum, AcaoEnum, AnyOrOwnEnum } from '@/server/models';
 
 @ArgsType()
 export class CommonFindAllArgs {
@@ -45,6 +45,7 @@ export type PayloadType = Pick<Usuario, '_id' | 'email'>;
 export interface Role {
   recurso: RecursoEnum;
   acao: AcaoEnum;
+  type: AnyOrOwnEnum;
 }
 
 export interface Args {

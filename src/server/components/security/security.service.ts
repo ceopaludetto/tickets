@@ -25,12 +25,12 @@ export class SecurityService {
   }
 
   public async findOne(id: ID) {
-    const perfis = await this.perfilRepository
+    const perfil = await this.perfilRepository
       .findById(id)
       .populate('herda')
       .populate('empresa')
       .exec();
-    return perfis;
+    return perfil;
   }
 
   public async addOrUpdate(input: PerfilInput, id?: ID) {

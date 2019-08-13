@@ -1,4 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
+import { HttpStatus } from '@nestjs/common';
 import { GraphQLExtension } from 'graphql-extensions';
 
 import { ContextType, Erro } from '@/server/utils/common.dto';
@@ -16,6 +17,7 @@ export class ErrorTracking extends GraphQLExtension {
       graphqlResponse.errors.forEach((e: any, i: number) => {
         const { message } = e;
         let status = 500;
+
         if (typeof message === 'object') {
           status = message.statusCode;
           errors.push({
@@ -30,6 +32,13 @@ export class ErrorTracking extends GraphQLExtension {
             status: erro.message.statusCode,
             error: erro.message.error,
             message: erro.message.message,
+          });
+        } else {
+          status = (HttpStatus[e.extensions.code] as unknown) as number;
+          errors.push({
+            status,
+            message,
+            error: e.extensions.exception,
           });
         }
         if (i === 0) context.res.status(status);

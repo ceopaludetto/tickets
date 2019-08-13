@@ -5,8 +5,8 @@ import { JwtModule } from '@nestjs/jwt';
 import { AuthService } from './auth.service';
 import { AuthResolver } from './auth.resolver';
 import { JwtStrategy } from './jwt.strategy';
-import { UsuarioModule } from '@/server/modules/usuario/usuario.module';
-import { ConfigurationService } from '@/server/modules/configuration/configuration.service';
+import { UsuarioModule } from '@/server/components/usuario/usuario.module';
+import { ConfigurationService } from '@/server/components/configuration/configuration.service';
 
 @Module({
   imports: [

@@ -10,6 +10,7 @@ export interface SecurityMatcherOptions {
   usuario: InstanceType<Usuario>;
   role: Role;
   empresa?: Types.ObjectId;
+  isSameUser?: boolean;
 }
 
 export type PerfilInstance = InstanceType<Perfil>;

@@ -4,7 +4,7 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { SecurityService } from './security.service';
 import { SecurityResolver } from './security.resolver';
 import { Politica, Perfil } from '@/server/models';
-import { UsuarioModule } from '@/server/modules/usuario/usuario.module';
+import { UsuarioModule } from '@/server/components/usuario/usuario.module';
 
 @Module({
   providers: [SecurityResolver, SecurityService],

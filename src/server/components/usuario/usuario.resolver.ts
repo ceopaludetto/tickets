@@ -8,16 +8,16 @@ import {
   UsuarioInput,
   UsuarioUpdateArgs,
   AcaoEnum,
-  // PerfilEnum,
+  AnyOrOwnEnum,
   RecursoEnum,
 } from '@/server/models';
 import {
   CommonFindAllArgs,
   CommonFindOneArgs,
 } from '@/server/utils/common.dto';
-import { GqlAuthGuard } from '@/server/modules/auth/auth.guard';
-import { SecurityGuard } from '@/server/modules/security/security.guard';
-import { UseRole } from '@/server/modules/security/security.decorators';
+import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
+import { SecurityGuard } from '@/server/components/security/security.guard';
+import { UseRole } from '@/server/components/security/security.decorators';
 
 interface ContextType {
   req: Request;
@@ -48,6 +48,7 @@ export class UsuarioResolver {
   @UseRole({
     acao: AcaoEnum.Ler,
     recurso: RecursoEnum.Perfil,
+    type: AnyOrOwnEnum.Own,
   })
   @Query(() => Usuario)
   public async profile(@Context() { req }: ContextType) {
