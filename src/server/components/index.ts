@@ -1,6 +1,7 @@
 export { ReactModule } from './react/react.module';
 
 export { EmpresaModule } from './empresa/empresa.module';
+export { EmpresaMiddleware } from './empresa/empresa.middleware';
 
 export { UsuarioModule } from './usuario/usuario.module';
 

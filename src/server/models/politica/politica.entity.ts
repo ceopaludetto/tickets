@@ -16,4 +16,8 @@ export class Politica extends Typegoose {
   @Field(() => AcaoEnum)
   @prop({ enum: AcaoEnum, required: true })
   public acao!: string;
+
+  @Field({ defaultValue: false })
+  @prop({ default: false })
+  public isDeny!: boolean;
 }

@@ -75,25 +75,15 @@ type Mutation {
 
 type Perfil {
   _id: ID!
-  nome: PerfilEnum!
+  nome: String!
   descricao: String
   herda: Perfil
   politicas: [Politica!]!
   empresa: Empresa!
 }
 
-enum PerfilEnum {
-  Suporte
-  Analista
-  Coordenador
-  Gerente
-  Diretor
-  ConsultorExterno
-  VIP
-}
-
 input PerfilInput {
-  nome: PerfilEnum
+  nome: String
   descricao: String
   herda: String
   empresa: String
@@ -111,11 +101,13 @@ type Politica {
   _id: ID!
   recurso: RecursoEnum!
   acao: AcaoEnum!
+  isDeny: Boolean
 }
 
 input PoliticaInput {
   recurso: RecursoEnum
   acao: AcaoEnum
+  isDeny: Boolean
 }
 
 type Query {

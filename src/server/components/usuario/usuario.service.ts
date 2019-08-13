@@ -70,7 +70,7 @@ export class UsuarioService {
         .exec();
 
       if (!usuario) {
-        throw new NotFoundException('Nenhum funcionário encontrado.');
+        throw new NotFoundException('Nenhum usuário encontrado.');
       }
 
       if (!(await usuario.comparePasswords(senha))) {
