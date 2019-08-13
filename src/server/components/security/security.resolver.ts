@@ -15,7 +15,7 @@ import {
 import { SecurityService } from './security.service';
 import { SecurityGuard } from './security.guard';
 import { UseRole } from './security.decorators';
-import { GqlAuthGuard } from '@/server/modules/auth/auth.guard';
+import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
 
 @Resolver(() => Perfil)
 export class SecurityResolver {

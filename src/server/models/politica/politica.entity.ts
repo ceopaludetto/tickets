@@ -2,7 +2,7 @@ import { ObjectType, Field, ID } from 'type-graphql';
 import { Typegoose, prop } from 'typegoose';
 import { Schema } from 'mongoose';
 
-import { AcaoEnum, RecursoEnum } from './politica.dto';
+import { AcaoEnum, RecursoEnum, AnyOrOwnEnum } from './politica.dto';
 
 @ObjectType()
 export class Politica extends Typegoose {
@@ -19,5 +19,9 @@ export class Politica extends Typegoose {
 
   @Field({ defaultValue: false })
   @prop({ default: false })
-  public isDeny!: boolean;
+  public deny!: boolean;
+
+  @Field(() => AnyOrOwnEnum)
+  @prop({ enum: AnyOrOwnEnum, required: true, default: AnyOrOwnEnum.Own })
+  public type!: string;
 }

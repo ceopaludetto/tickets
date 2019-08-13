@@ -10,6 +10,11 @@ enum AcaoEnum {
   Excluir
 }
 
+enum AnyOrOwnEnum {
+  Any
+  Own
+}
+
 type Associacao {
   empresa: Empresa!
   perfil: Perfil!
@@ -101,13 +106,15 @@ type Politica {
   _id: ID!
   recurso: RecursoEnum!
   acao: AcaoEnum!
-  isDeny: Boolean
+  deny: Boolean
+  type: AnyOrOwnEnum!
 }
 
 input PoliticaInput {
   recurso: RecursoEnum
   acao: AcaoEnum
-  isDeny: Boolean
+  deny: Boolean
+  type: AnyOrOwnEnum
 }
 
 type Query {

@@ -1,3 +1,4 @@
+/* eslint-disable no-underscore-dangle */
 import {
   Injectable,
   CanActivate,
@@ -10,7 +11,7 @@ import { Request } from 'express';
 
 import { ContextType, PayloadType, Role } from '@/server/utils/common.dto';
 import { SECURITY_ROLE_DECORATOR } from '@/server/utils/constants';
-import { UsuarioService } from '@/server/modules/usuario/usuario.service';
+import { UsuarioService } from '@/server/components/usuario/usuario.service';
 import { SecurityMatcher } from './security.matcher';
 
 @Injectable()
@@ -41,17 +42,22 @@ export class SecurityGuard implements CanActivate {
     return empresa;
   };
 
+  private getIdArg = (ctx: GraphQLExecutionContext) => {
+    const { _id } = ctx.getArgs();
+    return _id;
+  };
+
   public async canActivate(context: ExecutionContext) {
     const ctx = this.createContext(context);
     const req = this.getRequest(ctx);
     const empresa = this.getEmpresa(req);
+    const idArg = this.getIdArg(ctx);
 
     if (!req.user) {
       throw new UnauthorizedException('Usuário inválido');
     }
 
     const usuario = await this.usuarioService.findOne(
-      // eslint-disable-next-line no-underscore-dangle
       (req.user as PayloadType)._id
     );
 
@@ -64,10 +70,13 @@ export class SecurityGuard implements CanActivate {
       context.getHandler()
     );
 
+    const isSameUser = idArg ? req.user._id.equals(idArg) : !!req.user._id;
+
     const isValid = await this.securityMatcher.isValid({
       usuario,
       role,
       empresa,
+      isSameUser,
     });
 
     if (isValid) {

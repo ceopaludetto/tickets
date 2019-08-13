@@ -1,4 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import {
+  Injectable,
+  NotFoundException,
+  BadRequestException,
+} from '@nestjs/common';
 import { ModelType } from 'typegoose';
 import { InjectModel } from 'nestjs-typegoose';
 
@@ -14,38 +18,54 @@ export class SecurityService {
   }
 
   public async findAll(skip = 0, take = 100) {
-    const perfis = await this.perfilRepository
-      .find()
-      .skip(skip)
-      .limit(take)
-      .populate('herda')
-      .populate('empresa')
-      .exec();
-    return perfis;
+    try {
+      const perfis = await this.perfilRepository
+        .find()
+        .skip(skip)
+        .limit(take)
+        .populate('herda')
+        .populate('empresa')
+        .exec();
+      return perfis;
+    } catch (err) {
+      throw new BadRequestException('Erro ao buscar perfis');
+    }
   }
 
   public async findOne(id: ID) {
-    const perfis = await this.perfilRepository
-      .findById(id)
-      .populate('herda')
-      .populate('empresa')
-      .exec();
-    return perfis;
+    try {
+      const perfil = await this.perfilRepository
+        .findById(id)
+        .populate('herda')
+        .populate('empresa')
+        .exec();
+      return perfil;
+    } catch (err) {
+      throw new NotFoundException('Perfil não encontrado');
+    }
   }
 
   public async addOrUpdate(input: PerfilInput, id?: ID) {
     if (!id) {
-      const perfil = await this.perfilRepository.create(input);
-      return perfil;
+      try {
+        const perfil = await this.perfilRepository.create(input);
+        return perfil;
+      } catch (err) {
+        throw new BadRequestException('Falha ao adicionar novo perfil');
+      }
     }
 
-    const perfil = await this.perfilRepository
-      .findByIdAndUpdate(id, input, {
-        new: true,
-      })
-      .populate('herda')
-      .populate('empresa')
-      .exec();
-    return perfil;
+    try {
+      const perfil = await this.perfilRepository
+        .findByIdAndUpdate(id, input, {
+          new: true,
+        })
+        .populate('herda')
+        .populate('empresa')
+        .exec();
+      return perfil;
+    } catch (err) {
+      throw new BadRequestException('Falha ao atualizar perfil');
+    }
   }
 }

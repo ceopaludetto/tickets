@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
-import { UsuarioService } from '@/server/modules/usuario/usuario.service';
+import { UsuarioService } from '@/server/components/usuario/usuario.service';
 import { Usuario } from '@/server/models';
 import { ContextType } from '@/server/utils/common.dto';
 
