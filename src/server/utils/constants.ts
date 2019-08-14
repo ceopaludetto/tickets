@@ -13,3 +13,12 @@ export const APP_NAME = 'tickets';
  * SecurityModule
  */
 export const SECURITY_ROLE_DECORATOR = 'SECURITY_ROLE';
+
+/**
+ * Model Names
+ */
+export const POLITICA = 'Politica';
+export const PERFIL = 'Perfil';
+export const EMPRESA = 'Empresa';
+export const USUARIO = 'Usuario';
+export const ASSOCIACAO = 'Associacao';

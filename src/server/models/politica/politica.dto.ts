@@ -2,7 +2,9 @@ import { registerEnumType, InputType, Field } from 'type-graphql';
 import { IsOptional, IsEnum, IsBoolean, IsString } from 'class-validator';
 
 export enum RecursoEnum {
-  Perfil = 'PERFIL',
+  Usuario = 'USUARIO', // Manipular informações sobre o modulo usuario
+  Empresa = 'EMPRESA', // Manipular informações sobre o modulo empresa
+  Perfil = 'PERFIL', // Manipular informações sobre o modulo perfil
 }
 
 export enum AcaoEnum {

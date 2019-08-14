@@ -28,7 +28,7 @@ export class SecurityService {
         .exec();
       return perfis;
     } catch (err) {
-      throw new BadRequestException('Erro ao buscar perfis');
+      throw new BadRequestException('Erro ao buscar perfis.');
     }
   }
 
@@ -39,9 +39,13 @@ export class SecurityService {
         .populate('herda')
         .populate('empresa')
         .exec();
+      if (!perfil) {
+        throw new NotFoundException('Perfil não encontrado.');
+      }
+
       return perfil;
     } catch (err) {
-      throw new NotFoundException('Perfil não encontrado');
+      throw new BadRequestException('Erro ao procurar perfil.');
     }
   }
 
@@ -51,7 +55,7 @@ export class SecurityService {
         const perfil = await this.perfilRepository.create(input);
         return perfil;
       } catch (err) {
-        throw new BadRequestException('Falha ao adicionar novo perfil');
+        throw new BadRequestException('Falha ao adicionar novo perfil.');
       }
     }
 
@@ -65,7 +69,7 @@ export class SecurityService {
         .exec();
       return perfil;
     } catch (err) {
-      throw new BadRequestException('Falha ao atualizar perfil');
+      throw new BadRequestException('Falha ao atualizar perfil.');
     }
   }
 }

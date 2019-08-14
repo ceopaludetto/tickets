@@ -5,6 +5,7 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { UsuarioResolver } from './usuario.resolver';
 import { UsuarioService } from './usuario.service';
 import { Usuario, Associacao } from '@/server/models';
+import { USUARIO, ASSOCIACAO } from '@/server/utils/constants';
 
 @Module({
   imports: [
@@ -13,12 +14,14 @@ import { Usuario, Associacao } from '@/server/models';
         typegooseClass: Usuario,
         schemaOptions: {
           timestamps: true,
+          collection: USUARIO,
         },
       },
       {
         typegooseClass: Associacao,
         schemaOptions: {
           timestamps: true,
+          collection: ASSOCIACAO,
         },
       },
     ]),

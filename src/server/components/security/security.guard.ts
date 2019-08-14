@@ -70,7 +70,9 @@ export class SecurityGuard implements CanActivate {
       context.getHandler()
     );
 
-    const isSameUser = idArg ? req.user._id.equals(idArg) : !!req.user._id;
+    const isSameUser = role.useReqID
+      ? !!req.user._id
+      : req.user._id.equals(idArg);
 
     const isValid = await this.securityMatcher.isValid({
       usuario,

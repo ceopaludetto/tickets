@@ -5,6 +5,7 @@ import { SecurityService } from './security.service';
 import { SecurityResolver } from './security.resolver';
 import { Politica, Perfil } from '@/server/models';
 import { UsuarioModule } from '@/server/components/usuario/usuario.module';
+import { POLITICA, PERFIL } from '@/server/utils/constants';
 
 @Module({
   providers: [SecurityResolver, SecurityService],
@@ -14,12 +15,14 @@ import { UsuarioModule } from '@/server/components/usuario/usuario.module';
       {
         typegooseClass: Politica,
         schemaOptions: {
+          collection: POLITICA,
           timestamps: true,
         },
       },
       {
         typegooseClass: Perfil,
         schemaOptions: {
+          collection: PERFIL,
           timestamps: true,
         },
       },

@@ -5,7 +5,6 @@ import { Request, Response } from 'express';
 import { UsuarioService } from './usuario.service';
 import {
   Usuario,
-  UsuarioInput,
   UsuarioUpdateArgs,
   AcaoEnum,
   AnyOrOwnEnum,
@@ -44,12 +43,7 @@ export class UsuarioResolver {
     return usuario;
   }
 
-  @UseGuards(GqlAuthGuard, SecurityGuard)
-  @UseRole({
-    acao: AcaoEnum.Ler,
-    recurso: RecursoEnum.Perfil,
-    type: AnyOrOwnEnum.Own,
-  })
+  @UseGuards(GqlAuthGuard)
   @Query(() => Usuario)
   public async profile(@Context() { req }: ContextType) {
     // eslint-disable-next-line no-underscore-dangle
@@ -57,13 +51,12 @@ export class UsuarioResolver {
     return usuario;
   }
 
-  @Mutation(() => Usuario)
-  public async addUsuario(@Args('input') input: UsuarioInput) {
-    const usuario = this.userService.createOrUpdate(input);
-    return usuario;
-  }
-
-  @UseGuards(GqlAuthGuard)
+  @UseRole({
+    recurso: RecursoEnum.Usuario,
+    acao: AcaoEnum.Atualizar,
+    type: AnyOrOwnEnum.Own,
+  })
+  @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Usuario)
   public async updateUsuario(@Args() { input, _id }: UsuarioUpdateArgs) {
     const usuario = this.userService.createOrUpdate(input, _id);

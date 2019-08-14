@@ -7,9 +7,16 @@ import {
   IsDefined,
 } from 'class-validator';
 import { Request, Response } from 'express';
+import { InstanceType } from 'typegoose';
 import { Schema } from 'mongoose';
 
-import { Usuario, RecursoEnum, AcaoEnum, AnyOrOwnEnum } from '@/server/models';
+import {
+  Usuario,
+  RecursoEnum,
+  AcaoEnum,
+  AnyOrOwnEnum,
+  Associacao,
+} from '@/server/models';
 
 @ArgsType()
 export class CommonFindAllArgs {
@@ -46,6 +53,13 @@ export interface Role {
   recurso: RecursoEnum;
   acao: AcaoEnum;
   type: AnyOrOwnEnum;
+  useReqID?: boolean;
+  customMatcher?: (
+    user: InstanceType<Usuario>,
+    assoc: InstanceType<Associacao>,
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    args: any
+  ) => boolean;
 }
 
 export interface Args {

@@ -1,11 +1,22 @@
+import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 
 import { EmpresaService } from './empresa.service';
-import { Empresa, EmpresaInput, EmpresaArgs } from '@/server/models';
+import {
+  Empresa,
+  EmpresaInput,
+  EmpresaArgs,
+  AcaoEnum,
+  RecursoEnum,
+  AnyOrOwnEnum,
+} from '@/server/models';
 import {
   CommonFindAllArgs,
   CommonFindOneArgs,
 } from '@/server/utils/common.dto';
+import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
+import { UseRole } from '@/server/components/security/security.decorators';
+import { SecurityGuard } from '@/server/components/security/security.guard';
 
 @Resolver(() => Empresa)
 export class EmpresaResolver {
@@ -27,12 +38,19 @@ export class EmpresaResolver {
     return empresas;
   }
 
+  @UseGuards(GqlAuthGuard)
   @Mutation(() => Empresa)
   public async addEmpresa(@Args('input') input: EmpresaInput) {
     const empresa = this.empresaService.createOrUpdate(input);
     return empresa;
   }
 
+  @UseRole({
+    acao: AcaoEnum.Atualizar,
+    recurso: RecursoEnum.Empresa,
+    type: AnyOrOwnEnum.Own,
+  })
+  @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Empresa)
   public async updateEmpresa(@Args() { input, _id }: EmpresaArgs) {
     const empresa = this.empresaService.createOrUpdate(input, _id);
