@@ -13,8 +13,10 @@ import {
 import {
   CommonFindAllArgs,
   CommonFindOneArgs,
+  PayloadType,
 } from '@/server/utils/common.dto';
 import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
+import { User } from '@/server/components/auth/auth.decorator';
 import { UseRole } from '@/server/components/security/security.decorators';
 import { SecurityGuard } from '@/server/components/security/security.guard';
 
@@ -40,20 +42,26 @@ export class EmpresaResolver {
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Empresa)
-  public async addEmpresa(@Args('input') input: EmpresaInput) {
-    const empresa = this.empresaService.createOrUpdate(input);
+  public async addEmpresa(
+    @Args('input') input: EmpresaInput,
+    @User() user: PayloadType
+  ) {
+    const empresa = await this.empresaService.createOrUpdate(input);
+    if (empresa) {
+      await this.empresaService.postCreation(user, empresa);
+    }
     return empresa;
   }
 
   @UseRole({
     acao: AcaoEnum.Atualizar,
     recurso: RecursoEnum.Empresa,
-    type: AnyOrOwnEnum.Own,
+    tipo: AnyOrOwnEnum.Own,
   })
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Empresa)
   public async updateEmpresa(@Args() { input, _id }: EmpresaArgs) {
-    const empresa = this.empresaService.createOrUpdate(input, _id);
+    const empresa = await this.empresaService.createOrUpdate(input, _id);
     return empresa;
   }
 }

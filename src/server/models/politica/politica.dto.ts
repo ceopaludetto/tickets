@@ -1,5 +1,12 @@
 import { registerEnumType, InputType, Field } from 'type-graphql';
-import { IsOptional, IsEnum, IsBoolean, IsString } from 'class-validator';
+import {
+  IsOptional,
+  IsEnum,
+  IsBoolean,
+  IsString,
+  ArrayUnique,
+  ArrayContains,
+} from 'class-validator';
 
 export enum RecursoEnum {
   Usuario = 'USUARIO', // Manipular informações sobre o modulo usuario
@@ -39,20 +46,26 @@ export class PoliticaInput {
   @IsEnum(RecursoEnum)
   public recurso?: RecursoEnum;
 
-  @Field(() => AcaoEnum, { nullable: true })
+  @Field(() => [AcaoEnum], { nullable: true })
   @IsOptional()
   @IsString()
-  @IsEnum(AcaoEnum)
-  public acao?: AcaoEnum;
+  @ArrayContains([
+    AcaoEnum.Atualizar,
+    AcaoEnum.Ler,
+    AcaoEnum.Excluir,
+    AcaoEnum.Criar,
+  ])
+  @ArrayUnique()
+  public acao?: AcaoEnum[];
 
   @Field({ nullable: true })
   @IsOptional()
   @IsBoolean()
-  public deny?: boolean;
+  public negacao?: boolean;
 
   @Field(() => AnyOrOwnEnum, { nullable: true })
   @IsOptional()
   @IsString()
   @IsEnum(AnyOrOwnEnum)
-  public type?: AnyOrOwnEnum;
+  public tipo?: AnyOrOwnEnum;
 }

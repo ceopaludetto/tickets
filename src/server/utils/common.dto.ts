@@ -52,8 +52,8 @@ export type PayloadType = Pick<Usuario, '_id' | 'email'>;
 export interface Role {
   recurso: RecursoEnum;
   acao: AcaoEnum;
-  type: AnyOrOwnEnum;
-  useReqID?: boolean;
+  tipo: AnyOrOwnEnum;
+  useUserID?: boolean;
   customMatcher?: (
     user: InstanceType<Usuario>,
     assoc: InstanceType<Associacao>,

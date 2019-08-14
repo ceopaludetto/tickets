@@ -17,13 +17,14 @@ enum AnyOrOwnEnum {
 
 type Associacao {
   empresa: Empresa!
-  perfil: Perfil!
+  perfil: Perfil
   tipo: AssociacaoEnum
 }
 
 enum AssociacaoEnum {
   Funcionario
   Independente
+  Dono
 }
 
 input AssociacaoInput {
@@ -71,9 +72,9 @@ input EmpresaInput {
 type Mutation {
   addEmpresa(input: EmpresaInput!): Empresa!
   updateEmpresa(_id: ID!, input: EmpresaInput!): Empresa!
-  addUsuario(input: UsuarioInput!): Usuario!
   updateUsuario(_id: ID!, input: UsuarioInput!): Usuario!
   login(email: String!, senha: String!): Usuario!
+  register(input: UsuarioInput!): Usuario!
   addPerfil(input: PerfilInput!): Perfil!
   updatePerfil(_id: ID!, input: PerfilInput!): Perfil!
 }
@@ -105,16 +106,16 @@ enum PlanoDeHorasEnum {
 type Politica {
   _id: ID!
   recurso: RecursoEnum!
-  acao: AcaoEnum!
-  deny: Boolean
-  type: AnyOrOwnEnum!
+  acao: [AcaoEnum!]!
+  negacao: Boolean
+  tipo: AnyOrOwnEnum!
 }
 
 input PoliticaInput {
   recurso: RecursoEnum
-  acao: AcaoEnum
-  deny: Boolean
-  type: AnyOrOwnEnum
+  acao: [AcaoEnum!]
+  negacao: Boolean
+  tipo: AnyOrOwnEnum
 }
 
 type Query {
@@ -128,6 +129,8 @@ type Query {
 }
 
 enum RecursoEnum {
+  Usuario
+  Empresa
   Perfil
 }
 

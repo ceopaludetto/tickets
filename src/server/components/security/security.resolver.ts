@@ -1,5 +1,6 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { InstanceType } from 'typegoose';
 
 import {
   Perfil,
@@ -8,6 +9,7 @@ import {
   AcaoEnum,
   RecursoEnum,
   AnyOrOwnEnum,
+  Empresa,
 } from '@/server/models';
 import {
   CommonFindAllArgs,
@@ -35,7 +37,7 @@ export class SecurityResolver {
   @UseRole({
     acao: AcaoEnum.Ler,
     recurso: RecursoEnum.Perfil,
-    type: AnyOrOwnEnum.Own,
+    tipo: AnyOrOwnEnum.Own,
   })
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Query(() => Perfil)
@@ -47,7 +49,7 @@ export class SecurityResolver {
   @UseRole({
     acao: AcaoEnum.Criar,
     recurso: RecursoEnum.Perfil,
-    type: AnyOrOwnEnum.Any,
+    tipo: AnyOrOwnEnum.Any,
   })
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Perfil)
@@ -59,8 +61,9 @@ export class SecurityResolver {
   @UseRole({
     acao: AcaoEnum.Atualizar,
     recurso: RecursoEnum.Perfil,
-    type: AnyOrOwnEnum.Any,
-    customMatcher: (user, assoc, args) => assoc.empresa._id.equals(args._id),
+    tipo: AnyOrOwnEnum.Any,
+    customMatcher: (user, assoc, args) =>
+      (assoc.empresa as InstanceType<Empresa>)._id === args._id,
   })
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Perfil)

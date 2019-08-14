@@ -1,6 +1,5 @@
-import { Resolver, Query, Args, Mutation, Context } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { Request, Response } from 'express';
 
 import { UsuarioService } from './usuario.service';
 import {
@@ -13,15 +12,12 @@ import {
 import {
   CommonFindAllArgs,
   CommonFindOneArgs,
+  PayloadType,
 } from '@/server/utils/common.dto';
 import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
 import { SecurityGuard } from '@/server/components/security/security.guard';
 import { UseRole } from '@/server/components/security/security.decorators';
-
-interface ContextType {
-  req: Request;
-  res: Response;
-}
+import { User } from '@/server/components/auth/auth.decorator';
 
 @Resolver(() => Usuario)
 export class UsuarioResolver {
@@ -45,16 +41,16 @@ export class UsuarioResolver {
 
   @UseGuards(GqlAuthGuard)
   @Query(() => Usuario)
-  public async profile(@Context() { req }: ContextType) {
+  public async profile(@User() user: PayloadType) {
     // eslint-disable-next-line no-underscore-dangle
-    const usuario = await this.userService.findOne(req.user._id);
+    const usuario = await this.userService.findOne(user._id);
     return usuario;
   }
 
   @UseRole({
     recurso: RecursoEnum.Usuario,
     acao: AcaoEnum.Atualizar,
-    type: AnyOrOwnEnum.Own,
+    tipo: AnyOrOwnEnum.Own,
   })
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Usuario)
