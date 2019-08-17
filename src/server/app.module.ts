@@ -12,7 +12,7 @@ import { ContextType } from '@/server/utils/common.dto';
 import { IS_PRODUCTION } from '@/server/utils/constants';
 
 import {
-  // ReactModule,
+  ReactModule,
   EmpresaModule,
   EmpresaMiddleware,
   UsuarioModule,
@@ -46,7 +46,7 @@ import {
     EmpresaModule,
     UsuarioModule,
     SecurityModule,
-    // ReactModule,
+    ReactModule,
   ],
 })
 export class ApplicationModule implements NestModule {
