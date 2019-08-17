@@ -7,7 +7,12 @@ jobs:
        - checkout
        - run: npm install
        - run: npm run build
-       - run: node scripts/deploy.js
+       - run: 
+          name: Deploy master branch
+          command: |
+            sudo apt-get update
+            sudo apt-get -qq install git-ftp
+            git-ftp --init-if-not-exist --user "${FTPUSERNAME}" --passwd "${FTPPASS}" ${FTPHOST}
 workflows:
   version: 2
   deploy:
