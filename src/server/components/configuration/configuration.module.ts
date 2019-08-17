@@ -9,7 +9,7 @@ import { ConfigurationService } from './configuration.service';
     {
       provide: ConfigurationService,
       useValue: new ConfigurationService(
-        resolve(`.env.${process.env.NODE_ENV}`)
+        resolve(process.env.BASE_DIR as string, `.env.${process.env.NODE_ENV}`)
       ),
     },
   ],

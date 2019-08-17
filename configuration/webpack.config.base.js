@@ -189,6 +189,7 @@ module.exports = (isServer = false) => ({
       PUBLIC_PATH: '/static/',
       STATIC_FOLDER: path.resolve('dist', 'static'),
       MANIFEST: path.resolve('dist', 'static', 'manifest.json'),
+      BASE_DIR: path.resolve('.'),
     }),
   ],
 });
