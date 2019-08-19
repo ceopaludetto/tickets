@@ -44,13 +44,13 @@ export class ReactService {
   ) => {
     const linkEls = extractor.getLinkElements();
     const styleEls = extractor.getStyleElements();
-    const scriptEls = extractor.getStyleElements();
+    const scriptEls = extractor.getScriptElements();
 
     const htmlAttrs = helmet.htmlAttributes.toComponent();
     const bodyAttrs = helmet.bodyAttributes.toComponent();
 
     return renderToStaticMarkup(
-      <html lang="en" {...htmlAttrs}>
+      <html lang="pt-BR" {...htmlAttrs}>
         <head>
           {helmet.title.toComponent()}
           {helmet.meta.toComponent()}

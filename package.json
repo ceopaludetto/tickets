@@ -116,6 +116,7 @@
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
     "express-rate-limit": "^5.0.0",
+    "ftp-deploy": "^2.3.3",
     "graphql": "^14.4.2",
     "graphql-extensions": "^0.9.1",
     "helmet": "^3.20.0",
@@ -134,7 +135,6 @@
     "reflect-metadata": "^0.1.13",
     "rxjs": "^6.5.2",
     "type-graphql": "^0.17.4",
-    "typegoose": "^5.9.0",
-    "winston": "^3.2.1"
+    "typegoose": "^5.9.0"
   }
 }
