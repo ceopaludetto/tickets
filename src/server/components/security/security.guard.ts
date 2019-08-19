@@ -42,47 +42,53 @@ export class SecurityGuard implements CanActivate {
     return empresa;
   };
 
-  private getIdArg = (ctx: GraphQLExecutionContext) => {
-    const { _id } = ctx.getArgs();
-    return _id;
+  private getArgs = (ctx: GraphQLExecutionContext) => {
+    const args = ctx.getArgs();
+    return args;
   };
 
   public async canActivate(context: ExecutionContext) {
-    const ctx = this.createContext(context);
-    const req = this.getRequest(ctx);
-    const empresa = this.getEmpresa(req);
-    const idArg = this.getIdArg(ctx);
+    const ctx = this.createContext(context); // Cria o contexto
+    const req = this.getRequest(ctx); // Captura a requisição
+    const empresa = this.getEmpresa(req); // Captura o header empresa
+    const args = this.getArgs(ctx); // Captura os argumentos do resolver
 
+    // Verifica se há usuario
     if (!req.user) {
       throw new UnauthorizedException('Usuário inválido');
     }
 
+    // Captura informações do usuário
     const usuario = await this.usuarioService.findOne(
       (req.user as PayloadType)._id
     );
 
+    // Verifica se as informações foram capturadas
     if (!usuario) {
       return false;
     }
 
+    // Captura a role injetada com o decorator
     const role = this.reflector.get<Role>(
       SECURITY_ROLE_DECORATOR,
       context.getHandler()
     );
 
-    const isSameUser = idArg ? req.user._id.equals(idArg) : !!req.user._id;
+    // Verifica se o usuário logado tenta alterar suas próprias informações, se a opção useUserID esta marcada, sera usado o ID do usuario logado
+    // Caso contrario, sera usado o _id do argumento
+    const isSameUser = role.useUserID
+      ? !!req.user._id
+      : req.user._id === args._id;
 
+    // Chama o validador
     const isValid = await this.securityMatcher.isValid({
       usuario,
       role,
       empresa,
+      args,
       isSameUser,
     });
 
-    if (isValid) {
-      return true;
-    }
-
-    throw new UnauthorizedException('Permissão inválida');
+    return isValid;
   }
 }

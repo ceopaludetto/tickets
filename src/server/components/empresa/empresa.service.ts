@@ -6,17 +6,27 @@ import {
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
 
-import { Empresa, EmpresaInput } from '@/server/models';
-import { ID } from '@/server/utils/common.dto';
+import {
+  Empresa,
+  EmpresaInput,
+  EmpresaInstance,
+  AssociacaoEnum,
+} from '@/server/models';
+import { ID, PayloadType } from '@/server/utils/common.dto';
+import { UsuarioService } from '@/server/components/usuario/usuario.service';
 
 @Injectable()
 export class EmpresaService {
   private readonly empresaRepository: ModelType<Empresa>;
 
+  private readonly usuarioService: UsuarioService;
+
   public constructor(
-    @InjectModel(Empresa) empresaRepository: ModelType<Empresa>
+    @InjectModel(Empresa) empresaRepository: ModelType<Empresa>,
+    usuarioService: UsuarioService
   ) {
     this.empresaRepository = empresaRepository;
+    this.usuarioService = usuarioService;
   }
 
   public async findAll(skip: number = 0, take: number = 100) {
@@ -61,6 +71,31 @@ export class EmpresaService {
       return empresa;
     } catch (err) {
       throw new BadRequestException(err);
+    }
+  }
+
+  public async postCreation(user: PayloadType, empresa: EmpresaInstance) {
+    try {
+      const usuario = await this.usuarioService.findOne(user._id);
+      if (!usuario) {
+        throw new NotFoundException('Usuário não encontrado.');
+      }
+
+      const updated = await this.usuarioService.createOrUpdate(
+        {
+          associacoes: [
+            ...usuario.associacoes,
+            {
+              empresa: empresa._id,
+              tipo: AssociacaoEnum.Dono,
+            },
+          ],
+        },
+        user._id
+      );
+      return updated;
+    } catch (err) {
+      throw new BadRequestException('Erro ao criar associações');
     }
   }
 }

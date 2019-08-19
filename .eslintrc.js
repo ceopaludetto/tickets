@@ -35,6 +35,7 @@ module.exports = {
   plugins: ["@typescript-eslint", "import", "react", "react-hooks", "prettier", "security"],
   rules: {
     "no-param-reassign": "off",
+    "no-underscore-dangle": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/explicit-function-return-type": "off",

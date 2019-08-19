@@ -1,5 +1,12 @@
 import { hash, compare } from 'bcryptjs';
-import { Typegoose, prop, instanceMethod, pre, arrayProp } from 'typegoose';
+import {
+  Typegoose,
+  prop,
+  instanceMethod,
+  pre,
+  arrayProp,
+  InstanceType,
+} from 'typegoose';
 import { ObjectType, Field, ID } from 'type-graphql';
 import { Schema } from 'mongoose';
 
@@ -51,3 +58,5 @@ export class Usuario extends Typegoose {
     return isValid;
   }
 }
+
+export type UsuarioInstance = InstanceType<Usuario>;

@@ -1,4 +1,4 @@
-import { Typegoose, Ref, prop } from 'typegoose';
+import { Typegoose, Ref, prop, InstanceType } from 'typegoose';
 import { ObjectType, Field } from 'type-graphql';
 
 import { Empresa } from '../empresa/empresa.entity';
@@ -11,11 +11,13 @@ export class Associacao extends Typegoose {
   @prop({ ref: Empresa, required: true })
   public empresa!: Ref<Empresa>;
 
-  @Field(() => Perfil)
-  @prop({ ref: Perfil, required: true })
-  public perfil!: Ref<Perfil>;
+  @Field(() => Perfil, { nullable: true })
+  @prop({ ref: Perfil })
+  public perfil?: Ref<Perfil>;
 
   @Field(() => AssociacaoEnum, { nullable: true })
   @prop({ enum: AssociacaoEnum })
   public tipo?: string;
 }
+
+export type AssociacaoInstance = InstanceType<Associacao>;

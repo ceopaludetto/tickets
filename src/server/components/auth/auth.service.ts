@@ -1,8 +1,8 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { UsuarioService } from '@/server/components/usuario/usuario.service';
-import { Usuario } from '@/server/models';
+import { Usuario, UsuarioInput } from '@/server/models';
 import { ContextType } from '@/server/utils/common.dto';
 
 @Injectable()
@@ -25,7 +25,17 @@ export class AuthService {
 
       return funcionario;
     } catch (err) {
-      throw new Error(err);
+      throw new BadRequestException('Erro ao logar');
+    }
+  }
+
+  public async register(input: UsuarioInput) {
+    try {
+      const funcionario = await this.userService.createOrUpdate(input);
+
+      return funcionario;
+    } catch (err) {
+      throw new BadRequestException('Erro ao cadastrar novo usuário');
     }
   }
 

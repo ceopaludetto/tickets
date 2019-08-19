@@ -1,20 +1,22 @@
-import { InstanceType } from 'typegoose';
 import { Types } from 'mongoose';
 
 import { Role } from '@/server/utils/common.dto';
-import { Usuario } from '@/server/models/usuario/usuario.entity';
-import { Perfil } from '@/server/models/perfil/perfil.entity';
-import { Empresa } from '@/server/models/empresa/empresa.entity';
+import { UsuarioInstance } from '@/server/models';
 
 export interface SecurityMatcherOptions {
-  usuario: InstanceType<Usuario>;
+  usuario: UsuarioInstance;
   role: Role;
   empresa?: Types.ObjectId;
   isSameUser?: boolean;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  args?: any;
 }
 
-export type PerfilInstance = InstanceType<Perfil>;
-
-export type EmpresaInstance = InstanceType<Empresa>;
+export {
+  EmpresaInstance,
+  UsuarioInstance,
+  PerfilInstance,
+  AssociacaoInstance,
+} from '@/server/models';
 
 export { Role };

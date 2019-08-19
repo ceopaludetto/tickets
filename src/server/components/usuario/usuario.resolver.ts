@@ -1,11 +1,9 @@
-import { Resolver, Query, Args, Mutation, Context } from '@nestjs/graphql';
+import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
-import { Request, Response } from 'express';
 
 import { UsuarioService } from './usuario.service';
 import {
   Usuario,
-  UsuarioInput,
   UsuarioUpdateArgs,
   AcaoEnum,
   AnyOrOwnEnum,
@@ -14,15 +12,12 @@ import {
 import {
   CommonFindAllArgs,
   CommonFindOneArgs,
+  PayloadType,
 } from '@/server/utils/common.dto';
 import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
 import { SecurityGuard } from '@/server/components/security/security.guard';
 import { UseRole } from '@/server/components/security/security.decorators';
-
-interface ContextType {
-  req: Request;
-  res: Response;
-}
+import { User } from '@/server/components/auth/auth.decorator';
 
 @Resolver(() => Usuario)
 export class UsuarioResolver {
@@ -44,26 +39,20 @@ export class UsuarioResolver {
     return usuario;
   }
 
-  @UseGuards(GqlAuthGuard, SecurityGuard)
-  @UseRole({
-    acao: AcaoEnum.Ler,
-    recurso: RecursoEnum.Perfil,
-    type: AnyOrOwnEnum.Own,
-  })
-  @Query(() => Usuario)
-  public async profile(@Context() { req }: ContextType) {
-    // eslint-disable-next-line no-underscore-dangle
-    const usuario = await this.userService.findOne(req.user._id);
-    return usuario;
-  }
-
-  @Mutation(() => Usuario)
-  public async addUsuario(@Args('input') input: UsuarioInput) {
-    const usuario = this.userService.createOrUpdate(input);
-    return usuario;
-  }
-
   @UseGuards(GqlAuthGuard)
+  @Query(() => Usuario)
+  public async profile(@User() user: PayloadType) {
+    // eslint-disable-next-line no-underscore-dangle
+    const usuario = await this.userService.findOne(user._id);
+    return usuario;
+  }
+
+  @UseRole({
+    recurso: RecursoEnum.Usuario,
+    acao: AcaoEnum.Atualizar,
+    tipo: AnyOrOwnEnum.Own,
+  })
+  @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Usuario)
   public async updateUsuario(@Args() { input, _id }: UsuarioUpdateArgs) {
     const usuario = this.userService.createOrUpdate(input, _id);

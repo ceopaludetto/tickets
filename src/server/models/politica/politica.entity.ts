@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from 'type-graphql';
-import { Typegoose, prop } from 'typegoose';
+import { Typegoose, prop, InstanceType, arrayProp } from 'typegoose';
 import { Schema } from 'mongoose';
 
 import { AcaoEnum, RecursoEnum, AnyOrOwnEnum } from './politica.dto';
@@ -13,15 +13,17 @@ export class Politica extends Typegoose {
   @prop({ enum: RecursoEnum, required: true })
   public recurso!: string;
 
-  @Field(() => AcaoEnum)
-  @prop({ enum: AcaoEnum, required: true })
-  public acao!: string;
+  @Field(() => [AcaoEnum])
+  @arrayProp({ enum: AcaoEnum, required: true, items: String })
+  public acao!: string[];
 
   @Field({ defaultValue: false })
   @prop({ default: false })
-  public deny!: boolean;
+  public negacao!: boolean;
 
   @Field(() => AnyOrOwnEnum)
   @prop({ enum: AnyOrOwnEnum, required: true, default: AnyOrOwnEnum.Own })
-  public type!: string;
+  public tipo!: string;
 }
+
+export type PoliticaInstance = InstanceType<Politica>;

@@ -1,73 +1,131 @@
+import { UnauthorizedException } from '@nestjs/common';
 import {
   SecurityMatcherOptions,
   Role,
   EmpresaInstance,
   PerfilInstance,
+  AssociacaoInstance,
 } from './security.dto';
 
-import { AnyOrOwnEnum } from '@/server/models/politica/politica.dto';
+import { AnyOrOwnEnum, AcaoEnum } from '@/server/models/politica/politica.dto';
+import { AssociacaoEnum } from '@/server/models/associacao/associacao.dto';
 
 export class SecurityMatcher {
-  private compare = (
-    perfil: PerfilInstance,
-    role: Role,
-    isSame: boolean = false
-  ): boolean => {
-    const politica = perfil.politicas.find(
-      p => p.acao === role.acao && p.recurso === role.recurso
-    );
-
-    if (politica) {
-      if (politica.deny) {
-        return false;
-      }
-
-      if (
-        politica.type === AnyOrOwnEnum.Any &&
-        (role.type === AnyOrOwnEnum.Own || role.type === AnyOrOwnEnum.Any)
-      ) {
-        return true;
-      }
-
-      if (
-        role.type === AnyOrOwnEnum.Own &&
-        politica.type === AnyOrOwnEnum.Own &&
-        isSame
-      ) {
-        return true;
-      }
-    }
-
-    if (perfil.herda) {
-      return this.compare(perfil.herda as PerfilInstance, role, isSame);
-    }
-
-    return false;
-  };
-
+  // Validador é chamado
   public async isValid({
     usuario,
     role,
     empresa,
+    args,
     isSameUser,
   }: SecurityMatcherOptions) {
+    // Verifica se o usuário é sysAdmin
     if (usuario.sysAdmin) {
       return true;
     }
 
+    // Procura a associacao que ele é dono da empresa do contexto
+    const verifyIfIsOwner = usuario.associacoes.find(
+      a =>
+        (a.empresa as EmpresaInstance)._id.equals(empresa) &&
+        a.tipo === AssociacaoEnum.Dono
+    );
+
+    // Se for dono da empresa, passa
+    if (verifyIfIsOwner) {
+      return true;
+    }
+
+    // Verifica se há empresa
     if (empresa) {
+      // Captura a associacao do usuario com a empresa
       const assoc = usuario.associacoes.find(
         // eslint-disable-next-line no-underscore-dangle
         a => (a.empresa as EmpresaInstance)._id.equals(empresa)
       );
 
+      // Se não há associacao entre os dois, retorna falso
       if (!assoc) {
-        return false;
+        throw new UnauthorizedException('Usuário não associado');
       }
 
+      // Se há um customMatcher, verifica se sua verificacao é valida
+      if (
+        role.customMatcher &&
+        !role.customMatcher(usuario, assoc as AssociacaoInstance, args)
+      ) {
+        throw new UnauthorizedException('Comparação inválida');
+      }
+
+      // Faz as principais comparações
       return this.compare(assoc.perfil as PerfilInstance, role, isSameUser);
     }
 
-    return false;
+    // Retorna falso, pois não há uma empresa no contexto
+    throw new UnauthorizedException('Empresa não encontrada');
   }
+
+  private compare = (
+    perfil: PerfilInstance,
+    role: Role,
+    isSameUser: boolean = false
+  ): boolean => {
+    // Procura a politica que possui o recurso e acao necessaria
+    const politica = perfil.politicas.find(
+      p =>
+        this.verifyRole(p.acao as AcaoEnum[], role.acao) &&
+        p.recurso === role.recurso
+    );
+
+    // Se há politica:
+    if (politica) {
+      // A politica é do tipo deny? Se sim, falso
+      if (politica.negacao) {
+        return false;
+      }
+
+      // Verifica se a politica é do tipo any, se for, valida a role tanto pra own quanto pra any
+      if (
+        politica.tipo === AnyOrOwnEnum.Any &&
+        (role.tipo === AnyOrOwnEnum.Own || role.tipo === AnyOrOwnEnum.Any)
+      ) {
+        return true;
+      }
+
+      // Verifica se a politica é do tipo own, valida a role so pra own
+      // Verifica entao se o usuario tenta alterar suas proprias informações, tanto pelo arg _id ou pelo seu _id de logado
+      if (
+        role.tipo === AnyOrOwnEnum.Own &&
+        politica.tipo === AnyOrOwnEnum.Own &&
+        isSameUser
+      ) {
+        return true;
+      }
+    }
+
+    // Verifca se o perfil do usuario possui outros perfis acoplados e refaz a comparação até bater
+    if (perfil.herda) {
+      return this.compare(perfil.herda as PerfilInstance, role, isSameUser);
+    }
+
+    // Retorna falso
+    return false;
+  };
+
+  private verifyRole = (pAcao: AcaoEnum[], rAcao: AcaoEnum) => {
+    if (pAcao.includes(rAcao)) {
+      return true;
+    }
+
+    if (
+      rAcao === AcaoEnum.Ler &&
+      (pAcao.includes(AcaoEnum.Criar) ||
+        (pAcao.includes(AcaoEnum.Atualizar) ||
+          pAcao.includes(AcaoEnum.Excluir)))
+    ) {
+      return true;
+    }
+
+    return false;
+  };
 }

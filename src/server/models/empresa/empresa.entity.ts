@@ -1,4 +1,4 @@
-import { Typegoose, prop } from 'typegoose';
+import { Typegoose, prop, InstanceType } from 'typegoose';
 import { ObjectType, Field, ID } from 'type-graphql';
 import { Schema } from 'mongoose';
 
@@ -59,3 +59,5 @@ export class Empresa extends Typegoose {
   })
   public planoHoras!: string;
 }
+
+export type EmpresaInstance = InstanceType<Empresa>;

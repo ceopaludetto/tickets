@@ -1,21 +1,24 @@
-// import { UseGuards } from '@nestjs/common';
+import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
+import { InstanceType } from 'typegoose';
 
 import {
   Perfil,
   PerfilInput,
   PerfilUpdateArgs,
-  // AcaoEnum,
-  // RecursoEnum,
+  AcaoEnum,
+  RecursoEnum,
+  AnyOrOwnEnum,
+  Empresa,
 } from '@/server/models';
 import {
   CommonFindAllArgs,
   CommonFindOneArgs,
 } from '@/server/utils/common.dto';
 import { SecurityService } from './security.service';
-// import { SecurityGuard } from './security.guard';
-// import { UseRole } from './security.decorators';
-// import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
+import { SecurityGuard } from './security.guard';
+import { UseRole } from './security.decorators';
+import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
 
 @Resolver(() => Perfil)
 export class SecurityResolver {
@@ -31,23 +34,38 @@ export class SecurityResolver {
     return perfis;
   }
 
+  @UseRole({
+    acao: AcaoEnum.Ler,
+    recurso: RecursoEnum.Perfil,
+    tipo: AnyOrOwnEnum.Own,
+  })
+  @UseGuards(GqlAuthGuard, SecurityGuard)
   @Query(() => Perfil)
   public async findPerfil(@Args() { _id }: CommonFindOneArgs) {
     const perfil = await this.securityService.findOne(_id);
     return perfil;
   }
 
-  // @UseGuards(GqlAuthGuard, SecurityGuard)
-  // @UseRole({
-  //   acao: AcaoEnum.Ler,
-  //   recurso: RecursoEnum.Perfil,
-  // })
+  @UseRole({
+    acao: AcaoEnum.Criar,
+    recurso: RecursoEnum.Perfil,
+    tipo: AnyOrOwnEnum.Any,
+  })
+  @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Perfil)
   public async addPerfil(@Args('input') input: PerfilInput) {
     const perfil = await this.securityService.addOrUpdate(input);
     return perfil;
   }
 
+  @UseRole({
+    acao: AcaoEnum.Atualizar,
+    recurso: RecursoEnum.Perfil,
+    tipo: AnyOrOwnEnum.Any,
+    customMatcher: (user, assoc, args) =>
+      (assoc.empresa as InstanceType<Empresa>)._id === args._id,
+  })
+  @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Perfil)
   public async updatePerfil(@Args() { input, _id }: PerfilUpdateArgs) {
     const perfil = await this.securityService.addOrUpdate(input, _id);

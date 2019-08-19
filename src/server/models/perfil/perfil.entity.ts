@@ -1,5 +1,5 @@
 import { ObjectType, Field, ID } from 'type-graphql';
-import { Typegoose, Ref, prop, arrayProp } from 'typegoose';
+import { Typegoose, Ref, prop, arrayProp, InstanceType } from 'typegoose';
 import { Schema } from 'mongoose';
 
 import { Politica } from '../politica/politica.entity';
@@ -30,3 +30,5 @@ export class Perfil extends Typegoose {
   @prop({ required: true, ref: Empresa })
   public empresa!: Ref<Empresa>;
 }
+
+export type PerfilInstance = InstanceType<Perfil>;
