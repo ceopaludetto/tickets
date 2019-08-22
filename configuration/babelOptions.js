@@ -32,6 +32,12 @@ module.exports = (isServer = false) => ({
     '@babel/plugin-transform-react-constant-elements',
     '@babel/plugin-transform-react-inline-elements',
     [
+      'styled-components',
+      {
+        displayName: !isProd,
+      },
+    ],
+    [
       '@babel/plugin-transform-destructuring',
       {
         loose: true,

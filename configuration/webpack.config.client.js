@@ -9,7 +9,6 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const MiniCssPlugin = require('mini-css-extract-plugin');
 const tsFormatter = require('react-dev-utils/typescriptFormatter');
 // const { GenerateSW } = require('workbox-webpack-plugin');
 
@@ -112,12 +111,6 @@ module.exports = merge(baseConfig(false), {
               to: path.resolve('dist', 'static', 'public'),
             },
           ]),
-          // new MiniCssPlugin({
-          //   filename: isProd ? 'css/index.[contenthash:8].css' : 'index.css',
-          //   chunkFilename: isProd
-          //     ? 'css/[name].[contenthash:8].css'
-          //     : '[name].css',
-          // }),
           // new GenerateSW({
           //   swDest: 'public/sw.js',
           //   exclude: [/\.map$/, /\.gz$/, /asset-manifest\.json$/],

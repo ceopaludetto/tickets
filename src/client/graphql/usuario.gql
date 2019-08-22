@@ -1,0 +1,6 @@
+query FindAllUsuarios($skip: Int!, $take: Int!) {
+  findAllUsuarios(skip: $skip, take: $take) {
+    _id
+    nome
+  }
+}

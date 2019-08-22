@@ -3,15 +3,8 @@ const path = require('path');
 const webpack = require('webpack');
 const WebpackBar = require('webpackbar');
 const TerserPlugin = require('terser-webpack-plugin');
-// const MiniCssPlugin = require('mini-css-extract-plugin');
-// const postcssNormalize = require('postcss-normalize');
-// const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
-// const safePostCssParser = require('postcss-safe-parser');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
-// const purgecss = require('@fullhuman/postcss-purgecss')({
-//   content: ['./src/**/*.tsx', './src/**/*.css'],
-//   defaultExtractor: content => content.match(/[A-Za-z0-9-_:/]+/g) || [],
-// });
+
 const babelOptions = require('./babelOptions');
 
 const envs = require('./envs');

@@ -38,7 +38,7 @@ import {
       playground: !IS_PRODUCTION,
       debug: !IS_PRODUCTION,
       extensions: [() => new ErrorTracking()],
-      autoSchemaFile: './schema.gql',
+      autoSchemaFile: './src/server/schema.gql',
       installSubscriptionHandlers: true,
       context: ({ req, res }: ContextType) => ({ req, res }),
     }),
