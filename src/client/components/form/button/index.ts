@@ -8,7 +8,7 @@ interface ButtonProps {
   block?: boolean;
 }
 
-const Button = styled.button<ButtonProps>`
+export const Button = styled.button<ButtonProps>`
   border: none;
   padding: 0.65rem 1.75rem;
   font-weight: 400;
@@ -39,7 +39,7 @@ const Button = styled.button<ButtonProps>`
       &:active,
       &:focus {
         outline: none;
-        box-shadow: 0 0 0 3px ${rgba(rgb.red, rgb.green, rgb.blue, 0.4)};
+        box-shadow: 0 0 0 2px ${rgba(rgb.red, rgb.green, rgb.blue, 0.3)};
       }
     `;
   }}
@@ -49,5 +49,3 @@ Button.defaultProps = {
   variant: 'primary',
   block: false,
 };
-
-export default Button;

@@ -9,6 +9,7 @@ export function createClient(isSsr = false, link: any) {
     cache,
     link,
     ssrMode: isSsr,
+    connectToDevTools: process.env.NODE_ENV === 'development',
   });
 
   if (!isSsr) {

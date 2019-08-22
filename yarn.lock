@@ -1616,13 +1616,21 @@
     "@types/express-serve-static-core" "*"
     "@types/mime" "*"
 
-"@types/styled-components@^4.1.18":
+"@types/styled-components@*", "@types/styled-components@^4.1.18":
   version "4.1.18"
   resolved "https://registry.yarnpkg.com/@types/styled-components/-/styled-components-4.1.18.tgz#348804fe5a399ae0a46550afaf030085815ad931"
   integrity sha512-VrHkgvjbxQXOw0xWSUckusUUZ4y/jqN1u7kF29ngh0oE6uOrlZHleTgqeUqylQqHQIeQ8MxFb50BRHy8ju5DHg==
   dependencies:
     "@types/react" "*"
     "@types/react-native" "*"
+    csstype "^2.2.0"
+
+"@types/styled-theming@^2.2.2":
+  version "2.2.2"
+  resolved "https://registry.yarnpkg.com/@types/styled-theming/-/styled-theming-2.2.2.tgz#e9cd824be4d6bcdb95315c5a86ae3ae0a46ba731"
+  integrity sha512-O8h8DFtY8IfxIOt2fDZqlqNk3aTbOsvdwU7gaFa4o7OfRRE5bBsehHZMxI1aSawq8AuISQJP4xOoz9P2imx/FQ==
+  dependencies:
+    "@types/styled-components" "*"
     csstype "^2.2.0"
 
 "@types/valid-url@1.0.2":
@@ -10273,6 +10281,11 @@ strip-json-comments@^2.0.1, strip-json-comments@~2.0.1:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/strip-json-comments/-/strip-json-comments-2.0.1.tgz#3c531942e908c2697c0ec344858c286c7ca0a60a"
   integrity sha1-PFMZQukIwml8DsNEhYwobHygpgo=
+
+styled-bootstrap-grid@^3.0.5:
+  version "3.0.5"
+  resolved "https://registry.yarnpkg.com/styled-bootstrap-grid/-/styled-bootstrap-grid-3.0.5.tgz#60572901537490309aeff9354f625bb622764dce"
+  integrity sha512-Xy6jySTr1u8UaKaYvNAraA0GgghwV1XHBAJOHW0RcuRkAFjKBfdyLRICj74lSlR1UpS/uHNH4l0I5PWed8MrCg==
 
 styled-components@^4.3.2:
   version "4.3.2"

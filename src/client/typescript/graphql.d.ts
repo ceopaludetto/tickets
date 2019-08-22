@@ -245,10 +245,19 @@ export type FindAllUsuariosQueryVariables = {
 
 export type FindAllUsuariosQuery = { __typename?: 'Query', findAllUsuarios: Array<{ __typename?: 'Usuario', _id: string, nome: string }> };
 
+export type LoginMutationVariables = {
+  email: Scalars['String'],
+  senha: Scalars['String']
+};
+
+
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string } };
+
 declare module '*/usuario.gql' {
   import { DocumentNode } from 'graphql';
   const defaultDocument: DocumentNode;
   export const FindAllUsuarios: DocumentNode;
+export const Login: DocumentNode;
 
   export default defaultDocument;
 }

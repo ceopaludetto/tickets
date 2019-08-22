@@ -4,8 +4,12 @@ const PRIMARY = '#3B60E4';
 const DANGER = '#FDCA40';
 const ERROR = '#DF2935';
 const BLACK = '#080708';
+const WHITE = '#FFF';
 
-enum Mode {
+const BACKGROUND = '#f9fbfd';
+const BACKGROUND_DARK = '#303030';
+
+export const enum Mode {
   Light = 'LIGHT',
   Dark = 'DARK',
 }
@@ -43,6 +47,21 @@ export const theme = {
       text: readableColor(BLACK),
       rgb: parseToRgb(BLACK),
     },
+    white: WHITE,
+    background: BACKGROUND,
+    backgroundDark: BACKGROUND_DARK,
+  },
+};
+
+export const gridTheme = {
+  row: {
+    padding: 16,
+  },
+  col: {
+    padding: 16,
+  },
+  container: {
+    padding: 16,
   },
 };
 

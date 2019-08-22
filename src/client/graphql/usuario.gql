@@ -4,3 +4,11 @@ query FindAllUsuarios($skip: Int!, $take: Int!) {
     nome
   }
 }
+
+mutation Login($email: String!, $senha: String!) {
+  login(email: $email, senha: $senha){
+    _id
+    nome
+    sobrenome
+  }
+}
