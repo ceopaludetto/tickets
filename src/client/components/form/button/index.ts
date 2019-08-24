@@ -1,5 +1,4 @@
 import styled, { css } from 'styled-components';
-import { rgba } from 'polished';
 
 import { Theme } from '@/client/providers/theme';
 
