@@ -6,6 +6,7 @@ import {
 } from '@/client/typescript/graphql';
 
 import { Control, Button } from '@/client/components/form';
+import { Divider } from '@/client/components/layout';
 import { Login as LoginDocument } from '@/client/graphql/usuario.gql';
 
 export default function Login() {
@@ -29,6 +30,7 @@ export default function Login() {
       <Button block onClick={handleLogin}>
         Entrar
       </Button>
+      <Divider />
     </>
   );
 }

@@ -1,62 +1,50 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
-import styled, { css, ThemedStyledProps } from 'styled-components';
-import theme from 'styled-theming';
+import styled, { css } from 'styled-components';
 import { rgba } from 'polished';
 
-import { Theme, Mode } from '@/client/providers/theme';
+import { Theme } from '@/client/providers/theme';
+import {
+  MapBorder,
+  MapBackground,
+  MapBackgroundDarken,
+} from '@/client/styles/utils';
 
 export const Root = styled.div`
   margin-bottom: 1rem;
 `;
 
 export const Label = styled.label`
-  font-size: 1rem;
+  font-size: 0.85rem;
   display: inline-block;
-  margin-bottom: 0.5rem;
-`;
-
-export const Container = styled.div`
-  display: flex;
-  align-items: stretch;
-  transition: box-shadow 150ms ease-in-out;
+  margin-bottom: 0.35rem;
+  font-weight: 600;
   ${props => {
-    const { colors, radius } = props.theme as Theme;
-    const { rgb } = colors.primary;
+    const { label } = (props.theme as Theme).colors;
 
     return css`
-      border-radius: ${radius};
-      &:focus-within {
-        box-shadow: 0 0 0 2px ${rgba(rgb.red, rgb.green, rgb.blue, 0.3)};
-      }
+      color: ${label};
     `;
   }}
 `;
 
-const MapGray = theme('mode', {
-  [Mode.Light]: (props: ThemedStyledProps<any, any>) =>
-    (props.theme as Theme).colors.white,
-  [Mode.Dark]: (props: ThemedStyledProps<any, any>) =>
-    (props.theme as Theme).colors.backgroundDark,
-});
-
 const Commons = css`
-  border: 1px solid ${MapGray};
-  background-color: ${MapGray};
-  padding: 0 0.65rem;
+  border: 2px solid ${MapBorder};
+  background-color: ${MapBackground};
+  padding: 0 0.4rem;
   align-items: center;
   display: inline-flex;
+  transition: border-color 150ms ease-in-out, background-color 100ms ease-in-out;
 `;
 
 export const Append = styled.div`
   ${Commons}
   border-left: none;
   order: 2;
-  transition: border-color 150ms ease-in-out;
   ${props => {
     const { radius } = props.theme as Theme;
 
     return css`
-      border-radius: 0 ${radius} ${radius} 0;
+      border-radius: 0 ${radius}px ${radius}px 0;
     `;
   }}
 `;
@@ -65,7 +53,6 @@ export const Prepend = styled.div`
   ${Commons}
   border-right: none;
   order: 0;
-  transition: border-color 150ms ease-in-out;
   ${props => {
     const { radius } = props.theme as Theme;
 
@@ -85,15 +72,14 @@ export const Input = styled.input<InputProps>`
   flex: 1;
   font-size: 1rem;
   order: 1;
-  transition: border-color 150ms ease-in-out;
-  padding: 0.65rem;
+  padding: 0.4rem;
   ${props => {
     const { append, prepend } = props;
     const { radius, colors } = props.theme as Theme;
     const { main } = colors.primary;
 
     return css`
-      border-radius: ${radius};
+      border-radius: ${radius}px;
       ${append &&
         css`
           border-right: none;
@@ -106,9 +92,32 @@ export const Input = styled.input<InputProps>`
           border-top-left-radius: 0;
           border-bottom-left-radius: 0;
         `}
-      &:focus, &:focus + ${Append} {
+      &:focus, &:focus + ${Append}, &:focus + ${Prepend} {
         outline: none;
         border-color: ${main};
+        background-color: ${colors.white}!important;
+      }
+    `;
+  }}
+`;
+
+export const Container = styled.div`
+  display: flex;
+  align-items: stretch;
+  transition: box-shadow 150ms ease-in-out;
+  &:hover {
+    ${Append}, ${Prepend}, ${Input} {
+      background-color: ${MapBackgroundDarken};
+    }
+  }
+  ${props => {
+    const { colors, radius } = props.theme as Theme;
+    const { rgb } = colors.primary;
+
+    return css`
+      border-radius: ${radius}px;
+      &:focus-within {
+        box-shadow: 0 0 0 2px ${rgba(rgb.red, rgb.green, rgb.blue, 0.3)};
       }
     `;
   }}
