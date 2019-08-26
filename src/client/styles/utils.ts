@@ -1,3 +1,4 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import { ThemedStyledProps } from 'styled-components';
 import theme from 'styled-theming';
 
@@ -22,4 +23,18 @@ export const MapBackgroundDarken = theme('mode', {
     (props.theme as Theme).colors.background.darken,
   [Mode.Dark]: (props: ThemedStyledProps<any, any>) =>
     (props.theme as Theme).colors.backgroundDark.darken,
+});
+
+export const MapContrastText = theme('mode', {
+  [Mode.Light]: (props: ThemedStyledProps<any, any>) =>
+    (props.theme as Theme).colors.black,
+  [Mode.Dark]: (props: ThemedStyledProps<any, any>) =>
+    (props.theme as Theme).colors.white,
+});
+
+export const MapFocus = theme('mode', {
+  [Mode.Light]: (props: ThemedStyledProps<any, any>) =>
+    (props.theme as Theme).colors.white,
+  [Mode.Dark]: (props: ThemedStyledProps<any, any>) =>
+    (props.theme as Theme).colors.borderDark,
 });

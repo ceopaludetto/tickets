@@ -71,3 +71,7 @@ export interface Erro {
   message?: string;
   error?: string;
 }
+
+export interface ReactContextType {
+  url?: string;
+}

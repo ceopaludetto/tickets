@@ -176,6 +176,7 @@ export type Query = {
   profile: Usuario,
   findAllPerfis: Array<Perfil>,
   findPerfil: Perfil,
+  logged: Scalars['Boolean'],
 };
 
 
@@ -237,6 +238,11 @@ export type UsuarioInput = {
   senha?: Maybe<Scalars['String']>,
   associacoes?: Maybe<Array<AssociacaoInput>>,
 };
+export type LoggedQueryVariables = {};
+
+
+export type LoggedQuery = { __typename?: 'Query', logged: boolean };
+
 export type FindAllUsuariosQueryVariables = {
   skip: Scalars['Int'],
   take: Scalars['Int']
@@ -252,13 +258,3 @@ export type LoginMutationVariables = {
 
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string } };
-
-declare module '*/usuario.gql' {
-  import { DocumentNode } from 'graphql';
-  const defaultDocument: DocumentNode;
-  export const FindAllUsuarios: DocumentNode;
-export const Login: DocumentNode;
-
-  export default defaultDocument;
-}
-    

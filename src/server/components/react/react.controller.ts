@@ -12,6 +12,7 @@ export class ReactController {
   }
 
   @Get('*')
+  // @UseGuards(AuthGuard('jwt'))
   public renderReact(@Req() req: Request, @Res() res: Response) {
     return this.reactService.render({ req, res });
   }

@@ -50,15 +50,6 @@ module.exports = (isServer = false) => ({
             : null,
         },
       }),
-      // new OptimizeCSSAssetsPlugin({
-      //   cssProcessorOptions: {
-      //     parser: safePostCssParser,
-      //     map: {
-      //       inline: false,
-      //       annotation: true,
-      //     },
-      //   },
-      // }),
     ],
   },
   module: {
@@ -110,48 +101,6 @@ module.exports = (isServer = false) => ({
             exclude: /node_modules/,
             use: 'graphql-tag/loader',
           },
-          // {
-          //   test: /\.css$/,
-          //   use: [
-          //     // eslint-disable-next-line no-nested-ternary
-          //     ...(!isServer
-          //       ? isProd
-          //         ? [MiniCssPlugin.loader]
-          //         : ['style-loader']
-          //       : []),
-          //     'css-modules-types-generator-loader',
-          //     {
-          //       loader: 'css-loader',
-          //       options: {
-          //         modules: {
-          //           localIdentName: isProd
-          //             ? '_[hash:base64:4]'
-          //             : '[name]__[local]--[hash:base64:4]',
-          //         },
-          //         importLoaders: 2,
-          //         onlyLocals: isServer,
-          //       },
-          //     },
-          //     {
-          //       loader: 'postcss-loader',
-          //       options: {
-          //         ident: 'postcss',
-          //         plugins: () => [
-          //           require('tailwindcss'),
-          //           require('postcss-flexbugs-fixes'),
-          //           require('postcss-preset-env')({
-          //             autoprefixer: {
-          //               flexbox: 'no-2009',
-          //             },
-          //             stage: 3,
-          //           }),
-          //           postcssNormalize(),
-          //           ...(isProd ? [purgecss] : []),
-          //         ],
-          //       },
-          //     },
-          //   ],
-          // },
           {
             loader: 'file-loader',
             exclude: [/\.(js|mjs|ts|tsx)$/, /\.html$/, /\.json$/],

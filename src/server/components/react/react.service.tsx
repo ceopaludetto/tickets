@@ -12,13 +12,9 @@ import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 import { SchemaLink } from 'apollo-link-schema';
 
 import ReactApp from '@/client/bootstrap';
-import { ContextType } from '@/server/utils/common.dto';
+import { ContextType, ReactContextType } from '@/server/utils/common.dto';
 import { createClient } from '@/client/providers/apollo';
 import schema from '@/server/schema.gql';
-
-interface Context {
-  url?: string;
-}
 
 @Injectable()
 export class ReactService {
@@ -29,11 +25,20 @@ export class ReactService {
         schema,
       })
     );
-    const context: Context = {};
+    const context: ReactContextType = {};
     const extractor = new ChunkExtractor({
       statsFile: process.env.MANIFEST as string,
     });
     const sheet = new ServerStyleSheet();
+
+    if (req.user) {
+      client.cache.writeData({
+        data: {
+          logged: true,
+          user: req.user._id,
+        },
+      });
+    }
 
     const App = (
       <StrictMode>

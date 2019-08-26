@@ -1,2 +1,4 @@
-export { Paper } from './paper';
-export { Divider } from './divider';
+export { Paper } from './Paper';
+export { Divider } from './Divider';
+export { TextAlign } from './TextAlign';
+export { Step } from './Stepper';

@@ -1,15 +1,19 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { useToggle } from 'react-use';
+
 import {
   LoginMutation,
   LoginMutationVariables,
 } from '@/client/typescript/graphql';
-
-import { Control, Button } from '@/client/components/form';
+import { Control, Button, IconButton } from '@/client/components/form';
 import { Divider } from '@/client/components/layout';
+import { PrefetchLink, Title, SubTitle } from '@/client/components/typo';
 import { Login as LoginDocument } from '@/client/graphql/usuario.gql';
 
 export default function Login() {
+  const [visibility, toggleVisibility] = useToggle(false);
   const [fetchLogin] = useMutation<LoginMutation, LoginMutationVariables>(
     LoginDocument
   );
@@ -25,12 +29,24 @@ export default function Login() {
 
   return (
     <>
+      <Title>Bem vindo</Title>
+      <SubTitle>Fazer Login</SubTitle>
       <Control label="Email" id="email" />
-      <Control label="Senha" id="senha" append={<span>teste</span>} />
+      <Control
+        type={visibility ? 'text' : 'password'}
+        label="Senha"
+        id="senha"
+        append={
+          <IconButton onClick={toggleVisibility}>
+            {visibility ? <FiEyeOff /> : <FiEye />}
+          </IconButton>
+        }
+      />
       <Button block onClick={handleLogin}>
         Entrar
       </Button>
       <Divider />
+      <PrefetchLink to="/auth/register">Criar conta</PrefetchLink>
     </>
   );
 }

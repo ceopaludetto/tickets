@@ -1,5 +1,7 @@
 overwrite: true
-schema: "./src/server/schema.gql"
+schema: 
+  - "./src/server/schema.gql"
+  - "./src/client/graphql/schema.gql"
 documents: "src/**/*.(graphql|gql)"
 generates:
   src/client/typescript/graphql.d.ts:
@@ -8,4 +10,3 @@ generates:
     plugins:
       - "typescript"
       - "typescript-operations"
-      - "typescript-graphql-files-modules"

@@ -9,7 +9,7 @@ const WHITE = '#FFF';
 const BACKGROUND = '#fafbfc';
 const BACKGROUND_DARK = '#303030';
 const BORDER = '#dfe1e6';
-const BORDER_DARK = '#303030';
+const BORDER_DARK = '#212121';
 
 const LABEL = '#6b778c';
 
