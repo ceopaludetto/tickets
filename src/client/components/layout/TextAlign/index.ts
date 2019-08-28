@@ -1,13 +1,15 @@
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 
 interface TextAlignProps {
   align?: 'left' | 'right' | 'center' | 'justify';
 }
 
 export const TextAlign = styled.div<TextAlignProps>`
-  text-align: ${props => {
+  ${props => {
     const align = props.align || 'left';
 
-    return align;
+    return css`
+      text-align: ${align};
+    `;
   }};
 `;

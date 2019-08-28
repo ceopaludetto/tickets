@@ -29,8 +29,8 @@ export default function Login() {
 
   return (
     <>
-      <Title>Bem vindo</Title>
       <SubTitle>Fazer Login</SubTitle>
+      <Title>Bem vindo</Title>
       <Control label="Email" id="email" />
       <Control
         type={visibility ? 'text' : 'password'}

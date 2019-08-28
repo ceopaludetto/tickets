@@ -2,14 +2,14 @@
 import styled, { css } from 'styled-components';
 import { rgba } from 'polished';
 
-import { Theme } from '@/client/providers/theme';
 import {
   MapBorder,
   MapBackground,
   MapBackgroundDarken,
   MapFocus,
   MapContrastText,
-} from '@/client/styles/utils';
+} from '@/client/styles/maps';
+import { constantColor, radius, color } from '@/client/styles/utils';
 
 export const Root = styled.div`
   margin-bottom: 1rem;
@@ -20,13 +20,7 @@ export const Label = styled.label`
   display: inline-block;
   margin-bottom: 0.35rem;
   font-weight: 600;
-  ${props => {
-    const { label } = (props.theme as Theme).colors;
-
-    return css`
-      color: ${label};
-    `;
-  }}
+  color: ${constantColor('label')};
 `;
 
 const Commons = css`
@@ -74,21 +68,19 @@ export const Container = styled.div`
   align-items: stretch;
   transition: box-shadow 150ms ease-in-out, border-color 150ms ease-in-out;
   border: 2px solid ${MapBorder};
+  border-radius: ${radius()}px;
   &:hover {
     ${Append}, ${Prepend}, ${Input} {
       background-color: ${MapBackgroundDarken};
     }
   }
-  ${props => {
-    const { colors, radius } = props.theme as Theme;
-    const { rgb, main } = colors.primary;
-
-    return css`
-      border-radius: ${radius}px;
+  ${color(
+    'primary',
+    ({ main, rgb }) => css`
       &:focus-within {
         border-color: ${main};
         box-shadow: 0 0 0 2px ${rgba(rgb.red, rgb.green, rgb.blue, 0.3)};
       }
-    `;
-  }}
+    `
+  )}
 `;

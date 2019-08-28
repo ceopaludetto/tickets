@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { MapBorder } from '@/client/styles/utils';
+import { MapBorder } from '@/client/styles/maps';
 
 export const Divider = styled.hr`
   border: none;

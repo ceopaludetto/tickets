@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
 import { rgba } from 'polished';
 
-import { MapBorder, MapContrastText } from '@/client/styles/utils';
+import { MapBorder, MapContrastText } from '@/client/styles/maps';
 import { Theme } from '@/client/providers/theme';
 
 export const Content = styled.div`

@@ -1,4 +1,5 @@
 import { matchPath } from 'react-router-dom';
+import { LoadableComponent } from '@loadable/component';
 
 import { routes, Route } from '@/client/providers/route';
 
@@ -27,6 +28,7 @@ export async function preloadRouteComponent(to: string | { pathname: string }) {
   const matchingRoute = findRoute(path, routes);
 
   if (matchingRoute && matchingRoute.component.load) {
-    await matchingRoute.component.load();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    await (matchingRoute.component as LoadableComponent<any>).load();
   }
 }

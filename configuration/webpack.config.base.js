@@ -116,8 +116,9 @@ module.exports = (isServer = false) => ({
   resolve: {
     alias: {
       '@': path.resolve('src'),
+      'webpack/hot/poll': require.resolve('webpack/hot/poll'),
     },
-    extensions: ['.js', '.jsx', '.tsx', '.ts', '.scss', '.json'],
+    extensions: ['.js', '.jsx', '.tsx', '.ts', '.json'],
   },
   plugins: [
     new WebpackBar({

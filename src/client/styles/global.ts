@@ -1,6 +1,6 @@
 import { createGlobalStyle } from 'styled-components';
 
-import { Theme } from '@/client/providers/theme';
+import { MapBackgroundDarken } from '@/client/styles/maps';
 
 export const GlobalStyle = createGlobalStyle`
   *, *::before, *::after {
@@ -18,6 +18,6 @@ export const GlobalStyle = createGlobalStyle`
   }
 
   body {
-    background-color: ${props => (props.theme as Theme).colors.background}
+    background-color: ${MapBackgroundDarken}
   }
 `;

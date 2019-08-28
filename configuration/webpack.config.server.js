@@ -18,7 +18,7 @@ module.exports = merge(baseConfig(true), {
   },
   externals: [
     NodeExternals({
-      whitelist: [...(isProd ? [] : ['webpack/hot/poll?300']), /\.css$/],
+      whitelist: isProd ? null : ['webpack/hot/poll?300'],
     }),
   ],
   entry: [
@@ -38,17 +38,14 @@ module.exports = merge(baseConfig(true), {
     ...(isProd
       ? []
       : [
+          new webpack.HotModuleReplacementPlugin(),
           new FriendlyErrorsPlugin({
             target: 'server',
             verbose: false,
             onSuccessMessage: 'Your application is running',
           }),
-          new webpack.HotModuleReplacementPlugin(),
-          new webpack.NamedModulesPlugin(),
-          new webpack.NoEmitOnErrorsPlugin(),
           new StartServerPlugin({
             name: 'index.js',
-            keyboard: true,
           }),
         ]),
     new webpack.optimize.LimitChunkCountPlugin({

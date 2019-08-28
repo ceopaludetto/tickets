@@ -1,6 +1,6 @@
 import styled from 'styled-components';
 
-import { MapBorder, MapContrastText } from '@/client/styles/utils';
+import { MapBorder, MapContrastText } from '@/client/styles/maps';
 
 export const IconButton = styled.button`
   border-radius: 50%;

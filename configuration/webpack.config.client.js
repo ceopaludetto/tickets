@@ -3,7 +3,6 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
-const FriendlyErrorsPlugin = require('razzle-dev-utils/FriendlyErrorsPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
@@ -98,7 +97,7 @@ module.exports = merge(baseConfig(false), {
       ? [
           new webpack.HashedModuleIdsPlugin(),
           new webpack.optimize.AggressiveMergingPlugin({
-            minSizeReduce: 2,
+            minSizeReduce: 1.5,
           }),
           new CompressionPlugin({
             exclude: /\.map/,
@@ -129,10 +128,8 @@ module.exports = merge(baseConfig(false), {
           // }),
         ]
       : [
-          new webpack.HotModuleReplacementPlugin(),
-          new FriendlyErrorsPlugin({
-            verbose: false,
-            target: 'web',
+          new webpack.HotModuleReplacementPlugin({
+            multiStep: true,
           }),
           new ForkTsCheckerWebpackPlugin({
             async: true,
@@ -147,9 +144,6 @@ module.exports = merge(baseConfig(false), {
       filename: 'manifest.json',
       writeToDisk: true,
     }),
-    new webpack.WatchIgnorePlugin([
-      path.resolve('dist', 'assets', 'manifest.json'),
-    ]),
     new ModuleNotFoundPlugin(path.resolve('src')),
   ],
 });
