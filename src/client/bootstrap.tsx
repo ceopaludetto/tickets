@@ -19,7 +19,7 @@ export default function App() {
       <GridThemeProvider gridTheme={gridTheme}>
         <>
           <GlobalStyle />
-          <Helmet defaultTitle="F3Desk" titleTemplate="%s - F3Desk">
+          <Helmet defaultTitle="F3Desk" titleTemplate="%s | F3Desk">
             <link
               rel="manifest"
               href={`${process.env.PUBLIC_PATH as string}public/manifest.json`}

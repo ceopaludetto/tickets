@@ -12,7 +12,6 @@ export class ConfigurationService {
   private readonly envConfig: EnvConfig;
 
   public constructor(filePath: string) {
-    // eslint-disable-next-line security/detect-non-literal-fs-filename
     const config = dotenv.parse(fs.readFileSync(filePath));
     this.envConfig = this.validateInput(config);
   }

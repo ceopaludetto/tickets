@@ -1,10 +1,11 @@
 import styled, { css } from 'styled-components';
 
 import { Theme } from '@/client/providers/theme';
-import { radius } from '@/client/styles/utils';
+import { radius, rgba } from '@/client/styles/utils';
 
 interface ButtonProps {
-  variant?: 'primary' | 'danger' | 'error';
+  color?: 'primary' | 'danger' | 'error';
+  variant?: 'contained' | 'text';
   block?: boolean;
 }
 
@@ -19,19 +20,40 @@ export const Button = styled.button<ButtonProps>`
   border-radius: ${radius()}px;
   cursor: pointer;
   ${props => {
-    const variant = props.variant || 'primary';
+    const variant = props.variant || 'contained';
+    const color = props.color || 'primary';
     const block = props.block || false;
     const { colors } = props.theme as Theme;
-    // eslint-disable-next-line security/detect-object-injection
-    const { text, main, darken, lighten } = colors[variant];
+    const { text, main, darken, lighten } = colors[color];
 
-    return css`
-      background-color: ${main};
-      color: ${text};
+    const common = css`
+      &:focus {
+        outline: none;
+      }
       ${block &&
         css`
           width: 100%;
         `}
+    `;
+
+    if (variant === 'text') {
+      return css`
+        background-color: transparent;
+        color: ${main};
+        ${common}
+        &:hover, &:focus {
+          background-color: ${rgba(main, 0.1)};
+        }
+        &:active {
+          background-color: ${rgba(main, 0.2)};
+        }
+      `;
+    }
+
+    return css`
+      background-color: ${main};
+      color: ${text};
+      ${common}
       &:hover {
         background-color: ${lighten};
       }
@@ -39,13 +61,14 @@ export const Button = styled.button<ButtonProps>`
         background-color: ${darken};
       }
       &:focus {
-        outline: none;
+        box-shadow: 0 0 0 2px ${rgba(main, 0.3)};
       }
     `;
   }}
 `;
 
 Button.defaultProps = {
-  variant: 'primary',
+  variant: 'contained',
+  color: 'primary',
   block: false,
 };

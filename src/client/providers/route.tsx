@@ -44,19 +44,27 @@ export const routes: Route[] = [
       {
         path: '/auth/login',
         exact: true,
-        component: loadable(() => import('@/client/pages/Auth/Login')),
+        component: loadable(() =>
+          import(
+            /* webpackChunkName: "auth.login" */ '@/client/pages/Auth/Login'
+          )
+        ),
       },
       {
         path: '/auth/register',
         exact: true,
-        component: loadable(() => import('@/client/pages/Auth/Register')),
+        component: loadable(() =>
+          import(
+            /* webpackChunkName: "auth.register" */ '@/client/pages/Auth/Register'
+          )
+        ),
       },
     ],
   },
   {
-    path: ['/app'],
-    exact: true,
-    render: ({ data, staticContext, location, ...rest }: RenderProps) => {
+    path: '/app',
+    exact: false,
+    render: ({ staticContext, location, ...rest }: RenderProps) => {
       // if (!data || !data.logged) {
       //   const metadata = stringify({
       //     from: location.pathname,
@@ -84,7 +92,38 @@ export const routes: Route[] = [
       {
         path: '/app',
         exact: true,
-        component: loadable(() => import('@/client/pages/App/Home')),
+        component: loadable(() =>
+          import(/* webpackChunkName: "app.home" */ '@/client/pages/App/Home')
+        ),
+      },
+      {
+        path: ['/app/settings', '/app/settings/application'],
+        exact: true,
+        component: loadable(() =>
+          import(
+            /* webpackChunkName: "app.settings" */ '@/client/pages/App/Settings'
+          )
+        ),
+        routes: [
+          {
+            path: '/app/settings',
+            exact: true,
+            component: loadable(() =>
+              import(
+                /* webpackChunkName: "app.settings.userinfo" */ '@/client/pages/App/Settings/MainPage'
+              )
+            ),
+          },
+          {
+            path: '/app/settings/application',
+            exact: true,
+            component: loadable(() =>
+              import(
+                /* webpackChunkName: "app.settings.application" */ '@/client/pages/App/Settings/Application'
+              )
+            ),
+          },
+        ],
       },
     ],
   },

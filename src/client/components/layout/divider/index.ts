@@ -5,5 +5,5 @@ import { MapBorder } from '@/client/styles/maps';
 export const Divider = styled.hr`
   border: none;
   border-top: 1px solid ${MapBorder};
-  margin: 1rem 0;
+  margin: 1.5rem 0;
 `;

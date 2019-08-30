@@ -4,7 +4,7 @@ import { color } from '@/client/styles/utils';
 
 export const SubTitle = styled.h2`
   font-size: 0.8rem;
-  font-weight: 500;
+  font-weight: 600;
   text-transform: uppercase;
   ${color(
     'primary',

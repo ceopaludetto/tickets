@@ -1,7 +1,7 @@
 import styled, { css } from 'styled-components';
-import { rgba } from 'polished';
 
 import { MapBorder, MapContrastText } from '@/client/styles/maps';
+import { rgba, color } from '@/client/styles/utils';
 import { Theme } from '@/client/providers/theme';
 
 export const Content = styled.div`
@@ -67,14 +67,11 @@ export const Icon = styled.span<IconProps>`
   margin: 0.45rem 0;
   width: 8px;
   height: 8px;
-  ${props => {
-    const { main, rgb } = (props.theme as Theme).colors.primary;
-    const status = props.status || 'undone';
-
+  ${color('primary', ({ main }, { status }) => {
     if (status === 'active') {
       return css`
         background-color: ${main};
-        box-shadow: 0 0 0 2px ${rgba(rgb.red, rgb.green, rgb.blue, 0.3)};
+        box-shadow: 0 0 0 2px ${rgba(main, 0.3)};
       `;
     }
 
@@ -87,5 +84,5 @@ export const Icon = styled.span<IconProps>`
     return css`
       background-color: ${MapBorder};
     `;
-  }}
+  })}
 `;

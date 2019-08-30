@@ -1,6 +1,5 @@
 /* eslint-disable @typescript-eslint/no-explicit-any */
 import styled, { css } from 'styled-components';
-import { rgba } from 'polished';
 
 import {
   MapBorder,
@@ -9,18 +8,10 @@ import {
   MapFocus,
   MapContrastText,
 } from '@/client/styles/maps';
-import { constantColor, radius, color } from '@/client/styles/utils';
+import { radius, color, rgba } from '@/client/styles/utils';
 
 export const Root = styled.div`
   margin-bottom: 1rem;
-`;
-
-export const Label = styled.label`
-  font-size: 0.85rem;
-  display: inline-block;
-  margin-bottom: 0.35rem;
-  font-weight: 600;
-  color: ${constantColor('label')};
 `;
 
 const Commons = css`
@@ -76,10 +67,10 @@ export const Container = styled.div`
   }
   ${color(
     'primary',
-    ({ main, rgb }) => css`
+    ({ main }) => css`
       &:focus-within {
         border-color: ${main};
-        box-shadow: 0 0 0 2px ${rgba(rgb.red, rgb.green, rgb.blue, 0.3)};
+        box-shadow: 0 0 0 2px ${rgba(main, 0.3)};
       }
     `
   )}

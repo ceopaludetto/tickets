@@ -2,5 +2,6 @@ declare module '@/client/graphql/local.gql' {
   import { DocumentNode } from 'graphql';
 
   const Logged: DocumentNode;
-  export { Logged };
+  const Theme: DocumentNode;
+  export { Logged, Theme };
 }

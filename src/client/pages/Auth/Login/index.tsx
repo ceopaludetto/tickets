@@ -2,6 +2,7 @@ import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
 import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { useToggle } from 'react-use';
+import { Helmet } from 'react-helmet';
 
 import {
   LoginMutation,
@@ -29,6 +30,7 @@ export default function Login() {
 
   return (
     <>
+      <Helmet title="Entrar" />
       <SubTitle>Fazer Login</SubTitle>
       <Title>Bem vindo</Title>
       <Control label="Email" id="email" />
@@ -37,7 +39,10 @@ export default function Login() {
         label="Senha"
         id="senha"
         append={
-          <IconButton onClick={toggleVisibility}>
+          <IconButton
+            aria-label={visibility ? 'Esconder senha' : 'Ver senha'}
+            onClick={toggleVisibility}
+          >
             {visibility ? <FiEyeOff /> : <FiEye />}
           </IconButton>
         }

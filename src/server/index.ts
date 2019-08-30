@@ -4,6 +4,7 @@ import { static as ExpressStatic } from 'express';
 import CookieParser from 'cookie-parser';
 import RateLimit from 'express-rate-limit';
 import Helmet from 'helmet';
+import Compression from 'compression';
 
 import { ApplicationModule } from '@/server/app.module';
 import { IS_PRODUCTION } from '@/server/utils/constants';
@@ -12,6 +13,7 @@ async function bootstrap() {
   const app = await NestFactory.create(ApplicationModule);
   app.use(CookieParser());
   if (IS_PRODUCTION) {
+    app.use(Compression());
     app.use(Helmet());
     app.use(
       new RateLimit({
@@ -30,6 +32,10 @@ async function bootstrap() {
   app.use(
     process.env.PUBLIC_PATH as string,
     ExpressStatic(process.env.STATIC_FOLDER as string)
+  );
+  app.use(
+    '/robots.txt',
+    ExpressStatic(`${process.env.STATIC_FOLDER as string}/public/robots.txt`)
   );
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
   app.listen(process.env.PORT as string);

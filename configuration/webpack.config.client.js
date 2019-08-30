@@ -29,7 +29,7 @@ module.exports = merge(baseConfig(false), {
           name: 'vendors',
           reuseExistingChunk: true,
           chunks: 'all',
-          test: /[\\/]node_modules[\\/]/,
+          test: /[\\/]node_modules[\\/](react|react-dom|apollo*|@apollo*|styled*)/,
         },
         common: {
           name: 'commons',
