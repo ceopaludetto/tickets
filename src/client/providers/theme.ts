@@ -1,6 +1,6 @@
-import { lighten, darken, readableColor, parseToRgb } from 'polished';
+import { lighten, darken, readableColor } from 'polished';
 
-const PRIMARY = '#3B60E4';
+const PRIMARY = '#2c7be5';
 const DANGER = '#FDCA40';
 const ERROR = '#DF2935';
 const BLACK = '#080708';
@@ -28,21 +28,18 @@ export const theme = {
       main: PRIMARY,
       darken: darken(0.05, PRIMARY),
       text: readableColor(PRIMARY),
-      rgb: parseToRgb(PRIMARY),
     },
     danger: {
       lighten: lighten(0.05, DANGER),
       main: DANGER,
       darken: darken(0.05, DANGER),
       text: readableColor(DANGER),
-      rgb: parseToRgb(DANGER),
     },
     error: {
       lighten: lighten(0.05, ERROR),
       main: ERROR,
       darken: darken(0.05, ERROR),
       text: readableColor(ERROR),
-      rgb: parseToRgb(ERROR),
     },
     black: BLACK,
     white: WHITE,
@@ -52,14 +49,12 @@ export const theme = {
       main: BACKGROUND,
       darken: darken(0.025, BACKGROUND),
       text: readableColor(BACKGROUND),
-      rgb: parseToRgb(BACKGROUND),
     },
     backgroundDark: {
       lighten: lighten(0.025, BACKGROUND_DARK),
       main: BACKGROUND_DARK,
       darken: darken(0.025, BACKGROUND_DARK),
       text: readableColor(BACKGROUND_DARK),
-      rgb: parseToRgb(BACKGROUND_DARK),
     },
     border: BORDER,
     borderDark: BORDER_DARK,

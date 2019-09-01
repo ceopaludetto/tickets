@@ -18,6 +18,13 @@ export const MapBackground = theme('mode', {
     (props.theme as Theme).colors.backgroundDark.main,
 });
 
+export const MapBackgroundInverted = theme('mode', {
+  [Mode.Light]: (props: ThemedStyledProps<any, any>) =>
+    (props.theme as Theme).colors.backgroundDark.main,
+  [Mode.Dark]: (props: ThemedStyledProps<any, any>) =>
+    (props.theme as Theme).colors.background.main,
+});
+
 export const MapBackgroundDarken = theme('mode', {
   [Mode.Light]: (props: ThemedStyledProps<any, any>) =>
     (props.theme as Theme).colors.background.darken,

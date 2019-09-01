@@ -3,6 +3,7 @@ import { RouteConfig, RouteConfigComponentProps } from 'react-router-config';
 import { Redirect } from 'react-router-dom';
 // import { stringify } from 'query-string';
 import loadable from '@loadable/component';
+import { FiHome, FiServer } from 'react-icons/fi';
 
 import { LoggedQuery } from '@/client/typescript/graphql';
 import { ReactContextType } from '@/server/utils/common.dto';
@@ -13,6 +14,8 @@ import App from '@/client/pages/App/MainPage';
 
 export type Route = Omit<RouteConfig, 'path'> & {
   path: string | string[];
+  name?: string;
+  icon?: React.ReactNode;
   routes?: Route[];
 };
 
@@ -90,10 +93,21 @@ export const routes: Route[] = [
     },
     routes: [
       {
+        name: 'Início',
+        icon: FiHome,
         path: '/app',
         exact: true,
         component: loadable(() =>
           import(/* webpackChunkName: "app.home" */ '@/client/pages/App/Home')
+        ),
+      },
+      {
+        name: 'Mesa',
+        icon: FiServer,
+        path: '/app/mesa',
+        exact: true,
+        component: loadable(() =>
+          import(/* webpackChunkName: "app.mesa" */ '@/client/pages/App/Mesa')
         ),
       },
       {

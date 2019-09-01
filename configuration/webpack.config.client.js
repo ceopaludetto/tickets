@@ -24,37 +24,19 @@ module.exports = merge(baseConfig(false), {
   ],
   optimization: {
     splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: 'vendors',
-          reuseExistingChunk: true,
-          chunks: 'all',
-          test: /[\\/]node_modules[\\/](react|react-dom|apollo*|@apollo*|styled*)/,
-        },
-        common: {
-          name: 'commons',
-          reuseExistingChunk: true,
-          chunks: 'all',
-          test: /[\\/]src[\\/]client[\\/]components[\\/]/,
-          enforce: true,
-        },
-        styles: {
-          name: 'styles',
-          test: /\.css$/,
-          chunks: 'all',
-          enforce: true,
-        },
-      },
+      chunks: 'all',
     },
     runtimeChunk: true,
   },
   output: {
-    pathinfo: false,
+    pathinfo: true,
     publicPath: '/static/',
     path: path.resolve('dist', 'static'),
     libraryTarget: 'var',
     filename: isProd ? 'js/index.[contenthash:8].js' : 'index.js',
     chunkFilename: isProd ? 'js/[name].[contenthash:8].js' : '[name].chunk.js',
+    devtoolModuleFilenameTemplate: info =>
+      path.resolve(info.resourcePath).replace(/\\/g, '/'),
   },
   devServer: {
     disableHostCheck: true,

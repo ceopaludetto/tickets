@@ -1,7 +1,18 @@
 import React from 'react';
 
-import { Container } from './styles';
+import { Container, Items, Profile } from './styles';
 
-export function Sidebar() {
-  return <Container>teste</Container>;
+interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
+  profileContent?: React.ReactNode;
 }
+
+export function Sidebar({ children, profileContent, ...rest }: SidebarProps) {
+  return (
+    <Container {...rest}>
+      <Items>{children}</Items>
+      <Profile>{profileContent}</Profile>
+    </Container>
+  );
+}
+
+export { SidebarItem } from './item';

@@ -30,7 +30,7 @@ export const constantColor = (
 
 export const radius = (multiply: number = 1) => (
   props: ThemedStyledProps<{}, {}>
-): number => (props.theme as Theme).radius * multiply;
+): string => `${(props.theme as Theme).radius * multiply}px`;
 
 export const mode = (props: ThemedStyledProps<{}, {}>) =>
   (props.theme as Theme).mode;

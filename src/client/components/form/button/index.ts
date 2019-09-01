@@ -17,7 +17,7 @@ export const Button = styled.button<ButtonProps>`
   transition: background-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
   height: 2.28571em;
   line-height: 2.28571em;
-  border-radius: ${radius()}px;
+  border-radius: ${radius()};
   cursor: pointer;
   ${props => {
     const variant = props.variant || 'contained';

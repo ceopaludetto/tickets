@@ -97,6 +97,20 @@ module.exports = (isServer = false) => ({
             exclude: /node_modules/,
           },
           {
+            test: /\.jsx?$/,
+            use: {
+              loader: 'babel-loader',
+              options: {
+                babelrc: false,
+                configFile: false,
+                cacheDirectory: true,
+                cacheCompression: !isProd,
+                compact: !isProd,
+                ...babelOptions(isServer),
+              },
+            },
+          },
+          {
             test: /\.(gql|graphql)$/,
             exclude: /node_modules/,
             use: 'graphql-tag/loader',

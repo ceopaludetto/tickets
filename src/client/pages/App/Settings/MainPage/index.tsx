@@ -4,7 +4,7 @@ import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { Helmet } from 'react-helmet';
 
 import { Control, Button, IconButton } from '@/client/components/form';
-import { Divider, TextAlign } from '@/client/components/layout';
+import { Divider, TextAlign, Alert } from '@/client/components/layout';
 
 export default function MainSettingsPage() {
   const [visibility, setVisibility] = useState({
@@ -90,7 +90,7 @@ export default function MainSettingsPage() {
           </TextAlign>
         </Col>
         <Col col={12} md={6}>
-          dicas de senha
+          <Alert>teste</Alert>
         </Col>
       </Row>
       <Divider />

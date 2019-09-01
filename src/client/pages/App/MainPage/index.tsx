@@ -2,9 +2,11 @@ import React, { useContext } from 'react';
 import { ThemeProvider, ThemeContext } from 'styled-components';
 import { RouteConfigComponentProps, renderRoutes } from 'react-router-config';
 import { useQuery } from '@apollo/react-hooks';
+import { FiSettings, FiBell } from 'react-icons/fi';
 
 import { Content, GlobalBackground } from './styles';
-import { Sidebar } from '@/client/components/composed';
+import { Sidebar, SidebarItem } from '@/client/components/composed';
+import { IconButton } from '@/client/components/form';
 import { Theme } from '@/client/graphql/local.gql';
 import { Mode } from '@/client/providers/theme';
 
@@ -18,7 +20,34 @@ export default function App({ route }: RouteConfigComponentProps) {
     >
       <>
         <GlobalBackground />
-        <Sidebar />
+        <Sidebar
+          profileContent={
+            <>
+              <IconButton>
+                <FiBell />
+              </IconButton>
+              <IconButton>
+                <FiSettings />
+              </IconButton>
+            </>
+          }
+        >
+          {route &&
+            route.routes &&
+            route.routes
+              .filter(r => !!r.name)
+              .map(r => {
+                return (
+                  <SidebarItem
+                    icon={r.icon}
+                    exact={r.exact}
+                    to={r.path as string}
+                  >
+                    {r.name}
+                  </SidebarItem>
+                );
+              })}
+        </Sidebar>
         <Content>{route && renderRoutes(route.routes)}</Content>
       </>
     </ThemeProvider>

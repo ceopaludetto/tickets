@@ -5,6 +5,7 @@ import {
   MapBorder,
   MapBackground,
   MapContrastText,
+  MapBackgroundInverted,
 } from '@/client/styles/maps';
 
 export const Root = styled.div`
@@ -49,13 +50,7 @@ export const SwitchContainer = styled.label`
   }
   &:active {
     &::before {
-      ${color(
-        'primary',
-        ({ main }) =>
-          css`
-            background-color: ${rgba(main, 0.5)}!important;
-          `
-      )};
+      background-color: ${MapBackgroundInverted}!important;
     }
   }
 `;

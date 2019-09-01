@@ -59,7 +59,7 @@ export const Container = styled.div`
   align-items: stretch;
   transition: box-shadow 150ms ease-in-out, border-color 150ms ease-in-out;
   border: 2px solid ${MapBorder};
-  border-radius: ${radius()}px;
+  border-radius: ${radius()};
   &:hover {
     ${Append}, ${Prepend}, ${Input} {
       background-color: ${MapBackgroundDarken};

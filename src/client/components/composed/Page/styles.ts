@@ -33,3 +33,7 @@ export const Header = styled(Row)<HeaderProps>`
 export const Footer = styled.div`
   margin-bottom: 1.5rem;
 `;
+
+export const Append = styled.div`
+  padding: 0 1rem;
+`;

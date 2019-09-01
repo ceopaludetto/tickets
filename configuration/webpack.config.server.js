@@ -18,8 +18,18 @@ module.exports = merge(baseConfig(true), {
   },
   externals: [
     NodeExternals({
-      whitelist: isProd ? null : ['webpack/hot/poll?300'],
+      whitelist: [
+        ...(isProd ? [] : ['webpack/hot/poll?300']),
+        'react-dnd',
+        'react-dnd-html5-backend',
+        'dnd-core',
+      ],
     }),
+    {
+      'react-dnd': require.resolve('react-dnd-cjs'),
+      'react-dnd-html5-backend': require.resolve('react-dnd-html5-backend-cjs'),
+      'dnd-core': require.resolve('dnd-core-cjs'),
+    },
   ],
   entry: [
     ...(isProd
@@ -39,13 +49,13 @@ module.exports = merge(baseConfig(true), {
       ? []
       : [
           new webpack.HotModuleReplacementPlugin(),
+          new StartServerPlugin({
+            name: 'index.js',
+          }),
           new FriendlyErrorsPlugin({
             target: 'server',
             verbose: false,
             onSuccessMessage: 'Your application is running',
-          }),
-          new StartServerPlugin({
-            name: 'index.js',
           }),
         ]),
     new webpack.optimize.LimitChunkCountPlugin({
