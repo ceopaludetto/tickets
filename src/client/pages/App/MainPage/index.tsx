@@ -2,11 +2,12 @@ import React, { useContext } from 'react';
 import { ThemeProvider, ThemeContext } from 'styled-components';
 import { RouteConfigComponentProps, renderRoutes } from 'react-router-config';
 import { useQuery } from '@apollo/react-hooks';
-import { FiSettings, FiBell } from 'react-icons/fi';
+import { FiSettings, FiSearch } from 'react-icons/fi';
 
 import { Content, GlobalBackground } from './styles';
 import { Sidebar, SidebarItem } from '@/client/components/composed';
 import { IconButton } from '@/client/components/form';
+import { PrefetchLink } from '@/client/components/typo';
 import { Theme } from '@/client/graphql/local.gql';
 import { Mode } from '@/client/providers/theme';
 
@@ -24,9 +25,9 @@ export default function App({ route }: RouteConfigComponentProps) {
           profileContent={
             <>
               <IconButton>
-                <FiBell />
+                <FiSearch />
               </IconButton>
-              <IconButton>
+              <IconButton as={PrefetchLink} to="/app/settings">
                 <FiSettings />
               </IconButton>
             </>

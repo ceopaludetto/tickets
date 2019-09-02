@@ -1,7 +1,5 @@
 import React from 'react';
 import { useMutation } from '@apollo/react-hooks';
-import { FiEye, FiEyeOff } from 'react-icons/fi';
-import { useToggle } from 'react-use';
 import { Helmet } from 'react-helmet';
 
 import {
@@ -12,9 +10,14 @@ import { Control, Button, IconButton } from '@/client/components/form';
 import { Divider } from '@/client/components/layout';
 import { PrefetchLink, Title, SubTitle } from '@/client/components/typo';
 import { Login as LoginDocument } from '@/client/graphql/usuario.gql';
+import { useVisibility } from '@/client/utils/useVisibility';
 
 export default function Login() {
-  const [visibility, toggleVisibility] = useToggle(false);
+  const {
+    visibility,
+    toggleVisibility,
+    render: renderVisibility,
+  } = useVisibility();
   const [fetchLogin] = useMutation<LoginMutation, LoginMutationVariables>(
     LoginDocument
   );
@@ -43,7 +46,7 @@ export default function Login() {
             aria-label={visibility ? 'Esconder senha' : 'Ver senha'}
             onClick={toggleVisibility}
           >
-            {visibility ? <FiEyeOff /> : <FiEye />}
+            {renderVisibility()}
           </IconButton>
         }
       />

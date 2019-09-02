@@ -3,7 +3,7 @@ import { RouteConfig, RouteConfigComponentProps } from 'react-router-config';
 import { Redirect } from 'react-router-dom';
 // import { stringify } from 'query-string';
 import loadable from '@loadable/component';
-import { FiHome, FiServer } from 'react-icons/fi';
+import { FiHome, FiClipboard } from 'react-icons/fi';
 
 import { LoggedQuery } from '@/client/typescript/graphql';
 import { ReactContextType } from '@/server/utils/common.dto';
@@ -103,7 +103,7 @@ export const routes: Route[] = [
       },
       {
         name: 'Mesa',
-        icon: FiServer,
+        icon: FiClipboard,
         path: '/app/mesa',
         exact: true,
         component: loadable(() =>
@@ -111,7 +111,11 @@ export const routes: Route[] = [
         ),
       },
       {
-        path: ['/app/settings', '/app/settings/application'],
+        path: [
+          '/app/settings',
+          '/app/settings/application',
+          '/app/settings/empresa',
+        ],
         exact: true,
         component: loadable(() =>
           import(
@@ -120,6 +124,7 @@ export const routes: Route[] = [
         ),
         routes: [
           {
+            name: 'Perfil',
             path: '/app/settings',
             exact: true,
             component: loadable(() =>
@@ -129,6 +134,17 @@ export const routes: Route[] = [
             ),
           },
           {
+            name: 'Empresa',
+            path: '/app/settings/empresa',
+            exact: true,
+            component: loadable(() =>
+              import(
+                /* webpackChunkName: "app.settings.empresa" */ '@/client/pages/App/Settings/Empresa'
+              )
+            ),
+          },
+          {
+            name: 'Aplicação',
             path: '/app/settings/application',
             exact: true,
             component: loadable(() =>

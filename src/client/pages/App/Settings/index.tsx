@@ -11,12 +11,13 @@ export default function Settings({ route }: RouteConfigComponentProps) {
       helmetProps={{ titleTemplate: '%s - Configurações | F3Desk' }}
       footer={
         <TabBar>
-          <TabBarItem to="/app/settings" exact>
-            Perfil
-          </TabBarItem>
-          <TabBarItem to="/app/settings/application" exact>
-            Aplicação
-          </TabBarItem>
+          {route &&
+            route.routes &&
+            route.routes.map(r => (
+              <TabBarItem to={r.path as string} exact={r.exact}>
+                {r.name}
+              </TabBarItem>
+            ))}
         </TabBar>
       }
       notFluid

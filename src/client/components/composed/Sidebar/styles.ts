@@ -15,7 +15,7 @@ export const Container = styled.div`
   width: 250px;
   flex-direction: column;
   background-color: ${MapBackground};
-  border-right: 1px solid ${MapBorder};
+  border-right: 2px solid ${MapBorder};
 `;
 
 export const Items = styled.div`
@@ -35,6 +35,10 @@ export const Icon = styled.span`
   padding-left: 0.5rem;
   display: inline-flex;
   align-items: center;
+  svg {
+    width: 18px;
+    height: 18px;
+  }
 `;
 
 export const Item = styled(NavLink)`
@@ -43,7 +47,7 @@ export const Item = styled(NavLink)`
   flex-direction: row;
   padding: 0.5rem 0.75rem 0.5rem 1rem;
   font-size: 1rem;
-  font-weight: 500;
+  font-weight: 400;
   text-transform: capitalize;
   width: 100%;
   text-decoration: none;
@@ -54,6 +58,13 @@ export const Item = styled(NavLink)`
   }
   & + a {
     margin-top: 0.25rem;
+  }
+  &:hover {
+    text-decoration: none;
+    color: ${MapContrastText};
+    ${Icon} {
+      color: ${MapContrastText};
+    }
   }
   &::before {
     content: '';

@@ -13,7 +13,14 @@ export default function Mesa() {
         subTitle="Visão Geral"
         append={<Button>Novo chamado</Button>}
       >
-        <Task title="Mouse parou de funcionar">Problemas no leitor óptico</Task>
+        {[
+          ...Array.from(new Array(10)).map((v, i) => (
+            // eslint-disable-next-line react/no-array-index-key
+            <Task key={i} index={i} title="Mouse parou de funcionar">
+              Problemas no leitor óptico {i}
+            </Task>
+          )),
+        ]}
       </Page>
     </DndProvider>
   );

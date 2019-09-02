@@ -13,16 +13,20 @@ export const NavItem = styled(NavLink)`
   font-weight: 500;
   text-transform: capitalize;
   color: ${constantColor('label')};
-  margin-bottom: -1px;
-  border-bottom: 1px solid ${MapBorder};
+  margin-bottom: -2px;
+  border-bottom: 2px solid ${MapBorder};
   &.${activeClassName} {
     ${color(
       'primary',
       ({ main }) => css`
-        border-bottom: 1px solid ${main};
+        border-bottom: 2px solid ${main};
         color: ${MapContrastText};
       `
     )}
+  }
+  &:hover {
+    text-decoration: none;
+    color: ${MapContrastText};
   }
   & + a {
     margin-left: 1.5rem;

@@ -10,7 +10,7 @@ import { radius } from '@/client/styles/utils';
 
 export const Header = styled.div`
   padding: 1rem;
-  border-bottom: 1px solid ${MapBorder};
+  border-bottom: 2px solid ${MapBorder};
 `;
 
 export const Body = styled.div`
@@ -23,7 +23,7 @@ interface ContainerProps {
 }
 
 export const Container = styled(Paper)<ContainerProps>`
-  border: 1px solid ${MapBorder};
+  border: 2px solid ${MapBorder};
   background-color: ${MapBackground};
   cursor: grab;
   ${props =>
@@ -37,6 +37,9 @@ export const Container = styled(Paper)<ContainerProps>`
         opacity: 0;
       }
     `}
+  & + ${Paper}{
+    margin-top: 1rem;
+  }
 `;
 
 Container.defaultProps = {
@@ -47,6 +50,7 @@ Container.defaultProps = {
 export const Title = styled.h3`
   font-size: 1.15rem;
   font-weight: 600;
+  margin-bottom: 0;
   color: ${MapContrastText};
 `;
 

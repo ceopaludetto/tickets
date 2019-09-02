@@ -1,33 +1,16 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Row, Col } from 'styled-bootstrap-grid';
-import { FiEye, FiEyeOff } from 'react-icons/fi';
 import { Helmet } from 'react-helmet';
 
 import { Control, Button, IconButton } from '@/client/components/form';
 import { Divider, TextAlign, Alert } from '@/client/components/layout';
+import { useMultipleVisibility } from '@/client/utils/useVisibility';
+import { List } from './styles';
 
 export default function MainSettingsPage() {
-  const [visibility, setVisibility] = useState({
-    password: false,
-    npassword: false,
-    rnpassword: false,
-  });
-
-  function handleVisibility(prop: keyof typeof visibility) {
-    return () =>
-      setVisibility({
-        ...visibility,
-        [prop]: !visibility[prop],
-      });
-  }
-
-  function renderEye(isOn: boolean) {
-    return isOn ? <FiEyeOff /> : <FiEye />;
-  }
-
-  function returnType(isOn: boolean) {
-    return isOn ? 'text' : 'password';
-  }
+  const { toggleVisibility, render: renderVisibility } = useMultipleVisibility<
+    ('v' | 'nv' | 'rnv')[]
+  >(['v', 'nv', 'rnv']);
 
   return (
     <>
@@ -56,32 +39,32 @@ export default function MainSettingsPage() {
       <Row>
         <Col col={12} md={6}>
           <Control
-            type={returnType(visibility.password)}
+            type={renderVisibility('v', 'text', 'password')}
             id="password"
             label="Senha atual"
             append={
-              <IconButton onClick={handleVisibility('password')}>
-                {renderEye(visibility.password)}
+              <IconButton onClick={toggleVisibility('v')}>
+                {renderVisibility('v')}
               </IconButton>
             }
           />
           <Control
-            type={returnType(visibility.npassword)}
+            type={renderVisibility('nv', 'text', 'password')}
             id="npassword"
             label="Nova senha"
             append={
-              <IconButton onClick={handleVisibility('npassword')}>
-                {renderEye(visibility.npassword)}
+              <IconButton onClick={toggleVisibility('nv')}>
+                {renderVisibility('nv')}
               </IconButton>
             }
           />
           <Control
-            type={returnType(visibility.rnpassword)}
+            type={renderVisibility('rnv', 'text', 'password')}
             id="rnpassword"
             label="Repetir nova senha"
             append={
-              <IconButton onClick={handleVisibility('rnpassword')}>
-                {renderEye(visibility.rnpassword)}
+              <IconButton onClick={toggleVisibility('rnv')}>
+                {renderVisibility('rnv')}
               </IconButton>
             }
           />
@@ -90,7 +73,14 @@ export default function MainSettingsPage() {
           </TextAlign>
         </Col>
         <Col col={12} md={6}>
-          <Alert>teste</Alert>
+          <Alert>
+            <h4>Dicas de senha:</h4>
+            <List>
+              <li>Pelo menos oito caracteres</li>
+              <li>Pelo menos um caractere especial</li>
+              <li>Pelo menos uma letra maiúscula</li>
+            </List>
+          </Alert>
         </Col>
       </Row>
       <Divider />

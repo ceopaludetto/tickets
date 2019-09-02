@@ -9,7 +9,7 @@ export const Alert = styled.div`
     ({ main, darken }) => css`
       background-color: ${rgba(main, 0.2)};
       color: ${darken};
-      border: 1px solid ${main};
+      border: 2px solid ${main};
       border-radius: ${radius(1.5)};
     `
   )}

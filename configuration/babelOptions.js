@@ -90,6 +90,16 @@ module.exports = (isServer = false) => ({
           transform: 'react-use/lib/${member}',
           preventFullImport: true,
         },
+        ...(isServer
+          ? {}
+          : {
+              'mdi-norm': {
+                // eslint-disable-next-line no-template-curly-in-string
+                transform: 'mdi-norm/es/${member}',
+                preventFullImport: true,
+                skipDefaultConversion: true,
+              },
+            }),
       },
     ],
   ],
