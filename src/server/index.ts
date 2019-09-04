@@ -1,43 +1,15 @@
 import { NestFactory } from '@nestjs/core';
-import { ValidationPipe } from '@nestjs/common';
-import { static as ExpressStatic } from 'express';
-import CookieParser from 'cookie-parser';
-import RateLimit from 'express-rate-limit';
-import Helmet from 'helmet';
-import Compression from 'compression';
 
 import { ApplicationModule } from '@/server/app.module';
-import { IS_PRODUCTION } from '@/server/utils/constants';
+import { middlewares } from '@/server/utils/middlewares';
+import { Logger } from '@/server/customs/logger';
 
 async function bootstrap() {
-  const app = await NestFactory.create(ApplicationModule);
-  app.use(CookieParser());
-  if (IS_PRODUCTION) {
-    app.use(Compression());
-    app.use(Helmet());
-    app.use(
-      new RateLimit({
-        windowMs: 5 * 60 * 1000,
-        max: 100,
-        handler: (_, res) => {
-          return res.status(429).send({
-            message: 'Too many requests, please try again later.',
-            status: 429,
-            error: 'Rate limit error',
-          });
-        },
-      })
-    );
-  }
-  app.use(
-    process.env.PUBLIC_PATH as string,
-    ExpressStatic(process.env.STATIC_FOLDER as string)
-  );
-  app.use(
-    '/robots.txt',
-    ExpressStatic(`${process.env.STATIC_FOLDER as string}/public/robots.txt`)
-  );
-  app.useGlobalPipes(new ValidationPipe({ transform: true }));
+  const app = await NestFactory.create(ApplicationModule, {
+    logger: new Logger(),
+  });
+  middlewares(app);
+
   app.listen(process.env.PORT as string);
 
   if (module.hot) {

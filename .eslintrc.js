@@ -62,7 +62,7 @@ module.exports = {
     ]
   },
   settings: {
-    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx", ".gql"],
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
     },

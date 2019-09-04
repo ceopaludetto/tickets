@@ -5,7 +5,7 @@ import { loadableReady } from '@loadable/component';
 import { ApolloProvider } from '@apollo/react-common';
 import { HttpLink } from 'apollo-link-http';
 
-import App from '@/client/bootstrap';
+import Bootstrap from '@/client/bootstrap';
 import { createClient } from '@/client/providers/apollo';
 
 const client = createClient(
@@ -16,19 +16,27 @@ const client = createClient(
   })
 );
 
-loadableReady(() => {
-  hydrate(
-    <StrictMode>
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ApolloProvider>
-    </StrictMode>,
-    document.querySelector('#app')
-  );
-});
+function render(App: () => JSX.Element) {
+  loadableReady(() => {
+    hydrate(
+      <StrictMode>
+        <ApolloProvider client={client}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ApolloProvider>
+      </StrictMode>,
+      document.querySelector('#app')
+    );
+  });
+}
+
+render(Bootstrap);
 
 if (module.hot) {
-  module.hot.accept();
+  module.hot.accept('./bootstrap.tsx', () => {
+    // eslint-disable-next-line global-require
+    const newApp = require('./bootstrap').default;
+    render(newApp);
+  });
 }

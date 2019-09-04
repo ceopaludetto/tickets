@@ -1,8 +1,12 @@
-import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
 import { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
+import { GqlAuthGuard } from './auth.guard';
 import { Usuario, LoginUsuario, UsuarioInput } from '@/server/models';
+import { User } from '@/server/components/auth/auth.decorator';
+import { PayloadType } from '@/server/utils/common.dto';
 
 interface ContextType {
   req: Request;
@@ -15,6 +19,13 @@ export class AuthResolver {
 
   public constructor(authService: AuthService) {
     this.authService = authService;
+  }
+
+  @UseGuards(GqlAuthGuard)
+  @Query(() => Usuario)
+  public async profile(@User() user: PayloadType) {
+    const usuario = await this.authService.profile(user._id);
+    return usuario;
   }
 
   @Mutation(() => Usuario)

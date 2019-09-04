@@ -5,7 +5,7 @@ import { Helmet, HelmetData } from 'react-helmet';
 import { StaticRouter } from 'react-router-dom';
 import { ChunkExtractor, ChunkExtractorManager } from '@loadable/server';
 import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable, BadRequestException, Inject } from '@nestjs/common';
 import { ApolloProvider } from '@apollo/react-common';
 import { getDataFromTree } from '@apollo/react-ssr';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
@@ -14,17 +14,18 @@ import { SchemaLink } from 'apollo-link-schema';
 import ReactApp from '@/client/bootstrap';
 import { ContextType, ReactContextType } from '@/server/utils/common.dto';
 import { createClient } from '@/client/providers/apollo';
-import schema from '@/server/schema.gql';
+import { SCHEMA_LINK } from '@/server/utils/constants';
 
 @Injectable()
 export class ReactService {
-  public render({ req, res }: ContextType) {
-    const client = createClient(
-      true,
-      new SchemaLink({
-        schema,
-      })
-    );
+  private schemaLink: SchemaLink;
+
+  public constructor(@Inject(SCHEMA_LINK) schemaLink: SchemaLink) {
+    this.schemaLink = schemaLink;
+  }
+
+  public async render({ req, res }: ContextType) {
+    const client = createClient(true, this.schemaLink);
     const context: ReactContextType = {};
     const extractor = new ChunkExtractor({
       statsFile: process.env.MANIFEST as string,

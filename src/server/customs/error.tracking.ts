@@ -19,22 +19,23 @@ export class ErrorTracking extends GraphQLExtension {
         let status = 500;
 
         if (typeof message === 'object') {
-          status = message.statusCode;
+          status = message.status || message.message.statusCode || 500;
           errors.push({
-            status: message.statusCode,
-            error: message.error,
-            message: message.message,
+            status,
+            error: message.message.error || message.error,
+            message: message.message.message || message.message,
           });
         } else if (typeof message === 'string' && message.includes('Error: ')) {
           const erro = JSON.parse(message.replace('Error: ', ''));
-          status = erro.message.statusCode;
+          status = erro.message.statusCode || 500;
           errors.push({
-            status: erro.message.statusCode,
+            status,
             error: erro.message.error,
             message: erro.message.message,
           });
         } else {
-          status = (HttpStatus[e.extensions.code] as unknown) as number;
+          status =
+            ((HttpStatus[e.extensions.code] as unknown) as number) || 500;
           errors.push({
             status,
             message,

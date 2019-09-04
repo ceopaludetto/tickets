@@ -21,8 +21,6 @@ module.exports = (isServer = false) => ({
     ignored: [/node_modules/, /dist/],
   },
   optimization: {
-    removeAvailableModules: isProd,
-    removeEmptyChunks: isProd,
     minimize: isProd,
     minimizer: [
       new TerserPlugin({
@@ -86,6 +84,7 @@ module.exports = (isServer = false) => ({
                 loader: 'ts-loader',
                 options: {
                   transpileOnly: true,
+                  experimentalWatchApi: true,
                   configFile: path.resolve(
                     'src',
                     isServer ? 'server' : 'client',
@@ -95,20 +94,6 @@ module.exports = (isServer = false) => ({
               },
             ],
             exclude: /node_modules/,
-          },
-          {
-            test: /\.jsx?$/,
-            use: {
-              loader: 'babel-loader',
-              options: {
-                babelrc: false,
-                configFile: false,
-                cacheDirectory: true,
-                cacheCompression: !isProd,
-                compact: !isProd,
-                ...babelOptions(isServer),
-              },
-            },
           },
           {
             test: /\.(gql|graphql)$/,
@@ -135,6 +120,13 @@ module.exports = (isServer = false) => ({
     extensions: ['.js', '.jsx', '.tsx', '.ts', '.json'],
   },
   plugins: [
+    ...(!isProd
+      ? [
+          new webpack.WatchIgnorePlugin([
+            path.resolve('src', 'server', 'schema.gql'),
+          ]),
+        ]
+      : []),
     new WebpackBar({
       name: isServer ? 'Server' : 'Client',
       color: isServer ? '#c065f4' : '#f56be2',

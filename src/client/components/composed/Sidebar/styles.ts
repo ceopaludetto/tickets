@@ -68,13 +68,20 @@ export const Item = styled(NavLink)`
   }
   &::before {
     content: '';
-    width: 3px;
+    width: 0px;
     height: 60%;
     top: 20%;
     left: 0%;
-    background-color: transparent;
     display: block;
     position: absolute;
+    transition: width 125ms ease-in-out;
+    ${color(
+      'primary',
+      ({ main }) =>
+        css`
+          background-color: ${main};
+        `
+    )}
   }
   &.active {
     color: ${MapContrastText};
@@ -82,13 +89,7 @@ export const Item = styled(NavLink)`
       color: ${MapContrastText};
     }
     &::before {
-      ${color(
-        'primary',
-        ({ main }) =>
-          css`
-            background-color: ${main};
-          `
-      )}
+      width: 3px;
     }
   }
 `;

@@ -12,12 +12,10 @@ import {
 import {
   CommonFindAllArgs,
   CommonFindOneArgs,
-  PayloadType,
 } from '@/server/utils/common.dto';
 import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
 import { SecurityGuard } from '@/server/components/security/security.guard';
 import { UseRole } from '@/server/components/security/security.decorators';
-import { User } from '@/server/components/auth/auth.decorator';
 
 @Resolver(() => Usuario)
 export class UsuarioResolver {
@@ -36,14 +34,6 @@ export class UsuarioResolver {
   @Query(() => Usuario)
   public async findUsuario(@Args() { _id }: CommonFindOneArgs) {
     const usuario = await this.userService.findOne(_id);
-    return usuario;
-  }
-
-  @UseGuards(GqlAuthGuard)
-  @Query(() => Usuario)
-  public async profile(@User() user: PayloadType) {
-    // eslint-disable-next-line no-underscore-dangle
-    const usuario = await this.userService.findOne(user._id);
     return usuario;
   }
 

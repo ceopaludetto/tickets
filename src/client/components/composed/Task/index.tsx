@@ -1,14 +1,14 @@
 import React, { useRef } from 'react';
 import { useDrag, useDrop, DragObjectWithType } from 'react-dnd';
 
-import { Container, Title, Header, Body, Labels } from './styles';
+import { Container, Title, Header, Body, Labels, Label } from './styles';
+import { Label as ILabel, Maybe } from '@/client/typescript/graphql';
 
 interface TaskProps extends React.HTMLAttributes<HTMLDivElement> {
+  id?: string;
   title?: string;
+  labels?: Maybe<ILabel[]>;
   index: number;
-  mock?: {
-    id?: string;
-  };
 }
 
 export const DndType = 'TASK';
@@ -17,7 +17,7 @@ interface TaskType extends DragObjectWithType {
   index: number;
 }
 
-export function Task({ title, children, index, ...rest }: TaskProps) {
+export function Task({ title, children, index, labels, ...rest }: TaskProps) {
   const ref = useRef<HTMLDivElement>(null);
 
   const [{ isDragging }, dragRef] = useDrag({
@@ -59,6 +59,7 @@ export function Task({ title, children, index, ...rest }: TaskProps) {
         return;
       }
 
+      // eslint-disable-next-line no-console
       console.log('foi');
     },
   });
@@ -70,8 +71,14 @@ export function Task({ title, children, index, ...rest }: TaskProps) {
       <Header>
         <Title>{title}</Title>
       </Header>
-      <Body>
-        <Labels />
+      <Body hasLabels={!!(labels && labels.length)}>
+        {!!labels && !!labels.length && (
+          <Labels>
+            {labels.map(l => (
+              <Label key={l._id} title={l.descricao} color={l.cor} />
+            ))}
+          </Labels>
+        )}
         {children}
       </Body>
     </Container>

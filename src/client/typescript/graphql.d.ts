@@ -76,6 +76,18 @@ export type EmpresaInput = {
   planoHoras?: Maybe<PlanoDeHorasEnum>,
 };
 
+export type Label = {
+  __typename?: 'Label',
+  _id: Scalars['ID'],
+  descricao: Scalars['String'],
+  cor: Scalars['String'],
+};
+
+export type LabelInput = {
+  descricao?: Maybe<Scalars['String']>,
+  cor?: Maybe<Scalars['String']>,
+};
+
 export type Mutation = {
   __typename?: 'Mutation',
   addEmpresa: Empresa,
@@ -85,6 +97,8 @@ export type Mutation = {
   register: Usuario,
   addPerfil: Perfil,
   updatePerfil: Perfil,
+  addTicket: Ticket,
+  updateTicket: Ticket,
 };
 
 
@@ -124,6 +138,17 @@ export type MutationAddPerfilArgs = {
 export type MutationUpdatePerfilArgs = {
   _id: Scalars['ID'],
   input: PerfilInput
+};
+
+
+export type MutationAddTicketArgs = {
+  input: TicketInput
+};
+
+
+export type MutationUpdateTicketArgs = {
+  _id: Scalars['ID'],
+  input: TicketInput
 };
 
 export type Perfil = {
@@ -176,7 +201,10 @@ export type Query = {
   profile: Usuario,
   findAllPerfis: Array<Perfil>,
   findPerfil: Perfil,
+  findAllTickets: Array<Ticket>,
+  findTicket: Ticket,
   logged: Scalars['Boolean'],
+  isDark: Scalars['Boolean'],
 };
 
 
@@ -212,10 +240,50 @@ export type QueryFindPerfilArgs = {
   _id: Scalars['ID']
 };
 
+
+export type QueryFindAllTicketsArgs = {
+  skip?: Maybe<Scalars['Int']>,
+  take?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryFindTicketArgs = {
+  _id: Scalars['ID']
+};
+
 export enum RecursoEnum {
   Usuario = 'Usuario',
   Empresa = 'Empresa',
   Perfil = 'Perfil'
+}
+
+export type Subscription = {
+  __typename?: 'Subscription',
+  watchTickets: Ticket,
+};
+
+export type Ticket = {
+  __typename?: 'Ticket',
+  _id: Scalars['ID'],
+  nome: Scalars['String'],
+  descricao: Scalars['String'],
+  usuario: Usuario,
+  status: TicketStatusEnum,
+  labels?: Maybe<Array<Label>>,
+};
+
+export type TicketInput = {
+  nome?: Maybe<Scalars['String']>,
+  descricao?: Maybe<Scalars['String']>,
+  usuario?: Maybe<Scalars['ID']>,
+  status?: Maybe<TicketStatusEnum>,
+  labels?: Maybe<Array<LabelInput>>,
+};
+
+export enum TicketStatusEnum {
+  Completo = 'Completo',
+  Pendente = 'Pendente',
+  Verificacao = 'Verificacao'
 }
 
 export type Usuario = {
@@ -242,6 +310,19 @@ export type LoggedQueryVariables = {};
 
 
 export type LoggedQuery = { __typename?: 'Query', logged: boolean };
+
+export type ThemeQueryVariables = {};
+
+
+export type ThemeQuery = { __typename?: 'Query', isDark: boolean };
+
+export type FindAllTicketsQueryVariables = {
+  skip?: Maybe<Scalars['Int']>,
+  take?: Maybe<Scalars['Int']>
+};
+
+
+export type FindAllTicketsQuery = { __typename?: 'Query', findAllTickets: Array<{ __typename?: 'Ticket', _id: string, nome: string, descricao: string, labels: Maybe<Array<{ __typename?: 'Label', _id: string, descricao: string, cor: string }>> }> };
 
 export type FindAllUsuariosQueryVariables = {
   skip: Scalars['Int'],

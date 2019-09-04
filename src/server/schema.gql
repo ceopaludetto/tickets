@@ -69,6 +69,17 @@ input EmpresaInput {
   planoHoras: PlanoDeHorasEnum
 }
 
+type Label {
+  _id: ID!
+  descricao: String!
+  cor: String!
+}
+
+input LabelInput {
+  descricao: String
+  cor: String
+}
+
 type Mutation {
   addEmpresa(input: EmpresaInput!): Empresa!
   updateEmpresa(_id: ID!, input: EmpresaInput!): Empresa!
@@ -77,6 +88,8 @@ type Mutation {
   register(input: UsuarioInput!): Usuario!
   addPerfil(input: PerfilInput!): Perfil!
   updatePerfil(_id: ID!, input: PerfilInput!): Perfil!
+  addTicket(input: TicketInput!): Ticket!
+  updateTicket(_id: ID!, input: TicketInput!): Ticket!
 }
 
 type Perfil {
@@ -126,12 +139,41 @@ type Query {
   profile: Usuario!
   findAllPerfis(skip: Int = 0, take: Int = 100): [Perfil!]!
   findPerfil(_id: ID!): Perfil!
+  findAllTickets(skip: Int = 0, take: Int = 100): [Ticket!]!
+  findTicket(_id: ID!): Ticket!
 }
 
 enum RecursoEnum {
   Usuario
   Empresa
   Perfil
+}
+
+type Subscription {
+  watchTickets: Ticket!
+}
+
+type Ticket {
+  _id: ID!
+  nome: String!
+  descricao: String!
+  usuario: Usuario!
+  status: TicketStatusEnum!
+  labels: [Label!]
+}
+
+input TicketInput {
+  nome: String
+  descricao: String
+  usuario: ID
+  status: TicketStatusEnum
+  labels: [LabelInput!]
+}
+
+enum TicketStatusEnum {
+  Completo
+  Pendente
+  Verificacao
 }
 
 type Usuario {

@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 
 import { UsuarioService } from '@/server/components/usuario/usuario.service';
 import { Usuario, UsuarioInput } from '@/server/models';
-import { ContextType } from '@/server/utils/common.dto';
+import { ContextType, ID } from '@/server/utils/common.dto';
 
 @Injectable()
 export class AuthService {
@@ -14,6 +14,11 @@ export class AuthService {
   public constructor(userService: UsuarioService, jwtService: JwtService) {
     this.userService = userService;
     this.jwtService = jwtService;
+  }
+
+  public async profile(_id: ID) {
+    const user = await this.userService.findOne(_id);
+    return user;
   }
 
   public async login(email: string, senha: string) {

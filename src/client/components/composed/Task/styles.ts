@@ -13,9 +13,17 @@ export const Header = styled.div`
   border-bottom: 2px solid ${MapBorder};
 `;
 
-export const Body = styled.div`
+interface BodyProps {
+  hasLabels?: boolean;
+}
+
+export const Body = styled.div<BodyProps>`
   padding: 1rem;
-  margin-top: -1.5rem;
+  ${props =>
+    props.hasLabels &&
+    css`
+      margin-top: -1.5rem;
+    `}
 `;
 
 interface ContainerProps {
@@ -58,13 +66,19 @@ export const Labels = styled.div`
   display: flex;
   align-items: center;
   justify-content: flex-start;
-  margin-bottom: 1rem;
+  margin-bottom: 0.75rem;
 `;
 
-export const Label = styled.span`
+interface LabelProps {
+  color?: string;
+}
+
+export const Label = styled.span<LabelProps>`
   display: block;
   width: 17px;
   height: 17px;
   border-radius: ${radius()};
-  background-color: red;
+  ${props => css`
+    background-color: ${props.color};
+  `}
 `;

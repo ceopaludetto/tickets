@@ -21,6 +21,7 @@ export class ConfigurationService {
     const EnvVarsSchema: Joi.ObjectSchema = Joi.object({
       MONGO_URI: Joi.string(),
       SECRET: Joi.string(),
+      LOGFILE_FORMAT: Joi.string().only(['JSON', 'TEXT']),
     });
 
     const { error, value } = Joi.validate(config, EnvVarsSchema);

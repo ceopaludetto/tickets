@@ -23,13 +23,17 @@ module.exports = merge(baseConfig(false), {
     path.resolve('src', 'client', 'index.tsx'),
   ],
   optimization: {
-    splitChunks: {
-      chunks: 'all',
-    },
-    runtimeChunk: true,
+    removeAvailableModules: isProd,
+    removeEmptyChunks: isProd,
+    splitChunks: isProd
+      ? {
+          chunks: 'all',
+        }
+      : false,
+    runtimeChunk: isProd,
   },
   output: {
-    pathinfo: true,
+    pathinfo: isProd,
     publicPath: '/static/',
     path: path.resolve('dist', 'static'),
     libraryTarget: 'var',
@@ -52,7 +56,7 @@ module.exports = merge(baseConfig(false), {
     noInfo: true,
     overlay: false,
     writeToDisk: true,
-    publicPath: '/assets/',
+    publicPath: '/static/',
     host: envs.HOST,
     port: envs.DEV_PORT,
     quiet: true,
@@ -119,6 +123,10 @@ module.exports = merge(baseConfig(false), {
             watch: ['./src'],
             typeCheck: true,
             formatter: tsFormatter,
+            eslint: true,
+            eslintOptions: {
+              configFile: path.resolve('.eslintrc.js'),
+            },
           }),
           new WatchMissingNodeModulesPlugin(path.resolve('node_modules')),
         ]),
