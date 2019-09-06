@@ -81,11 +81,11 @@ input LabelInput {
 }
 
 type Mutation {
-  addEmpresa(input: EmpresaInput!): Empresa!
-  updateEmpresa(_id: ID!, input: EmpresaInput!): Empresa!
-  updateUsuario(_id: ID!, input: UsuarioInput!): Usuario!
   login(email: String!, senha: String!): Usuario!
   register(input: UsuarioInput!): Usuario!
+  updateUsuario(_id: ID!, input: UsuarioInput!): Usuario!
+  addEmpresa(input: EmpresaInput!): Empresa!
+  updateEmpresa(_id: ID!, input: EmpresaInput!): Empresa!
   addPerfil(input: PerfilInput!): Perfil!
   updatePerfil(_id: ID!, input: PerfilInput!): Perfil!
   addTicket(input: TicketInput!): Ticket!
@@ -132,11 +132,11 @@ input PoliticaInput {
 }
 
 type Query {
-  findAllEmpresas(skip: Int = 0, take: Int = 100): [Empresa!]!
-  findEmpresa(_id: ID!): Empresa!
+  profile: Usuario!
   findAllUsuarios(skip: Int = 0, take: Int = 100): [Usuario!]!
   findUsuario(_id: ID!): Usuario!
-  profile: Usuario!
+  findAllEmpresas(skip: Int = 0, take: Int = 100): [Empresa!]!
+  findEmpresa(_id: ID!): Empresa!
   findAllPerfis(skip: Int = 0, take: Int = 100): [Perfil!]!
   findPerfil(_id: ID!): Perfil!
   findAllTickets(skip: Int = 0, take: Int = 100): [Ticket!]!

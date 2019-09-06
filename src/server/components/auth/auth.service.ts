@@ -21,6 +21,11 @@ export class AuthService {
     return user;
   }
 
+  public async verify(token: string) {
+    const payload = await this.jwtService.verifyAsync(token);
+    return payload;
+  }
+
   public async login(email: string, senha: string) {
     try {
       const funcionario = await this.userService.login({

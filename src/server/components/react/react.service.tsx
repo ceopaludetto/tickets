@@ -24,7 +24,7 @@ export class ReactService {
     this.schemaLink = schemaLink;
   }
 
-  public async render({ req, res }: ContextType) {
+  public render({ req, res }: ContextType) {
     const client = createClient(true, this.schemaLink);
     const context: ReactContextType = {};
     const extractor = new ChunkExtractor({
@@ -36,7 +36,14 @@ export class ReactService {
       client.cache.writeData({
         data: {
           logged: true,
-          user: req.user._id,
+          userId: req.user._id,
+        },
+      });
+    } else {
+      client.cache.writeData({
+        data: {
+          logged: false,
+          userId: null,
         },
       });
     }
@@ -59,6 +66,9 @@ export class ReactService {
       getDataFromTree(App).then(() => {
         const markup = renderToString(App);
         const initialState = client.extract();
+
+        // eslint-disable-next-line no-console
+        // console.log('CONTEXT AFTER RENDER', context);
 
         if (context.url) {
           return res.redirect(context.url);

@@ -22,13 +22,14 @@ export default function Mesa() {
         title="Mesa"
         subTitle="Visão Geral"
         append={<Button>Novo chamado</Button>}
+        helmetProps={{
+          title: 'Mesa',
+        }}
       >
         {data &&
           data.findAllTickets &&
           data.findAllTickets.map((t, i) => (
-            <Task index={i} key={t._id} title={t.nome} labels={t.labels}>
-              {t.descricao}
-            </Task>
+            <Task index={i} key={t._id} data={t} />
           ))}
       </Page>
     </DndProvider>

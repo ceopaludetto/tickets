@@ -8,22 +8,9 @@ import {
 } from '@/client/styles/maps';
 import { radius } from '@/client/styles/utils';
 
-export const Header = styled.div`
+export const Body = styled.div`
   padding: 1rem;
-  border-bottom: 2px solid ${MapBorder};
-`;
-
-interface BodyProps {
-  hasLabels?: boolean;
-}
-
-export const Body = styled.div<BodyProps>`
-  padding: 1rem;
-  ${props =>
-    props.hasLabels &&
-    css`
-      margin-top: -1.5rem;
-    `}
+  border-top: 27px solid ${MapBorder};
 `;
 
 interface ContainerProps {
@@ -41,7 +28,7 @@ export const Container = styled(Paper)<ContainerProps>`
       border-style: dashed;
       background-color: transparent;
       cursor: grabbing;
-      ${Header}, ${Body} {
+      ${Body} {
         opacity: 0;
       }
     `}
@@ -58,8 +45,13 @@ Container.defaultProps = {
 export const Title = styled.h3`
   font-size: 1.15rem;
   font-weight: 600;
-  margin-bottom: 0;
+  margin-bottom: 0.5rem;
   color: ${MapContrastText};
+`;
+
+export const Content = styled.div`
+  color: ${MapContrastText};
+  font-size: 1rem;
 `;
 
 export const Labels = styled.div`
@@ -67,6 +59,7 @@ export const Labels = styled.div`
   align-items: center;
   justify-content: flex-start;
   margin-bottom: 0.75rem;
+  margin-top: -1.5rem;
 `;
 
 interface LabelProps {
@@ -81,4 +74,7 @@ export const Label = styled.span<LabelProps>`
   ${props => css`
     background-color: ${props.color};
   `}
+  & + span {
+    margin-left: 0.5rem;
+  }
 `;

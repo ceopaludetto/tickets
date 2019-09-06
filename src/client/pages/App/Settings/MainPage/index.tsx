@@ -1,16 +1,23 @@
 import React from 'react';
 import { Row, Col } from 'styled-bootstrap-grid';
 import { Helmet } from 'react-helmet';
+import { useQuery } from '@apollo/react-hooks';
 
 import { Control, Button, IconButton } from '@/client/components/form';
 import { Divider, TextAlign, Alert } from '@/client/components/layout';
+import { SubTitle } from '@/client/components/typo';
 import { useMultipleVisibility } from '@/client/utils/useVisibility';
+import { ProfileQuery } from '@/client/typescript/graphql';
+import { Profile } from '@/client/graphql/usuario.gql';
 import { List } from './styles';
 
 export default function MainSettingsPage() {
   const { toggleVisibility, render: renderVisibility } = useMultipleVisibility<
     ('v' | 'nv' | 'rnv')[]
   >(['v', 'nv', 'rnv']);
+  const { data } = useQuery<ProfileQuery>(Profile);
+
+  // console.log(data);
 
   return (
     <>
@@ -18,7 +25,12 @@ export default function MainSettingsPage() {
       <Control type="email" id="email" label="Email" />
       <Row alignItems="center">
         <Col col={12} md={6}>
-          <Control type="text" id="name" label="Nome" />
+          <Control
+            type="text"
+            id="name"
+            label="Nome"
+            value={data && data.profile && data.profile.nome}
+          />
         </Col>
         <Col col={12} md={6}>
           <Control type="text" id="lastName" label="Sobrenome" />
@@ -74,7 +86,7 @@ export default function MainSettingsPage() {
         </Col>
         <Col col={12} md={6}>
           <Alert>
-            <h4>Dicas de senha:</h4>
+            <SubTitle>Dicas de senha</SubTitle>
             <List>
               <li>Pelo menos oito caracteres</li>
               <li>Pelo menos um caractere especial</li>

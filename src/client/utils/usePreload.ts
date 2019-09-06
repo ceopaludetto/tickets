@@ -1,3 +1,5 @@
+import { useApolloClient } from '@apollo/react-hooks';
+
 import { useRouter } from './useRouter';
 import { preloadRouteComponent } from './preloadRouteComponent';
 
@@ -5,6 +7,7 @@ export function usePreload(
   to: string,
   onClick?: (e: React.MouseEvent<HTMLAnchorElement, MouseEvent>) => void
 ) {
+  const client = useApolloClient();
   const { history } = useRouter();
 
   return async function handleClick(
@@ -12,7 +15,7 @@ export function usePreload(
   ) {
     e.preventDefault();
 
-    await preloadRouteComponent(to);
+    await preloadRouteComponent(to, client);
     history.push({
       pathname: to,
     });

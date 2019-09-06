@@ -90,32 +90,15 @@ export type LabelInput = {
 
 export type Mutation = {
   __typename?: 'Mutation',
-  addEmpresa: Empresa,
-  updateEmpresa: Empresa,
-  updateUsuario: Usuario,
   login: Usuario,
   register: Usuario,
+  updateUsuario: Usuario,
+  addEmpresa: Empresa,
+  updateEmpresa: Empresa,
   addPerfil: Perfil,
   updatePerfil: Perfil,
   addTicket: Ticket,
   updateTicket: Ticket,
-};
-
-
-export type MutationAddEmpresaArgs = {
-  input: EmpresaInput
-};
-
-
-export type MutationUpdateEmpresaArgs = {
-  _id: Scalars['ID'],
-  input: EmpresaInput
-};
-
-
-export type MutationUpdateUsuarioArgs = {
-  _id: Scalars['ID'],
-  input: UsuarioInput
 };
 
 
@@ -127,6 +110,23 @@ export type MutationLoginArgs = {
 
 export type MutationRegisterArgs = {
   input: UsuarioInput
+};
+
+
+export type MutationUpdateUsuarioArgs = {
+  _id: Scalars['ID'],
+  input: UsuarioInput
+};
+
+
+export type MutationAddEmpresaArgs = {
+  input: EmpresaInput
+};
+
+
+export type MutationUpdateEmpresaArgs = {
+  _id: Scalars['ID'],
+  input: EmpresaInput
 };
 
 
@@ -194,28 +194,17 @@ export type PoliticaInput = {
 
 export type Query = {
   __typename?: 'Query',
-  findAllEmpresas: Array<Empresa>,
-  findEmpresa: Empresa,
+  profile: Usuario,
   findAllUsuarios: Array<Usuario>,
   findUsuario: Usuario,
-  profile: Usuario,
+  findAllEmpresas: Array<Empresa>,
+  findEmpresa: Empresa,
   findAllPerfis: Array<Perfil>,
   findPerfil: Perfil,
   findAllTickets: Array<Ticket>,
   findTicket: Ticket,
   logged: Scalars['Boolean'],
   isDark: Scalars['Boolean'],
-};
-
-
-export type QueryFindAllEmpresasArgs = {
-  skip?: Maybe<Scalars['Int']>,
-  take?: Maybe<Scalars['Int']>
-};
-
-
-export type QueryFindEmpresaArgs = {
-  _id: Scalars['ID']
 };
 
 
@@ -226,6 +215,17 @@ export type QueryFindAllUsuariosArgs = {
 
 
 export type QueryFindUsuarioArgs = {
+  _id: Scalars['ID']
+};
+
+
+export type QueryFindAllEmpresasArgs = {
+  skip?: Maybe<Scalars['Int']>,
+  take?: Maybe<Scalars['Int']>
+};
+
+
+export type QueryFindEmpresaArgs = {
   _id: Scalars['ID']
 };
 
@@ -331,6 +331,11 @@ export type FindAllUsuariosQueryVariables = {
 
 
 export type FindAllUsuariosQuery = { __typename?: 'Query', findAllUsuarios: Array<{ __typename?: 'Usuario', _id: string, nome: string }> };
+
+export type ProfileQueryVariables = {};
+
+
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string, email: string } };
 
 export type LoginMutationVariables = {
   email: Scalars['String'],

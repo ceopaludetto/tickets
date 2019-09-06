@@ -1,5 +1,6 @@
 import { matchPath } from 'react-router-dom';
 import { LoadableComponent } from '@loadable/component';
+import { ApolloClient } from 'apollo-client';
 
 import { routes, Route } from '@/client/providers/route';
 
@@ -22,7 +23,10 @@ function findRoute(path: string, proutes: Route[]): Route {
   throw new Error('Route not finded');
 }
 
-export async function preloadRouteComponent(to: string | { pathname: string }) {
+export async function preloadRouteComponent(
+  to: string | { pathname: string },
+  client: ApolloClient<object>
+) {
   const path = typeof to === 'string' ? to : to.pathname;
 
   const matchingRoute = findRoute(path, routes);
@@ -30,5 +34,11 @@ export async function preloadRouteComponent(to: string | { pathname: string }) {
   if (matchingRoute && matchingRoute.component.load) {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (matchingRoute.component as LoadableComponent<any>).load();
+
+    if (matchingRoute.query) {
+      await client.query({
+        query: matchingRoute.query,
+      });
+    }
   }
 }

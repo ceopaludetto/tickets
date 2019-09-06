@@ -117,7 +117,7 @@ module.exports = (isServer = false) => ({
       '@': path.resolve('src'),
       'webpack/hot/poll': require.resolve('webpack/hot/poll'),
     },
-    extensions: ['.js', '.jsx', '.tsx', '.ts', '.json'],
+    extensions: ['.js', '.jsx', '.tsx', '.ts', '.gql', '.graphql', '.json'],
   },
   plugins: [
     ...(!isProd

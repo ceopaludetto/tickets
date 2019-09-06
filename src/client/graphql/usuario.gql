@@ -5,6 +5,15 @@ query FindAllUsuarios($skip: Int!, $take: Int!) {
   }
 }
 
+query Profile {
+  profile{
+    _id
+    nome
+    sobrenome
+    email
+  }
+}
+
 mutation Login($email: String!, $senha: String!) {
   login(email: $email, senha: $senha){
     _id

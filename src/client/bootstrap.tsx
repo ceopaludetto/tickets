@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { ThemeProvider } from 'styled-components';
 import { GridThemeProvider } from 'styled-bootstrap-grid';
 import { renderRoutes } from 'react-router-config';
-import { useQuery } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 
 import { LoggedQuery } from '@/client/typescript/graphql';
 import { Logged } from '@/client/graphql/local.gql';
@@ -12,7 +12,8 @@ import { routes } from '@/client/providers/route';
 import { GlobalStyle } from '@/client/styles/global';
 
 export default function App() {
-  const { data } = useQuery<LoggedQuery>(Logged);
+  const client = useApolloClient();
+  const data = client.readQuery<LoggedQuery>({ query: Logged });
 
   return (
     <ThemeProvider theme={theme}>
@@ -32,7 +33,7 @@ export default function App() {
             <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
             <meta name="theme-color" content="#23272A" />
           </Helmet>
-          {renderRoutes(routes, data)}
+          {renderRoutes(routes, { data })}
         </>
       </GridThemeProvider>
     </ThemeProvider>

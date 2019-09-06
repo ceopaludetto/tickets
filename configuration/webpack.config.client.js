@@ -117,22 +117,22 @@ module.exports = merge(baseConfig(false), {
           new webpack.HotModuleReplacementPlugin({
             multiStep: true,
           }),
-          new ForkTsCheckerWebpackPlugin({
-            async: true,
-            tsconfig: path.resolve('src', 'client', 'tsconfig.json'),
-            watch: ['./src'],
-            typeCheck: true,
-            formatter: tsFormatter,
-            eslint: true,
-            eslintOptions: {
-              configFile: path.resolve('.eslintrc.js'),
-            },
-          }),
           new WatchMissingNodeModulesPlugin(path.resolve('node_modules')),
         ]),
     new LoadablePlugin({
       filename: 'manifest.json',
       writeToDisk: true,
+    }),
+    new ForkTsCheckerWebpackPlugin({
+      async: true,
+      tsconfig: path.resolve('src', 'client', 'tsconfig.json'),
+      watch: ['./src'],
+      typeCheck: true,
+      formatter: tsFormatter,
+      eslint: true,
+      eslintOptions: {
+        configFile: path.resolve('.eslintrc.js'),
+      },
     }),
     new ModuleNotFoundPlugin(path.resolve('src')),
   ],

@@ -1,16 +1,16 @@
-import styled, { css } from 'styled-components';
+import styled from 'styled-components';
 
-import { color, rgba, radius } from '@/client/styles/utils';
+import { radius } from '@/client/styles/utils';
+import {
+  MapBackground,
+  MapBorder,
+  MapContrastText,
+} from '@/client/styles/maps';
 
 export const Alert = styled.div`
   padding: 1rem;
-  ${color(
-    'primary',
-    ({ main, darken }) => css`
-      background-color: ${rgba(main, 0.2)};
-      color: ${darken};
-      border: 2px solid ${main};
-      border-radius: ${radius(1.5)};
-    `
-  )}
+  background-color: ${MapBackground};
+  border: 2px solid ${MapBorder};
+  color: ${MapContrastText};
+  border-radius: ${radius(1.5)};
 `;
