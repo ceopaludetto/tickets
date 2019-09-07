@@ -73,4 +73,6 @@ export const gridTheme = {
   },
 };
 
-export type Theme = typeof theme;
+export type Theme = typeof theme & {
+  [index: string]: Partial<typeof theme>;
+};

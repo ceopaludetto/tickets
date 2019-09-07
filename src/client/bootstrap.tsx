@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { ThemeProvider } from 'styled-components';
 import { GridThemeProvider } from 'styled-bootstrap-grid';
 import { renderRoutes } from 'react-router-config';
-import { useApolloClient } from '@apollo/react-hooks';
+import { useQuery } from '@apollo/react-hooks';
 
 import { LoggedQuery } from '@/client/typescript/graphql';
 import { Logged } from '@/client/graphql/local.gql';
@@ -12,8 +12,7 @@ import { routes } from '@/client/providers/route';
 import { GlobalStyle } from '@/client/styles/global';
 
 export default function App() {
-  const client = useApolloClient();
-  const data = client.readQuery<LoggedQuery>({ query: Logged });
+  const { data } = useQuery<LoggedQuery>(Logged);
 
   return (
     <ThemeProvider theme={theme}>
@@ -21,10 +20,10 @@ export default function App() {
         <>
           <GlobalStyle />
           <Helmet defaultTitle="F3Desk" titleTemplate="%s | F3Desk">
-            <link
+            {/* <link
               rel="manifest"
               href={`${process.env.PUBLIC_PATH as string}public/manifest.json`}
-            />
+            /> */}
             <meta charSet="UTF-8" />
             <meta
               name="viewport"

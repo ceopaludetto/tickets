@@ -4,5 +4,6 @@ declare module '@/client/graphql/usuario.gql' {
   const Login: DocumentNode;
   const FindAllUsuarios: DocumentNode;
   const Profile: DocumentNode;
-  export { Login, FindAllUsuarios, Profile };
+  const UpdateUsuario: DocumentNode;
+  export { Login, FindAllUsuarios, Profile, UpdateUsuario };
 }

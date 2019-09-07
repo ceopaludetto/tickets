@@ -11,17 +11,21 @@ export function usePreload(
   const { history } = useRouter();
 
   return async function handleClick(
-    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+    e?: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) {
-    e.preventDefault();
+    if (e) {
+      e.preventDefault();
+    }
 
     await preloadRouteComponent(to, client);
     history.push({
       pathname: to,
     });
 
-    if (onClick) {
+    if (onClick && e) {
       onClick(e);
     }
   };
 }
+
+export { preloadRouteComponent };

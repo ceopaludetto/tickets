@@ -8,7 +8,7 @@ import {
   MapFocus,
   MapContrastText,
 } from '@/client/styles/maps';
-import { radius, color, rgba } from '@/client/styles/utils';
+import { radius, rgba, color, multipleColor } from '@/client/styles/utils';
 
 export const Root = styled.div`
   margin-bottom: 1rem;
@@ -54,7 +54,11 @@ export const Input = styled.input<InputProps>`
   }
 `;
 
-export const Container = styled.div`
+interface ContainerProps {
+  hasError?: boolean;
+}
+
+export const Container = styled.div<ContainerProps>`
   display: flex;
   align-items: stretch;
   transition: box-shadow 150ms ease-in-out, border-color 150ms ease-in-out;
@@ -65,13 +69,30 @@ export const Container = styled.div`
       background-color: ${MapBackgroundDarken};
     }
   }
+  ${multipleColor(['primary', 'error'], ([primary, error], { hasError }) =>
+    hasError
+      ? css`
+          border-color: ${error.main};
+          &:focus-within {
+            box-shadow: 0 0 0 2px ${rgba(error.main, 0.3)};
+          }
+        `
+      : css`
+          &:focus-within {
+            border-color: ${primary.main};
+            box-shadow: 0 0 0 2px ${rgba(primary.main, 0.3)};
+          }
+        `
+  )}
+`;
+
+export const Error = styled.span`
+  font-weight: 400;
+  font-size: 0.9rem;
   ${color(
-    'primary',
+    'error',
     ({ main }) => css`
-      &:focus-within {
-        border-color: ${main};
-        box-shadow: 0 0 0 2px ${rgba(main, 0.3)};
-      }
+      color: ${main};
     `
   )}
 `;

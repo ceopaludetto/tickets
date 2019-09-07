@@ -1,11 +1,7 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
+import { UserInputError } from 'apollo-server-express';
 
 import { Usuario, UsuarioInput, LoginUsuario } from '@/server/models';
 import { ID } from '@/server/utils/common.dto';
@@ -60,27 +56,27 @@ export class UsuarioService {
   }
 
   public async login({ email, senha }: LoginUsuario) {
-    try {
-      const usuario = await this.userRepository
-        .findOne({
-          email,
-        })
-        .populate('associacoes.perfil')
-        .populate('associacoes.empresa')
-        .exec();
+    const usuario = await this.userRepository
+      .findOne({
+        email,
+      })
+      .populate('associacoes.perfil')
+      .populate('associacoes.empresa')
+      .exec();
 
-      if (!usuario) {
-        throw new NotFoundException('Nenhum usuário encontrado.');
-      }
-
-      if (!(await usuario.comparePasswords(senha))) {
-        throw new UnauthorizedException('Senha incorreta');
-      }
-
-      return usuario;
-    } catch (err) {
-      throw new BadRequestException(err);
+    if (!usuario) {
+      throw new UserInputError('Nenhum usuário encontrado.', {
+        field: 'email',
+      });
     }
+
+    if (!(await usuario.comparePasswords(senha))) {
+      throw new UserInputError('Senha incorreta', {
+        field: 'senha',
+      });
+    }
+
+    return usuario;
   }
 
   public async createOrUpdate(data: UsuarioInput, id?: ID) {

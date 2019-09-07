@@ -25,7 +25,7 @@ function findRoute(path: string, proutes: Route[]): Route {
 
 export async function preloadRouteComponent(
   to: string | { pathname: string },
-  client: ApolloClient<object>
+  client?: ApolloClient<object>
 ) {
   const path = typeof to === 'string' ? to : to.pathname;
 
@@ -35,7 +35,7 @@ export async function preloadRouteComponent(
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     await (matchingRoute.component as LoadableComponent<any>).load();
 
-    if (matchingRoute.query) {
+    if (matchingRoute.query && client) {
       await client.query({
         query: matchingRoute.query,
       });

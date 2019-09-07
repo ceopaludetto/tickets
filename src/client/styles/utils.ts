@@ -15,12 +15,30 @@ export type ReturnColor = {
 export const color = <T>(
   variant: ColorMap<Omit<Theme['colors'], Filtered>>,
   cb: (c: ReturnColor, props: ThemedStyledProps<T, {}>) => any
-) => (props: ThemedStyledProps<T, {}>): ReturnColor | any => {
+) => (props: ThemedStyledProps<T, {}>): ReturnColor | ReturnType<typeof cb> => {
   if (cb) {
     return cb((props.theme as Theme).colors[variant], props);
   }
 
   return (props.theme as Theme).colors[variant];
+};
+
+export const multipleColor = <T>(
+  variant: ColorMap<Omit<Theme['colors'], Filtered>>[],
+  cb: (c: ReturnColor[], props: ThemedStyledProps<T, {}>) => any
+) => (
+  props: ThemedStyledProps<T, {}>
+): ReturnColor[] | ReturnType<typeof cb> => {
+  const arrOfColors: ReturnColor[] = [];
+  variant.forEach(variation =>
+    arrOfColors.push((props.theme as Theme).colors[variation])
+  );
+
+  if (cb) {
+    return cb(arrOfColors, props);
+  }
+
+  return arrOfColors;
 };
 
 export const constantColor = (

@@ -19,5 +19,15 @@ mutation Login($email: String!, $senha: String!) {
     _id
     nome
     sobrenome
+    email
+  }
+}
+
+mutation UpdateUsuario($id: ID!, $input: UsuarioInput!) {
+  updateUsuario(_id: $id, input: $input) {
+    _id
+    nome
+    sobrenome
+    email
   }
 }

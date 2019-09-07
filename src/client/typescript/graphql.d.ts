@@ -343,4 +343,12 @@ export type LoginMutationVariables = {
 };
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string, email: string } };
+
+export type UpdateUsuarioMutationVariables = {
+  id: Scalars['ID'],
+  input: UsuarioInput
+};
+
+
+export type UpdateUsuarioMutation = { __typename?: 'Mutation', updateUsuario: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string, email: string } };

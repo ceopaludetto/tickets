@@ -35,7 +35,7 @@ export class AuthService {
 
       return funcionario;
     } catch (err) {
-      throw new BadRequestException('Erro ao logar');
+      throw err;
     }
   }
 

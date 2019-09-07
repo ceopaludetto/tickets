@@ -63,6 +63,7 @@
     "@types/styled-components": "^4.1.18",
     "@types/styled-theming": "^2.2.2",
     "@types/webpack-env": "^1.13.9",
+    "@types/yup": "^0.26.23",
     "@typescript-eslint/eslint-plugin": "^1.10.2",
     "@typescript-eslint/parser": "^1.10.2",
     "babel-loader": "^8.0.6",
@@ -134,6 +135,7 @@
     "date-fns": "^2.0.1",
     "dotenv": "^8.0.0",
     "express": "^4.17.1",
+    "formik": "^1.5.8",
     "graphql": "^14.4.2",
     "graphql-extensions": "^0.9.1",
     "helmet": "^3.20.0",
@@ -164,6 +166,7 @@
     "styled-theming": "^2.2.0",
     "type-graphql": "^0.17.4",
     "typegoose": "^5.9.0",
-    "winston": "^3.2.1"
+    "winston": "^3.2.1",
+    "yup": "^0.27.0"
   }
 }

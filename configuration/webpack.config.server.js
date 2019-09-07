@@ -51,6 +51,7 @@ module.exports = merge(baseConfig(true), {
           new webpack.HotModuleReplacementPlugin(),
           new StartServerPlugin({
             name: 'index.js',
+            keyboard: true,
           }),
           new FriendlyErrorsPlugin({
             target: 'server',
