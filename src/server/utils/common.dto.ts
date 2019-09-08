@@ -11,7 +11,7 @@ import { InstanceType } from 'typegoose';
 import { Schema } from 'mongoose';
 
 import {
-  Usuario,
+  UsuarioInstance,
   RecursoEnum,
   AcaoEnum,
   AnyOrOwnEnum,
@@ -47,7 +47,7 @@ export interface ContextType {
 
 export type ID = Schema.Types.ObjectId;
 
-export type PayloadType = Pick<Usuario, '_id' | 'email'>;
+export type PayloadType = Pick<UsuarioInstance, '_id' | 'email'>;
 
 export interface Role {
   recurso: RecursoEnum;
@@ -55,19 +55,24 @@ export interface Role {
   tipo: AnyOrOwnEnum;
   useUserID?: boolean;
   customMatcher?: (
-    user: InstanceType<Usuario>,
-    assoc: InstanceType<Associacao>,
+    user: UsuarioInstance,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    args: any
+    args: any,
+    assoc: InstanceType<Associacao>
   ) => boolean;
+}
+
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type CustomMatcher = (user: UsuarioInstance, args: any) => boolean;
+export interface CustomMatcherOptions {
+  customMatcher: CustomMatcher;
+  errorText?: string;
 }
 
 export interface Args {
   empresa?: Schema.Types.ObjectId;
 }
 
-export interface Erro {
-  status: number;
-  message?: string;
-  error?: string;
+export interface ReactContextType {
+  url?: string;
 }

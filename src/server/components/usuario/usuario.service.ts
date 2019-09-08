@@ -1,11 +1,7 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
+import { UserInputError, ApolloError } from 'apollo-server-express';
 
 import { Usuario, UsuarioInput, LoginUsuario } from '@/server/models';
 import { ID } from '@/server/utils/common.dto';
@@ -37,7 +33,7 @@ export class UsuarioService {
         .exec();
       return usuarios;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 
@@ -53,34 +49,39 @@ export class UsuarioService {
         })
         .populate('associacoes.empresa')
         .exec();
+      if (!usuario) {
+        throw new UserInputError('Usuário não encontrado', {
+          field: '_id',
+        });
+      }
       return usuario;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 
   public async login({ email, senha }: LoginUsuario) {
-    try {
-      const usuario = await this.userRepository
-        .findOne({
-          email,
-        })
-        .populate('associacoes.perfil')
-        .populate('associacoes.empresa')
-        .exec();
+    const usuario = await this.userRepository
+      .findOne({
+        email,
+      })
+      .populate('associacoes.perfil')
+      .populate('associacoes.empresa')
+      .exec();
 
-      if (!usuario) {
-        throw new NotFoundException('Nenhum usuário encontrado.');
-      }
-
-      if (!(await usuario.comparePasswords(senha))) {
-        throw new UnauthorizedException('Senha incorreta');
-      }
-
-      return usuario;
-    } catch (err) {
-      throw new BadRequestException(err);
+    if (!usuario) {
+      throw new UserInputError('Nenhum usuário encontrado.', {
+        field: 'email',
+      });
     }
+
+    if (!(await usuario.comparePasswords(senha))) {
+      throw new UserInputError('Senha incorreta', {
+        field: 'senha',
+      });
+    }
+
+    return usuario;
   }
 
   public async createOrUpdate(data: UsuarioInput, id?: ID) {
@@ -89,7 +90,7 @@ export class UsuarioService {
         const usuario = await this.userRepository.create(data);
         return usuario;
       } catch (err) {
-        throw new BadRequestException(err);
+        throw new ApolloError(err);
       }
     }
 
@@ -106,7 +107,7 @@ export class UsuarioService {
         .exec();
       return usuario;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 }

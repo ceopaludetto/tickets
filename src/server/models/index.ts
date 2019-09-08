@@ -12,3 +12,9 @@ export * from './perfil/perfil.entity';
 
 export * from './empresa/empresa.dto';
 export * from './empresa/empresa.entity';
+
+export * from './ticket/ticket.dto';
+export * from './ticket/ticket.entity';
+
+export * from './label/label.dto';
+export * from './label/label.entity';

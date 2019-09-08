@@ -1,18 +1,19 @@
-import { UnauthorizedException } from '@nestjs/common';
+import { AuthenticationError } from 'apollo-server-express';
+
 import {
   SecurityMatcherOptions,
+  SecurityCustomMatcherOptions,
   Role,
   EmpresaInstance,
   PerfilInstance,
   AssociacaoInstance,
 } from './security.dto';
-
 import { AnyOrOwnEnum, AcaoEnum } from '@/server/models/politica/politica.dto';
 import { AssociacaoEnum } from '@/server/models/associacao/associacao.dto';
 
 export class SecurityMatcher {
   // Validador é chamado
-  public async isValid({
+  public async isRoleValid({
     usuario,
     role,
     empresa,
@@ -46,7 +47,7 @@ export class SecurityMatcher {
 
       // Se não há associacao entre os dois, retorna falso
       if (!assoc) {
-        throw new UnauthorizedException('Usuário não associado');
+        throw new AuthenticationError('Usuário não associado');
       }
 
       // Se há um customMatcher, verifica se sua verificacao é valida
@@ -54,7 +55,7 @@ export class SecurityMatcher {
         role.customMatcher &&
         !role.customMatcher(usuario, assoc as AssociacaoInstance, args)
       ) {
-        throw new UnauthorizedException('Comparação inválida');
+        throw new AuthenticationError('Comparação inválida');
       }
 
       // Faz as principais comparações
@@ -62,8 +63,20 @@ export class SecurityMatcher {
     }
 
     // Retorna falso, pois não há uma empresa no contexto
-    throw new UnauthorizedException('Empresa não encontrada');
+    throw new AuthenticationError('Empresa não encontrada');
   }
+
+  public isCustomMatcherValid = ({
+    usuario,
+    args,
+    customMatcher: { customMatcher, errorText },
+  }: SecurityCustomMatcherOptions) => {
+    if (!customMatcher(usuario, args)) {
+      throw new AuthenticationError(errorText || 'Custom Matcher error');
+    }
+
+    return true;
+  };
 
   private compare = (
     perfil: PerfilInstance,

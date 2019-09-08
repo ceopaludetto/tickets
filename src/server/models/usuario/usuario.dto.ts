@@ -17,33 +17,38 @@ export class UsuarioInput {
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   public nome?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   public sobrenome?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
   @IsEmail()
+  @IsNotEmpty()
   public email?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   public cargo?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   public senha?: string;
 
   @Field(() => [AssociacaoInput], { nullable: true })
   @IsOptional()
   @IsArray()
-  @ValidateNested()
+  @ValidateNested({ each: true })
   public associacoes?: AssociacaoInput[];
 }
 

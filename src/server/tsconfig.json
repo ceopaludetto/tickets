@@ -4,8 +4,9 @@
   "include": ["./**/*"],
   "compilerOptions": {
     "lib": ["es7"],
-    "typeRoots": ["../../node_modules/@types", "./typescript"],
+    "typeRoots": ["../../node_modules/@types", "./typescript/**/*"],
     "experimentalDecorators": true,
-    "emitDecoratorMetadata": true
+    "emitDecoratorMetadata": true,
+    "skipLibCheck": false
   }
 }

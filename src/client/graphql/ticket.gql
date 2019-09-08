@@ -1,0 +1,12 @@
+query FindAllTickets($skip: Int, $take: Int) {
+  findAllTickets(skip: $skip, take: $take){
+    _id
+    nome
+    descricao
+    labels{
+      _id
+      descricao
+      cor
+    }
+  }
+}

@@ -2,22 +2,14 @@ import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 import { UseGuards } from '@nestjs/common';
 
 import { UsuarioService } from './usuario.service';
-import {
-  Usuario,
-  UsuarioUpdateArgs,
-  AcaoEnum,
-  AnyOrOwnEnum,
-  RecursoEnum,
-} from '@/server/models';
+import { Usuario, UsuarioUpdateArgs } from '@/server/models';
 import {
   CommonFindAllArgs,
   CommonFindOneArgs,
-  PayloadType,
 } from '@/server/utils/common.dto';
 import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
 import { SecurityGuard } from '@/server/components/security/security.guard';
-import { UseRole } from '@/server/components/security/security.decorators';
-import { User } from '@/server/components/auth/auth.decorator';
+import { UseCustomMatcher } from '@/server/components/security/security.decorators';
 
 @Resolver(() => Usuario)
 export class UsuarioResolver {
@@ -29,33 +21,37 @@ export class UsuarioResolver {
 
   @Query(() => [Usuario])
   public async findAllUsuarios(@Args() { skip, take }: CommonFindAllArgs) {
-    const usuarios = await this.userService.findAll(skip, take);
-    return usuarios;
+    try {
+      const usuarios = await this.userService.findAll(skip, take);
+      return usuarios;
+    } catch (err) {
+      throw err;
+    }
   }
 
   @Query(() => Usuario)
   public async findUsuario(@Args() { _id }: CommonFindOneArgs) {
-    const usuario = await this.userService.findOne(_id);
-    return usuario;
+    try {
+      const usuario = await this.userService.findOne(_id);
+      return usuario;
+    } catch (err) {
+      throw err;
+    }
   }
 
-  @UseGuards(GqlAuthGuard)
-  @Query(() => Usuario)
-  public async profile(@User() user: PayloadType) {
-    // eslint-disable-next-line no-underscore-dangle
-    const usuario = await this.userService.findOne(user._id);
-    return usuario;
-  }
-
-  @UseRole({
-    recurso: RecursoEnum.Usuario,
-    acao: AcaoEnum.Atualizar,
-    tipo: AnyOrOwnEnum.Own,
+  @UseCustomMatcher({
+    customMatcher: (usuario, args: UsuarioUpdateArgs) =>
+      usuario._id.equals(args._id),
+    errorText: 'Proibida alteração de diferentes usuários',
   })
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Usuario)
   public async updateUsuario(@Args() { input, _id }: UsuarioUpdateArgs) {
-    const usuario = this.userService.createOrUpdate(input, _id);
-    return usuario;
+    try {
+      const usuario = await this.userService.createOrUpdate(input, _id);
+      return usuario;
+    } catch (err) {
+      throw err;
+    }
   }
 }

@@ -3,13 +3,11 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
-const FriendlyErrorsPlugin = require('razzle-dev-utils/FriendlyErrorsPlugin');
 const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-// const MiniCssPlugin = require('mini-css-extract-plugin');
 const tsFormatter = require('react-dev-utils/typescriptFormatter');
 // const { GenerateSW } = require('workbox-webpack-plugin');
 
@@ -25,38 +23,24 @@ module.exports = merge(baseConfig(false), {
     path.resolve('src', 'client', 'index.tsx'),
   ],
   optimization: {
-    splitChunks: {
-      cacheGroups: {
-        vendor: {
-          name: 'vendors',
-          reuseExistingChunk: true,
+    removeAvailableModules: isProd,
+    removeEmptyChunks: isProd,
+    splitChunks: isProd
+      ? {
           chunks: 'all',
-          test: /[\\/]node_modules[\\/]/,
-        },
-        common: {
-          name: 'commons',
-          reuseExistingChunk: true,
-          chunks: 'all',
-          test: /[\\/]src[\\/]client[\\/]components[\\/]/,
-          enforce: true,
-        },
-        styles: {
-          name: 'styles',
-          test: /\.css$/,
-          chunks: 'all',
-          enforce: true,
-        },
-      },
-    },
-    runtimeChunk: true,
+        }
+      : false,
+    runtimeChunk: isProd,
   },
   output: {
-    pathinfo: false,
+    pathinfo: isProd,
     publicPath: '/static/',
     path: path.resolve('dist', 'static'),
     libraryTarget: 'var',
     filename: isProd ? 'js/index.[contenthash:8].js' : 'index.js',
     chunkFilename: isProd ? 'js/[name].[contenthash:8].js' : '[name].chunk.js',
+    devtoolModuleFilenameTemplate: info =>
+      path.resolve(info.resourcePath).replace(/\\/g, '/'),
   },
   devServer: {
     disableHostCheck: true,
@@ -72,7 +56,7 @@ module.exports = merge(baseConfig(false), {
     noInfo: true,
     overlay: false,
     writeToDisk: true,
-    publicPath: '/assets/',
+    publicPath: '/static/',
     host: envs.HOST,
     port: envs.DEV_PORT,
     quiet: true,
@@ -99,7 +83,7 @@ module.exports = merge(baseConfig(false), {
       ? [
           new webpack.HashedModuleIdsPlugin(),
           new webpack.optimize.AggressiveMergingPlugin({
-            minSizeReduce: 2,
+            minSizeReduce: 1.5,
           }),
           new CompressionPlugin({
             exclude: /\.map/,
@@ -112,12 +96,6 @@ module.exports = merge(baseConfig(false), {
               to: path.resolve('dist', 'static', 'public'),
             },
           ]),
-          // new MiniCssPlugin({
-          //   filename: isProd ? 'css/index.[contenthash:8].css' : 'index.css',
-          //   chunkFilename: isProd
-          //     ? 'css/[name].[contenthash:8].css'
-          //     : '[name].css',
-          // }),
           // new GenerateSW({
           //   swDest: 'public/sw.js',
           //   exclude: [/\.map$/, /\.gz$/, /asset-manifest\.json$/],
@@ -136,17 +114,8 @@ module.exports = merge(baseConfig(false), {
           // }),
         ]
       : [
-          new webpack.HotModuleReplacementPlugin(),
-          new FriendlyErrorsPlugin({
-            verbose: false,
-            target: 'web',
-          }),
-          new ForkTsCheckerWebpackPlugin({
-            async: true,
-            tsconfig: path.resolve('src', 'client', 'tsconfig.json'),
-            watch: ['./src'],
-            typeCheck: true,
-            formatter: tsFormatter,
+          new webpack.HotModuleReplacementPlugin({
+            multiStep: true,
           }),
           new WatchMissingNodeModulesPlugin(path.resolve('node_modules')),
         ]),
@@ -154,9 +123,17 @@ module.exports = merge(baseConfig(false), {
       filename: 'manifest.json',
       writeToDisk: true,
     }),
-    new webpack.WatchIgnorePlugin([
-      path.resolve('dist', 'assets', 'manifest.json'),
-    ]),
+    new ForkTsCheckerWebpackPlugin({
+      async: true,
+      tsconfig: path.resolve('src', 'client', 'tsconfig.json'),
+      watch: ['./src'],
+      typeCheck: true,
+      formatter: tsFormatter,
+      eslint: true,
+      eslintOptions: {
+        configFile: path.resolve('.eslintrc.js'),
+      },
+    }),
     new ModuleNotFoundPlugin(path.resolve('src')),
   ],
 });

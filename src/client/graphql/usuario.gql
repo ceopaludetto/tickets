@@ -1,0 +1,33 @@
+query FindAllUsuarios($skip: Int!, $take: Int!) {
+  findAllUsuarios(skip: $skip, take: $take) {
+    _id
+    nome
+  }
+}
+
+query Profile {
+  profile{
+    _id
+    nome
+    sobrenome
+    email
+  }
+}
+
+mutation Login($email: String!, $senha: String!) {
+  login(email: $email, senha: $senha){
+    _id
+    nome
+    sobrenome
+    email
+  }
+}
+
+mutation UpdateUsuario($id: ID!, $input: UsuarioInput!) {
+  updateUsuario(_id: $id, input: $input) {
+    _id
+    nome
+    sobrenome
+    email
+  }
+}

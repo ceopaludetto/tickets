@@ -30,8 +30,12 @@ export class SecurityResolver {
 
   @Query(() => [Perfil])
   public async findAllPerfis(@Args() { skip, take }: CommonFindAllArgs) {
-    const perfis = await this.securityService.findAll(skip, take);
-    return perfis;
+    try {
+      const perfis = await this.securityService.findAll(skip, take);
+      return perfis;
+    } catch (err) {
+      throw err;
+    }
   }
 
   @UseRole({
@@ -42,8 +46,12 @@ export class SecurityResolver {
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Query(() => Perfil)
   public async findPerfil(@Args() { _id }: CommonFindOneArgs) {
-    const perfil = await this.securityService.findOne(_id);
-    return perfil;
+    try {
+      const perfil = await this.securityService.findOne(_id);
+      return perfil;
+    } catch (err) {
+      throw err;
+    }
   }
 
   @UseRole({
@@ -54,21 +62,29 @@ export class SecurityResolver {
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Perfil)
   public async addPerfil(@Args('input') input: PerfilInput) {
-    const perfil = await this.securityService.addOrUpdate(input);
-    return perfil;
+    try {
+      const perfil = await this.securityService.addOrUpdate(input);
+      return perfil;
+    } catch (err) {
+      throw err;
+    }
   }
 
   @UseRole({
     acao: AcaoEnum.Atualizar,
     recurso: RecursoEnum.Perfil,
     tipo: AnyOrOwnEnum.Any,
-    customMatcher: (user, assoc, args) =>
+    customMatcher: (user, args, assoc) =>
       (assoc.empresa as InstanceType<Empresa>)._id === args._id,
   })
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Perfil)
   public async updatePerfil(@Args() { input, _id }: PerfilUpdateArgs) {
-    const perfil = await this.securityService.addOrUpdate(input, _id);
-    return perfil;
+    try {
+      const perfil = await this.securityService.addOrUpdate(input, _id);
+      return perfil;
+    } catch (err) {
+      throw err;
+    }
   }
 }

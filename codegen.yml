@@ -1,0 +1,12 @@
+overwrite: true
+schema: 
+  - "./src/server/schema.gql"
+  - "./src/client/graphql/schema.gql"
+documents: "src/**/*.(graphql|gql)"
+generates:
+  src/client/typescript/graphql.d.ts:
+    config:
+      preResolveTypes: true
+    plugins:
+      - "typescript"
+      - "typescript-operations"

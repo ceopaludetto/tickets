@@ -1,8 +1,12 @@
-import { Resolver, Mutation, Args, Context } from '@nestjs/graphql';
+import { UseGuards } from '@nestjs/common';
+import { Resolver, Mutation, Args, Context, Query } from '@nestjs/graphql';
 import { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
+import { GqlAuthGuard } from './auth.guard';
 import { Usuario, LoginUsuario, UsuarioInput } from '@/server/models';
+import { User } from '@/server/components/auth/auth.decorator';
+import { PayloadType } from '@/server/utils/common.dto';
 
 interface ContextType {
   req: Request;
@@ -17,16 +21,31 @@ export class AuthResolver {
     this.authService = authService;
   }
 
+  @UseGuards(GqlAuthGuard)
+  @Query(() => Usuario)
+  public async profile(@User() user: PayloadType) {
+    try {
+      const usuario = await this.authService.profile(user._id);
+      return usuario;
+    } catch (err) {
+      throw err;
+    }
+  }
+
   @Mutation(() => Usuario)
   public async login(
     @Args() { email, senha }: LoginUsuario,
     @Context() context: ContextType
   ) {
-    const usuario = await this.authService.login(email, senha);
-    if (usuario) {
-      await this.authService.generateAndRegisterToken(usuario, context);
+    try {
+      const usuario = await this.authService.login(email, senha);
+      if (usuario) {
+        await this.authService.generateAndRegisterToken(usuario, context);
+      }
+      return usuario;
+    } catch (err) {
+      throw err;
     }
-    return usuario;
   }
 
   @Mutation(() => Usuario)
@@ -34,10 +53,14 @@ export class AuthResolver {
     @Args('input') input: UsuarioInput,
     @Context() context: ContextType
   ) {
-    const usuario = await this.authService.register(input);
-    if (usuario) {
-      await this.authService.generateAndRegisterToken(usuario, context);
+    try {
+      const usuario = await this.authService.register(input);
+      if (usuario) {
+        await this.authService.generateAndRegisterToken(usuario, context);
+      }
+      return usuario;
+    } catch (err) {
+      throw err;
     }
-    return usuario;
   }
 }

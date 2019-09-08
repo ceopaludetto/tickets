@@ -11,7 +11,6 @@ module.exports = {
     "airbnb",
     "plugin:@typescript-eslint/recommended",
     "plugin:jsx-a11y/recommended",
-    "plugin:security/recommended",
     "prettier",
     "prettier/react",
     "prettier/@typescript-eslint"
@@ -32,7 +31,7 @@ module.exports = {
       path.resolve("src", "server", "tsconfig.json")
     ]
   },
-  plugins: ["@typescript-eslint", "import", "react", "react-hooks", "prettier", "security"],
+  plugins: ["@typescript-eslint", "import", "react", "react-hooks", "prettier"],
   rules: {
     "no-param-reassign": "off",
     "no-underscore-dangle": "off",
@@ -63,7 +62,7 @@ module.exports = {
     ]
   },
   settings: {
-    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx", ".gql"],
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
     },

@@ -1,10 +1,7 @@
-import {
-  Injectable,
-  NotFoundException,
-  BadRequestException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { ModelType } from 'typegoose';
 import { InjectModel } from 'nestjs-typegoose';
+import { ApolloError, UserInputError } from 'apollo-server-express';
 
 import { Perfil, PerfilInput } from '@/server/models';
 import { ID } from '@/server/utils/common.dto';
@@ -28,7 +25,7 @@ export class SecurityService {
         .exec();
       return perfis;
     } catch (err) {
-      throw new BadRequestException('Erro ao buscar perfis.');
+      throw new ApolloError('Erro ao buscar perfis.');
     }
   }
 
@@ -40,12 +37,14 @@ export class SecurityService {
         .populate('empresa')
         .exec();
       if (!perfil) {
-        throw new NotFoundException('Perfil não encontrado.');
+        throw new UserInputError('Perfil não encontrado.', {
+          field: '_id',
+        });
       }
 
       return perfil;
     } catch (err) {
-      throw new BadRequestException('Erro ao procurar perfil.');
+      throw new ApolloError('Erro ao procurar perfil.');
     }
   }
 
@@ -55,7 +54,7 @@ export class SecurityService {
         const perfil = await this.perfilRepository.create(input);
         return perfil;
       } catch (err) {
-        throw new BadRequestException('Falha ao adicionar novo perfil.');
+        throw new ApolloError('Falha ao adicionar novo perfil.');
       }
     }
 
@@ -69,7 +68,7 @@ export class SecurityService {
         .exec();
       return perfil;
     } catch (err) {
-      throw new BadRequestException('Falha ao atualizar perfil.');
+      throw new ApolloError('Falha ao atualizar perfil.');
     }
   }
 }

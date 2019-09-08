@@ -1,10 +1,7 @@
-import {
-  Injectable,
-  BadRequestException,
-  NotFoundException,
-} from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
+import { ApolloError, UserInputError } from 'apollo-server-express';
 
 import {
   Empresa,
@@ -38,7 +35,7 @@ export class EmpresaService {
         .exec();
       return empresas;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 
@@ -46,11 +43,13 @@ export class EmpresaService {
     try {
       const empresa = await this.empresaRepository.findById(id);
       if (!empresa) {
-        throw new NotFoundException('Empresa não encontrada.');
+        throw new UserInputError('Empresa não encontrada.', {
+          field: '_id',
+        });
       }
       return empresa;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 
@@ -60,7 +59,7 @@ export class EmpresaService {
         const empresa = await this.empresaRepository.create(data);
         return empresa;
       } catch (err) {
-        throw new BadRequestException(err);
+        throw new ApolloError(err);
       }
     }
 
@@ -70,7 +69,7 @@ export class EmpresaService {
         .exec();
       return empresa;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 
@@ -78,7 +77,7 @@ export class EmpresaService {
     try {
       const usuario = await this.usuarioService.findOne(user._id);
       if (!usuario) {
-        throw new NotFoundException('Usuário não encontrado.');
+        throw new ApolloError('Usuário não encontrado.');
       }
 
       const updated = await this.usuarioService.createOrUpdate(
@@ -95,7 +94,7 @@ export class EmpresaService {
       );
       return updated;
     } catch (err) {
-      throw new BadRequestException('Erro ao criar associações');
+      throw new ApolloError('Erro ao criar associações');
     }
   }
 }

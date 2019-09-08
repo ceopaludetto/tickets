@@ -5,6 +5,7 @@ import {
   IsOptional,
   IsNotEmpty,
   IsArray,
+  ValidateNested,
 } from 'class-validator';
 
 import { PoliticaInput } from '../politica/politica.dto';
@@ -41,6 +42,7 @@ export class PerfilInput {
   @Field(() => [PoliticaInput], { nullable: true })
   @IsOptional()
   @IsArray()
+  @ValidateNested({ each: true })
   public politicas?: PoliticaInput[];
 }
 

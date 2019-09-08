@@ -1,9 +1,9 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { UsuarioService } from '@/server/components/usuario/usuario.service';
 import { Usuario, UsuarioInput } from '@/server/models';
-import { ContextType } from '@/server/utils/common.dto';
+import { ContextType, ID } from '@/server/utils/common.dto';
 
 @Injectable()
 export class AuthService {
@@ -16,6 +16,16 @@ export class AuthService {
     this.jwtService = jwtService;
   }
 
+  public async profile(_id: ID) {
+    const user = await this.userService.findOne(_id);
+    return user;
+  }
+
+  public async verify(token: string) {
+    const payload = await this.jwtService.verifyAsync(token);
+    return payload;
+  }
+
   public async login(email: string, senha: string) {
     try {
       const funcionario = await this.userService.login({
@@ -25,7 +35,7 @@ export class AuthService {
 
       return funcionario;
     } catch (err) {
-      throw new BadRequestException('Erro ao logar');
+      throw err;
     }
   }
 
@@ -35,7 +45,7 @@ export class AuthService {
 
       return funcionario;
     } catch (err) {
-      throw new BadRequestException('Erro ao cadastrar novo usuário');
+      throw err;
     }
   }
 
@@ -56,7 +66,7 @@ export class AuthService {
 
       return token;
     } catch (err) {
-      throw new Error(err);
+      throw err;
     }
   }
 }

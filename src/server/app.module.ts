@@ -10,12 +10,13 @@ import { TypegooseModule } from 'nestjs-typegoose';
 import { ErrorTracking } from '@/server/customs/error.tracking';
 import { ContextType } from '@/server/utils/common.dto';
 import { IS_PRODUCTION } from '@/server/utils/constants';
-
 import {
   ReactModule,
   EmpresaModule,
   EmpresaMiddleware,
   UsuarioModule,
+  TicketModule,
+  PubSubModule,
   AuthModule,
   ConfigurationModule,
   ConfigurationService,
@@ -38,13 +39,15 @@ import {
       playground: !IS_PRODUCTION,
       debug: !IS_PRODUCTION,
       extensions: [() => new ErrorTracking()],
-      autoSchemaFile: './schema.gql',
+      autoSchemaFile: './src/server/schema.gql',
       installSubscriptionHandlers: true,
       context: ({ req, res }: ContextType) => ({ req, res }),
     }),
     AuthModule,
     EmpresaModule,
     UsuarioModule,
+    TicketModule,
+    PubSubModule,
     SecurityModule,
     ReactModule,
   ],
