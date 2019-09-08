@@ -24,8 +24,12 @@ export class AuthResolver {
   @UseGuards(GqlAuthGuard)
   @Query(() => Usuario)
   public async profile(@User() user: PayloadType) {
-    const usuario = await this.authService.profile(user._id);
-    return usuario;
+    try {
+      const usuario = await this.authService.profile(user._id);
+      return usuario;
+    } catch (err) {
+      throw err;
+    }
   }
 
   @Mutation(() => Usuario)
@@ -33,11 +37,15 @@ export class AuthResolver {
     @Args() { email, senha }: LoginUsuario,
     @Context() context: ContextType
   ) {
-    const usuario = await this.authService.login(email, senha);
-    if (usuario) {
-      await this.authService.generateAndRegisterToken(usuario, context);
+    try {
+      const usuario = await this.authService.login(email, senha);
+      if (usuario) {
+        await this.authService.generateAndRegisterToken(usuario, context);
+      }
+      return usuario;
+    } catch (err) {
+      throw err;
     }
-    return usuario;
   }
 
   @Mutation(() => Usuario)
@@ -45,10 +53,14 @@ export class AuthResolver {
     @Args('input') input: UsuarioInput,
     @Context() context: ContextType
   ) {
-    const usuario = await this.authService.register(input);
-    if (usuario) {
-      await this.authService.generateAndRegisterToken(usuario, context);
+    try {
+      const usuario = await this.authService.register(input);
+      if (usuario) {
+        await this.authService.generateAndRegisterToken(usuario, context);
+      }
+      return usuario;
+    } catch (err) {
+      throw err;
     }
-    return usuario;
   }
 }

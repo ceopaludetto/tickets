@@ -1,16 +1,20 @@
 /* eslint-disable no-underscore-dangle */
-import {
-  Injectable,
-  CanActivate,
-  ExecutionContext,
-  UnauthorizedException,
-} from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
 import { Request } from 'express';
+import { AuthenticationError } from 'apollo-server-express';
 
-import { ContextType, PayloadType, Role } from '@/server/utils/common.dto';
-import { SECURITY_ROLE_DECORATOR } from '@/server/utils/constants';
+import {
+  ContextType,
+  PayloadType,
+  Role,
+  CustomMatcherOptions,
+} from '@/server/utils/common.dto';
+import {
+  SECURITY_ROLE_DECORATOR,
+  SECURITY_CUSTOM_MATCHER_DECORATOR,
+} from '@/server/utils/constants';
 import { UsuarioService } from '@/server/components/usuario/usuario.service';
 import { SecurityMatcher } from './security.matcher';
 
@@ -55,7 +59,7 @@ export class SecurityGuard implements CanActivate {
 
     // Verifica se há usuario
     if (!req.user) {
-      throw new UnauthorizedException('Usuário inválido');
+      throw new AuthenticationError('Usuário inválido');
     }
 
     // Captura informações do usuário
@@ -74,21 +78,38 @@ export class SecurityGuard implements CanActivate {
       context.getHandler()
     );
 
-    // Verifica se o usuário logado tenta alterar suas próprias informações, se a opção useUserID esta marcada, sera usado o ID do usuario logado
-    // Caso contrario, sera usado o _id do argumento
-    const isSameUser = role.useUserID
-      ? !!req.user._id
-      : req.user._id === args._id;
+    const customMatcher = this.reflector.get<CustomMatcherOptions>(
+      SECURITY_CUSTOM_MATCHER_DECORATOR,
+      context.getHandler()
+    );
 
-    // Chama o validador
-    const isValid = await this.securityMatcher.isValid({
-      usuario,
-      role,
-      empresa,
-      args,
-      isSameUser,
-    });
+    if (role) {
+      // Verifica se o usuário logado tenta alterar suas próprias informações, se a opção useUserID esta marcada, sera usado o ID do usuario logado
+      // Caso contrario, sera usado o _id do argumento
+      const isSameUser = role.useUserID
+        ? !!req.user._id
+        : req.user._id === args._id;
 
-    return isValid;
+      // Chama o validador
+      const isValid = await this.securityMatcher.isRoleValid({
+        usuario,
+        role,
+        empresa,
+        args,
+        isSameUser,
+      });
+
+      return isValid;
+    }
+
+    if (customMatcher) {
+      return this.securityMatcher.isCustomMatcherValid({
+        usuario,
+        args,
+        customMatcher,
+      });
+    }
+
+    throw new AuthenticationError('UseRole or UseCustomMatcher not provided');
   }
 }

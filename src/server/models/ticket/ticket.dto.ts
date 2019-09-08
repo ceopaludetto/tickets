@@ -5,6 +5,7 @@ import {
   IsArray,
   IsString,
   IsNotEmpty,
+  ValidateNested,
 } from 'class-validator';
 import { registerEnumType, InputType, Field, ID, ArgsType } from 'type-graphql';
 import { Schema } from 'mongoose';
@@ -51,6 +52,7 @@ export class TicketInput {
   @Field(() => [LabelInput], { nullable: true })
   @IsOptional()
   @IsArray()
+  @ValidateNested({ each: true })
   public labels?: LabelInput[];
 }
 

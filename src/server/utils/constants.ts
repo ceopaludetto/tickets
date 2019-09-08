@@ -2,6 +2,8 @@
  * Envs const
  */
 export const IS_PRODUCTION = process.env.NODE_ENV === 'production';
+export const PUBLIC_PATH = process.env.PUBLIC_PATH as string;
+export const STATIC_FOLDER = process.env.STATIC_FOLDER as string;
 
 /**
  * Info const
@@ -13,6 +15,7 @@ export const APP_NAME = 'F3Desk';
  * SecurityModule
  */
 export const SECURITY_ROLE_DECORATOR = 'SECURITY_ROLE';
+export const SECURITY_CUSTOM_MATCHER_DECORATOR = 'SECURITY_CUSTOM_MATCHER';
 
 /**
  * Model Names

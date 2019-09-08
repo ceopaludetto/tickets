@@ -67,9 +67,6 @@ export class ReactService {
         const markup = renderToString(App);
         const initialState = client.extract();
 
-        // eslint-disable-next-line no-console
-        // console.log('CONTEXT AFTER RENDER', context);
-
         if (context.url) {
           return res.redirect(context.url);
         }

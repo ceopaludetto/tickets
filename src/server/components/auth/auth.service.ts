@@ -1,4 +1,4 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 
 import { UsuarioService } from '@/server/components/usuario/usuario.service';
@@ -45,7 +45,7 @@ export class AuthService {
 
       return funcionario;
     } catch (err) {
-      throw new BadRequestException('Erro ao cadastrar novo usuário');
+      throw err;
     }
   }
 
@@ -66,7 +66,7 @@ export class AuthService {
 
       return token;
     } catch (err) {
-      throw new Error(err);
+      throw err;
     }
   }
 }

@@ -4,8 +4,8 @@ import {
   IsEnum,
   IsBoolean,
   IsString,
+  IsNotEmpty,
   ArrayUnique,
-  ArrayContains,
 } from 'class-validator';
 
 export enum RecursoEnum {
@@ -43,29 +43,27 @@ export class PoliticaInput {
   @Field(() => RecursoEnum, { nullable: true })
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   @IsEnum(RecursoEnum)
   public recurso?: RecursoEnum;
 
   @Field(() => [AcaoEnum], { nullable: true })
   @IsOptional()
-  @IsString()
-  @ArrayContains([
-    AcaoEnum.Atualizar,
-    AcaoEnum.Ler,
-    AcaoEnum.Excluir,
-    AcaoEnum.Criar,
-  ])
+  @IsNotEmpty()
+  @IsEnum(AcaoEnum, { each: true })
   @ArrayUnique()
   public acao?: AcaoEnum[];
 
   @Field({ nullable: true })
   @IsOptional()
   @IsBoolean()
+  @IsNotEmpty()
   public negacao?: boolean;
 
   @Field(() => AnyOrOwnEnum, { nullable: true })
   @IsOptional()
   @IsString()
+  @IsNotEmpty()
   @IsEnum(AnyOrOwnEnum)
   public tipo?: AnyOrOwnEnum;
 }

@@ -7,10 +7,9 @@ import {
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypegooseModule } from 'nestjs-typegoose';
 
-// import { ErrorTracking } from '@/server/customs/error.tracking';
+import { ErrorTracking } from '@/server/customs/error.tracking';
 import { ContextType } from '@/server/utils/common.dto';
 import { IS_PRODUCTION } from '@/server/utils/constants';
-
 import {
   ReactModule,
   EmpresaModule,
@@ -39,7 +38,7 @@ import {
     GraphQLModule.forRoot({
       playground: !IS_PRODUCTION,
       debug: !IS_PRODUCTION,
-      // extensions: [() => new ErrorTracking()],
+      extensions: [() => new ErrorTracking()],
       autoSchemaFile: './src/server/schema.gql',
       installSubscriptionHandlers: true,
       context: ({ req, res }: ContextType) => ({ req, res }),

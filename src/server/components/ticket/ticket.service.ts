@@ -1,10 +1,12 @@
-import { BadRequestException, NotFoundException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
+import { ApolloError, UserInputError } from 'apollo-server-express';
 
 import { Ticket, TicketInput } from '@/server/models';
 import { ID } from '@/server/utils/common.dto';
 
+@Injectable()
 export class TicketService {
   private ticketRepository: ModelType<Ticket>;
 
@@ -22,7 +24,7 @@ export class TicketService {
         .exec();
       return tickets;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 
@@ -30,11 +32,13 @@ export class TicketService {
     try {
       const ticket = await this.ticketRepository.findById(id).exec();
       if (!ticket) {
-        throw new NotFoundException('Ticket não encontrado');
+        throw new UserInputError('Ticket não encontrado', {
+          field: '_id',
+        });
       }
       return ticket;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 
@@ -44,7 +48,7 @@ export class TicketService {
         const empresa = await this.ticketRepository.create(data);
         return empresa;
       } catch (err) {
-        throw new BadRequestException(err);
+        throw new ApolloError(err);
       }
     }
 
@@ -54,7 +58,7 @@ export class TicketService {
         .exec();
       return empresa;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 }

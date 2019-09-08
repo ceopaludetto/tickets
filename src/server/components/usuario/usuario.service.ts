@@ -1,7 +1,7 @@
-import { Injectable, BadRequestException } from '@nestjs/common';
+import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
 import { ModelType } from 'typegoose';
-import { UserInputError } from 'apollo-server-express';
+import { UserInputError, ApolloError } from 'apollo-server-express';
 
 import { Usuario, UsuarioInput, LoginUsuario } from '@/server/models';
 import { ID } from '@/server/utils/common.dto';
@@ -33,7 +33,7 @@ export class UsuarioService {
         .exec();
       return usuarios;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 
@@ -49,9 +49,14 @@ export class UsuarioService {
         })
         .populate('associacoes.empresa')
         .exec();
+      if (!usuario) {
+        throw new UserInputError('Usuário não encontrado', {
+          field: '_id',
+        });
+      }
       return usuario;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 
@@ -85,7 +90,7 @@ export class UsuarioService {
         const usuario = await this.userRepository.create(data);
         return usuario;
       } catch (err) {
-        throw new BadRequestException(err);
+        throw new ApolloError(err);
       }
     }
 
@@ -102,7 +107,7 @@ export class UsuarioService {
         .exec();
       return usuario;
     } catch (err) {
-      throw new BadRequestException(err);
+      throw new ApolloError(err);
     }
   }
 }

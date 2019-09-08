@@ -10,6 +10,7 @@ import { Logged } from '@/client/graphql/local.gql';
 import { theme, gridTheme } from '@/client/providers/theme';
 import { routes } from '@/client/providers/route';
 import { GlobalStyle } from '@/client/styles/global';
+import { IS_PRODUCTION, PUBLIC_PATH } from '@/client/utils';
 
 export default function App() {
   const { data } = useQuery<LoggedQuery>(Logged);
@@ -20,17 +21,19 @@ export default function App() {
         <>
           <GlobalStyle />
           <Helmet defaultTitle="F3Desk" titleTemplate="%s | F3Desk">
-            {/* <link
-              rel="manifest"
-              href={`${process.env.PUBLIC_PATH as string}public/manifest.json`}
-            /> */}
+            {IS_PRODUCTION && (
+              <link
+                rel="manifest"
+                href={`${PUBLIC_PATH}public/manifest.json`}
+              />
+            )}
             <meta charSet="UTF-8" />
             <meta
               name="viewport"
               content="width=device-width, initial-scale=1.0"
             />
             <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-            <meta name="theme-color" content="#23272A" />
+            <meta name="theme-color" content={theme.colors.background.main} />
           </Helmet>
           {renderRoutes(routes, { data })}
         </>

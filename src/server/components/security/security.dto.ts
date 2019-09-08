@@ -1,6 +1,6 @@
 import { Types } from 'mongoose';
 
-import { Role } from '@/server/utils/common.dto';
+import { Role, CustomMatcherOptions } from '@/server/utils/common.dto';
 import { UsuarioInstance } from '@/server/models';
 
 export interface SecurityMatcherOptions {
@@ -12,6 +12,13 @@ export interface SecurityMatcherOptions {
   args?: any;
 }
 
+export type SecurityCustomMatcherOptions = Pick<
+  SecurityMatcherOptions,
+  'usuario' | 'args'
+> & {
+  customMatcher: CustomMatcherOptions;
+};
+
 export {
   EmpresaInstance,
   UsuarioInstance,
@@ -20,3 +27,4 @@ export {
 } from '@/server/models';
 
 export { Role };
+export { CustomMatcherOptions };

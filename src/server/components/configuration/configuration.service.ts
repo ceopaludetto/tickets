@@ -1,12 +1,17 @@
-import Joi from '@hapi/joi';
 import dotenv from 'dotenv';
 import fs from 'fs';
+import * as Yup from 'yup';
 
 interface EnvConfig {
   [key: string]: string;
   MONGO_URI: string;
   SECRET: string;
 }
+
+const EnvSchema = Yup.object().shape({
+  MONGO_URI: Yup.string().required('Campo obrigatório'),
+  SECRET: Yup.string().required('Campo obrigatório'),
+});
 
 export class ConfigurationService {
   private readonly envConfig: EnvConfig;
@@ -18,19 +23,13 @@ export class ConfigurationService {
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private validateInput = (config: any) => {
-    const EnvVarsSchema: Joi.ObjectSchema = Joi.object({
-      MONGO_URI: Joi.string(),
-      SECRET: Joi.string(),
-      LOGFILE_FORMAT: Joi.string().only(['JSON', 'TEXT']),
-    });
+    const isValid = EnvSchema.isValidSync(config);
 
-    const { error, value } = Joi.validate(config, EnvVarsSchema);
-
-    if (error) {
-      throw new Error(`Config validation error: ${error.message}`);
+    if (!isValid) {
+      throw new Error('Invalid .env configuration');
     }
 
-    return value as EnvConfig;
+    return config as EnvConfig;
   };
 
   public get SECRET() {
