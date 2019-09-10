@@ -5,19 +5,10 @@ import {
   Col as BTCol,
 } from 'styled-bootstrap-grid';
 
-import { Theme } from '@/client/providers/theme';
 import { MapBackgroundDarken } from '@/client/styles/maps';
 
-interface StyledContainerProps {
-  isRegister?: boolean;
-}
-
-export const Container = styled(BTContainer)<StyledContainerProps>`
-  transition: background-color 125ms ease-in-out;
-  background-color: ${props =>
-    props.isRegister
-      ? MapBackgroundDarken
-      : (props.theme as Theme).colors.primary.darken};
+export const Container = styled(BTContainer)`
+  background-color: ${MapBackgroundDarken};
   height: 100vh;
 `;
 
@@ -28,8 +19,11 @@ export const Row = styled(BTRow)`
   }
 `;
 
+interface StyledContainerProps {
+  isRegister?: boolean;
+}
+
 export const Col = styled(BTCol)<StyledContainerProps>`
-  transition: flex 125ms ease-in-out;
   ${props =>
     props.isRegister
       ? css`

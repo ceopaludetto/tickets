@@ -3,7 +3,6 @@ import { Row, Col } from 'styled-bootstrap-grid';
 import { Helmet } from 'react-helmet';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
 
 import { Control, Button, IconButton } from '@/client/components/form';
 import { Divider, TextAlign, Alert } from '@/client/components/layout';
@@ -16,15 +15,11 @@ import {
   UpdateUsuarioMutationVariables,
 } from '@/client/typescript/graphql';
 import { Profile, UpdateUsuario } from '@/client/graphql/usuario.gql';
+import {
+  UpdateInfoValidation,
+  UpdateSenhaValidation,
+} from '@/client/providers/validations';
 import { List } from './styles';
-
-const UpdateUsuarioSchema = Yup.object().shape({
-  email: Yup.string()
-    .email('Insira um email válido')
-    .required('Campo obrigatório'),
-  nome: Yup.string().required('Campo obrigatório'),
-  sobrenome: Yup.string().required('Campo obrigatório'),
-});
 
 export default function MainSettingsPage() {
   const { data } = useQuery<ProfileQuery>(Profile);
@@ -50,7 +45,7 @@ export default function MainSettingsPage() {
     <>
       <Helmet title="Perfil" />
       <Formik
-        validationSchema={UpdateUsuarioSchema}
+        validationSchema={UpdateInfoValidation}
         initialValues={
           data &&
           data.profile && {
@@ -116,39 +111,83 @@ export default function MainSettingsPage() {
       <Divider />
       <Row>
         <Col col={12} md={6}>
-          <Control
-            type={renderVisibility('v', 'text', 'password')}
-            id="password"
-            label="Senha atual"
-            append={
-              <IconButton onClick={toggleVisibility('v')}>
-                {renderVisibility('v')}
-              </IconButton>
-            }
-          />
-          <Control
-            type={renderVisibility('nv', 'text', 'password')}
-            id="npassword"
-            label="Nova senha"
-            append={
-              <IconButton onClick={toggleVisibility('nv')}>
-                {renderVisibility('nv')}
-              </IconButton>
-            }
-          />
-          <Control
-            type={renderVisibility('rnv', 'text', 'password')}
-            id="rnpassword"
-            label="Repetir nova senha"
-            append={
-              <IconButton onClick={toggleVisibility('rnv')}>
-                {renderVisibility('rnv')}
-              </IconButton>
-            }
-          />
-          <TextAlign align="right">
-            <Button>Alterar senha</Button>
-          </TextAlign>
+          <Formik
+            validationSchema={UpdateSenhaValidation}
+            initialValues={{
+              senha: '',
+              nsenha: '',
+              rsenha: '',
+            }}
+            onSubmit={() => {}}
+          >
+            {() => (
+              <Form>
+                <Field
+                  component={FormikControl}
+                  name="senha"
+                  id="senha"
+                  label="Senha atual"
+                  type={renderVisibility('v', 'text', 'password')}
+                  append={
+                    <IconButton
+                      type="button"
+                      aria-label={renderVisibility(
+                        'rnv',
+                        'Ocultar campo "senha atual"',
+                        'Mostrar campo "senha atual"'
+                      )}
+                      onClick={toggleVisibility('v')}
+                    >
+                      {renderVisibility('v')}
+                    </IconButton>
+                  }
+                />
+                <Field
+                  component={FormikControl}
+                  name="nsenha"
+                  id="nsenha"
+                  label="Nova senha"
+                  type={renderVisibility('nv', 'text', 'password')}
+                  append={
+                    <IconButton
+                      type="button"
+                      aria-label={renderVisibility(
+                        'rnv',
+                        'Ocultar campo "nova senha"',
+                        'Mostrar campo "nova senha"'
+                      )}
+                      onClick={toggleVisibility('nv')}
+                    >
+                      {renderVisibility('nv')}
+                    </IconButton>
+                  }
+                />
+                <Field
+                  component={FormikControl}
+                  name="rsenha"
+                  id="rsenha"
+                  label="Repetir nova senha"
+                  type={renderVisibility('rnv', 'text', 'password')}
+                  append={
+                    <IconButton
+                      type="button"
+                      aria-label={renderVisibility(
+                        'rnv',
+                        'Ocultar campo "repetir nova senha"',
+                        'Mostrar campo "repetir nova senha"'
+                      )}
+                      onClick={toggleVisibility('rnv')}
+                    >
+                      {renderVisibility('rnv')}
+                    </IconButton>
+                  }
+                />
+                <TextAlign align="right">
+                  <Button type="submit">Alterar senha</Button>
+                </TextAlign>
+              </Form>
+            )}
+          </Formik>
         </Col>
         <Col col={12} md={6}>
           <Alert>

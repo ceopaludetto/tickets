@@ -31,7 +31,7 @@ module.exports = (isServer = false) => ({
           keep_classnames: isServer,
           keep_fnames: isServer,
           output: {
-            ecma: isServer ? 6 : 5,
+            ecma: isServer ? 7 : 5,
             comments: false,
           },
           parse: {
@@ -84,7 +84,7 @@ module.exports = (isServer = false) => ({
                 loader: 'ts-loader',
                 options: {
                   transpileOnly: true,
-                  experimentalWatchApi: true,
+                  experimentalWatchApi: !isProd,
                   configFile: path.resolve(
                     'src',
                     isServer ? 'server' : 'client',
@@ -130,6 +130,7 @@ module.exports = (isServer = false) => ({
     new WebpackBar({
       name: isServer ? 'Server' : 'Client',
       color: isServer ? '#c065f4' : '#f56be2',
+      profile: true,
     }),
     new webpack.EnvironmentPlugin({
       PORT: envs.PORT,

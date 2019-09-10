@@ -3,7 +3,6 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 const NodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
-const FriendlyErrorsPlugin = require('razzle-dev-utils/FriendlyErrorsPlugin');
 const baseConfig = require('./webpack.config.base');
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -52,11 +51,6 @@ module.exports = merge(baseConfig(true), {
           new StartServerPlugin({
             name: 'index.js',
             keyboard: true,
-          }),
-          new FriendlyErrorsPlugin({
-            target: 'server',
-            verbose: false,
-            onSuccessMessage: 'Your application is running',
           }),
         ]),
     new webpack.optimize.LimitChunkCountPlugin({

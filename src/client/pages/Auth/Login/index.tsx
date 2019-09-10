@@ -2,7 +2,6 @@ import React from 'react';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { Helmet } from 'react-helmet';
 import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
 
 import {
   LoginMutation,
@@ -10,19 +9,18 @@ import {
   LoggedQuery,
 } from '@/client/typescript/graphql';
 import { Button, IconButton } from '@/client/components/form';
-import { Divider } from '@/client/components/layout';
-import { PrefetchLink, Title, SubTitle } from '@/client/components/typo';
+import { Divider, TextAlign } from '@/client/components/layout';
+import {
+  PrefetchLink,
+  Title,
+  SubTitle,
+  Primary,
+} from '@/client/components/typo';
 import { FormikControl } from '@/client/components/composed';
 import { Login as LoginDocument } from '@/client/graphql/usuario.gql';
 import { Logged } from '@/client/graphql/local.gql';
 import { useVisibility, preloadRouteComponent } from '@/client/utils';
-
-const LoginValidation = Yup.object().shape({
-  email: Yup.string()
-    .required('Campo Obrigatório')
-    .email('Insira um email válido'),
-  senha: Yup.string().required('Campo Obrigatório'),
-});
+import { LoginValidation } from '@/client/providers/validations';
 
 export default function Login() {
   const client = useApolloClient();
@@ -108,8 +106,12 @@ export default function Login() {
           </Form>
         )}
       </Formik>
-      <Divider />
-      <PrefetchLink to="/auth/register">Criar conta</PrefetchLink>
+      <Divider doubleMargin={false} />
+      <TextAlign align="center">
+        <PrefetchLink to="/auth/register">Criar conta</PrefetchLink>{' '}
+        <Primary>&#8226;</Primary>{' '}
+        <PrefetchLink to="/auth/forgot">Esqueceu a senha</PrefetchLink>
+      </TextAlign>
     </>
   );
 }

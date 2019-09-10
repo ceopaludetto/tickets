@@ -18,10 +18,10 @@ export default function Auth({ route }: RouteConfigComponentProps) {
   }, [location.pathname]);
 
   return (
-    <Container isRegister={isRegister} fluid>
+    <Container fluid>
       <Row justifyContent="center">
         <Col isRegister={isRegister}>
-          <Paper isElevated={!isRegister}>
+          <Paper isElevated={false}>
             {route && renderRoutes(route.routes)}
           </Paper>
         </Col>

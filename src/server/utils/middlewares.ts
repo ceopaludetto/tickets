@@ -22,5 +22,10 @@ export function middlewares(app: INestApplication) {
     app.use(Helmet());
   }
 
-  app.use(PUBLIC_PATH, ExpressStatic(STATIC_FOLDER));
+  app.use(
+    PUBLIC_PATH,
+    ExpressStatic(STATIC_FOLDER, {
+      maxAge: IS_PRODUCTION ? '1y' : undefined,
+    })
+  );
 }

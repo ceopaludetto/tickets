@@ -1,17 +1,28 @@
-import { lighten, darken, readableColor } from 'polished';
+import { lighten, darken, parseToRgb } from 'polished';
 
-const PRIMARY = '#2c7be5';
-const DANGER = '#FDCA40';
-const ERROR = '#DF2935';
-const BLACK = '#080708';
-const WHITE = '#FFF';
+import {
+  PRIMARY,
+  DANGER,
+  ERROR,
+  LABEL,
+  BLACK,
+  WHITE,
+  BACKGROUND,
+  BACKGROUND_DARK,
+  BORDER,
+  BORDER_DARK,
+} from '@/client/styles/constants';
 
-const BACKGROUND = '#fafbfc';
-const BACKGROUND_DARK = '#303030';
-const BORDER = '#dfe1e6';
-const BORDER_DARK = '#212121';
+export function readableColor(c: string) {
+  const { red, green, blue } = parseToRgb(c);
+  const yiq = (red * 299 + green * 587 + blue * 114) / 1000;
 
-const LABEL = '#6b778c';
+  if (yiq >= 150) {
+    return '#000';
+  }
+
+  return '#fff';
+}
 
 export const enum Mode {
   Light = 'LIGHT',

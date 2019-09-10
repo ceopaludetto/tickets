@@ -30,7 +30,12 @@ module.exports = merge(baseConfig(false), {
           chunks: 'all',
         }
       : false,
-    runtimeChunk: isProd,
+    moduleIds: isProd ? 'hashed' : false,
+    runtimeChunk: isProd
+      ? {
+          name: 'runtime',
+        }
+      : false,
   },
   output: {
     pathinfo: isProd,
@@ -118,21 +123,21 @@ module.exports = merge(baseConfig(false), {
             multiStep: true,
           }),
           new WatchMissingNodeModulesPlugin(path.resolve('node_modules')),
+          new ForkTsCheckerWebpackPlugin({
+            async: true,
+            tsconfig: path.resolve('src', 'client', 'tsconfig.json'),
+            watch: ['./src'],
+            typeCheck: true,
+            formatter: tsFormatter,
+            eslint: true,
+            eslintOptions: {
+              configFile: path.resolve('.eslintrc.js'),
+            },
+          }),
         ]),
     new LoadablePlugin({
       filename: 'manifest.json',
       writeToDisk: true,
-    }),
-    new ForkTsCheckerWebpackPlugin({
-      async: true,
-      tsconfig: path.resolve('src', 'client', 'tsconfig.json'),
-      watch: ['./src'],
-      typeCheck: true,
-      formatter: tsFormatter,
-      eslint: true,
-      eslintOptions: {
-        configFile: path.resolve('.eslintrc.js'),
-      },
     }),
     new ModuleNotFoundPlugin(path.resolve('src')),
   ],

@@ -20,6 +20,7 @@ export function Control({
   label,
   id,
   errors = '',
+  required,
   ...rest
 }: ControlProps) {
   return (
@@ -27,7 +28,10 @@ export function Control({
       <Row>
         {!!label && (
           <Col col>
-            <Label htmlFor={id}>{label}</Label>
+            <Label htmlFor={id}>
+              {label}
+              {required && ' *'}
+            </Label>
           </Col>
         )}
         {!!errors && (

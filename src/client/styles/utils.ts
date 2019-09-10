@@ -2,7 +2,7 @@
 import { ThemedStyledProps } from 'styled-components';
 import { rgba as polishedRGBA, parseToRgb } from 'polished';
 
-import { Theme } from '@/client/providers/theme';
+import { Theme, readableColor } from '@/client/providers/theme';
 
 export type ColorMap<T> = keyof T;
 
@@ -72,3 +72,5 @@ export const rgba = (c: ColorToRGB | string, amount: number) => {
   const rgb = parseToRgb(c as string);
   return polishedRGBA(rgb.red, rgb.green, rgb.blue, amount);
 };
+
+export { readableColor };
