@@ -44,6 +44,14 @@ export class Usuario extends Typegoose {
   @prop({ required: true })
   public cargo!: string;
 
+  @Field({ nullable: true })
+  @prop()
+  public telefone?: string;
+
+  @Field()
+  @prop({ required: true })
+  public nascimento!: Date;
+
   @Field(() => [Associacao])
   @arrayProp({ items: Associacao, required: true })
   public associacoes!: Associacao[];

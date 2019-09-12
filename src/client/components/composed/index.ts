@@ -4,3 +4,4 @@ export { TabBar, TabBarItem } from './TabBar';
 export { Task } from './Task';
 export { FormikControl } from './FormikControl';
 export { Stepper } from './Stepper';
+export { FormikCheckbox } from './FormikCheckbox';

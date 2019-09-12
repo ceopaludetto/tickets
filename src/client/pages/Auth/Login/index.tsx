@@ -65,7 +65,7 @@ export default function Login() {
           } catch (err) {
             const firstError = err.graphQLErrors[0];
 
-            if (firstError.extensions) {
+            if (firstError && firstError.extensions) {
               const { field } = firstError.extensions.exception;
 
               actions.setErrors({

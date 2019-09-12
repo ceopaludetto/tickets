@@ -1,13 +1,13 @@
 import React from 'react';
 import { FieldProps, Field } from 'formik';
 
-import { Control, ControlProps } from '@/client/components/form';
+import { Checkbox, CheckboxProps } from '@/client/components/form';
 
-export function FormikControl({ name, ...rest }: ControlProps) {
+export function FormikCheckbox({ name, ...rest }: CheckboxProps) {
   return (
-    <Field name={name}>
+    <Field type="checkbox" name={name}>
       {({ field, form: { touched, errors } }: FieldProps) => (
-        <Control
+        <Checkbox
           {...field}
           {...rest}
           errors={

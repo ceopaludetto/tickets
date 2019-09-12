@@ -6,6 +6,8 @@ export type Scalars = {
   Boolean: boolean,
   Int: number,
   Float: number,
+  /** The javascript `Date` as string. Type represents date and time as the ISO Date string. */
+  DateTime: any,
 };
 
 export enum AcaoEnum {
@@ -38,6 +40,7 @@ export type AssociacaoInput = {
   perfil?: Maybe<Scalars['String']>,
   tipo?: Maybe<AssociacaoEnum>,
 };
+
 
 export enum DiaDePagamentoEnum {
   D7 = 'D7',
@@ -294,6 +297,8 @@ export type Usuario = {
   email: Scalars['String'],
   senha: Scalars['String'],
   cargo: Scalars['String'],
+  telefone?: Maybe<Scalars['String']>,
+  nascimento: Scalars['DateTime'],
   associacoes: Array<Associacao>,
   sysAdmin: Scalars['Boolean'],
 };
@@ -304,6 +309,8 @@ export type UsuarioInput = {
   email?: Maybe<Scalars['String']>,
   cargo?: Maybe<Scalars['String']>,
   senha?: Maybe<Scalars['String']>,
+  telefone?: Maybe<Scalars['String']>,
+  nascimento?: Maybe<Scalars['DateTime']>,
   associacoes?: Maybe<Array<AssociacaoInput>>,
 };
 export type LoggedQueryVariables = {};
@@ -335,7 +342,7 @@ export type FindAllUsuariosQuery = { __typename?: 'Query', findAllUsuarios: Arra
 export type ProfileQueryVariables = {};
 
 
-export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string, email: string } };
+export type ProfileQuery = { __typename?: 'Query', profile: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string, email: string, telefone: Maybe<string>, nascimento: any } };
 
 export type LoginMutationVariables = {
   email: Scalars['String'],
@@ -343,7 +350,7 @@ export type LoginMutationVariables = {
 };
 
 
-export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string, email: string } };
+export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string, email: string, telefone: Maybe<string>, nascimento: any } };
 
 export type UpdateUsuarioMutationVariables = {
   id: Scalars['ID'],
@@ -351,4 +358,4 @@ export type UpdateUsuarioMutationVariables = {
 };
 
 
-export type UpdateUsuarioMutation = { __typename?: 'Mutation', updateUsuario: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string, email: string } };
+export type UpdateUsuarioMutation = { __typename?: 'Mutation', updateUsuario: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string, email: string, telefone: Maybe<string>, nascimento: any } };

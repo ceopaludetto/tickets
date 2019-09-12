@@ -33,6 +33,11 @@ input AssociacaoInput {
   tipo: AssociacaoEnum
 }
 
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
 enum DiaDePagamentoEnum {
   D7
   D10
@@ -183,6 +188,8 @@ type Usuario {
   email: String!
   senha: String!
   cargo: String!
+  telefone: String
+  nascimento: DateTime!
   associacoes: [Associacao!]!
   sysAdmin: Boolean!
 }
@@ -193,5 +200,7 @@ input UsuarioInput {
   email: String
   cargo: String
   senha: String
+  telefone: String
+  nascimento: DateTime
   associacoes: [AssociacaoInput!]
 }

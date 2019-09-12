@@ -68,7 +68,7 @@ export const Input = styled.input`
         `
     )}
   }
-  &:checked + ${SwitchContainer}, &[checked] + ${SwitchContainer} {
+  &:checked + ${SwitchContainer} {
     &::before {
       ${color(
         'primary',

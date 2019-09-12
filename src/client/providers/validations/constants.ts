@@ -6,3 +6,4 @@ export const CONFIRM_SENHA = 'As senhas não coincidem';
 export const NOT_CONFIRM_SENHA = 'As senhas devem ser diferentes';
 export const UPPERCASE = 'Pelo menos um caractere maiúsculo';
 export const SPECIAL_CHARACTER = 'Pelo menos um caractere especial';
+export const SITE = 'Insira uma url válida';

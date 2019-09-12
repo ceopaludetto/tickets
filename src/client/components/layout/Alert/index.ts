@@ -13,4 +13,5 @@ export const Alert = styled.div`
   border: 2px solid ${MapBorder};
   color: ${MapContrastText};
   border-radius: ${radius(1.5)};
+  margin-bottom: 1rem;
 `;

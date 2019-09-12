@@ -6,6 +6,8 @@ import {
   IsNotEmpty,
   IsDefined,
   IsArray,
+  IsDate,
+  Matches,
   ValidateNested,
 } from 'class-validator';
 
@@ -44,6 +46,19 @@ export class UsuarioInput {
   @IsString()
   @IsNotEmpty()
   public senha?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsString()
+  @IsNotEmpty()
+  @Matches(/\([0-9]{2}\) 9?[1-9]{4}-[1-9]{4}/g)
+  public telefone?: string;
+
+  @Field({ nullable: true })
+  @IsOptional()
+  @IsDate()
+  @IsNotEmpty()
+  public nascimento?: Date;
 
   @Field(() => [AssociacaoInput], { nullable: true })
   @IsOptional()

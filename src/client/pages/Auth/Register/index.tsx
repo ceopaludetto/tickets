@@ -2,22 +2,28 @@ import React, { useState, useMemo } from 'react';
 import { Helmet } from 'react-helmet';
 import { Container } from 'styled-bootstrap-grid';
 import { FiUser, FiLock, FiGlobe } from 'react-icons/fi';
-import { Formik, Field, Form } from 'formik';
+import { Formik, Form, FormikErrors } from 'formik';
 import UseKey from 'react-use/lib/comps/UseKey';
 
-import { Button, IconButton } from '@/client/components/form';
+import { Button } from '@/client/components/form';
 import { Title, SubTitle } from '@/client/components/typo';
 import { TextAlign } from '@/client/components/layout';
-import { Stepper, FormikControl } from '@/client/components/composed';
+import { Stepper } from '@/client/components/composed';
 import { RegisterValidation } from '@/client/providers/validations';
 import { useMultipleVisibility } from '@/client/utils';
+import { renderForm } from './render';
 
 interface Fields {
   nome?: string;
   email?: string;
   sobrenome?: string;
+  telefone?: string;
+  nascimento?: string;
   senha?: string;
   rsenha?: string;
+  hasEmpresa?: boolean;
+  cnpj?: string;
+  nomeFantasia?: string;
 }
 
 export default function Register() {
@@ -37,7 +43,7 @@ export default function Register() {
   }
 
   function handlePageValidation(
-    validateForm: () => Promise<Fields>,
+    validateForm: () => Promise<FormikErrors<Fields>>,
     submitForm: () => void,
     setFieldTouched: (
       fields: keyof Fields,
@@ -65,87 +71,6 @@ export default function Register() {
 
       return submitForm();
     };
-  }
-
-  function renderForm(page: number) {
-    if (page === 0) {
-      return (
-        <>
-          <Field
-            required
-            name="nome"
-            label="Nome"
-            id="name"
-            component={FormikControl}
-          />
-          <Field
-            name="sobrenome"
-            label="Sobrenome"
-            id="lastname"
-            required
-            component={FormikControl}
-          />
-          <Field
-            name="email"
-            label="Email"
-            id="email"
-            required
-            component={FormikControl}
-          />
-        </>
-      );
-    }
-
-    if (page === 1) {
-      return (
-        <>
-          <Field
-            type={renderVisibility('senha', 'text', 'password')}
-            name="senha"
-            label="Senha"
-            id="senha"
-            required
-            component={FormikControl}
-            append={
-              <IconButton
-                type="button"
-                aria-label={renderVisibility(
-                  'rsenha',
-                  'Ocultar campo "senha"',
-                  'Mostrar campo "senha"'
-                )}
-                onClick={toggleVisibility('senha')}
-              >
-                {renderVisibility('senha')}
-              </IconButton>
-            }
-          />
-          <Field
-            type={renderVisibility('rsenha', 'text', 'password')}
-            name="rsenha"
-            label="Repetir senha"
-            id="rsenha"
-            required
-            component={FormikControl}
-            append={
-              <IconButton
-                type="button"
-                aria-label={renderVisibility(
-                  'rsenha',
-                  'Ocultar campo "repetir senha"',
-                  'Mostrar campo "repetir senha"'
-                )}
-                onClick={toggleVisibility('rsenha')}
-              >
-                {renderVisibility('rsenha')}
-              </IconButton>
-            }
-          />
-        </>
-      );
-    }
-
-    return <>empresa</>;
   }
 
   return (
@@ -180,17 +105,25 @@ export default function Register() {
             sobrenome: '',
             email: '',
             senha: '',
+            telefone: '',
+            nascimento: '',
             rsenha: '',
+            hasEmpresa: false,
+            cnpj: '',
+            nomeFantasia: '',
           }}
           onSubmit={values => {
             // eslint-disable-next-line no-console
             console.log(values);
           }}
         >
-          {({ validateForm, submitForm, setFieldTouched }) => (
+          {({ validateForm, submitForm, setFieldTouched, values }) => (
             <Form>
               <>
-                {renderForm(currentPage)}
+                {renderForm(currentPage, values.hasEmpresa, {
+                  renderVisibility,
+                  toggleVisibility,
+                })}
                 <UseKey
                   filter="Enter"
                   fn={

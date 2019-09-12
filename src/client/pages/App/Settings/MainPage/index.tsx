@@ -4,9 +4,9 @@ import { Helmet } from 'react-helmet';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Formik, Form, Field } from 'formik';
 
-import { Control, Button, IconButton } from '@/client/components/form';
+import { Button, IconButton } from '@/client/components/form';
 import { Divider, TextAlign, Alert } from '@/client/components/layout';
-import { SubTitle } from '@/client/components/typo';
+import { SubTitle, List } from '@/client/components/typo';
 import { FormikControl } from '@/client/components/composed';
 import { useMultipleVisibility } from '@/client/utils/useVisibility';
 import {
@@ -19,7 +19,6 @@ import {
   UpdateInfoValidation,
   UpdateSenhaValidation,
 } from '@/client/providers/validations';
-import { List } from './styles';
 
 export default function MainSettingsPage() {
   const { data } = useQuery<ProfileQuery>(Profile);
@@ -52,6 +51,8 @@ export default function MainSettingsPage() {
             email: data.profile.email,
             nome: data.profile.nome,
             sobrenome: data.profile.sobrenome,
+            telefone: data.profile.telefone || '',
+            nascimento: data.profile.nascimento,
           }
         }
         onSubmit={async mutationData => {
@@ -96,10 +97,22 @@ export default function MainSettingsPage() {
             </Row>
             <Row alignItems="center">
               <Col col={12} md={6}>
-                <Control type="text" id="tel" label="Telefone" />
+                <Field
+                  type="text"
+                  id="telefone"
+                  label="Telefone"
+                  name="telefone"
+                  component={FormikControl}
+                />
               </Col>
               <Col col={12} md={6}>
-                <Control type="text" id="age" label="Data de Nascimento" />
+                <Field
+                  type="text"
+                  id="nascimento"
+                  label="Data de Nascimento"
+                  name="nascimento"
+                  component={FormikControl}
+                />
               </Col>
             </Row>
             <TextAlign align="right">

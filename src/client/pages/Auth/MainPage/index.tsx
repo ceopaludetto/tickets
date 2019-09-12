@@ -1,9 +1,9 @@
 import React, { useEffect, useState } from 'react';
 import { RouteConfigComponentProps, renderRoutes } from 'react-router-config';
 
-import { Paper } from '@/client/components/layout';
+// import { Paper } from '@/client/components/layout';
 import { useRouter } from '@/client/utils/useRouter';
-import { Container, Row, Col } from './styles';
+import { Container, Row, Col, CustomPaper } from './styles';
 
 export default function Auth({ route }: RouteConfigComponentProps) {
   const { location } = useRouter();
@@ -19,11 +19,11 @@ export default function Auth({ route }: RouteConfigComponentProps) {
 
   return (
     <Container fluid>
-      <Row justifyContent="center">
+      <Row isRegister={isRegister} justifyContent="center">
         <Col isRegister={isRegister}>
-          <Paper isElevated={false}>
+          <CustomPaper isElevated={false}>
             {route && renderRoutes(route.routes)}
-          </Paper>
+          </CustomPaper>
         </Col>
       </Row>
     </Container>

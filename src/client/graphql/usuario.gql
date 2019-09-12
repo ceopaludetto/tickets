@@ -11,6 +11,8 @@ query Profile {
     nome
     sobrenome
     email
+    telefone
+    nascimento
   }
 }
 
@@ -20,6 +22,8 @@ mutation Login($email: String!, $senha: String!) {
     nome
     sobrenome
     email
+    telefone
+    nascimento
   }
 }
 
@@ -29,5 +33,7 @@ mutation UpdateUsuario($id: ID!, $input: UsuarioInput!) {
     nome
     sobrenome
     email
+    telefone
+    nascimento
   }
 }
