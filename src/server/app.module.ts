@@ -38,7 +38,6 @@ import {
     GraphQLModule.forRoot({
       playground: !IS_PRODUCTION,
       debug: !IS_PRODUCTION,
-      extensions: [() => new ErrorTracking()],
       autoSchemaFile: './src/server/schema.gql',
       installSubscriptionHandlers: true,
       context: ({ req, res }: ContextType) => ({ req, res }),

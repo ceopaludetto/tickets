@@ -72,6 +72,7 @@ export class EmpresaInput {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
+  @Matches(/\(\d{2}\) \d{4}-\d{4}/)
   public telefone?: string;
 
   @Field({ nullable: true })

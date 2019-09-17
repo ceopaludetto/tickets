@@ -38,8 +38,10 @@ module.exports = merge(baseConfig(false), {
       : false,
   },
   output: {
-    pathinfo: isProd,
-    publicPath: '/static/',
+    pathinfo: true,
+    publicPath: isProd
+      ? '/static/'
+      : `http://${envs.HOST}:${envs.DEV_PORT}/static/`,
     path: path.resolve('dist', 'static'),
     libraryTarget: 'var',
     filename: isProd ? 'js/index.[contenthash:8].js' : 'index.js',
@@ -60,7 +62,7 @@ module.exports = merge(baseConfig(false), {
     hot: true,
     noInfo: true,
     overlay: false,
-    writeToDisk: true,
+    // writeToDisk: true,
     publicPath: '/static/',
     host: envs.HOST,
     port: envs.DEV_PORT,

@@ -5,6 +5,8 @@ const NodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
 const baseConfig = require('./webpack.config.base');
 
+const envs = require('./envs');
+
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = merge(baseConfig(true), {
@@ -39,6 +41,9 @@ module.exports = merge(baseConfig(true), {
   ],
   output: {
     path: path.resolve('dist'),
+    publicPath: isProd
+      ? '/static/'
+      : `http://${envs.HOST}:${envs.DEV_PORT}/static/`,
     libraryTarget: 'commonjs2',
     filename: 'index.js',
     pathinfo: false,

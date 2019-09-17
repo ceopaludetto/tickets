@@ -36,14 +36,12 @@ export class ReactService {
       client.cache.writeData({
         data: {
           logged: true,
-          userId: req.user._id,
         },
       });
     } else {
       client.cache.writeData({
         data: {
           logged: false,
-          userId: null,
         },
       });
     }

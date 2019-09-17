@@ -40,10 +40,6 @@ export class Usuario extends Typegoose {
   @prop({ required: true })
   public senha!: string;
 
-  @Field()
-  @prop({ required: true })
-  public cargo!: string;
-
   @Field({ nullable: true })
   @prop()
   public telefone?: string;

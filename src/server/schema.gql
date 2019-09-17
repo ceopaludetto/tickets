@@ -187,7 +187,6 @@ type Usuario {
   sobrenome: String!
   email: String!
   senha: String!
-  cargo: String!
   telefone: String
   nascimento: DateTime!
   associacoes: [Associacao!]!
@@ -198,7 +197,6 @@ input UsuarioInput {
   nome: String
   sobrenome: String
   email: String
-  cargo: String
   senha: String
   telefone: String
   nascimento: DateTime

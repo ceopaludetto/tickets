@@ -1,12 +1,15 @@
 import React from 'react';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { Helmet } from 'react-helmet';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
+import { parse } from 'query-string';
 
 import {
   LoginMutation,
   LoginMutationVariables,
   LoggedQuery,
+  ProfileQuery,
+  ProfileQueryVariables,
 } from '@/client/typescript/graphql';
 import { Button, IconButton } from '@/client/components/form';
 import { Divider, TextAlign } from '@/client/components/layout';
@@ -17,12 +20,17 @@ import {
   Primary,
 } from '@/client/components/typo';
 import { FormikControl } from '@/client/components/composed';
-import { Login as LoginDocument } from '@/client/graphql/usuario.gql';
+import { Login as LoginDocument, Profile } from '@/client/graphql/usuario.gql';
 import { Logged } from '@/client/graphql/local.gql';
-import { useVisibility, preloadRouteComponent } from '@/client/utils';
+import {
+  useVisibility,
+  preloadRouteComponent,
+  useRouter,
+} from '@/client/utils';
 import { LoginValidation } from '@/client/providers/validations';
 
 export default function Login() {
+  const { location, history } = useRouter();
   const client = useApolloClient();
   const {
     visibility,
@@ -31,7 +39,19 @@ export default function Login() {
   } = useVisibility();
 
   const [fetchLogin] = useMutation<LoginMutation, LoginMutationVariables>(
-    LoginDocument
+    LoginDocument,
+    {
+      update(cache, { data }) {
+        if (data && data.login) {
+          cache.writeQuery<ProfileQuery, ProfileQueryVariables>({
+            query: Profile,
+            data: {
+              profile: data.login,
+            },
+          });
+        }
+      },
+    }
   );
 
   return (
@@ -61,7 +81,13 @@ export default function Login() {
               },
             });
 
-            await preloadRouteComponent('/app', client);
+            const route = (parse(location.search).from as string) || '/app';
+
+            await preloadRouteComponent(route, client);
+
+            history.push({
+              pathname: route,
+            });
           } catch (err) {
             const firstError = err.graphQLErrors[0];
 
@@ -77,16 +103,9 @@ export default function Login() {
       >
         {() => (
           <Form>
-            <Field
-              name="email"
-              component={FormikControl}
-              label="Email"
-              id="email"
-              type="email"
-            />
-            <Field
+            <FormikControl name="email" label="Email" id="email" type="email" />
+            <FormikControl
               name="senha"
-              component={FormikControl}
               type={visibility ? 'text' : 'password'}
               label="Senha"
               id="senha"

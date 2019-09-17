@@ -39,19 +39,13 @@ export class UsuarioInput {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  public cargo?: string;
-
-  @Field({ nullable: true })
-  @IsOptional()
-  @IsString()
-  @IsNotEmpty()
   public senha?: string;
 
   @Field({ nullable: true })
   @IsOptional()
   @IsString()
   @IsNotEmpty()
-  @Matches(/\([0-9]{2}\) 9?[1-9]{4}-[1-9]{4}/g)
+  @Matches(/\(\d{2}\) \d?\d{4}-\d{4}/)
   public telefone?: string;
 
   @Field({ nullable: true })

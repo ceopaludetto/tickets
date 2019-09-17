@@ -2,13 +2,17 @@ import React from 'react';
 import { Row, Col } from 'styled-bootstrap-grid';
 import { Helmet } from 'react-helmet';
 import { useQuery, useMutation } from '@apollo/react-hooks';
-import { Formik, Form, Field } from 'formik';
+import { Formik, Form } from 'formik';
 
 import { Button, IconButton } from '@/client/components/form';
 import { Divider, TextAlign, Alert } from '@/client/components/layout';
 import { SubTitle, List } from '@/client/components/typo';
-import { FormikControl } from '@/client/components/composed';
-import { useMultipleVisibility } from '@/client/utils/useVisibility';
+import {
+  FormikControl,
+  FormikCalendar,
+  FormikMaskedControl,
+} from '@/client/components/composed';
+import { useMultipleVisibility } from '@/client/utils';
 import {
   ProfileQuery,
   UpdateUsuarioMutation,
@@ -18,6 +22,7 @@ import { Profile, UpdateUsuario } from '@/client/graphql/usuario.gql';
 import {
   UpdateInfoValidation,
   UpdateSenhaValidation,
+  MutableTelefone,
 } from '@/client/providers/validations';
 
 export default function MainSettingsPage() {
@@ -32,9 +37,11 @@ export default function MainSettingsPage() {
   >(UpdateUsuario, {
     update(cache, { data: result }) {
       if (result && result.updateUsuario) {
-        cache.writeQuery({
+        cache.writeQuery<ProfileQuery>({
           query: Profile,
-          data: result,
+          data: {
+            profile: result.updateUsuario,
+          },
         });
       }
     },
@@ -52,7 +59,7 @@ export default function MainSettingsPage() {
             nome: data.profile.nome,
             sobrenome: data.profile.sobrenome,
             telefone: data.profile.telefone || '',
-            nascimento: data.profile.nascimento,
+            nascimento: data.profile.nascimento || new Date(),
           }
         }
         onSubmit={async mutationData => {
@@ -66,29 +73,16 @@ export default function MainSettingsPage() {
           }
         }}
       >
-        {() => (
+        {({ setFieldValue, setFieldTouched }) => (
           <Form>
-            <Field
-              name="email"
-              component={FormikControl}
-              type="email"
-              id="email"
-              label="Email"
-            />
+            <FormikControl name="email" type="email" id="email" label="Email" />
             <Row alignItems="center">
               <Col col={12} md={6}>
-                <Field
-                  name="nome"
-                  component={FormikControl}
-                  type="text"
-                  id="nome"
-                  label="Nome"
-                />
+                <FormikControl name="nome" type="text" id="nome" label="Nome" />
               </Col>
               <Col col={12} md={6}>
-                <Field
+                <FormikControl
                   name="sobrenome"
-                  component={FormikControl}
                   type="text"
                   id="sobrenome"
                   label="Sobrenome"
@@ -97,21 +91,24 @@ export default function MainSettingsPage() {
             </Row>
             <Row alignItems="center">
               <Col col={12} md={6}>
-                <Field
+                <FormikMaskedControl
                   type="text"
                   id="telefone"
                   label="Telefone"
                   name="telefone"
-                  component={FormikControl}
+                  guide={false}
+                  mask={MutableTelefone}
                 />
               </Col>
               <Col col={12} md={6}>
-                <Field
+                <FormikCalendar
                   type="text"
                   id="nascimento"
                   label="Data de Nascimento"
                   name="nascimento"
-                  component={FormikControl}
+                  initialValue={data && data.profile.nascimento}
+                  setFieldValue={setFieldValue}
+                  setFieldTouched={setFieldTouched}
                 />
               </Col>
             </Row>
@@ -135,8 +132,7 @@ export default function MainSettingsPage() {
           >
             {() => (
               <Form>
-                <Field
-                  component={FormikControl}
+                <FormikControl
                   name="senha"
                   id="senha"
                   label="Senha atual"
@@ -155,8 +151,7 @@ export default function MainSettingsPage() {
                     </IconButton>
                   }
                 />
-                <Field
-                  component={FormikControl}
+                <FormikControl
                   name="nsenha"
                   id="nsenha"
                   label="Nova senha"
@@ -175,8 +170,7 @@ export default function MainSettingsPage() {
                     </IconButton>
                   }
                 />
-                <Field
-                  component={FormikControl}
+                <FormikControl
                   name="rsenha"
                   id="rsenha"
                   label="Repetir nova senha"

@@ -12,6 +12,7 @@ import { radius, rgba, color, multipleColor } from '@/client/styles/utils';
 
 export const Root = styled.div`
   margin-bottom: 1rem;
+  position: relative;
 `;
 
 const Commons = css`
@@ -21,6 +22,7 @@ const Commons = css`
   display: inline-flex;
   transition: border-color 150ms ease-in-out, background-color 100ms ease-in-out;
   border: none;
+  color: ${MapContrastText};
 `;
 
 export const Append = styled.div`

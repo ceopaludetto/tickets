@@ -8,6 +8,7 @@ import {
   UPPERCASE,
   SPECIAL_CHARACTER,
   SITE,
+  TELEFONE,
 } from './constants';
 
 export const LoginValidation = Yup.object().shape({
@@ -27,10 +28,7 @@ export const RegisterValidation = Yup.object().shape({
   email: Yup.string()
     .required(REQUIRED)
     .email(EMAIL),
-  telefone: Yup.string().matches(
-    /\([0-9]{2}\) 9?[1-9]{4}-[1-9]{4}/,
-    'Telefone inválido'
-  ),
+  telefone: Yup.string().matches(/\([0-9]{2}\) 9?[1-9]{4}-[1-9]{4}/, TELEFONE),
   nascimento: Yup.date().required(REQUIRED),
   senha: Yup.string()
     .required(REQUIRED)
@@ -58,10 +56,15 @@ export const RegisterValidation = Yup.object().shape({
     (hasEmpresa: boolean, schema: Yup.StringSchema) =>
       hasEmpresa ? schema.required(REQUIRED) : schema
   ),
-  nomeCompleto: Yup.string().when(
+  nomeCompleto: Yup.string(),
+  empresaTelefone: Yup.string().when(
     'hasEmpresa',
     (hasEmpresa: boolean, schema: Yup.StringSchema) =>
-      hasEmpresa ? schema.required(REQUIRED) : schema
+      hasEmpresa
+        ? schema
+            .matches(/\([0-9]{2}\) [0-9]{4}-[0-9]/, TELEFONE)
+            .required(REQUIRED)
+        : schema
   ),
   razaoSocial: Yup.string().when(
     'hasEmpresa',

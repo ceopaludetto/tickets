@@ -1,10 +1,3 @@
-query FindAllUsuarios($skip: Int!, $take: Int!) {
-  findAllUsuarios(skip: $skip, take: $take) {
-    _id
-    nome
-  }
-}
-
 query Profile {
   profile{
     _id
@@ -18,6 +11,17 @@ query Profile {
 
 mutation Login($email: String!, $senha: String!) {
   login(email: $email, senha: $senha){
+    _id
+    nome
+    sobrenome
+    email
+    telefone
+    nascimento
+  }
+}
+
+mutation Register($input: UsuarioInput!) {
+  register(input: $input) {
     _id
     nome
     sobrenome

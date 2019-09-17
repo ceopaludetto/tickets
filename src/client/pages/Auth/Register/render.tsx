@@ -2,20 +2,41 @@ import React from 'react';
 import { Row, Col } from 'styled-bootstrap-grid';
 
 import { Alert } from '@/client/components/layout';
-import { FormikCheckbox, FormikControl } from '@/client/components/composed';
+import {
+  FormikCheckbox,
+  FormikControl,
+  FormikMaskedControl,
+  FormikCalendar,
+} from '@/client/components/composed';
 import { IconButton } from '@/client/components/form';
 import { SubTitle, List } from '@/client/components/typo';
+import {
+  Telefone,
+  CEP,
+  CNPJ,
+  MutableTelefone,
+} from '@/client/providers/validations';
 
-interface RenderOpts<T extends string[]> {
+interface RenderOpts<T extends string[], U> {
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   renderVisibility: (p: T[number], tru?: any, fals?: any) => any;
   toggleVisibility: (p: T[number]) => () => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setFieldValue: (p: U, value: any) => void;
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  setFieldTouched: (p: U) => void;
 }
 
 export function renderForm(
   page: number,
   hasEmpresa: boolean,
-  { renderVisibility, toggleVisibility }: RenderOpts<('senha' | 'rsenha')[]>
+  {
+    renderVisibility,
+    toggleVisibility,
+    setFieldValue,
+    setFieldTouched,
+  }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  RenderOpts<('senha' | 'rsenha')[], any>
 ) {
   if (page === 0) {
     return (
@@ -36,13 +57,23 @@ export function renderForm(
         <FormikControl name="email" label="Email" id="email" required />
         <Row>
           <Col col={12} md>
-            <FormikControl name="telefone" label="Telefone" id="telefone" />
+            <FormikMaskedControl
+              name="telefone"
+              label="Telefone"
+              id="telefone"
+              guide={false}
+              mask={MutableTelefone}
+            />
           </Col>
           <Col col={12} md>
-            <FormikControl
+            <FormikCalendar
               name="nascimento"
-              label="Nascimento"
+              label="Data de Nascimento"
               id="nascimento"
+              disableAfter
+              minYear={1940}
+              setFieldValue={setFieldValue}
+              setFieldTouched={setFieldTouched}
               required
             />
           </Col>
@@ -122,10 +153,12 @@ export function renderForm(
       />
       <Row>
         <Col col={12} md>
-          <FormikControl
+          <FormikMaskedControl
             name="cnpj"
             label="CNPJ"
             id="cnpj"
+            guide={false}
+            mask={CNPJ}
             required={hasEmpresa}
           />
         </Col>
@@ -148,13 +181,21 @@ export function renderForm(
           />
         </Col>
         <Col col={12} md>
-          <FormikControl
-            name="nomeCompleto"
-            label="Nome Completo"
-            id="nomeCompleto"
+          <FormikMaskedControl
+            name="empresaTelefone"
+            label="Telefone"
+            id="empresaTelefone"
+            guide={false}
+            mask={Telefone}
+            required={hasEmpresa}
           />
         </Col>
       </Row>
+      <FormikControl
+        name="nomeCompleto"
+        label="Nome Completo"
+        id="nomeCompleto"
+      />
       <Row>
         <Col col={12} md>
           <FormikControl name="site" label="Site" id="site" />
@@ -178,11 +219,13 @@ export function renderForm(
           />
         </Col>
         <Col col={12} md>
-          <FormikControl
+          <FormikMaskedControl
             name="cep"
             label="CEP"
             id="cep"
+            guide={false}
             required={hasEmpresa}
+            mask={CEP}
           />
         </Col>
       </Row>

@@ -296,7 +296,6 @@ export type Usuario = {
   sobrenome: Scalars['String'],
   email: Scalars['String'],
   senha: Scalars['String'],
-  cargo: Scalars['String'],
   telefone?: Maybe<Scalars['String']>,
   nascimento: Scalars['DateTime'],
   associacoes: Array<Associacao>,
@@ -307,12 +306,18 @@ export type UsuarioInput = {
   nome?: Maybe<Scalars['String']>,
   sobrenome?: Maybe<Scalars['String']>,
   email?: Maybe<Scalars['String']>,
-  cargo?: Maybe<Scalars['String']>,
   senha?: Maybe<Scalars['String']>,
   telefone?: Maybe<Scalars['String']>,
   nascimento?: Maybe<Scalars['DateTime']>,
   associacoes?: Maybe<Array<AssociacaoInput>>,
 };
+export type AddEmpresaMutationVariables = {
+  input: EmpresaInput
+};
+
+
+export type AddEmpresaMutation = { __typename?: 'Mutation', addEmpresa: { __typename?: 'Empresa', _id: string, nomeFantasia: string } };
+
 export type LoggedQueryVariables = {};
 
 
@@ -331,14 +336,6 @@ export type FindAllTicketsQueryVariables = {
 
 export type FindAllTicketsQuery = { __typename?: 'Query', findAllTickets: Array<{ __typename?: 'Ticket', _id: string, nome: string, descricao: string, labels: Maybe<Array<{ __typename?: 'Label', _id: string, descricao: string, cor: string }>> }> };
 
-export type FindAllUsuariosQueryVariables = {
-  skip: Scalars['Int'],
-  take: Scalars['Int']
-};
-
-
-export type FindAllUsuariosQuery = { __typename?: 'Query', findAllUsuarios: Array<{ __typename?: 'Usuario', _id: string, nome: string }> };
-
 export type ProfileQueryVariables = {};
 
 
@@ -351,6 +348,13 @@ export type LoginMutationVariables = {
 
 
 export type LoginMutation = { __typename?: 'Mutation', login: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string, email: string, telefone: Maybe<string>, nascimento: any } };
+
+export type RegisterMutationVariables = {
+  input: UsuarioInput
+};
+
+
+export type RegisterMutation = { __typename?: 'Mutation', register: { __typename?: 'Usuario', _id: string, nome: string, sobrenome: string, email: string, telefone: Maybe<string>, nascimento: any } };
 
 export type UpdateUsuarioMutationVariables = {
   id: Scalars['ID'],

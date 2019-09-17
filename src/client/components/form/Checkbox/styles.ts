@@ -24,7 +24,7 @@ export const Check = styled.label`
   padding: 2px;
   margin-right: 0.65rem;
   background-color: ${MapBorder};
-  transition: background-color 100ms ease-in-out, box-shadow 100ms ease-in-out;
+  transition: background-color 100ms ease-in-out, box-shadow 100ms linear;
   order: -1;
   svg {
     color: ${constantColor('white')};

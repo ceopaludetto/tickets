@@ -16,7 +16,7 @@ export const appRoutes: Route[] = [
     ),
   },
   {
-    name: 'Mesa',
+    name: 'Chamados',
     icon: FiClipboard,
     path: '/app/mesa',
     exact: true,
@@ -39,7 +39,7 @@ export const appRoutes: Route[] = [
     ),
     routes: [
       {
-        name: 'Perfil',
+        name: 'Informações pessoais',
         path: '/app/settings',
         exact: true,
         query: Profile,
