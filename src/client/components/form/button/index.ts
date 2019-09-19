@@ -2,11 +2,13 @@ import styled, { css } from 'styled-components';
 
 import { Theme } from '@/client/providers/theme';
 import { radius, rgba } from '@/client/styles/utils';
+import { darklizer } from '@/client/styles/maps';
 
 interface ButtonProps {
   color?: 'primary' | 'danger' | 'error';
   variant?: 'contained' | 'text';
   block?: boolean;
+  hasMargin?: boolean;
 }
 
 export const Button = styled.button<ButtonProps>`
@@ -23,6 +25,7 @@ export const Button = styled.button<ButtonProps>`
     const variant = props.variant || 'contained';
     const color = props.color || 'primary';
     const block = props.block || false;
+    const hasMargin = props.hasMargin || false;
     const { colors } = props.theme as Theme;
     const { text, main, darken, lighten } = colors[color];
 
@@ -34,34 +37,38 @@ export const Button = styled.button<ButtonProps>`
         css`
           width: 100%;
         `}
+      ${hasMargin &&
+        css`
+          margin-bottom: 1.5rem;
+        `}
     `;
 
     if (variant === 'text') {
       return css`
         background-color: transparent;
-        color: ${main};
+        color: ${darklizer(main)};
         ${common}
         &:hover, &:focus {
-          background-color: ${rgba(main, 0.1)};
+          background-color: ${darklizer(rgba(main, 0.1))};
         }
         &:active {
-          background-color: ${rgba(main, 0.2)};
+          background-color: ${darklizer(rgba(main, 0.2))};
         }
       `;
     }
 
     return css`
-      background-color: ${main};
+      background-color: ${darklizer(main)};
       color: ${text};
       ${common}
       &:hover {
-        background-color: ${lighten};
+        background-color: ${darklizer(lighten)};
       }
       &:active {
-        background-color: ${darken};
+        background-color: ${darklizer(darken)};
       }
       &:focus {
-        box-shadow: 0 0 0 2px ${rgba(main, 0.3)};
+        box-shadow: 0 0 0 2px ${darklizer(rgba(main, 0.3))};
       }
     `;
   }}

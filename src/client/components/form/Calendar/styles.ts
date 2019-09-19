@@ -1,15 +1,14 @@
 import styled, { css } from 'styled-components';
 
+import { radius, color } from '@/client/styles/utils';
 import {
-  radius,
-  constantColor,
-  color,
-  readableColor,
-} from '@/client/styles/utils';
-import {
-  MapBackground,
-  MapBorder,
-  MapContrastText,
+  mapBackground,
+  mapBorder,
+  mapContrastText,
+  mapLabel,
+  mapMuted,
+  darklizer,
+  readableDarklizer,
 } from '@/client/styles/maps';
 
 export const Footer = styled.div`
@@ -20,8 +19,8 @@ export const Footer = styled.div`
   z-index: 50;
   padding: 1rem;
   flex-direction: column;
-  border: 2px solid ${MapBorder};
-  background-color: ${MapBackground};
+  border: 2px solid ${mapBorder};
+  background-color: ${mapBackground};
   border-radius: ${radius()};
   min-width: 300px;
 `;
@@ -41,15 +40,6 @@ export const DayBody = styled.div`
   grid-gap: 0.25rem;
 `;
 
-export const YearBody = styled.div`
-  display: grid;
-  grid-template-columns: repeat(4, 1fr);
-  grid-template-rows: auto;
-  grid-gap: 0.5rem;
-  overflow-y: auto;
-  max-height: 200px;
-`;
-
 export const MonthBody = styled.div`
   display: grid;
   grid-template-columns: repeat(3, 1fr);
@@ -63,20 +53,21 @@ export const WeekDay = styled.span`
   font-size: 0.8rem;
   margin-bottom: 0.25rem;
   font-weight: 600;
-  color: ${constantColor('label')};
+  color: ${mapMuted};
 `;
 
 export const Day = styled.button`
   border: none;
   background-color: transparent;
   border-radius: ${radius()};
-  color: ${MapContrastText};
+  font-size: 0.9rem;
+  color: ${mapContrastText};
   transition: background-color 150ms ease-in-out;
   &:not(:disabled):hover {
-    background-color: ${MapBorder};
+    background-color: ${mapBorder};
   }
   &:disabled {
-    color: ${constantColor('label')}!important;
+    color: ${mapLabel}!important;
   }
   &:focus {
     outline: none;
@@ -86,8 +77,8 @@ export const Day = styled.button`
       'primary',
       ({ main }) =>
         css`
-          background-color: ${main}!important;
-          color: ${readableColor(main)};
+          background-color: ${darklizer(main)}!important;
+          color: ${readableDarklizer(main)};
         `
     )}
   }
@@ -95,39 +86,39 @@ export const Day = styled.button`
 
 export const HeaderButton = styled.button`
   border-radius: ${radius()};
-  color: ${MapContrastText};
+  color: ${mapContrastText};
   border: none;
   background-color: transparent;
   font-weight: 500;
   font-size: 0.9rem;
   text-transform: capitalize;
   transition: color 150ms ease-in-out, background-color 150ms ease-in-out;
-  color: ${constantColor('label')};
+  color: ${mapLabel};
   &:not(:disabled):hover {
-    background-color: ${MapBorder};
-    color: ${MapContrastText};
+    background-color: ${mapBorder};
+    color: ${mapContrastText};
   }
   &:focus {
     outline: none;
   }
   &.active {
-    color: ${MapContrastText}!important;
+    color: ${mapContrastText}!important;
   }
 `;
 
 export const WeekOrYearButton = styled(HeaderButton)`
   font-size: 1rem;
-  color: ${MapContrastText};
+  color: ${mapContrastText};
   &:disabled {
-    color: ${constantColor('label')};
+    color: ${mapLabel};
   }
   &.active {
     ${color(
       'primary',
       ({ main }) =>
         css`
-          background-color: ${main}!important;
-          color: ${readableColor(main)}!important;
+          background-color: ${darklizer(main)}!important;
+          color: ${readableDarklizer(main)}!important;
         `
     )}
   }

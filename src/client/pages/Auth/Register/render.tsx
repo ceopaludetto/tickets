@@ -7,7 +7,7 @@ import {
   FormikControl,
   FormikMaskedControl,
   FormikCalendar,
-} from '@/client/components/composed';
+} from '@/client/components/formik';
 import { IconButton } from '@/client/components/form';
 import { SubTitle, List } from '@/client/components/typo';
 import {

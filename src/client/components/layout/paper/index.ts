@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { MapBackgroundDarken } from '@/client/styles/maps';
+import { mapBackground } from '@/client/styles/maps';
 import { radius } from '@/client/styles/utils';
 
 interface PaperProps {
@@ -9,7 +9,7 @@ interface PaperProps {
 }
 
 export const Paper = styled.div<PaperProps>`
-  background-color: ${MapBackgroundDarken};
+  background-color: ${mapBackground};
   transition: box-shadow 125ms ease-in-out;
   border-radius: ${radius(1.25)};
   ${props =>

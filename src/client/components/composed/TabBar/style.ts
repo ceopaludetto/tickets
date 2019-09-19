@@ -1,8 +1,8 @@
 import { NavLink } from 'react-router-dom';
 import styled, { css } from 'styled-components';
 
-import { color, constantColor } from '@/client/styles/utils';
-import { MapContrastText, MapBorder } from '@/client/styles/maps';
+import { color } from '@/client/styles/utils';
+import { mapContrastText, mapLabel, darklizer } from '@/client/styles/maps';
 
 const activeClassName = 'active';
 
@@ -12,21 +12,22 @@ export const NavItem = styled(NavLink)`
   font-size: 0.9rem;
   font-weight: 500;
   text-transform: capitalize;
-  color: ${constantColor('label')};
+  color: ${mapLabel};
   margin-bottom: -2px;
-  border-bottom: 2px solid ${MapBorder};
+  border-bottom: 2px solid transparent;
+  transition: border-color 200ms ease-in-out;
   &.${activeClassName} {
+    color: ${mapContrastText};
     ${color(
       'primary',
       ({ main }) => css`
-        border-bottom: 2px solid ${main};
-        color: ${MapContrastText};
+        border-color: ${darklizer(main)};
       `
     )}
   }
   &:hover {
     text-decoration: none;
-    color: ${MapContrastText};
+    color: ${mapContrastText};
   }
   & + a {
     margin-left: 1.5rem;

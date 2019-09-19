@@ -1,5 +1,6 @@
 import styled, { css } from 'styled-components';
 
+import { darklizer } from '@/client/styles/maps';
 import { color } from '@/client/styles/utils';
 
 export const Primary = styled.span`
@@ -7,7 +8,7 @@ export const Primary = styled.span`
     'primary',
     ({ main }) =>
       css`
-        color: ${main};
+        color: ${darklizer(main)};
       `
   )}
 `;

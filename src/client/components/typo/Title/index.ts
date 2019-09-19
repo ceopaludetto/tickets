@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { MapContrastText } from '@/client/styles/maps';
+import { mapContrastText } from '@/client/styles/maps';
 
 interface TitleProps {
   hasMargin?: boolean;
@@ -11,7 +11,7 @@ export const Title = styled.h1<TitleProps>`
   font-weight: 600;
   letter-spacing: 1.1px;
   margin-bottom: 0;
-  color: ${MapContrastText};
+  color: ${mapContrastText};
   ${props =>
     props.hasMargin &&
     css`

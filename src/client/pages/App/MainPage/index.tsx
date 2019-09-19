@@ -4,10 +4,11 @@ import { RouteConfigComponentProps, renderRoutes } from 'react-router-config';
 import { useQuery } from '@apollo/react-hooks';
 import { FiSettings, FiSearch } from 'react-icons/fi';
 
-import { Content, GlobalBackground } from './styles';
+import { GlobalBackground, Main } from './styles';
 import { Sidebar, SidebarItem } from '@/client/components/composed';
 import { IconButton } from '@/client/components/form';
 import { PrefetchLink } from '@/client/components/typo';
+import { Avatar } from '@/client/components/layout';
 import { Theme } from '@/client/graphql/local.gql';
 import { Mode } from '@/client/providers/theme';
 
@@ -27,6 +28,7 @@ export default function App({ route }: RouteConfigComponentProps) {
               <IconButton>
                 <FiSearch />
               </IconButton>
+              <Avatar />
               <IconButton as={PrefetchLink} to="/app/settings">
                 <FiSettings />
               </IconButton>
@@ -49,7 +51,7 @@ export default function App({ route }: RouteConfigComponentProps) {
                 );
               })}
         </Sidebar>
-        <Content>{route && renderRoutes(route.routes)}</Content>
+        <Main>{route && renderRoutes(route.routes)}</Main>
       </>
     </ThemeProvider>
   );

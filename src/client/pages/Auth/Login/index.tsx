@@ -19,7 +19,7 @@ import {
   SubTitle,
   Primary,
 } from '@/client/components/typo';
-import { FormikControl } from '@/client/components/composed';
+import { FormikControl } from '@/client/components/formik';
 import { Login as LoginDocument, Profile } from '@/client/graphql/usuario.gql';
 import { Logged } from '@/client/graphql/local.gql';
 import {

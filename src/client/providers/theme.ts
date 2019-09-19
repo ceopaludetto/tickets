@@ -11,6 +11,11 @@ import {
   BACKGROUND_DARK,
   BORDER,
   BORDER_DARK,
+  LABEL_DARK,
+  MUTED,
+  MUTED_DARK,
+  SIDEBAR,
+  SIDEBAR_DARK,
 } from '@/client/styles/constants';
 
 export function readableColor(c: string) {
@@ -32,7 +37,7 @@ export const enum Mode {
 export const theme = {
   mode: Mode.Light,
   grid: 12,
-  radius: 3,
+  radius: 4,
   colors: {
     primary: {
       lighten: lighten(0.05, PRIMARY),
@@ -55,20 +60,15 @@ export const theme = {
     black: BLACK,
     white: WHITE,
     label: LABEL,
-    background: {
-      lighten: lighten(0.025, BACKGROUND),
-      main: BACKGROUND,
-      darken: darken(0.025, BACKGROUND),
-      text: readableColor(BACKGROUND),
-    },
-    backgroundDark: {
-      lighten: lighten(0.025, BACKGROUND_DARK),
-      main: BACKGROUND_DARK,
-      darken: darken(0.025, BACKGROUND_DARK),
-      text: readableColor(BACKGROUND_DARK),
-    },
+    labelDark: LABEL_DARK,
+    background: BACKGROUND,
+    backgroundDark: BACKGROUND_DARK,
+    sidebar: SIDEBAR,
+    sidebarDark: SIDEBAR_DARK,
     border: BORDER,
     borderDark: BORDER_DARK,
+    muted: MUTED,
+    mutedDark: MUTED_DARK,
   },
 };
 

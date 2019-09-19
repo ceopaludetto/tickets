@@ -5,7 +5,7 @@ import {
   Col as BTCol,
 } from 'styled-bootstrap-grid';
 
-import { MapBackgroundDarken } from '@/client/styles/maps';
+import { mapBackground } from '@/client/styles/maps';
 import { Paper } from '@/client/components/layout';
 
 interface StyledContainerProps {
@@ -13,7 +13,7 @@ interface StyledContainerProps {
 }
 
 export const Container = styled(BTContainer)`
-  background-color: ${MapBackgroundDarken};
+  background-color: ${mapBackground};
   height: 100vh;
 `;
 

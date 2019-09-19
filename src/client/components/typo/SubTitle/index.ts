@@ -1,6 +1,7 @@
 import styled, { css } from 'styled-components';
 
 import { color } from '@/client/styles/utils';
+import { darklizer } from '@/client/styles/maps';
 
 export const SubTitle = styled.h2`
   font-size: 0.8rem;
@@ -10,7 +11,7 @@ export const SubTitle = styled.h2`
   ${color(
     'primary',
     ({ main }) => css`
-      color: ${main};
+      color: ${darklizer(main)};
     `
   )}
 `;

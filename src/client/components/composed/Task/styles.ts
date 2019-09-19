@@ -2,15 +2,15 @@ import styled, { css } from 'styled-components';
 
 import { Paper } from '@/client/components/layout';
 import {
-  MapBorder,
-  MapBackground,
-  MapContrastText,
+  mapBorder,
+  mapBackground,
+  mapContrastText,
 } from '@/client/styles/maps';
 import { radius } from '@/client/styles/utils';
 
 export const Body = styled.div`
   padding: 1rem;
-  border-top: 27px solid ${MapBorder};
+  border-top: 27px solid ${mapBorder};
 `;
 
 interface ContainerProps {
@@ -18,8 +18,8 @@ interface ContainerProps {
 }
 
 export const Container = styled(Paper)<ContainerProps>`
-  border: 2px solid ${MapBorder};
-  background-color: ${MapBackground};
+  border: 2px solid ${mapBorder};
+  background-color: ${mapBackground};
   cursor: grab;
   ${props =>
     props.isDragging &&
@@ -46,11 +46,11 @@ export const Title = styled.h3`
   font-size: 1.15rem;
   font-weight: 600;
   margin-bottom: 0.5rem;
-  color: ${MapContrastText};
+  color: ${mapContrastText};
 `;
 
 export const Content = styled.div`
-  color: ${MapContrastText};
+  color: ${mapContrastText};
   font-size: 1rem;
 `;
 

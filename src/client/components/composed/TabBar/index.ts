@@ -1,10 +1,10 @@
 import styled from 'styled-components';
 
-import { MapBorder } from '@/client/styles/maps';
+import { mapBorder } from '@/client/styles/maps';
 
 export const TabBar = styled.div`
   display: flex;
-  border-bottom: 2px solid ${MapBorder};
+  border-bottom: 2px solid ${mapBorder};
 `;
 
 export { TabBarItem } from './item';

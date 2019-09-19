@@ -28,23 +28,25 @@ export async function preloadRouteComponent(
   client?: ApolloClient<object>
 ): Promise<void> {
   return new Promise(async (resolve, reject) => {
-    const path = typeof to === 'string' ? to : to.pathname;
+    try {
+      const path = typeof to === 'string' ? to : to.pathname;
 
-    const matchingRoute = findRoute(path, routes);
+      const matchingRoute = findRoute(path, routes);
 
-    if (matchingRoute && matchingRoute.component.load) {
-      // eslint-disable-next-line @typescript-eslint/no-explicit-any
-      await (matchingRoute.component as LoadableComponent<any>).load();
+      if (matchingRoute && matchingRoute.component.load) {
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        await (matchingRoute.component as LoadableComponent<any>).load();
 
-      if (matchingRoute.query && client) {
-        await client.query({
-          query: matchingRoute.query,
-        });
+        if (matchingRoute.query && client) {
+          await client.query({
+            query: matchingRoute.query,
+          });
+        }
+
+        resolve();
       }
-
-      resolve();
+    } catch (err) {
+      reject(err);
     }
-
-    reject();
   });
 }

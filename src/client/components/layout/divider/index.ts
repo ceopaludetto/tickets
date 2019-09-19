@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { MapBorder } from '@/client/styles/maps';
+import { mapBorder } from '@/client/styles/maps';
 
 interface DividerProps {
   horizontalMargin?: boolean;
@@ -9,7 +9,7 @@ interface DividerProps {
 
 export const Divider = styled.hr<DividerProps>`
   border: none;
-  border-top: 2px solid ${MapBorder};
+  border-top: 2px solid ${mapBorder};
   ${props =>
     props.doubleMargin
       ? css`

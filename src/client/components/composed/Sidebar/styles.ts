@@ -2,11 +2,13 @@ import styled, { css } from 'styled-components';
 import { NavLink } from 'react-router-dom';
 
 import {
-  MapBackground,
-  MapBorder,
-  MapContrastText,
+  mapSidebar,
+  mapBorder,
+  mapContrastText,
+  mapLabel,
+  darklizer,
 } from '@/client/styles/maps';
-import { constantColor, color } from '@/client/styles/utils';
+import { color } from '@/client/styles/utils';
 
 export const Container = styled.div`
   display: flex;
@@ -14,8 +16,8 @@ export const Container = styled.div`
   position: fixed;
   width: 250px;
   flex-direction: column;
-  background-color: ${MapBackground};
-  border-right: 2px solid ${MapBorder};
+  background-color: ${mapSidebar};
+  border-right: 2px solid ${mapBorder};
 `;
 
 export const Items = styled.div`
@@ -24,7 +26,7 @@ export const Items = styled.div`
 `;
 
 export const Profile = styled.div`
-  padding: 1.5rem 2rem;
+  padding: 1.25rem 1.75rem;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -52,18 +54,18 @@ export const Item = styled(NavLink)`
   width: 100%;
   text-decoration: none;
   align-items: center;
-  color: ${constantColor('label')};
+  color: ${mapLabel};
   ${Icon} {
-    color: ${constantColor('label')};
+    color: ${mapLabel};
   }
   & + a {
     margin-top: 0.25rem;
   }
   &:hover {
     text-decoration: none;
-    color: ${MapContrastText};
+    color: ${mapContrastText};
     ${Icon} {
-      color: ${MapContrastText};
+      color: ${mapContrastText};
     }
   }
   &::before {
@@ -79,14 +81,14 @@ export const Item = styled(NavLink)`
       'primary',
       ({ main }) =>
         css`
-          background-color: ${main};
+          background-color: ${darklizer(main)};
         `
     )}
   }
   &.active {
-    color: ${MapContrastText};
+    color: ${mapContrastText};
     ${Icon} {
-      color: ${MapContrastText};
+      color: ${mapContrastText};
     }
     &::before {
       width: 3px;

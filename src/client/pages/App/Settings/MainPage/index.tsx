@@ -4,14 +4,14 @@ import { Helmet } from 'react-helmet';
 import { useQuery, useMutation } from '@apollo/react-hooks';
 import { Formik, Form } from 'formik';
 
-import { Button, IconButton } from '@/client/components/form';
+import { Button, IconButton, Switch } from '@/client/components/form';
 import { Divider, TextAlign, Alert } from '@/client/components/layout';
 import { SubTitle, List } from '@/client/components/typo';
 import {
   FormikControl,
   FormikCalendar,
   FormikMaskedControl,
-} from '@/client/components/composed';
+} from '@/client/components/formik';
 import { useMultipleVisibility } from '@/client/utils';
 import {
   ProfileQuery,
@@ -119,6 +119,12 @@ export default function MainSettingsPage() {
         )}
       </Formik>
       <Divider />
+      <Switch
+        id="public"
+        label="Perfi público"
+        content="Ao ativar seu perfil ficará visível a todos"
+      />
+      <Divider />
       <Row>
         <Col col={12} md={6}>
           <Formik
@@ -196,7 +202,7 @@ export default function MainSettingsPage() {
             )}
           </Formik>
         </Col>
-        <Col col={12} md={6}>
+        <Col col={12} md={6} order="first" mdOrder="last">
           <Alert>
             <SubTitle>Dicas de senha</SubTitle>
             <List>
@@ -209,7 +215,7 @@ export default function MainSettingsPage() {
       </Row>
       <Divider />
       <TextAlign align="center">
-        <Button color="error" variant="text">
+        <Button hasMargin color="error" variant="text">
           Excluir conta
         </Button>
       </TextAlign>

@@ -1,10 +1,10 @@
 import styled, { css } from 'styled-components';
 import { Row, Container as BTContainer } from 'styled-bootstrap-grid';
 
-import { MapBackgroundDarken } from '@/client/styles/maps';
+import { mapBackground } from '@/client/styles/maps';
 
 export const Container = styled(BTContainer)`
-  background-color: ${MapBackgroundDarken};
+  background-color: ${mapBackground};
   ${props =>
     props.fluid
       ? css`

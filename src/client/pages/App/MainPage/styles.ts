@@ -1,15 +1,15 @@
 import styled, { createGlobalStyle } from 'styled-components';
 
-import { MapBackgroundDarken } from '@/client/styles/maps';
+import { mapBackground } from '@/client/styles/maps';
 
-export const Content = styled.div`
-  padding: 0 1rem;
+export const Main = styled.div`
   margin-left: 250px;
-  background-color: ${MapBackgroundDarken};
+  padding: 0 1rem;
+  background-color: ${mapBackground};
 `;
 
 export const GlobalBackground = createGlobalStyle`
   body {
-    background-color: ${MapBackgroundDarken}!important;
+    background-color: ${mapBackground}!important;
   }
 `;

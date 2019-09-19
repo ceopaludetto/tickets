@@ -120,6 +120,7 @@
     "@nestjs/jwt": "^6.1.1",
     "@nestjs/passport": "^6.1.0",
     "@nestjs/platform-express": "^6.5.3",
+    "@tanem/react-nprogress": "^3.0.2",
     "apollo-cache-inmemory": "^1.6.3",
     "apollo-client": "^2.6.4",
     "apollo-link-http": "^1.5.15",

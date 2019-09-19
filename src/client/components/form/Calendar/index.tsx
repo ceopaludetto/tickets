@@ -1,4 +1,4 @@
-import React, { useState, useRef, useMemo } from 'react';
+import React, { useState, useRef, useMemo, useCallback } from 'react';
 import { FiCalendar, FiChevronLeft, FiChevronRight } from 'react-icons/fi';
 import { useClickAway, useLockBodyScroll } from 'react-use';
 import {
@@ -19,6 +19,8 @@ import {
   getYear,
   isSameYear,
   isAfter,
+  subYears,
+  addYears,
   parseISO,
 } from 'date-fns';
 import { ptBR } from 'date-fns/locale';
@@ -34,7 +36,6 @@ import {
   Day,
   HeaderButton,
   WeekOrYearButton,
-  YearBody,
 } from './styles';
 
 export interface CalendarProps
@@ -65,17 +66,39 @@ export function Calendar({
       ? parseISO(initialValue)
       : initialValue) || new Date()
   );
-  const [mode, setMode] = useState<'day' | 'month' | 'year'>('day');
+  const [mode, setMode] = useState<'day' | 'month' | 'year' | 'yearrange'>(
+    'day'
+  );
 
-  const formatted = useMemo(() => format(date, 'dd/MM/yyyy'), [date]);
-  const currentMonth = useMemo(() => format(date, 'MMMM', { locale: ptBR }), [
-    date,
-  ]);
-  const currentYear = useMemo(() => format(date, 'yyyy', { locale: ptBR }), [
-    date,
-  ]);
-  const yesterday = useMemo(() => subDays(new Date(), 1), []);
   const today = useMemo(() => new Date(), []);
+  const yesterday = useMemo(() => subDays(today, 1), [today]);
+
+  const flatten = useCallback((currentDate: Date, amount = 10) => {
+    let cloneDate = currentDate;
+
+    while (getYear(cloneDate) % amount !== 0) {
+      cloneDate = subYears(cloneDate, 1);
+    }
+
+    return cloneDate;
+  }, []);
+
+  const currentYear = useMemo(() => getYear(date), [date]);
+
+  const currentFormatted = useMemo(() => format(date, 'dd/MM/yyyy'), [date]);
+  const currentFormattedMonth = useMemo(
+    () => format(date, 'MMMM', { locale: ptBR }),
+    [date]
+  );
+  const currentFormattedYearRange = useMemo(() => {
+    const flattedDate = flatten(date);
+
+    return `${getYear(flattedDate)}-${getYear(addYears(flattedDate, 9))}`;
+  }, [date]);
+  const currentFormattedYear = useMemo(
+    () => format(date, 'yyyy', { locale: ptBR }),
+    [date]
+  );
 
   useLockBodyScroll(isOpen);
 
@@ -86,12 +109,45 @@ export function Calendar({
     }
   });
 
-  function addMonth() {
-    setDate(addMonths(date, 1));
+  function setIf(
+    type: 'add' | 'sub',
+    fnAdd: (d: Date, v: number) => Date,
+    fnSub: (d: Date, v: number) => Date,
+    amount: number,
+    verify = true
+  ) {
+    let cloneAmount = amount;
+    if (verify) {
+      if (type === 'add' && currentYear + amount > maxYear) {
+        cloneAmount = maxYear - currentYear;
+      }
+
+      if (type === 'sub' && currentYear - amount < minYear) {
+        cloneAmount = currentYear - minYear;
+      }
+    }
+
+    if (type === 'add') {
+      setDate(fnAdd(date, cloneAmount));
+    } else {
+      setDate(fnSub(date, cloneAmount));
+    }
   }
 
-  function subMonth() {
-    setDate(subMonths(date, 1));
+  function handleArrow(type: 'add' | 'sub') {
+    if (mode === 'month') {
+      return () => setIf(type, addYears, subYears, 1);
+    }
+
+    if (mode === 'year') {
+      return () => setIf(type, addYears, subYears, 10);
+    }
+
+    if (mode === 'yearrange') {
+      return () => setIf(type, addYears, subYears, 100);
+    }
+
+    return () => setIf(type, addMonths, subMonths, 1, false);
   }
 
   function handleDayClick(day: Date, cb?: () => void) {
@@ -106,7 +162,7 @@ export function Calendar({
     };
   }
 
-  function handleMode(m: 'day' | 'month' | 'year') {
+  function handleMode(m: 'day' | 'month' | 'year' | 'yearrange') {
     return () => setMode(m);
   }
 
@@ -189,22 +245,50 @@ export function Calendar({
   function getYears() {
     const years = [];
     const cloneDay = date;
-    for (let i = minYear; i <= maxYear; i += 1) {
-      const year = setYear(cloneDay, i);
-      const monthFormatted = format(year, 'yyyy', { locale: ptBR });
+    const flatted = flatten(cloneDay);
+    const startYear = getYear(flatted);
+
+    for (let i = startYear - 1; i < startYear + 11; i += 1) {
+      const year = setYear(flatted, i);
+      const numberYear = getYear(year);
+      const yearFormatted = format(year, 'yyyy', { locale: ptBR });
 
       years.push(
         <WeekOrYearButton
           type="button"
           key={year.toISOString()}
-          disabled={
-            (disableBefore && isBefore(year, yesterday)) ||
-            (disableAfter && isAfter(year, today))
-          }
-          onClick={handleDayClick(year, () => setMode('day'))}
+          disabled={numberYear < startYear || numberYear > startYear + 9}
+          onClick={handleDayClick(year, () => setMode('month'))}
           className={isSameYear(date, year) ? 'active' : ''}
         >
-          {monthFormatted}
+          {yearFormatted}
+        </WeekOrYearButton>
+      );
+    }
+
+    return years;
+  }
+
+  function getRangeYears() {
+    const years = [];
+    const cloneDay = date;
+    const flatted = flatten(cloneDay, 100);
+    const startYear = getYear(flatted);
+
+    for (let i = startYear; i < startYear + 111; i += 10) {
+      const year = setYear(flatted, i);
+      const numberYear = getYear(year);
+      const yearFormatted = `${i}-${i + 9}`;
+
+      years.push(
+        <WeekOrYearButton
+          type="button"
+          key={year.toISOString()}
+          disabled={numberYear < minYear || numberYear > maxYear}
+          onClick={handleDayClick(year, () => setMode('year'))}
+          className={currentYear >= i && currentYear <= i + 9 ? 'active' : ''}
+        >
+          {yearFormatted}
         </WeekOrYearButton>
       );
     }
@@ -217,7 +301,7 @@ export function Calendar({
       <Control
         onFocus={() => setOpen(true)}
         prepend={<FiCalendar />}
-        value={formatted}
+        value={currentFormatted}
         readOnly
         footer={
           <Footer
@@ -229,34 +313,35 @@ export function Calendar({
                 disabled={
                   disableBefore && isBefore(subMonths(date, 1), yesterday)
                 }
-                onClick={subMonth}
+                onClick={handleArrow('sub')}
                 type="button"
               >
                 <FiChevronLeft />
               </IconButton>
               <span>
-                <HeaderButton
-                  className={mode === 'month' ? 'active' : ''}
-                  onClick={
-                    mode === 'month' ? handleMode('day') : handleMode('month')
-                  }
-                  type="button"
-                >
-                  {currentMonth}
-                </HeaderButton>{' '}
+                {mode === 'day' && (
+                  <HeaderButton onClick={handleMode('month')} type="button">
+                    {currentFormattedMonth}
+                  </HeaderButton>
+                )}{' '}
                 <HeaderButton
                   className={mode === 'year' ? 'active' : ''}
+                  disabled={mode === 'yearrange'}
                   onClick={
-                    mode === 'year' ? handleMode('day') : handleMode('year')
+                    mode !== 'year'
+                      ? handleMode('year')
+                      : handleMode('yearrange')
                   }
                   type="button"
                 >
-                  {currentYear}
+                  {mode !== 'year' && mode !== 'yearrange'
+                    ? currentFormattedYear
+                    : currentFormattedYearRange}
                 </HeaderButton>
               </span>
               <IconButton
                 disabled={disableAfter && isAfter(date, yesterday)}
-                onClick={addMonth}
+                onClick={handleArrow('add')}
                 type="button"
               >
                 <FiChevronRight />
@@ -269,7 +354,8 @@ export function Calendar({
               </DayBody>
             )}
             {mode === 'month' && <MonthBody>{getMonths()}</MonthBody>}
-            {mode === 'year' && <YearBody>{getYears()}</YearBody>}
+            {mode === 'year' && <MonthBody>{getYears()}</MonthBody>}
+            {mode === 'yearrange' && <MonthBody>{getRangeYears()}</MonthBody>}
           </Footer>
         }
         {...rest}

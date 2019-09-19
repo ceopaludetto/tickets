@@ -2,10 +2,11 @@ import styled, { css } from 'styled-components';
 
 import { color, rgba } from '@/client/styles/utils';
 import {
-  MapBorder,
-  MapBackground,
-  MapContrastText,
-  MapBackgroundInverted,
+  mapBorder,
+  mapBackground,
+  mapContrastText,
+  mapBackgroundInverted,
+  darklizer,
 } from '@/client/styles/maps';
 
 export const Root = styled.div`
@@ -21,7 +22,8 @@ export const SwitchContainer = styled.label`
   position: relative;
   width: 100%;
   padding-left: 3.5rem;
-  color: ${MapContrastText};
+  font-size: 0.9rem;
+  color: ${mapContrastText};
   &::before {
     content: '';
     cursor: pointer;
@@ -32,7 +34,7 @@ export const SwitchContainer = styled.label`
     top: 0;
     position: absolute;
     display: block;
-    background-color: ${MapBorder};
+    background-color: ${mapBorder};
     transition: background-color 100ms ease-in-out, box-shadow 100ms ease-in-out;
   }
   &::after {
@@ -45,12 +47,12 @@ export const SwitchContainer = styled.label`
     left: 3px;
     position: absolute;
     display: block;
-    background-color: ${MapBackground};
+    background-color: ${mapBackground};
     transition: left 100ms ease-in-out;
   }
   &:active {
     &::before {
-      background-color: ${MapBackgroundInverted}!important;
+      background-color: ${mapBackgroundInverted}!important;
     }
   }
 `;
@@ -64,7 +66,7 @@ export const Input = styled.input`
       'primary',
       ({ main }) =>
         css`
-          box-shadow: 0 0 0 2px ${rgba(main, 0.3)};
+          box-shadow: 0 0 0 2px ${darklizer(rgba(main, 0.3))};
         `
     )}
   }
@@ -74,7 +76,7 @@ export const Input = styled.input`
         'primary',
         ({ main }) =>
           css`
-            background-color: ${main};
+            background-color: ${darklizer(main)};
           `
       )}
     }

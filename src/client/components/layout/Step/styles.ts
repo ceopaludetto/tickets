@@ -1,7 +1,12 @@
 import styled, { css } from 'styled-components';
 
-import { MapBorder, MapContrastText } from '@/client/styles/maps';
-import { color, constantColor } from '@/client/styles/utils';
+import {
+  mapBorder,
+  mapContrastText,
+  mapLabel,
+  darklizer,
+} from '@/client/styles/maps';
+import { color } from '@/client/styles/utils';
 
 export interface StatusProp {
   status?: 'done' | 'undone' | 'active';
@@ -12,14 +17,14 @@ export const Content = styled.div<StatusProp>`
   display: flex;
   flex-direction: column;
   font-weight: 400;
-  color: ${constantColor('label')};
+  color: ${mapLabel};
   font-size: 1rem;
   text-transform: capitalize;
   line-height: 1.7;
   ${props =>
     props.status === 'active' &&
     css`
-      color: ${MapContrastText};
+      color: ${mapContrastText};
     `}
 `;
 
@@ -41,13 +46,13 @@ export const Tail = styled.hr<StatusProp>`
   border: none;
   flex: 1;
   margin: 0 1rem;
-  background-color: ${MapBorder};
+  background-color: ${mapBorder};
   ${color(
     'primary',
     ({ main }, { status }) =>
       status === 'done' &&
       css`
-        background-color: ${main};
+        background-color: ${darklizer(main)};
       `
   )}
 `;
@@ -59,12 +64,12 @@ export const Icon = styled.span<StatusProp>`
   ${color('primary', ({ main }, { status }) => {
     if (status === 'active' || status === 'done') {
       return css`
-        color: ${main};
+        color: ${darklizer(main)};
       `;
     }
 
     return css`
-      color: ${MapBorder};
+      color: ${mapBorder};
     `;
   })}
 `;

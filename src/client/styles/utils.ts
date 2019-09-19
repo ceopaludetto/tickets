@@ -6,14 +6,14 @@ import { Theme, readableColor } from '@/client/providers/theme';
 
 export type ColorMap<T> = keyof T;
 
-export type Filtered = 'black' | 'white' | 'label' | 'border' | 'borderDark';
+export type Filtered = 'primary' | 'danger' | 'error';
 
 export type ReturnColor = {
-  [K in keyof Theme['colors']['primary']]: Theme['colors']['primary'][K];
+  [K in keyof Theme['colors'][Filtered]]: Theme['colors'][Filtered][K];
 };
 
 export const color = <T>(
-  variant: ColorMap<Omit<Theme['colors'], Filtered>>,
+  variant: ColorMap<Pick<Theme['colors'], Filtered>>,
   cb: (c: ReturnColor, props: ThemedStyledProps<T, {}>) => any
 ) => (props: ThemedStyledProps<T, {}>): ReturnColor | ReturnType<typeof cb> => {
   if (cb) {
@@ -24,7 +24,7 @@ export const color = <T>(
 };
 
 export const multipleColor = <T>(
-  variant: ColorMap<Omit<Theme['colors'], Filtered>>[],
+  variant: ColorMap<Pick<Theme['colors'], Filtered>>[],
   cb: (c: ReturnColor[], props: ThemedStyledProps<T, {}>) => any
 ) => (
   props: ThemedStyledProps<T, {}>
@@ -42,7 +42,7 @@ export const multipleColor = <T>(
 };
 
 export const constantColor = (
-  variant: ColorMap<Pick<Theme['colors'], Filtered>>
+  variant: ColorMap<Omit<Theme['colors'], Filtered>>
 ) => (props: ThemedStyledProps<{}, {}>): string =>
   (props.theme as Theme).colors[variant];
 
