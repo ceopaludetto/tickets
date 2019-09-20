@@ -24,6 +24,7 @@ module.exports = merge(baseConfig(true), {
         'react-dnd',
         'react-dnd-html5-backend',
         'dnd-core',
+        /\.(gql|graphql)$/,
       ],
     }),
     {

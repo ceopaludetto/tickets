@@ -15,7 +15,7 @@ module.exports = (isServer = false) => ({
           ? {
               node: 'current',
             }
-          : null,
+          : undefined,
       },
     ],
     [
@@ -28,13 +28,13 @@ module.exports = (isServer = false) => ({
   ],
   plugins: [
     '@loadable/babel-plugin',
-    'graphql-tag',
     '@babel/plugin-transform-react-constant-elements',
     '@babel/plugin-transform-react-inline-elements',
     [
       'styled-components',
       {
         displayName: !isProd,
+        fileName: !isProd,
       },
     ],
     [
@@ -55,7 +55,12 @@ module.exports = (isServer = false) => ({
         ],
       },
     ],
-    ['@babel/plugin-proposal-decorators', { legacy: true }],
+    [
+      '@babel/plugin-proposal-decorators', 
+      { 
+        legacy: true 
+      }
+    ],
     [
       '@babel/plugin-proposal-class-properties',
       {

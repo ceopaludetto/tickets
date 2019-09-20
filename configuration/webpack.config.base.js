@@ -24,7 +24,7 @@ module.exports = (isServer = false) => ({
     minimize: isProd,
     minimizer: [
       new TerserPlugin({
-        sourceMap: !isServer,
+        sourceMap: isProd && !isServer,
         cache: true,
         parallel: true,
         terserOptions: {
@@ -102,7 +102,7 @@ module.exports = (isServer = false) => ({
           },
           {
             loader: 'file-loader',
-            exclude: [/\.(js|mjs|ts|tsx)$/, /\.html$/, /\.json$/],
+            exclude: [/\.(js|mjs|ts|tsx|gql|graphql|html|json)$/],
             options: {
               name: 'assets/[name].[contenthash:8].[ext]',
               emitFile: !isServer,
