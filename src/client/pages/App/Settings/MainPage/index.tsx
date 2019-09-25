@@ -13,11 +13,6 @@ import {
   FormikMaskedControl,
 } from '@/client/components/formik';
 import { useMultipleVisibility } from '@/client/utils';
-import {
-  ProfileQuery,
-  UpdateUsuarioMutation,
-  UpdateUsuarioMutationVariables,
-} from '@/client/typescript/graphql';
 import { Profile, UpdateUsuario } from '@/client/graphql/usuario.gql';
 import {
   UpdateInfoValidation,

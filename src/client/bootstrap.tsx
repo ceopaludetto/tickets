@@ -44,6 +44,10 @@ export default function App() {
                   href={`${PUBLIC_PATH}public/manifest.json`}
                 />
               )}
+              <link
+                href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap"
+                rel="stylesheet"
+              />
               <meta charSet="UTF-8" />
               <meta
                 name="viewport"

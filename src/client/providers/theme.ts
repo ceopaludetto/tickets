@@ -38,6 +38,14 @@ export const theme = {
   mode: Mode.Light,
   grid: 12,
   radius: 4,
+  typography: {
+    fontFamily: '"Lato", sans-serif',
+    fontWeight: {
+      light: 300,
+      regular: 400,
+      medium: 700,
+    },
+  },
   colors: {
     primary: {
       lighten: lighten(0.05, PRIMARY),

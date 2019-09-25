@@ -4,13 +4,6 @@ import { Helmet } from 'react-helmet';
 import { Formik, Form } from 'formik';
 import { parse } from 'query-string';
 
-import {
-  LoginMutation,
-  LoginMutationVariables,
-  LoggedQuery,
-  ProfileQuery,
-  ProfileQueryVariables,
-} from '@/client/typescript/graphql';
 import { Button, IconButton } from '@/client/components/form';
 import { Divider, TextAlign } from '@/client/components/layout';
 import {
@@ -43,7 +36,7 @@ export default function Login() {
     {
       update(cache, { data }) {
         if (data && data.login) {
-          cache.writeQuery<ProfileQuery, ProfileQueryVariables>({
+          cache.writeQuery<ProfileQuery>({
             query: Profile,
             data: {
               profile: data.login,

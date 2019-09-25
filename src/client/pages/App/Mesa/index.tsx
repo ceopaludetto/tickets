@@ -5,16 +5,10 @@ import { useQuery } from '@apollo/react-hooks';
 
 import { Page, Task } from '@/client/components/composed';
 import { Button } from '@/client/components/form';
-import { FindAllTickets } from '@/client/graphql/ticket.gql';
-import {
-  FindAllTicketsQuery,
-  FindAllTicketsQueryVariables,
-} from '@/client/typescript/graphql';
+import { FindAllTickets } from '@/client/graphql/tickets.gql';
 
 export default function Mesa() {
-  const { data } = useQuery<FindAllTicketsQuery, FindAllTicketsQueryVariables>(
-    FindAllTickets
-  );
+  const { data } = useQuery<FindAllTicketsQuery>(FindAllTickets);
 
   return (
     <DndProvider backend={HTML5Backend}>

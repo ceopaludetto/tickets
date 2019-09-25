@@ -47,6 +47,7 @@ export const Input = styled.input<InputProps>`
   flex: 1;
   font-size: 1rem;
   order: 1;
+  line-height: 1.5;
   padding: 0.4rem 0.5rem;
   color: ${mapContrastText};
   &:focus,

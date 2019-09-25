@@ -3,7 +3,7 @@ import { FiHome, FiClipboard } from 'react-icons/fi';
 
 import { Route } from './route.dto';
 import { Profile } from '@/client/graphql/usuario.gql';
-import { FindAllTickets } from '@/client/graphql/ticket.gql';
+import { FindAllTickets } from '@/client/graphql/tickets.gql';
 
 export const appRoutes: Route[] = [
   {

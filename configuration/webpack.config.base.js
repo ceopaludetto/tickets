@@ -21,6 +21,8 @@ module.exports = (isServer = false) => ({
     ignored: [/node_modules/, /dist/],
   },
   optimization: {
+    removeAvailableModules: isProd,
+    removeEmptyChunks: isProd,
     minimize: isProd,
     minimizer: [
       new TerserPlugin({

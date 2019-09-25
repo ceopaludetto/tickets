@@ -29,16 +29,6 @@ import {
 } from '@/client/graphql/usuario.gql';
 import { Logged } from '@/client/graphql/local.gql';
 import { AddEmpresa } from '@/client/graphql/empresa.gql';
-import {
-  RegisterMutation,
-  RegisterMutationVariables,
-  AddEmpresaMutation,
-  AddEmpresaMutationVariables,
-  ProfileQuery,
-  ProfileQueryVariables,
-  LoggedQuery,
-  LoggedQueryVariables,
-} from '@/client/typescript/graphql';
 import { renderForm } from './render';
 
 interface Fields {
@@ -70,7 +60,7 @@ export default function Register() {
   >(RegisterDocument, {
     update(cache, { data }) {
       if (data && data.register) {
-        cache.writeQuery<ProfileQuery, ProfileQueryVariables>({
+        cache.writeQuery<ProfileQuery>({
           query: Profile,
           data: {
             profile: data.register,
@@ -215,13 +205,6 @@ export default function Register() {
                       },
                     },
                   });
-
-                  client.writeQuery<LoggedQuery, LoggedQueryVariables>({
-                    query: Logged,
-                    data: {
-                      logged: true,
-                    },
-                  });
                 } catch (err) {
                   classValidatorMapper(err, {
                     setFieldError,
@@ -233,8 +216,14 @@ export default function Register() {
                 }
               }
 
-              const route = (parse(location.search).from as string) || '/app';
+              client.writeQuery<LoggedQuery>({
+                query: Logged,
+                data: {
+                  logged: true,
+                },
+              });
 
+              const route = (parse(location.search).from as string) || '/app';
               await preloadRouteComponent(route, client);
 
               history.push({

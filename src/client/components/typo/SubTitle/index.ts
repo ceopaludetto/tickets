@@ -1,11 +1,11 @@
 import styled, { css } from 'styled-components';
 
 import { color } from '@/client/styles/utils';
-import { darklizer } from '@/client/styles/maps';
+import { darklizer, fontWeight } from '@/client/styles/maps';
 
 export const SubTitle = styled.h2`
   font-size: 0.8rem;
-  font-weight: 600;
+  font-weight: ${fontWeight('medium')};
   text-transform: uppercase;
   margin-bottom: 0;
   ${color(

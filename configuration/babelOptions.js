@@ -55,37 +55,13 @@ module.exports = (isServer = false) => ({
         ],
       },
     ],
-    [
-      '@babel/plugin-proposal-decorators', 
-      { 
-        legacy: true 
-      }
-    ],
-    [
-      '@babel/plugin-proposal-class-properties',
-      {
-        loose: true,
-      },
-    ],
-    [
-      '@babel/plugin-transform-runtime',
-      {
-        corejs: false,
-        regenerator: true,
-      },
-    ],
-    [
-      '@babel/plugin-proposal-object-rest-spread',
-      {
-        useBuiltIns: true,
-      },
-    ],
+    ['@babel/plugin-proposal-decorators', { legacy: true }],
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    ['@babel/plugin-transform-runtime', { corejs: false, regenerator: true }],
+    ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }],
     [
       'transform-react-remove-prop-types',
-      {
-        mode: 'remove',
-        removeImport: true,
-      },
+      { mode: 'remove', removeImport: true },
     ],
     [
       'transform-imports',

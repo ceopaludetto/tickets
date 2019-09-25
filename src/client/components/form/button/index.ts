@@ -2,7 +2,7 @@ import styled, { css } from 'styled-components';
 
 import { Theme } from '@/client/providers/theme';
 import { radius, rgba } from '@/client/styles/utils';
-import { darklizer } from '@/client/styles/maps';
+import { darklizer, fontWeight } from '@/client/styles/maps';
 
 interface ButtonProps {
   color?: 'primary' | 'danger' | 'error';
@@ -14,7 +14,7 @@ interface ButtonProps {
 export const Button = styled.button<ButtonProps>`
   border: none;
   padding: 0 1rem;
-  font-weight: 500;
+  font-weight: ${fontWeight('medium')};
   text-transform: capitalize;
   transition: background-color 150ms ease-in-out, box-shadow 150ms ease-in-out;
   height: 2.28571em;
@@ -68,7 +68,7 @@ export const Button = styled.button<ButtonProps>`
         background-color: ${darklizer(darken)};
       }
       &:focus {
-        box-shadow: 0 0 0 2px ${darklizer(rgba(main, 0.3))};
+        box-shadow: 0 0 0 3px ${darklizer(rgba(main, 0.3))};
       }
     `;
   }}

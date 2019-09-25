@@ -1,43 +1,32 @@
+fragment UserInfo on Usuario {
+  _id
+  nome
+  sobrenome
+  email
+  telefone
+  nascimento
+}
+
 query Profile {
   profile{
-    _id
-    nome
-    sobrenome
-    email
-    telefone
-    nascimento
+    ...UserInfo
   }
 }
 
-mutation Login($email: String!, $senha: String!) {
-  login(email: $email, senha: $senha){
-    _id
-    nome
-    sobrenome
-    email
-    telefone
-    nascimento
-  }
-}
-
-mutation Register($input: UsuarioInput!) {
+mutation Register($input: UsuarioInput!){
   register(input: $input) {
-    _id
-    nome
-    sobrenome
-    email
-    telefone
-    nascimento
+    ...UserInfo
   }
 }
 
-mutation UpdateUsuario($id: ID!, $input: UsuarioInput!) {
+mutation Login($email: String!, $senha: String!){
+  login(email: $email, senha: $senha) {
+    ...UserInfo
+  }
+}
+
+mutation UpdateUsuario($id: ID!, $input: UsuarioInput!){
   updateUsuario(_id: $id, input: $input) {
-    _id
-    nome
-    sobrenome
-    email
-    telefone
-    nascimento
+    ...UserInfo
   }
 }

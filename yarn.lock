@@ -905,12 +905,22 @@
     import-from "3.0.0"
     tslib "1.10.0"
 
-"@graphql-codegen/typescript-graphql-files-modules@1.6.1":
-  version "1.6.1"
-  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-graphql-files-modules/-/typescript-graphql-files-modules-1.6.1.tgz#3db696f3737a3b828ea229e1f67350a15d7a763d"
-  integrity sha512-I7pYZD/SlCe7y3uCN2ETQLhQSgcbj+LUfuHBdnqeAgns6x9QpW89n2qir2aVIiOCbmcpmFqtboAWWmeJY4zrwQ==
+"@graphql-codegen/plugin-helpers@1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/plugin-helpers/-/plugin-helpers-1.7.0.tgz#b1870a166cf34b2c67c053f2a9ec77823f78ac2d"
+  integrity sha512-lUWd5A9BQNbPqlMr38Gh5sLsBgMnn26n90/hyTw2J7CFCKFKSMnNBjxfCZU5AFHGxwi6rsNEpwBHRBx3OVWsTA==
   dependencies:
-    "@graphql-codegen/plugin-helpers" "1.6.1"
+    change-case "3.1.0"
+    common-tags "1.8.0"
+    import-from "3.0.0"
+    tslib "1.10.0"
+
+"@graphql-codegen/typescript-graphql-files-modules@^1.7.0":
+  version "1.7.0"
+  resolved "https://registry.yarnpkg.com/@graphql-codegen/typescript-graphql-files-modules/-/typescript-graphql-files-modules-1.7.0.tgz#762fc171a03226c080fabbc2684122d5aa4ed6ea"
+  integrity sha512-/86gcAJtES+rng3Mc3vP5ElyPROMp2qTw+HHPUX1MtSKTllXfEddPKnVPvB2W4jmyNlJ+QzB3khC4KJ6INuSGw==
+  dependencies:
+    "@graphql-codegen/plugin-helpers" "1.7.0"
     tslib "1.10.0"
 
 "@graphql-codegen/typescript-operations@1.6.1":
@@ -1664,6 +1674,13 @@
     "@types/react" "*"
     "@types/react-native" "*"
     csstype "^2.2.0"
+
+"@types/styled-system@^5.1.1":
+  version "5.1.1"
+  resolved "https://registry.yarnpkg.com/@types/styled-system/-/styled-system-5.1.1.tgz#22eff9e4b2f89cd2222c15053f8c11be5ec9c357"
+  integrity sha512-RAF9Erif51vbD1ZbIiGN4ZrgxpSr44iMXrPjQK5+tI7PWLDugKepTWj7T/LqG5VfaYYIrEmOCzIpulhv+/D/XQ==
+  dependencies:
+    csstype "^2.6.4"
 
 "@types/styled-theming@^2.2.2":
   version "2.2.2"
@@ -3888,7 +3905,7 @@ csso@^3.5.1:
   dependencies:
     css-tree "1.0.0-alpha.29"
 
-csstype@^2.2.0, csstype@^2.5.5:
+csstype@^2.2.0, csstype@^2.5.5, csstype@^2.6.4:
   version "2.6.6"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.6.tgz#c34f8226a94bbb10c32cc0d714afdf942291fc41"
   integrity sha512-RpFbQGUE74iyPgvr46U9t1xoQBM8T4BL8SxrN66Le2xYAPSaDJJKeztV3awugusb3g3G9iL8StmkBBXhcbbXhg==

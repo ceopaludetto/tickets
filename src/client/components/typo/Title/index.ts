@@ -1,6 +1,6 @@
 import styled, { css } from 'styled-components';
 
-import { mapContrastText } from '@/client/styles/maps';
+import { mapContrastText, fontWeight } from '@/client/styles/maps';
 
 interface TitleProps {
   hasMargin?: boolean;
@@ -8,7 +8,7 @@ interface TitleProps {
 
 export const Title = styled.h1<TitleProps>`
   font-size: 2rem;
-  font-weight: 600;
+  font-weight: ${fontWeight('medium')};
   letter-spacing: 1.1px;
   margin-bottom: 0;
   color: ${mapContrastText};

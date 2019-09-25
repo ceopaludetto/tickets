@@ -23,8 +23,6 @@ module.exports = merge(baseConfig(false), {
     path.resolve('src', 'client', 'index.tsx'),
   ],
   optimization: {
-    removeAvailableModules: isProd,
-    removeEmptyChunks: isProd,
     splitChunks: isProd
       ? {
           chunks: 'all',

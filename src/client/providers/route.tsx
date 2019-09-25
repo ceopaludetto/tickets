@@ -5,7 +5,6 @@ import { ApolloClient } from 'apollo-client';
 
 import { ReactContextType } from '@/server/utils/common.dto';
 import { Route, RenderProps, appRoutes, authRoutes } from './routes';
-import { LoggedQuery } from '@/client/typescript/graphql';
 import { Logged } from '@/client/graphql/local.gql';
 import Main from '@/client/pages/Main/MainPage';
 import Auth from '@/client/pages/Auth/MainPage';

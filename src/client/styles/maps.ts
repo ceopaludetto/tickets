@@ -65,3 +65,11 @@ export const readableDarklizer = (c: string) =>
     [Mode.Light]: readableColor(c),
     [Mode.Dark]: readableColor(lighten(0.05, c)),
   });
+
+export const fontWeight = (
+  variation: keyof Theme['typography']['fontWeight']
+) => (props: ThemedStyledProps<any, any>) =>
+  (props.theme as Theme).typography.fontWeight[variation];
+
+export const fontFamily = (props: ThemedStyledProps<any, any>) =>
+  (props.theme as Theme).typography.fontFamily;

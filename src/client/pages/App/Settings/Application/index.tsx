@@ -5,7 +5,6 @@ import { useIsomorphicLayoutEffect, useToggle } from 'react-use';
 
 import { Switch } from '@/client/components/form';
 import { Theme } from '@/client/graphql/local.gql';
-import { ThemeQuery } from '@/client/typescript/graphql';
 
 export default function ApplicationSettings() {
   const { data, client } = useQuery<ThemeQuery>(Theme);

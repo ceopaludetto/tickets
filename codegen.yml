@@ -4,9 +4,14 @@ schema:
   - "./src/client/graphql/schema.gql"
 documents: "src/**/*.(graphql|gql)"
 generates:
-  src/client/typescript/graphql.d.ts:
+  src/client/typescript/operations.d.ts:
     config:
       preResolveTypes: true
+      dedupeOperationSuffix: true
+      noExport: true
     plugins:
-      - "typescript"
-      - "typescript-operations"
+      - typescript
+      - typescript-operations
+  src/client/typescript/graphql.d.ts:
+    plugins:
+      - typescript-graphql-files-modules

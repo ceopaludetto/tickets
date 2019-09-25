@@ -66,7 +66,7 @@ export const Input = styled.input`
       'primary',
       ({ main }) =>
         css`
-          box-shadow: 0 0 0 2px ${darklizer(rgba(main, 0.3))};
+          box-shadow: 0 0 0 3px ${darklizer(rgba(main, 0.3))};
         `
     )}
   }

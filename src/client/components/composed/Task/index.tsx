@@ -2,7 +2,6 @@ import React, { useRef } from 'react';
 import { useDrag, useDrop, DragObjectWithType } from 'react-dnd';
 
 import { Container, Title, Body, Labels, Label, Content } from './styles';
-import { Ticket } from '@/client/typescript/graphql';
 
 interface TaskProps extends React.HTMLAttributes<HTMLDivElement> {
   data: Partial<Ticket>;

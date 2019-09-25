@@ -159,6 +159,7 @@ export function Calendar({
       if (onChange) {
         onChange(day);
       }
+      setOpen(false);
     };
   }
 
