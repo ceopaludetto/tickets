@@ -30,22 +30,14 @@ export class EmpresaResolver {
 
   @Query(() => [Empresa])
   public async findAllEmpresas(@Args() { skip, take }: CommonFindAllArgs) {
-    try {
-      const empresas = await this.empresaService.findAll(skip, take);
-      return empresas;
-    } catch (err) {
-      throw err;
-    }
+    const empresas = await this.empresaService.findAll(skip, take);
+    return empresas;
   }
 
   @Query(() => Empresa)
   public async findEmpresa(@Args() { _id }: CommonFindOneArgs) {
-    try {
-      const empresas = await this.empresaService.findOne(_id);
-      return empresas;
-    } catch (err) {
-      throw err;
-    }
+    const empresas = await this.empresaService.findOne(_id);
+    return empresas;
   }
 
   @UseGuards(GqlAuthGuard)
@@ -54,15 +46,11 @@ export class EmpresaResolver {
     @Args('input') input: EmpresaInput,
     @User() user: PayloadType
   ) {
-    try {
-      const empresa = await this.empresaService.createOrUpdate(input);
-      if (empresa) {
-        await this.empresaService.postCreation(user, empresa);
-      }
-      return empresa;
-    } catch (err) {
-      throw err;
+    const empresa = await this.empresaService.createOrUpdate(input);
+    if (empresa) {
+      await this.empresaService.postCreation(user, empresa);
     }
+    return empresa;
   }
 
   @UseRole({
@@ -73,11 +61,7 @@ export class EmpresaResolver {
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Empresa)
   public async updateEmpresa(@Args() { input, _id }: EmpresaArgs) {
-    try {
-      const empresa = await this.empresaService.createOrUpdate(input, _id);
-      return empresa;
-    } catch (err) {
-      throw err;
-    }
+    const empresa = await this.empresaService.createOrUpdate(input, _id);
+    return empresa;
   }
 }

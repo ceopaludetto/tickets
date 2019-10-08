@@ -26,43 +26,27 @@ export class TicketResolver {
 
   @Query(() => [Ticket])
   public async findAllTickets(@Args() { skip, take }: CommonFindAllArgs) {
-    try {
-      const tickets = await this.ticketService.findAll(skip, take);
-      return tickets;
-    } catch (err) {
-      throw err;
-    }
+    const tickets = await this.ticketService.findAll(skip, take);
+    return tickets;
   }
 
   @Query(() => Ticket)
   public async findTicket(@Args() { _id }: CommonFindOneArgs) {
-    try {
-      const ticket = await this.ticketService.findOne(_id);
-      return ticket;
-    } catch (err) {
-      throw err;
-    }
+    const ticket = await this.ticketService.findOne(_id);
+    return ticket;
   }
 
   @Mutation(() => Ticket)
   public async addTicket(@Args('input') input: TicketInput) {
-    try {
-      const ticket = await this.ticketService.createOrUpdate(input);
-      this.pubSub.publish(TICKET_ASYNC_ITERATOR, ticket);
-      return ticket;
-    } catch (err) {
-      throw err;
-    }
+    const ticket = await this.ticketService.createOrUpdate(input);
+    this.pubSub.publish(TICKET_ASYNC_ITERATOR, ticket);
+    return ticket;
   }
 
   @Mutation(() => Ticket)
   public async updateTicket(@Args() { input, _id }: TicketUpdateArgs) {
-    try {
-      const ticket = await this.ticketService.createOrUpdate(input, _id);
-      return ticket;
-    } catch (err) {
-      throw err;
-    }
+    const ticket = await this.ticketService.createOrUpdate(input, _id);
+    return ticket;
   }
 
   @Subscription(() => Ticket)

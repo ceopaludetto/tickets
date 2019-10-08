@@ -4,7 +4,7 @@ import { stringify, parse } from 'query-string';
 import { ApolloClient } from 'apollo-client';
 
 import { ReactContextType } from '@/server/utils/common.dto';
-import { Route, RenderProps, appRoutes, authRoutes } from './routes';
+import { Route, RenderProps, authRoutes, appRoutes } from './routes';
 import { Logged } from '@/client/graphql/local.gql';
 import Main from '@/client/pages/Main/MainPage';
 import Auth from '@/client/pages/Auth/MainPage';
@@ -15,7 +15,11 @@ function isLogged(client: ApolloClient<object>) {
     query: Logged,
   });
 
-  return (res && res.logged) || false;
+  if (res && res.logged) {
+    return res.logged;
+  }
+
+  return false;
 }
 
 export const routes: Route[] = [

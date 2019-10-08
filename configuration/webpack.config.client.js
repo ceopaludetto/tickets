@@ -3,12 +3,12 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
-const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
+// const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const tsFormatter = require('react-dev-utils/typescriptFormatter');
+// const tsFormatter = require('react-dev-utils/typescriptFormatter');
 // const { GenerateSW } = require('workbox-webpack-plugin');
 
 const envs = require('./envs');
@@ -123,17 +123,17 @@ module.exports = merge(baseConfig(false), {
             multiStep: true,
           }),
           new WatchMissingNodeModulesPlugin(path.resolve('node_modules')),
-          new ForkTsCheckerWebpackPlugin({
-            async: true,
-            tsconfig: path.resolve('src', 'client', 'tsconfig.json'),
-            watch: ['./src'],
-            typeCheck: true,
-            formatter: tsFormatter,
-            eslint: true,
-            eslintOptions: {
-              configFile: path.resolve('.eslintrc.js'),
-            },
-          }),
+          // new ForkTsCheckerWebpackPlugin({
+          //   async: true,
+          //   tsconfig: path.resolve('src', 'client', 'tsconfig.json'),
+          //   watch: ['./src'],
+          //   typeCheck: true,
+          //   formatter: tsFormatter,
+          //   eslint: true,
+          //   eslintOptions: {
+          //     configFile: path.resolve('.eslintrc.js'),
+          //   },
+          // }),
         ]),
     new LoadablePlugin({
       filename: 'manifest.json',

@@ -9,14 +9,8 @@ import {
   SPECIAL_CHARACTER,
   SITE,
   TELEFONE,
+  DATE,
 } from './constants';
-
-export const LoginValidation = Yup.object().shape({
-  email: Yup.string()
-    .required(REQUIRED)
-    .email(EMAIL),
-  senha: Yup.string().required(REQUIRED),
-});
 
 export const RegisterValidation = Yup.object().shape({
   nome: Yup.string()
@@ -29,7 +23,10 @@ export const RegisterValidation = Yup.object().shape({
     .required(REQUIRED)
     .email(EMAIL),
   telefone: Yup.string().matches(/\([0-9]{2}\) 9?[1-9]{4}-[1-9]{4}/, TELEFONE),
-  nascimento: Yup.date().required(REQUIRED),
+  nascimento: Yup.date()
+    .max(new Date(), DATE)
+    .typeError(DATE)
+    .required(REQUIRED),
   senha: Yup.string()
     .required(REQUIRED)
     .min(8, MIN)

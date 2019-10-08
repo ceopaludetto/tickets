@@ -1,16 +1,17 @@
 import React, { useState } from 'react';
 import { Helmet } from 'react-helmet';
-import { ThemeProvider } from 'styled-components';
-import { GridThemeProvider } from 'styled-bootstrap-grid';
+import { CssBaseline } from '@material-ui/core';
+import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { renderRoutes } from 'react-router-config';
 import { useApolloClient } from '@apollo/react-hooks';
 import { useToggle } from 'react-use';
+import ptBR from 'date-fns/locale/pt-BR';
+import DateFnsUtils from '@date-io/date-fns';
 
-import { theme, gridTheme, Mode } from '@/client/providers/theme';
 import { routes } from '@/client/providers/route';
-import { GlobalStyle } from '@/client/styles/global';
 import { ProgressContext } from '@/client/providers/progress';
-import { Progress } from '@/client/components/composed';
+import { Progress, ThemeChanger } from '@/client/components/composed';
+
 import { IS_PRODUCTION, PUBLIC_PATH } from '@/client/utils';
 
 export default function App() {
@@ -18,24 +19,26 @@ export default function App() {
   const [currentKey, setNewKey] = useState<string | undefined>(undefined);
   const client = useApolloClient();
 
+  function handleIsAnimating(next?: boolean) {
+    if (next) {
+      // start
+      setNewKey(btoa(String(Math.random())));
+    }
+
+    toggleIsAnimating(next);
+  }
+
   return (
-    <ThemeProvider theme={theme}>
-      <GridThemeProvider gridTheme={gridTheme}>
+    <ThemeChanger>
+      <MuiPickersUtilsProvider utils={DateFnsUtils} locale={ptBR}>
         <ProgressContext.Provider
           value={{
             isAnimating,
-            toggleIsAnimating: next => {
-              if (next) {
-                // start
-                setNewKey(btoa(String(Math.random())));
-              }
-
-              toggleIsAnimating(next);
-            },
+            toggleIsAnimating: handleIsAnimating,
           }}
         >
           <>
-            <GlobalStyle />
+            <CssBaseline />
             <Progress isAnimating={isAnimating} key={currentKey} />
             <Helmet defaultTitle="F3Desk" titleTemplate="%s | F3Desk">
               {IS_PRODUCTION && (
@@ -45,28 +48,28 @@ export default function App() {
                 />
               )}
               <link
-                href="https://fonts.googleapis.com/css?family=Lato:300,400,700&display=swap"
                 rel="stylesheet"
+                href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
               />
               <meta charSet="UTF-8" />
               <meta
                 name="viewport"
-                content="width=device-width, initial-scale=1.0"
+                content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
               />
               <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-              <meta
-                name="theme-color"
-                content={
-                  theme.mode === Mode.Light
-                    ? theme.colors.background
-                    : theme.colors.backgroundDark
-                }
-              />
+              {/* <meta
+          name="theme-color"
+          content={
+            theme.mode === Mode.Light
+              ? theme.colors.background
+              : theme.colors.backgroundDark
+          }
+        /> */}
             </Helmet>
-            {renderRoutes(routes, { client })}
+            {routes && renderRoutes(routes, { client })}
           </>
         </ProgressContext.Provider>
-      </GridThemeProvider>
-    </ThemeProvider>
+      </MuiPickersUtilsProvider>
+    </ThemeChanger>
   );
 }

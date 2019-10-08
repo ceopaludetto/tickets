@@ -1,3 +1,4 @@
+/* eslint-disable no-template-curly-in-string */
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = (isServer = false) => ({
@@ -27,16 +28,11 @@ module.exports = (isServer = false) => ({
     ],
   ],
   plugins: [
+    'lodash',
+    'optimize-clsx',
     '@loadable/babel-plugin',
     '@babel/plugin-transform-react-constant-elements',
     '@babel/plugin-transform-react-inline-elements',
-    [
-      'styled-components',
-      {
-        displayName: !isProd,
-        fileName: !isProd,
-      },
-    ],
     [
       '@babel/plugin-transform-destructuring',
       {
@@ -67,8 +63,19 @@ module.exports = (isServer = false) => ({
       'transform-imports',
       {
         'react-use': {
-          // eslint-disable-next-line no-template-curly-in-string
           transform: 'react-use/lib/${member}',
+          preventFullImport: true,
+        },
+        '@material-ui/core': {
+          transform: isServer
+            ? '@material-ui/core/${member}'
+            : '@material-ui/core/esm/${member}',
+          preventFullImport: true,
+        },
+        '@material-ui/icons': {
+          transform: isServer
+            ? '@material-ui/icons/${member}'
+            : '@material-ui/icons/esm/${member}',
           preventFullImport: true,
         },
       },

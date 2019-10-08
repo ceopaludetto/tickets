@@ -30,12 +30,8 @@ export class SecurityResolver {
 
   @Query(() => [Perfil])
   public async findAllPerfis(@Args() { skip, take }: CommonFindAllArgs) {
-    try {
-      const perfis = await this.securityService.findAll(skip, take);
-      return perfis;
-    } catch (err) {
-      throw err;
-    }
+    const perfis = await this.securityService.findAll(skip, take);
+    return perfis;
   }
 
   @UseRole({
@@ -46,12 +42,8 @@ export class SecurityResolver {
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Query(() => Perfil)
   public async findPerfil(@Args() { _id }: CommonFindOneArgs) {
-    try {
-      const perfil = await this.securityService.findOne(_id);
-      return perfil;
-    } catch (err) {
-      throw err;
-    }
+    const perfil = await this.securityService.findOne(_id);
+    return perfil;
   }
 
   @UseRole({
@@ -62,12 +54,8 @@ export class SecurityResolver {
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Perfil)
   public async addPerfil(@Args('input') input: PerfilInput) {
-    try {
-      const perfil = await this.securityService.addOrUpdate(input);
-      return perfil;
-    } catch (err) {
-      throw err;
-    }
+    const perfil = await this.securityService.addOrUpdate(input);
+    return perfil;
   }
 
   @UseRole({
@@ -80,11 +68,7 @@ export class SecurityResolver {
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Perfil)
   public async updatePerfil(@Args() { input, _id }: PerfilUpdateArgs) {
-    try {
-      const perfil = await this.securityService.addOrUpdate(input, _id);
-      return perfil;
-    } catch (err) {
-      throw err;
-    }
+    const perfil = await this.securityService.addOrUpdate(input, _id);
+    return perfil;
   }
 }

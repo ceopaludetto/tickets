@@ -1,5 +1,5 @@
 import loadable from '@loadable/component';
-import { FiHome, FiClipboard } from 'react-icons/fi';
+import { HomeOutlined, DashboardOutlined } from '@material-ui/icons';
 
 import { Route } from './route.dto';
 import { Profile } from '@/client/graphql/usuario.gql';
@@ -8,7 +8,7 @@ import { FindAllTickets } from '@/client/graphql/tickets.gql';
 export const appRoutes: Route[] = [
   {
     name: 'Início',
-    icon: FiHome,
+    icon: HomeOutlined,
     path: '/app',
     exact: true,
     component: loadable(() =>
@@ -17,7 +17,7 @@ export const appRoutes: Route[] = [
   },
   {
     name: 'Chamados',
-    icon: FiClipboard,
+    icon: DashboardOutlined,
     path: '/app/mesa',
     exact: true,
     query: FindAllTickets,

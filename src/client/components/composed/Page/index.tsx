@@ -1,10 +1,8 @@
 import React from 'react';
-import { Col } from 'styled-bootstrap-grid';
+import { Divider, Container, Typography } from '@material-ui/core';
 import { HelmetProps, Helmet } from 'react-helmet';
 
-import { Title, SubTitle } from '@/client/components/typo';
-import { Divider } from '@/client/components/layout';
-import { Container, Header, Footer, Append } from './styles';
+import { useStyles } from './styles';
 
 interface PageProps {
   title: string;
@@ -27,20 +25,28 @@ export function Page({
   footer,
   append,
 }: PageProps) {
+  const classes = useStyles({
+    hasFooter: !!footer,
+  });
+
   return (
     <>
       <Helmet {...helmetProps}>{helmetChildren}</Helmet>
-      <Container fluid={!notFluid}>
+      <Container fixed={notFluid}>
         <>
-          <Header alignItems="center" hasFooter={!!footer}>
-            <Col col>
-              <SubTitle>{subTitle}</SubTitle>
-              <Title hasMargin={false}>{title}</Title>
-            </Col>
-            {append && <Append>{append}</Append>}
-          </Header>
+          <div className={classes.header}>
+            <div className={classes.content}>
+              <Typography color="primary" variant="button">
+                {subTitle}
+              </Typography>
+              <Typography variant="h4" gutterBottom>
+                {title}
+              </Typography>
+            </div>
+            {append && <div className={classes.content}>{append}</div>}
+          </div>
           {!footer && <Divider />}
-          {footer && <Footer>{footer}</Footer>}
+          {footer && <div className={classes.footer}>{footer}</div>}
           <>{children}</>
         </>
       </Container>

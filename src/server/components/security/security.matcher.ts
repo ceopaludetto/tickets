@@ -81,7 +81,7 @@ export class SecurityMatcher {
   private compare = (
     perfil: PerfilInstance,
     role: Role,
-    isSameUser: boolean = false
+    isSameUser = false
   ): boolean => {
     // Procura a politica que possui o recurso e acao necessaria
     const politica = perfil.politicas.find(

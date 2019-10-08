@@ -1,9 +1,10 @@
 /* eslint-disable global-require, @typescript-eslint/camelcase */
 const path = require('path');
 const webpack = require('webpack');
-const WebpackBar = require('webpackbar');
+// const WebpackBar = require('webpackbar');
 const TerserPlugin = require('terser-webpack-plugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
+const LodashPlugin = require('lodash-webpack-plugin');
 
 const babelOptions = require('./babelOptions');
 
@@ -117,6 +118,8 @@ module.exports = (isServer = false) => ({
   resolve: {
     alias: {
       '@': path.resolve('src'),
+      jss: require.resolve('jss'),
+      lodash: 'lodash-es',
       'webpack/hot/poll': require.resolve('webpack/hot/poll'),
     },
     extensions: ['.js', '.jsx', '.tsx', '.ts', '.gql', '.graphql', '.json'],
@@ -129,11 +132,11 @@ module.exports = (isServer = false) => ({
           ]),
         ]
       : []),
-    new WebpackBar({
-      name: isServer ? 'Server' : 'Client',
-      color: isServer ? '#c065f4' : '#f56be2',
-      profile: true,
-    }),
+    // new WebpackBar({
+    //   name: isServer ? 'Server' : 'Client',
+    //   color: isServer ? '#c065f4' : '#f56be2',
+    //   profile: true,
+    // }),
     new webpack.EnvironmentPlugin({
       PORT: envs.PORT,
       HOST: envs.HOST,
@@ -143,5 +146,6 @@ module.exports = (isServer = false) => ({
       MANIFEST: path.resolve('dist', 'static', 'manifest.json'),
       BASE_DIR: path.resolve('.'),
     }),
+    new LodashPlugin(),
   ],
 });

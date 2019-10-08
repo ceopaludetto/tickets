@@ -1,40 +1,21 @@
-import styled, { css } from 'styled-components';
-import {
-  Container as BTContainer,
-  Row as BTRow,
-  Col as BTCol,
-} from 'styled-bootstrap-grid';
+import { makeStyles, createStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 
-import { mapBackground } from '@/client/styles/maps';
-import { Paper } from '@/client/components/layout';
-
-interface StyledContainerProps {
+interface UseStylesMainProps {
   isRegister?: boolean;
 }
 
-export const Container = styled(BTContainer)`
-  background-color: ${mapBackground};
-  height: 100vh;
-`;
-
-export const Row = styled(BTRow)<StyledContainerProps>`
-  height: 100%;
-  @media (min-width: ${props => (props.isRegister ? '900px' : '450px')}) {
-    align-items: center;
-  }
-`;
-
-export const Col = styled(BTCol)<StyledContainerProps>`
-  ${props =>
-    props.isRegister
-      ? css`
-          flex: 0 1 900px;
-        `
-      : css`
-          flex: 0 1 450px;
-        `}
-`;
-
-export const CustomPaper = styled(Paper)`
-  padding: 1.5rem 0.5rem;
-`;
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      height: '100vh',
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      backgroundColor: theme.palette.background.paper,
+    },
+    containerStart: {
+      alignItems: 'flex-start',
+    },
+  })
+);

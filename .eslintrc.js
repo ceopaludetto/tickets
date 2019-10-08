@@ -50,6 +50,7 @@ module.exports = {
     ],
     "react-hooks/rules-of-hooks": "error",
     "react/prop-types": "off",
+    "react/jsx-props-no-spreading": "off",
     "jsx-a11y/label-has-for": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "prettier/prettier": [
@@ -59,7 +60,8 @@ module.exports = {
         "singleQuote": true,
         "printWidth": 80
       }
-    ]
+    ],
+    "max-classes-per-file": ["error", 3]
   },
   settings: {
     "import/extensions": [".js", ".jsx", ".ts", ".tsx", ".gql"],

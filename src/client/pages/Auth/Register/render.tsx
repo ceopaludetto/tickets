@@ -1,234 +1,203 @@
 import React from 'react';
-import { Row, Col } from 'styled-bootstrap-grid';
+import { Field } from 'formik';
+import { Checkbox } from 'formik-material-ui';
+import {
+  IconButton,
+  FormControlLabel,
+  Paper,
+  Typography,
+} from '@material-ui/core';
+import { TodayOutlined } from '@material-ui/icons';
 
-import { Alert } from '@/client/components/layout';
+import { FormikDatePicker, FormikField } from '@/client/components/composed';
 import {
-  FormikCheckbox,
-  FormikControl,
-  FormikMaskedControl,
-  FormikCalendar,
-} from '@/client/components/formik';
-import { IconButton } from '@/client/components/form';
-import { SubTitle, List } from '@/client/components/typo';
-import {
-  Telefone,
-  CEP,
-  CNPJ,
-  MutableTelefone,
+  celFormatter,
+  fixedFormatter,
+  cepFormatter,
+  cnpjFormatter,
 } from '@/client/providers/validations';
+import { useMultipleVisibility } from '@/client/utils';
+import { useRenderStyles } from './styles';
 
-interface RenderOpts<T extends string[], U> {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  renderVisibility: (p: T[number], tru?: any, fals?: any) => any;
-  toggleVisibility: (p: T[number]) => () => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setFieldValue: (p: U, value: any) => void;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  setFieldTouched: (p: U) => void;
+interface RenderStepProps {
+  currentPage: number;
 }
 
-export function renderForm(
-  page: number,
-  hasEmpresa: boolean,
-  {
-    renderVisibility,
-    toggleVisibility,
-    setFieldValue,
-    setFieldTouched,
-  }: // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  RenderOpts<('senha' | 'rsenha')[], any>
-) {
-  if (page === 0) {
+export function RenderStep({ currentPage }: RenderStepProps) {
+  const classes = useRenderStyles();
+  const { toggleVisibility, renderVisibility } = useMultipleVisibility<
+    ('senha' | 'confirmar')[]
+  >(['senha', 'confirmar']);
+
+  if (currentPage === 0) {
     return (
       <>
-        <Row>
-          <Col col={12} md>
-            <FormikControl required name="nome" label="Nome" id="name" />
-          </Col>
-          <Col col={12} md>
-            <FormikControl
-              name="sobrenome"
-              label="Sobrenome"
-              id="lastname"
-              required
-            />
-          </Col>
-        </Row>
-        <FormikControl name="email" label="Email" id="email" required />
-        <Row>
-          <Col col={12} md>
-            <FormikMaskedControl
-              name="telefone"
+        <div className={classes.fieldContainer}>
+          <div className={classes.field}>
+            <FormikField label="Nome" id="nome" name="nome" />
+          </div>
+          <div className={classes.field}>
+            <FormikField label="Sobrenome" id="sobrenome" name="sobrenome" />
+          </div>
+        </div>
+        <FormikField label="Email" id="email" name="email" />
+        <div className={classes.fieldContainer}>
+          <div className={classes.field}>
+            <FormikField
               label="Telefone"
               id="telefone"
-              guide={false}
-              mask={MutableTelefone}
+              name="telefone"
+              format={celFormatter}
             />
-          </Col>
-          <Col col={12} md>
-            <FormikCalendar
-              name="nascimento"
+          </div>
+          <div className={classes.field}>
+            <FormikDatePicker
+              disableFuture
+              keyboardIcon={<TodayOutlined />}
+              okLabel="OK"
+              cancelLabel="Cancelar"
+              format="dd/MM/yyyy"
               label="Data de Nascimento"
               id="nascimento"
-              disableAfter
-              minYear={1940}
-              setFieldValue={setFieldValue}
-              setFieldTouched={setFieldTouched}
-              required
+              name="nascimento"
+              invalidDateMessage="Data inválida"
             />
-          </Col>
-        </Row>
+          </div>
+        </div>
       </>
     );
   }
 
-  if (page === 1) {
+  if (currentPage === 1) {
     return (
       <>
-        <Row>
-          <Col col={12} md>
-            <FormikControl
-              type={renderVisibility('senha', 'text', 'password')}
-              name="senha"
+        <div className={classes.fieldContainer}>
+          <div className={classes.field}>
+            <FormikField
               label="Senha"
               id="senha"
-              required
-              append={
-                <IconButton
-                  type="button"
-                  aria-label={renderVisibility(
-                    'rsenha',
-                    'Ocultar campo "senha"',
-                    'Mostrar campo "senha"'
-                  )}
-                  onClick={toggleVisibility('senha')}
-                >
-                  {renderVisibility('senha')}
-                </IconButton>
-              }
+              name="senha"
+              type={renderVisibility('senha', 'text', 'password')}
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    aria-label={renderVisibility(
+                      'senha',
+                      'Esconder senha',
+                      'Ver senha'
+                    )}
+                    type="button"
+                    onClick={toggleVisibility('senha')}
+                  >
+                    {renderVisibility('senha')}
+                  </IconButton>
+                ),
+              }}
             />
-            <FormikControl
-              type={renderVisibility('rsenha', 'text', 'password')}
-              name="rsenha"
-              label="Repetir senha"
+            <FormikField
+              label="Confirmar Senha"
               id="rsenha"
-              required
-              append={
-                <IconButton
-                  type="button"
-                  aria-label={renderVisibility(
-                    'rsenha',
-                    'Ocultar campo "repetir senha"',
-                    'Mostrar campo "repetir senha"'
-                  )}
-                  onClick={toggleVisibility('rsenha')}
-                >
-                  {renderVisibility('rsenha')}
-                </IconButton>
-              }
+              name="rsenha"
+              type={renderVisibility('confirmar', 'text', 'password')}
+              InputProps={{
+                endAdornment: (
+                  <IconButton
+                    aria-label={renderVisibility(
+                      'confirmar',
+                      'Esconder Confirmar Senha',
+                      'Ver Confirmar Senha'
+                    )}
+                    type="button"
+                    onClick={toggleVisibility('confirmar')}
+                  >
+                    {renderVisibility('confirmar')}
+                  </IconButton>
+                ),
+              }}
             />
-          </Col>
-          <Col col={12} order="first" mdOrder="last" md>
-            <Alert>
-              <SubTitle>Dicas de senha</SubTitle>
-              <List>
-                <li>Pelo menos oito caracteres</li>
-                <li>Pelo menos um caractere especial</li>
-                <li>Pelo menos uma letra maiúscula</li>
-              </List>
-            </Alert>
-          </Col>
-        </Row>
+          </div>
+          <div className={classes.field}>
+            <Paper elevation={0} className={classes.paper}>
+              <Typography variant="subtitle2" gutterBottom color="secondary">
+                Dicas de senha
+              </Typography>
+              <Typography variant="body2" color="textPrimary">
+                No mínimo 8 caracteres;
+                <br />
+                Pelo menos 1 caractere especial;
+                <br />
+                Pelo menos 1 caractere maiúsculo.
+              </Typography>
+            </Paper>
+          </div>
+        </div>
       </>
     );
   }
 
   return (
     <>
-      <FormikCheckbox
-        id="hasEmpresa"
+      <FormControlLabel
         label="Criar empresa?"
-        name="hasEmpresa"
-        checked={hasEmpresa}
+        control={
+          <Field name="hasEmpresa" id="hasEmpresa" component={Checkbox} />
+        }
       />
-      <Row>
-        <Col col={12} md>
-          <FormikMaskedControl
-            name="cnpj"
+      <div className={classes.fieldContainer}>
+        <div className={classes.field}>
+          <FormikField
             label="CNPJ"
             id="cnpj"
-            guide={false}
-            mask={CNPJ}
-            required={hasEmpresa}
+            name="cnpj"
+            format={cnpjFormatter}
           />
-        </Col>
-        <Col col={12} md>
-          <FormikControl
-            name="razaoSocial"
+        </div>
+        <div className={classes.field}>
+          <FormikField
             label="Razão Social"
             id="razaoSocial"
-            required={hasEmpresa}
+            name="razaoSocial"
           />
-        </Col>
-      </Row>
-      <Row>
-        <Col col={12} md>
-          <FormikControl
-            name="nomeFantasia"
+        </div>
+      </div>
+      <div className={classes.fieldContainer}>
+        <div className={classes.field}>
+          <FormikField
             label="Nome Fantasia"
             id="nomeFantasia"
-            required={hasEmpresa}
+            name="nomeFantasia"
           />
-        </Col>
-        <Col col={12} md>
-          <FormikMaskedControl
-            name="empresaTelefone"
+        </div>
+        <div className={classes.field}>
+          <FormikField
+            label="Nome Completo"
+            id="nomeCompleto"
+            name="nomeCompleto"
+          />
+        </div>
+      </div>
+      <FormikField label="Email" id="empresaEmail" name="empresaEmail" />
+      <div className={classes.fieldContainer}>
+        <div className={classes.field}>
+          <FormikField
             label="Telefone"
             id="empresaTelefone"
-            guide={false}
-            mask={Telefone}
-            required={hasEmpresa}
+            name="empresaTelefone"
+            format={fixedFormatter}
           />
-        </Col>
-      </Row>
-      <FormikControl
-        name="nomeCompleto"
-        label="Nome Completo"
-        id="nomeCompleto"
-      />
-      <Row>
-        <Col col={12} md>
-          <FormikControl name="site" label="Site" id="site" />
-        </Col>
-        <Col col={12} md>
-          <FormikControl
-            name="empresaEmail"
-            label="Email"
-            id="empresaEmail"
-            required={hasEmpresa}
-          />
-        </Col>
-      </Row>
-      <Row>
-        <Col col={12} md>
-          <FormikControl
-            name="endereco"
-            label="Endereço"
-            id="endereco"
-            required={hasEmpresa}
-          />
-        </Col>
-        <Col col={12} md>
-          <FormikMaskedControl
-            name="cep"
-            label="CEP"
-            id="cep"
-            guide={false}
-            required={hasEmpresa}
-            mask={CEP}
-          />
-        </Col>
-      </Row>
+        </div>
+        <div className={classes.field}>
+          <FormikField label="Site" id="site" name="site" />
+        </div>
+      </div>
+      <div className={classes.fieldContainer}>
+        <div className={classes.field}>
+          <FormikField label="Endereço" id="endereco" name="endereco" />
+        </div>
+        <div className={classes.field}>
+          <FormikField label="CEP" id="cep" name="cep" format={cepFormatter} />
+        </div>
+      </div>
     </>
   );
 }

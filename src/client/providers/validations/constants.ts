@@ -8,3 +8,4 @@ export const UPPERCASE = 'Pelo menos um caractere maiúsculo';
 export const SPECIAL_CHARACTER = 'Pelo menos um caractere especial';
 export const SITE = 'Insira uma url válida';
 export const TELEFONE = 'Telefone inválido';
+export const DATE = 'Insira uma data válida';

@@ -1,24 +1,19 @@
 import React, { useState, useMemo } from 'react';
-import { Helmet } from 'react-helmet';
-import { Container } from 'styled-bootstrap-grid';
-import { FiUser, FiLock, FiGlobe } from 'react-icons/fi';
+import {
+  Button,
+  Stepper,
+  Step,
+  StepLabel,
+  Typography,
+} from '@material-ui/core';
 import { Formik, Form, FormikErrors } from 'formik';
+import { Helmet } from 'react-helmet';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { parse } from 'query-string';
 import UseKey from 'react-use/lib/comps/UseKey';
 
-import { Button } from '@/client/components/form';
-import {
-  Title,
-  SubTitle,
-  PrefetchLink,
-  Primary,
-} from '@/client/components/typo';
-import { TextAlign, Divider } from '@/client/components/layout';
-import { Stepper } from '@/client/components/composed';
 import { RegisterValidation } from '@/client/providers/validations';
 import {
-  useMultipleVisibility,
   classValidatorMapper,
   preloadRouteComponent,
   useRouter,
@@ -29,7 +24,12 @@ import {
 } from '@/client/graphql/usuario.gql';
 import { Logged } from '@/client/graphql/local.gql';
 import { AddEmpresa } from '@/client/graphql/empresa.gql';
-import { renderForm } from './render';
+import {
+  CustomStepConnector,
+  CustomStepIcon,
+} from '@/client/components/customs';
+import { useStyles } from './styles';
+import { RenderStep } from './render';
 
 interface Fields {
   nome?: string;
@@ -45,11 +45,15 @@ interface Fields {
 }
 
 export default function Register() {
+  const classes = useStyles();
   const client = useApolloClient();
   const { history, location } = useRouter();
   const [currentPage, setPage] = useState(0);
+
+  const steps = ['Usuário', 'Senha', 'Empresa'];
   const isFirstPage = useMemo(() => currentPage === 0, [currentPage]);
   const isLastPage = useMemo(() => currentPage === 2, [currentPage]);
+
   const [fetchEmpresa] = useMutation<
     AddEmpresaMutation,
     AddEmpresaMutationVariables
@@ -70,17 +74,6 @@ export default function Register() {
     },
   });
 
-  const { render: renderVisibility, toggleVisibility } = useMultipleVisibility<
-    ('senha' | 'rsenha')[]
-  >(['senha', 'rsenha']);
-
-  function handlePage(page: number) {
-    return (e: React.MouseEvent<HTMLButtonElement>) => {
-      e.preventDefault();
-      return setPage(page);
-    };
-  }
-
   function handlePageValidation(
     validateForm: () => Promise<FormikErrors<Fields>>,
     submitForm: () => void,
@@ -96,67 +89,71 @@ export default function Register() {
       const errorKeys = Object.keys(errors) as (keyof Fields)[];
       if (errors && errorKeys.length) {
         errorKeys.forEach(error => setFieldTouched(error, true, false));
-
-        if (errors.nome || errors.email || errors.sobrenome) {
+        if (
+          errors.nome ||
+          errors.email ||
+          errors.sobrenome ||
+          errors.telefone ||
+          errors.nascimento
+        ) {
           return setPage(0);
         }
-
         if (errors.senha || errors.rsenha) {
           return setPage(1);
         }
-
         return setPage(2);
       }
-
       return submitForm();
     };
+  }
+
+  function handleNext(e: React.MouseEvent) {
+    e.preventDefault();
+    setPage(currentPage + 1);
+  }
+
+  function handleBefore(e: React.MouseEvent) {
+    e.preventDefault();
+    setPage(currentPage - 1);
   }
 
   return (
     <>
       <Helmet title="Cadastro" />
-      <Container fluid>
-        <SubTitle>Criação de Usuário</SubTitle>
-        <Title>Nova conta</Title>
-        <Stepper
-          inverted
-          currentPage={currentPage}
-          onStepClick={current => setPage(current)}
-          steps={[
-            {
-              name: 'Usuário',
-              icon: FiUser,
-            },
-            {
-              name: 'Senha',
-              icon: FiLock,
-            },
-            {
-              name: 'Empresa',
-              icon: FiGlobe,
-            },
-          ]}
-        />
+      <div className={classes.root}>
+        <Typography variant="h4">Bem vindo!</Typography>
+        <Typography variant="button" gutterBottom color="secondary">
+          Cadastro
+        </Typography>
+        <div className={classes.stepperRoot}>
+          <Stepper activeStep={currentPage} connector={<CustomStepConnector />}>
+            {steps.map(s => (
+              <Step key={s}>
+                <StepLabel StepIconComponent={CustomStepIcon}>{s}</StepLabel>
+              </Step>
+            ))}
+          </Stepper>
+        </div>
         <Formik
           validationSchema={RegisterValidation}
           initialValues={{
             nome: '',
             sobrenome: '',
             email: '',
-            senha: '',
             telefone: '',
             nascimento: new Date(),
-            rsenha: '',
             hasEmpresa: false,
             cnpj: '',
-            nomeFantasia: '',
-            razaoSocial: '',
-            nomeCompleto: '',
+            cep: '',
             empresaEmail: '',
             empresaTelefone: '',
+            nomeCompleto: '',
+            nomeFantasia: '',
+            razaoSocial: '',
             endereco: '',
-            cep: '',
             site: '',
+            senha: '',
+            rsenha: '',
           }}
           onSubmit={async (
             {
@@ -179,7 +176,6 @@ export default function Register() {
                 rsenha: 'As senhas não condizem',
               });
             }
-
             try {
               await fetchRegister({
                 variables: {
@@ -193,7 +189,6 @@ export default function Register() {
                   },
                 },
               });
-
               if (hasEmpresa) {
                 try {
                   await fetchEmpresa({
@@ -215,17 +210,14 @@ export default function Register() {
                   });
                 }
               }
-
               client.writeQuery<LoggedQuery>({
                 query: Logged,
                 data: {
                   logged: true,
                 },
               });
-
               const route = (parse(location.search).from as string) || '/app';
               await preloadRouteComponent(route, client);
-
               history.push({
                 pathname: route,
               });
@@ -236,72 +228,56 @@ export default function Register() {
             }
           }}
         >
-          {({
-            validateForm,
-            submitForm,
-            setFieldTouched,
-            setFieldValue,
-            values,
-          }) => (
+          {({ validateForm, submitForm, setFieldTouched }) => (
             <Form>
-              <>
-                {renderForm(currentPage, values.hasEmpresa, {
-                  renderVisibility,
-                  toggleVisibility,
-                  setFieldValue,
-                  setFieldTouched,
-                })}
-                <UseKey
-                  filter="Enter"
-                  fn={
-                    isLastPage
-                      ? handlePageValidation(
-                          validateForm,
-                          submitForm,
-                          setFieldTouched
-                        )
-                      : handlePage(currentPage + 1)
-                  }
-                  deps={[currentPage]}
-                />
-                <TextAlign align="right">
-                  {!isFirstPage && (
-                    <Button
-                      type="button"
-                      variant="text"
-                      onClick={handlePage(currentPage - 1)}
-                    >
-                      Voltar
-                    </Button>
-                  )}{' '}
-                  {isLastPage ? (
-                    <Button
-                      type="submit"
-                      onClick={handlePageValidation(
+              <UseKey
+                filter="Enter"
+                fn={
+                  isLastPage
+                    ? handlePageValidation(
                         validateForm,
                         submitForm,
                         setFieldTouched
-                      )}
-                    >
-                      Finalizar
-                    </Button>
-                  ) : (
-                    <Button type="button" onClick={handlePage(currentPage + 1)}>
-                      Próximo
-                    </Button>
-                  )}
-                </TextAlign>
-              </>
+                      )
+                    : handleNext
+                }
+                deps={[currentPage]}
+              />
+              <RenderStep currentPage={currentPage} />
+              <div className={classes.buttons}>
+                {!isFirstPage && (
+                  <Button type="button" onClick={handleBefore} color="primary">
+                    Voltar
+                  </Button>
+                )}
+                {isLastPage ? (
+                  <Button
+                    type="submit"
+                    onClick={handlePageValidation(
+                      validateForm,
+                      submitForm,
+                      setFieldTouched
+                    )}
+                    variant="contained"
+                    color="primary"
+                  >
+                    Cadastrar
+                  </Button>
+                ) : (
+                  <Button
+                    onClick={handleNext}
+                    type="button"
+                    variant="contained"
+                    color="primary"
+                  >
+                    Próximo
+                  </Button>
+                )}
+              </div>
             </Form>
           )}
         </Formik>
-        <Divider doubleMargin={false} />
-        <TextAlign align="center">
-          <PrefetchLink to="/auth/login">Já possui uma conta?</PrefetchLink>{' '}
-          <Primary>&#8226;</Primary>{' '}
-          <PrefetchLink to="/terms">Termos e condições</PrefetchLink>
-        </TextAlign>
-      </Container>
+      </div>
     </>
   );
 }

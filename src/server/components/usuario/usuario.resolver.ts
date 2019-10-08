@@ -21,22 +21,14 @@ export class UsuarioResolver {
 
   @Query(() => [Usuario])
   public async findAllUsuarios(@Args() { skip, take }: CommonFindAllArgs) {
-    try {
-      const usuarios = await this.userService.findAll(skip, take);
-      return usuarios;
-    } catch (err) {
-      throw err;
-    }
+    const usuarios = await this.userService.findAll(skip, take);
+    return usuarios;
   }
 
   @Query(() => Usuario)
   public async findUsuario(@Args() { _id }: CommonFindOneArgs) {
-    try {
-      const usuario = await this.userService.findOne(_id);
-      return usuario;
-    } catch (err) {
-      throw err;
-    }
+    const usuario = await this.userService.findOne(_id);
+    return usuario;
   }
 
   @UseCustomMatcher({
@@ -47,11 +39,7 @@ export class UsuarioResolver {
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Usuario)
   public async updateUsuario(@Args() { input, _id }: UsuarioUpdateArgs) {
-    try {
-      const usuario = await this.userService.createOrUpdate(input, _id);
-      return usuario;
-    } catch (err) {
-      throw err;
-    }
+    const usuario = await this.userService.createOrUpdate(input, _id);
+    return usuario;
   }
 }

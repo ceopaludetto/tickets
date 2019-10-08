@@ -1,12 +1,14 @@
-import React, { StrictMode } from 'react';
+import React from 'react';
 import { hydrate } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
 import { ApolloProvider } from '@apollo/react-common';
 import { HttpLink } from 'apollo-link-http';
+import { StylesProvider } from '@material-ui/styles';
 
-import Bootstrap from '@/client/bootstrap';
+import App from '@/client/bootstrap';
 import { createClient } from '@/client/providers/apollo';
+import { createClassGenerator } from '@/client/providers/theme';
 
 const client = createClient(
   false,
@@ -16,27 +18,21 @@ const client = createClient(
   })
 );
 
-function render(App: () => JSX.Element) {
-  loadableReady(() => {
-    hydrate(
-      <StrictMode>
-        <ApolloProvider client={client}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ApolloProvider>
-      </StrictMode>,
-      document.querySelector('#app')
-    );
-  });
-}
+const generateClassName = createClassGenerator();
 
-render(Bootstrap);
+loadableReady(() => {
+  hydrate(
+    <StylesProvider generateClassName={generateClassName}>
+      <ApolloProvider client={client}>
+        <BrowserRouter>
+          <App />
+        </BrowserRouter>
+      </ApolloProvider>
+    </StylesProvider>,
+    document.querySelector('#app')
+  );
+});
 
 if (module.hot) {
-  module.hot.accept('./bootstrap.tsx', () => {
-    // eslint-disable-next-line global-require
-    const newApp = require('./bootstrap').default;
-    render(newApp);
-  });
+  module.hot.accept();
 }

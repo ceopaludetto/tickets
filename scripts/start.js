@@ -8,7 +8,6 @@ const printErrors = require('razzle-dev-utils/printErrors');
 const DevServer = require('webpack-dev-server');
 const logger = require('razzle-dev-utils/logger');
 const setPorts = require('razzle-dev-utils/setPorts');
-const openBrowser = require('react-dev-utils/openBrowser');
 
 const envs = require('../configuration/envs');
 const clientConfig = require('../configuration/webpack.config.client');
@@ -40,8 +39,6 @@ function main() {
 
   clientCompiler.hooks.done.tap('done', () => {
     if (watching) return;
-
-    openBrowser(`http://${envs.HOST}:${envs.PORT}`);
 
     watching = serverCompiler.watch(
       {

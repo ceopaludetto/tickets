@@ -3,7 +3,7 @@ import { Helmet } from 'react-helmet';
 import { useQuery } from '@apollo/react-hooks';
 import { useIsomorphicLayoutEffect, useToggle } from 'react-use';
 
-import { Switch } from '@/client/components/form';
+// import { Switch } from '@/client/components/form';
 import { Theme } from '@/client/graphql/local.gql';
 
 export default function ApplicationSettings() {
@@ -28,13 +28,13 @@ export default function ApplicationSettings() {
   return (
     <>
       <Helmet title="Aplicação" />
-      <Switch
+      {/* <Switch
         id="darkTheme"
         label="Tema escuro"
         checked={checked}
         onChange={changeTheme}
         content="Ao ativar a aplicação utiliza tons de cores escuros"
-      />
+      /> */}
     </>
   );
 }

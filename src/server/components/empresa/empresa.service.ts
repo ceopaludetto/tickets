@@ -26,7 +26,7 @@ export class EmpresaService {
     this.usuarioService = usuarioService;
   }
 
-  public async findAll(skip: number = 0, take: number = 100) {
+  public async findAll(skip = 0, take = 100) {
     try {
       const empresas = await this.empresaRepository
         .find()

@@ -32,6 +32,7 @@ import {
         useFindAndModify: false,
         useNewUrlParser: true,
         useCreateIndex: true,
+        useUnifiedTopology: true,
       }),
     }),
     GraphQLModule.forRoot({

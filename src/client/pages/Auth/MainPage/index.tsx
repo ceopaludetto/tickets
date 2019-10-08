@@ -1,31 +1,23 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { RouteConfigComponentProps, renderRoutes } from 'react-router-config';
+import { useMediaQuery } from '@material-ui/core';
+import useTheme from '@material-ui/core/styles/useTheme';
+import clsx from 'clsx';
 
-// import { Paper } from '@/client/components/layout';
-import { useRouter } from '@/client/utils/useRouter';
-import { Container, Row, Col, CustomPaper } from './styles';
+import { useStyles } from './styles';
 
 export default function Auth({ route }: RouteConfigComponentProps) {
-  const { location } = useRouter();
-  const [isRegister, setIsRegister] = useState();
-
-  useEffect(() => {
-    if (location.pathname.includes('/auth/register')) {
-      setIsRegister(true);
-    } else {
-      setIsRegister(false);
-    }
-  }, [location.pathname]);
+  const theme = useTheme();
+  const matches = useMediaQuery(theme.breakpoints.down('md'));
+  const classes = useStyles();
 
   return (
-    <Container fluid>
-      <Row isRegister={isRegister} justifyContent="center">
-        <Col isRegister={isRegister}>
-          <CustomPaper isElevated={false}>
-            {route && renderRoutes(route.routes)}
-          </CustomPaper>
-        </Col>
-      </Row>
-    </Container>
+    <div
+      className={clsx(classes.container, {
+        [classes.containerStart]: matches,
+      })}
+    >
+      {route && renderRoutes(route.routes)}
+    </div>
   );
 }
