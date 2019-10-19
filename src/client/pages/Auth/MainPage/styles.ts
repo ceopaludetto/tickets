@@ -13,9 +13,9 @@ export const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       justifyContent: 'center',
       backgroundColor: theme.palette.background.paper,
-    },
-    containerStart: {
-      alignItems: 'flex-start',
+      [theme.breakpoints.down('md')]: {
+        alignItems: 'flex-start',
+      },
     },
   })
 );

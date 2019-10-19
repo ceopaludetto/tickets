@@ -4,3 +4,5 @@ export { ThemeChanger } from './ThemeChanger';
 export { PrefetchLink } from './PrefetchLink';
 export { FormikDatePicker } from './FormikDatePicker';
 export { FormikField } from './FormikField';
+export { Header } from './Header';
+export { Sidebar } from './Sidebar';

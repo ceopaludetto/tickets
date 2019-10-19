@@ -1,15 +1,32 @@
-import styled, { createGlobalStyle } from 'styled-components';
+import { makeStyles, createStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 
-import { mapBackground } from '@/client/styles/maps';
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    root: {
+      display: 'flex',
+    },
+    drawer: {
+      [theme.breakpoints.up('sm')]: {
+        width: 240,
+        flexShrink: 0,
+      },
+    },
+    drawerPaper: {
+      width: 240,
+      paddingTop: 64,
+      [theme.breakpoints.down('xs')]: {
+        paddingTop: 0,
+      },
+    },
 
-export const Main = styled.div`
-  margin-left: 250px;
-  padding: 0 1rem;
-  background-color: ${mapBackground};
-`;
-
-export const GlobalBackground = createGlobalStyle`
-  body {
-    background-color: ${mapBackground}!important;
-  }
-`;
+    content: {
+      marginLeft: 240,
+      marginTop: 64,
+      [theme.breakpoints.down('xs')]: {
+        marginLeft: 0,
+        marginTop: 56,
+      },
+    },
+  })
+);

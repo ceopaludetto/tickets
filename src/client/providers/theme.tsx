@@ -38,6 +38,11 @@ export const theme = createMuiTheme({
         overflow: 'hidden',
       },
     },
+    MuiListItemIcon: {
+      root: {
+        minWidth: 42,
+      },
+    },
   },
 });
 
