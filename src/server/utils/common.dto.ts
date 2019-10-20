@@ -7,15 +7,14 @@ import {
   IsDefined,
 } from 'class-validator';
 import { Request, Response } from 'express';
-import { InstanceType } from 'typegoose';
 import { Schema } from 'mongoose';
 
 import {
-  UsuarioInstance,
+  UsuarioDoc,
   RecursoEnum,
   AcaoEnum,
   AnyOrOwnEnum,
-  Associacao,
+  AssociacaoDoc,
 } from '@/server/models';
 
 @ArgsType()
@@ -47,7 +46,7 @@ export interface ContextType {
 
 export type ID = Schema.Types.ObjectId;
 
-export type PayloadType = Pick<UsuarioInstance, '_id' | 'email'>;
+export type PayloadType = Pick<UsuarioDoc, '_id' | 'email'>;
 
 export interface Role {
   recurso: RecursoEnum;
@@ -55,15 +54,15 @@ export interface Role {
   tipo: AnyOrOwnEnum;
   useUserID?: boolean;
   customMatcher?: (
-    user: UsuarioInstance,
+    user: UsuarioDoc,
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     args: any,
-    assoc: InstanceType<Associacao>
+    assoc: AssociacaoDoc
   ) => boolean;
 }
 
 // eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type CustomMatcher = (user: UsuarioInstance, args: any) => boolean;
+export type CustomMatcher = (user: UsuarioDoc, args: any) => boolean;
 export interface CustomMatcherOptions {
   customMatcher: CustomMatcher;
   errorText?: string;

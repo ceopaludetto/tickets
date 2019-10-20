@@ -1,12 +1,5 @@
 import { hash, compare } from 'bcryptjs';
-import {
-  Typegoose,
-  prop,
-  instanceMethod,
-  pre,
-  arrayProp,
-  InstanceType,
-} from 'typegoose';
+import { prop, pre, arrayProp, DocumentType } from '@typegoose/typegoose';
 import { ObjectType, Field, ID } from 'type-graphql';
 import { Schema } from 'mongoose';
 
@@ -20,7 +13,7 @@ import { Associacao } from '../associacao/associacao.entity';
   next();
 })
 @ObjectType()
-export class Usuario extends Typegoose {
+export class Usuario {
   @Field(() => ID)
   public readonly _id!: Schema.Types.ObjectId;
 
@@ -56,11 +49,10 @@ export class Usuario extends Typegoose {
   @prop({ required: true, default: false })
   public sysAdmin!: boolean;
 
-  @instanceMethod
   public async comparePasswords(password: string) {
     const isValid = await compare(password, this.senha);
     return isValid;
   }
 }
 
-export type UsuarioInstance = InstanceType<Usuario>;
+export type UsuarioDoc = DocumentType<Usuario>;

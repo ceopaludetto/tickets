@@ -1,12 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
-import { ModelType } from 'typegoose';
+import { ReturnModelType } from '@typegoose/typegoose';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 
 import {
   Empresa,
   EmpresaInput,
-  EmpresaInstance,
+  EmpresaDoc,
   AssociacaoEnum,
 } from '@/server/models';
 import { ID, PayloadType } from '@/server/utils/common.dto';
@@ -14,12 +14,12 @@ import { UsuarioService } from '@/server/components/usuario/usuario.service';
 
 @Injectable()
 export class EmpresaService {
-  private readonly empresaRepository: ModelType<Empresa>;
+  private readonly empresaRepository: ReturnModelType<typeof Empresa>;
 
   private readonly usuarioService: UsuarioService;
 
   public constructor(
-    @InjectModel(Empresa) empresaRepository: ModelType<Empresa>,
+    @InjectModel(Empresa) empresaRepository: ReturnModelType<typeof Empresa>,
     usuarioService: UsuarioService
   ) {
     this.empresaRepository = empresaRepository;
@@ -73,7 +73,7 @@ export class EmpresaService {
     }
   }
 
-  public async postCreation(user: PayloadType, empresa: EmpresaInstance) {
+  public async postCreation(user: PayloadType, empresa: EmpresaDoc) {
     try {
       const usuario = await this.usuarioService.findOne(user._id);
       if (!usuario) {

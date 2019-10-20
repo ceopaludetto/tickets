@@ -4,9 +4,9 @@ import {
   SecurityMatcherOptions,
   SecurityCustomMatcherOptions,
   Role,
-  EmpresaInstance,
-  PerfilInstance,
-  AssociacaoInstance,
+  EmpresaDoc,
+  PerfilDoc,
+  AssociacaoDoc,
 } from './security.dto';
 import { AnyOrOwnEnum, AcaoEnum } from '@/server/models/politica/politica.dto';
 import { AssociacaoEnum } from '@/server/models/associacao/associacao.dto';
@@ -28,7 +28,7 @@ export class SecurityMatcher {
     // Procura a associacao que ele é dono da empresa do contexto
     const verifyIfIsOwner = usuario.associacoes.find(
       a =>
-        (a.empresa as EmpresaInstance)._id.equals(empresa) &&
+        (a.empresa as EmpresaDoc)._id.equals(empresa) &&
         a.tipo === AssociacaoEnum.Dono
     );
 
@@ -42,7 +42,7 @@ export class SecurityMatcher {
       // Captura a associacao do usuario com a empresa
       const assoc = usuario.associacoes.find(
         // eslint-disable-next-line no-underscore-dangle
-        a => (a.empresa as EmpresaInstance)._id.equals(empresa)
+        a => (a.empresa as EmpresaDoc)._id.equals(empresa)
       );
 
       // Se não há associacao entre os dois, retorna falso
@@ -53,13 +53,13 @@ export class SecurityMatcher {
       // Se há um customMatcher, verifica se sua verificacao é valida
       if (
         role.customMatcher &&
-        !role.customMatcher(usuario, assoc as AssociacaoInstance, args)
+        !role.customMatcher(usuario, assoc as AssociacaoDoc, args)
       ) {
         throw new AuthenticationError('Comparação inválida');
       }
 
       // Faz as principais comparações
-      return this.compare(assoc.perfil as PerfilInstance, role, isSameUser);
+      return this.compare(assoc.perfil as PerfilDoc, role, isSameUser);
     }
 
     // Retorna falso, pois não há uma empresa no contexto
@@ -79,7 +79,7 @@ export class SecurityMatcher {
   };
 
   private compare = (
-    perfil: PerfilInstance,
+    perfil: PerfilDoc,
     role: Role,
     isSameUser = false
   ): boolean => {
@@ -118,7 +118,7 @@ export class SecurityMatcher {
 
     // Verifca se o perfil do usuario possui outros perfis acoplados e refaz a comparação até bater
     if (perfil.herda) {
-      return this.compare(perfil.herda as PerfilInstance, role, isSameUser);
+      return this.compare(perfil.herda as PerfilDoc, role, isSameUser);
     }
 
     // Retorna falso

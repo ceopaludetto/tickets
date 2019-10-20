@@ -80,6 +80,7 @@ export class ReactService {
         this.html(markup, initialState, extractor, sheetsRegistry)
       );
     } catch (err) {
+      // eslint-disable-next-line no-console
       console.error(err);
       throw new BadRequestException('Erro ao coletar estilos');
     }

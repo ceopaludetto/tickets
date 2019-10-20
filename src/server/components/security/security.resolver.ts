@@ -1,6 +1,5 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
-import { InstanceType } from 'typegoose';
 
 import {
   Perfil,
@@ -63,7 +62,7 @@ export class SecurityResolver {
     recurso: RecursoEnum.Perfil,
     tipo: AnyOrOwnEnum.Any,
     customMatcher: (user, args, assoc) =>
-      (assoc.empresa as InstanceType<Empresa>)._id === args._id,
+      (assoc.empresa as Empresa)._id === args._id,
   })
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Perfil)

@@ -6,7 +6,7 @@ import {
   IsMongoId,
   IsEnum,
 } from 'class-validator';
-import { Ref } from 'typegoose';
+import { Ref } from '@typegoose/typegoose';
 
 import { Empresa } from '../empresa/empresa.entity';
 import { Perfil } from '../perfil/perfil.entity';

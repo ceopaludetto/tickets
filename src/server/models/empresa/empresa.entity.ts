@@ -1,11 +1,11 @@
-import { Typegoose, prop, InstanceType } from 'typegoose';
+import { prop, DocumentType } from '@typegoose/typegoose';
 import { ObjectType, Field, ID } from 'type-graphql';
 import { Schema } from 'mongoose';
 
 import { EnumDiaPagamento, EnumPlanoHoras } from './empresa.dto';
 
 @ObjectType()
-export class Empresa extends Typegoose {
+export class Empresa {
   @Field(() => ID)
   public readonly _id!: Schema.Types.ObjectId;
 
@@ -60,4 +60,4 @@ export class Empresa extends Typegoose {
   public planoHoras!: string;
 }
 
-export type EmpresaInstance = InstanceType<Empresa>;
+export type EmpresaDoc = DocumentType<Empresa>;

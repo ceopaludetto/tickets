@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
-import { ModelType } from 'typegoose';
+import { ReturnModelType } from '@typegoose/typegoose';
 import { UserInputError, ApolloError } from 'apollo-server-express';
 
 import { Usuario, UsuarioInput, LoginUsuario } from '@/server/models';
@@ -8,11 +8,11 @@ import { ID } from '@/server/utils/common.dto';
 
 @Injectable()
 export class UsuarioService {
-  private readonly userRepository: ModelType<Usuario>;
+  private readonly userRepository: ReturnModelType<typeof Usuario>;
 
   public constructor(
     @InjectModel(Usuario)
-    userRepository: ModelType<Usuario>
+    userRepository: ReturnModelType<typeof Usuario>
   ) {
     this.userRepository = userRepository;
   }

@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
-import { ModelType } from 'typegoose';
+import { ReturnModelType } from '@typegoose/typegoose';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 
 import { Ticket, TicketInput } from '@/server/models';
@@ -8,9 +8,11 @@ import { ID } from '@/server/utils/common.dto';
 
 @Injectable()
 export class TicketService {
-  private ticketRepository: ModelType<Ticket>;
+  private ticketRepository: ReturnModelType<typeof Ticket>;
 
-  public constructor(@InjectModel(Ticket) ticketRepo: ModelType<Ticket>) {
+  public constructor(
+    @InjectModel(Ticket) ticketRepo: ReturnModelType<typeof Ticket>
+  ) {
     this.ticketRepository = ticketRepo;
   }
 
