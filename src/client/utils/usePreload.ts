@@ -1,8 +1,8 @@
 import { useContext } from 'react';
 import { useApolloClient } from '@apollo/react-hooks';
+import { useHistory } from 'react-router-dom';
 
 import { ProgressContext } from '@/client/providers/progress';
-import { useRouter } from './useRouter';
 import { preloadRouteComponent } from './preloadRouteComponent';
 
 export function usePreload(
@@ -11,10 +11,10 @@ export function usePreload(
 ) {
   const { toggleIsAnimating } = useContext(ProgressContext);
   const client = useApolloClient();
-  const { history } = useRouter();
+  const history = useHistory();
 
   return async function handleClick(
-    e?: React.MouseEvent<HTMLAnchorElement, MouseEvent>
+    e: React.MouseEvent<HTMLAnchorElement, MouseEvent>
   ) {
     toggleIsAnimating(true);
     if (e) {

@@ -3,10 +3,8 @@ import { Link, LinkProps } from 'react-router-dom';
 
 import { usePreload } from '@/client/utils';
 
-interface PrefetchLinkProps extends LinkProps {}
-
 export const PrefetchLink = forwardRef((
-  { to, onClick, children, ...rest }: PrefetchLinkProps,
+  { to, onClick, children, ...rest }: LinkProps,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ref: React.Ref<Link<any>>
 ) => {

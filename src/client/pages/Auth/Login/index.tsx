@@ -4,13 +4,13 @@ import { Helmet } from 'react-helmet';
 import { Formik, Form } from 'formik';
 import { parse } from 'query-string';
 import { Typography, Button, IconButton, Link } from '@material-ui/core';
+import { useHistory, useLocation } from 'react-router-dom';
 
 import { Login as LoginDocument, Profile } from '@/client/graphql/usuario.gql';
 import { Logged } from '@/client/graphql/local.gql';
 import {
   useVisibility,
   preloadRouteComponent,
-  useRouter,
   fieldLevelErrorMapper,
 } from '@/client/utils';
 import { PrefetchLink, FormikField } from '@/client/components/composed';
@@ -18,7 +18,8 @@ import { useStyles } from './styles';
 
 export default function Login() {
   const classes = useStyles();
-  const { location, history } = useRouter();
+  const location = useLocation();
+  const history = useHistory();
   const client = useApolloClient();
   const {
     visibility,

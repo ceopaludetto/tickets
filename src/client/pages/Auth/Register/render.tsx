@@ -10,12 +10,7 @@ import {
 import { TodayOutlined } from '@material-ui/icons';
 
 import { FormikDatePicker, FormikField } from '@/client/components/composed';
-import {
-  celFormatter,
-  fixedFormatter,
-  cepFormatter,
-  cnpjFormatter,
-} from '@/client/providers/validations';
+import * as validations from '@/client/providers/validations/masks';
 import { useMultipleVisibility } from '@/client/utils';
 import { useRenderStyles } from './styles';
 
@@ -47,7 +42,9 @@ export function RenderStep({ currentPage }: RenderStepProps) {
               label="Telefone"
               id="telefone"
               name="telefone"
-              format={celFormatter}
+              mask
+              replace={validations.cel.mask}
+              format={validations.cel.formatter}
             />
           </div>
           <div className={classes.field}>
@@ -149,7 +146,9 @@ export function RenderStep({ currentPage }: RenderStepProps) {
             label="CNPJ"
             id="cnpj"
             name="cnpj"
-            format={cnpjFormatter}
+            format={validations.cnpj.formatter}
+            replace={validations.cnpj.mask}
+            mask
           />
         </div>
         <div className={classes.field}>
@@ -183,7 +182,9 @@ export function RenderStep({ currentPage }: RenderStepProps) {
             label="Telefone"
             id="empresaTelefone"
             name="empresaTelefone"
-            format={fixedFormatter}
+            format={validations.fixed.formatter}
+            replace={validations.fixed.mask}
+            mask
           />
         </div>
         <div className={classes.field}>
@@ -195,7 +196,14 @@ export function RenderStep({ currentPage }: RenderStepProps) {
           <FormikField label="Endereço" id="endereco" name="endereco" />
         </div>
         <div className={classes.field}>
-          <FormikField label="CEP" id="cep" name="cep" format={cepFormatter} />
+          <FormikField
+            label="CEP"
+            id="cep"
+            name="cep"
+            format={validations.cep.formatter}
+            replace={validations.cep.mask}
+            mask
+          />
         </div>
       </div>
     </>

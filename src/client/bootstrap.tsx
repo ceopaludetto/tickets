@@ -22,7 +22,7 @@ export default function App() {
   function handleIsAnimating(next?: boolean) {
     if (next) {
       // start
-      setNewKey(btoa(String(Math.random())));
+      setNewKey(Buffer.from(String(Math.random())).toString('base64'));
     }
 
     toggleIsAnimating(next);

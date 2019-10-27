@@ -10,14 +10,11 @@ import { Formik, Form, FormikErrors } from 'formik';
 import { Helmet } from 'react-helmet';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
 import { parse } from 'query-string';
+import { useHistory, useLocation } from 'react-router-dom';
 import UseKey from 'react-use/lib/comps/UseKey';
 
 import { RegisterValidation } from '@/client/providers/validations';
-import {
-  classValidatorMapper,
-  preloadRouteComponent,
-  useRouter,
-} from '@/client/utils';
+import { classValidatorMapper, preloadRouteComponent } from '@/client/utils';
 import {
   Register as RegisterDocument,
   Profile,
@@ -47,7 +44,8 @@ interface Fields {
 export default function Register() {
   const classes = useStyles();
   const client = useApolloClient();
-  const { history, location } = useRouter();
+  const location = useLocation();
+  const history = useHistory();
   const [currentPage, setPage] = useState(0);
 
   const steps = ['Usuário', 'Senha', 'Empresa'];

@@ -1,3 +1,5 @@
+import { Jss, GenerateId } from 'jss';
+
 declare module '@material-ui/styles' {
   interface StylesOptions {
     disableGeneration?: boolean;
@@ -5,11 +7,8 @@ declare module '@material-ui/styles' {
     serverGenerateClassName?: GenerateId;
     injectFirst?: boolean;
     jss?: Jss;
-    // TODO need info @oliviertassinari
     sheetsCache?: {};
-    // TODO need info @oliviertassinari
     sheetsManager?: {};
-    // TODO need info @oliviertassinari
     sheetsRegistry?: {};
   }
 
@@ -17,5 +16,7 @@ declare module '@material-ui/styles' {
     children: React.ReactNode;
   }
 
-  export declare const StylesProvider: React.ComponentType<StylesProviderProps>;
+  // eslint-disable-next-line @typescript-eslint/ban-ts-ignore
+  // @ts-ignore
+  export const StylesProvider: React.ComponentType<StylesProviderProps>;
 }

@@ -19,4 +19,11 @@ export const authRoutes: Route[] = [
       )
     ),
   },
+  {
+    path: '/auth/forgot',
+    exact: true,
+    component: loadable(() =>
+      import(/* webpackChunkName: "auth.forgot" */ '@/client/pages/Auth/Forgot')
+    ),
+  },
 ];

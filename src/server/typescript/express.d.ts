@@ -1,4 +1,5 @@
 import { Types } from 'mongoose';
+import { PayloadType } from '@/server/utils/common.dto';
 
 declare module 'express' {
   interface Request {
@@ -6,5 +7,6 @@ declare module 'express' {
     headers: {
       empresa?: string;
     };
+    user: PayloadType;
   }
 }

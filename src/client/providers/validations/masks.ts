@@ -1,8 +1,35 @@
-const parseDigits = (v: string) => (v.match(/\d/g) || []).join('');
+const parseDigits = (v: string, reg: RegExp) => (v.match(reg) || []).join('');
 
-export function createFormatter(mask: (RegExp | string)[]) {
+export function addMask(
+  mask: (RegExp | string)[],
+  replace: string,
+  ignore: RegExp
+) {
+  return (val: string) => {
+    let newVal = '';
+    const parsed = parseDigits(val, ignore);
+
+    if (!parsed) {
+      return '';
+    }
+
+    for (let i = 0; i < mask.length; i += 1) {
+      if (typeof mask[i] === 'string') {
+        newVal += mask[i];
+      } else if (val[i]) {
+        newVal += val[i];
+      } else {
+        newVal += replace;
+      }
+    }
+
+    return newVal;
+  };
+}
+
+export function createFormatter(mask: (RegExp | string)[], ignore: RegExp) {
   return (value: string) => {
-    const digits = parseDigits(value);
+    const digits = parseDigits(value, ignore);
     const chars = digits.split('');
 
     let result = '';
@@ -14,7 +41,7 @@ export function createFormatter(mask: (RegExp | string)[]) {
         result += maskChar;
         index += 1;
       } else {
-        const parsed = chars[0].match(maskChar) ? chars.shift() : '';
+        const parsed = maskChar.test(chars[0]) ? chars.shift() : '';
         result += parsed;
         index += 1;
       }
@@ -24,70 +51,87 @@ export function createFormatter(mask: (RegExp | string)[]) {
   };
 }
 
-export const celFormatter = createFormatter([
-  '(',
-  /\d/,
-  /\d/,
-  ')',
-  ' ',
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-  '-',
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-]);
+export function createFormatterAndMask(
+  mask: (string | RegExp)[],
+  ignore: RegExp,
+  replace: string
+) {
+  return {
+    formatter: createFormatter(mask, ignore),
+    mask: addMask(mask, replace, ignore),
+  };
+}
 
-export const fixedFormatter = createFormatter([
-  '(',
-  /\d/,
-  /\d/,
-  ')',
-  ' ',
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-  '-',
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-]);
+export const cel = createFormatterAndMask(
+  [
+    '(',
+    /\d/,
+    /\d/,
+    ')',
+    ' ',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+  ],
+  /\d/g,
+  '_'
+);
 
-export const cepFormatter = createFormatter([
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-  '-',
-  /\d/,
-  /\d/,
-  /\d/,
-]);
+export const fixed = createFormatterAndMask(
+  [
+    '(',
+    /\d/,
+    /\d/,
+    ')',
+    ' ',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+  ],
+  /\d/g,
+  '_'
+);
 
-export const cnpjFormatter = createFormatter([
-  /\d/,
-  /\d/,
-  '.',
-  /\d/,
-  /\d/,
-  /\d/,
-  '.',
-  /\d/,
-  /\d/,
-  /\d/,
-  '/',
-  /\d/,
-  /\d/,
-  /\d/,
-  /\d/,
-  '-',
-  /\d/,
-  /\d/,
-]);
+export const cep = createFormatterAndMask(
+  [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
+  /\d/g,
+  '_'
+);
+
+export const cnpj = createFormatterAndMask(
+  [
+    /\d/,
+    /\d/,
+    '.',
+    /\d/,
+    /\d/,
+    /\d/,
+    '.',
+    /\d/,
+    /\d/,
+    /\d/,
+    '/',
+    /\d/,
+    /\d/,
+    /\d/,
+    /\d/,
+    '-',
+    /\d/,
+    /\d/,
+  ],
+  /\d/g,
+  '_'
+);

@@ -6,7 +6,7 @@ import { Injectable, BadRequestException, Inject } from '@nestjs/common';
 import { ApolloProvider } from '@apollo/react-common';
 import { getDataFromTree } from '@apollo/react-ssr';
 import { SchemaLink } from 'apollo-link-schema';
-import { StylesProvider } from '@material-ui/styles';
+import StylesProvider from '@material-ui/styles/StylesProvider';
 import { SheetsRegistry } from 'jss';
 import { ChunkExtractorManager, ChunkExtractor } from '@loadable/server';
 import { Helmet } from 'react-helmet';
@@ -51,6 +51,9 @@ export class ReactService {
 
     const App = (
       <ChunkExtractorManager extractor={extractor}>
+        {/* eslint-disable-next-line @typescript-eslint/ban-ts-ignore */}
+        {/* 
+          // @ts-ignore */}
         <StylesProvider
           serverGenerateClassName={generateClassName}
           generateClassName={generateClassName}

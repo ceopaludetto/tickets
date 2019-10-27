@@ -1,13 +1,14 @@
 /* eslint-disable no-template-curly-in-string */
 const isProd = process.env.NODE_ENV === 'production';
 
-module.exports = (isServer = false) => ({
+module.exports = (isServer = false, isTest = false) => ({
   presets: [
     [
       '@babel/preset-env',
       {
         loose: true,
-        modules: isServer ? 'cjs' : false,
+        // eslint-disable-next-line no-nested-ternary
+        modules: isTest ? 'cjs' : isServer ? 'cjs' : false,
         useBuiltIns: 'entry',
         shippedProposals: true,
         corejs: 3,
