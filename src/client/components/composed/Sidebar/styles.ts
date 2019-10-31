@@ -5,6 +5,8 @@ export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     list: {
       paddingRight: theme.spacing(1),
+      height: '100%',
+      flex: 1,
     },
     listItem: {
       padding: theme.spacing(1, 2),
@@ -18,6 +20,11 @@ export const useStyles = makeStyles((theme: Theme) =>
       ...theme.typography.button,
       fontSize: theme.typography.fontSize,
       color: theme.palette.primary.main,
+    },
+    root: {
+      display: 'flex',
+      alignItems: 'center',
+      height: '100%',
     },
   })
 );

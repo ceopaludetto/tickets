@@ -13,15 +13,10 @@ export const useStyles = makeStyles((theme: Theme) =>
       },
     },
     drawerPaper: {
-      width: 240,
-      paddingTop: 64,
-      [theme.breakpoints.down('xs')]: {
-        paddingTop: 0,
-      },
+      width: 290,
     },
-
     content: {
-      marginLeft: 240,
+      marginLeft: 290,
       marginTop: 64,
       [theme.breakpoints.down('xs')]: {
         marginLeft: 0,

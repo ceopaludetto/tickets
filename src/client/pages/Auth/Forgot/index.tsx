@@ -4,13 +4,10 @@ import { Formik, Form } from 'formik';
 import { Typography, Button } from '@material-ui/core';
 
 import { FormikField } from '@/client/components/composed';
-import { addMask } from '@/client/providers/validations';
 import { useStyles } from './styles';
 
 export default function Forgot() {
   const classes = useStyles();
-
-  const masked = addMask(['(', /\d/, ')', ' ', /\d/], '_');
 
   return (
     <>

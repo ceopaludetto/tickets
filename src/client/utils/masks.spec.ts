@@ -40,4 +40,13 @@ describe('createFormatter', () => {
 
     expect(format('119')).toBe('(11) 9');
   });
+
+  it('should add format to formatted string', () => {
+    const format = createFormatter(
+      ['(', /\d/, /\d/, ')', ' ', /\d/, /\d/, /\d/],
+      /\d/g
+    );
+
+    expect(format('(11) 9')).toBe('(11) 9');
+  });
 });

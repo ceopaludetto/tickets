@@ -171,7 +171,7 @@ export default function Register() {
           ) => {
             if (senha !== rsenha) {
               setErrors({
-                rsenha: 'As senhas não condizem',
+                rsenha: 'As senhas não coincidem',
               });
             }
             try {
@@ -199,6 +199,7 @@ export default function Register() {
                     },
                   });
                 } catch (err) {
+                  console.log(err); // eslint-disable-line
                   classValidatorMapper(err, {
                     setFieldError,
                     maps: {
