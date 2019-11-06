@@ -6,3 +6,4 @@ export { FormikDatePicker } from './FormikDatePicker';
 export { FormikField } from './FormikField';
 export { Header } from './Header';
 export { Sidebar } from './Sidebar';
+export { PrefetchNavLink } from './PrefetchNavLink';

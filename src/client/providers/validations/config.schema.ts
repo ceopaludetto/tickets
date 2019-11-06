@@ -8,6 +8,8 @@ import {
   NOT_CONFIRM_SENHA,
   UPPERCASE,
   SPECIAL_CHARACTER,
+  DATE,
+  TELEFONE,
 } from './constants';
 
 export const UpdateInfoValidation = Yup.object().shape({
@@ -20,6 +22,11 @@ export const UpdateInfoValidation = Yup.object().shape({
   email: Yup.string()
     .required(REQUIRED)
     .email(EMAIL),
+  telefone: Yup.string().matches(/\([0-9]{2}\) 9?[1-9]{4}-[1-9]{4}/, TELEFONE),
+  nascimento: Yup.date()
+    .max(new Date(), DATE)
+    .typeError(DATE)
+    .required(REQUIRED),
 });
 
 export const UpdateSenhaValidation = Yup.object().shape({
@@ -30,7 +37,7 @@ export const UpdateSenhaValidation = Yup.object().shape({
     .matches(/(?=.*\W)/, SPECIAL_CHARACTER)
     .notOneOf([Yup.ref('senha'), null], NOT_CONFIRM_SENHA)
     .required(REQUIRED),
-  rsenha: Yup.string()
+  rnsenha: Yup.string()
     .oneOf([Yup.ref('nsenha'), null], CONFIRM_SENHA)
     .required(REQUIRED),
 });

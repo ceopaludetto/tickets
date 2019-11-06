@@ -6,7 +6,6 @@ import { useStyles } from './styles';
 
 interface PageProps {
   title: string;
-  subTitle: string;
   children?: React.ReactNode | React.ReactNodeArray;
   helmetProps?: HelmetProps;
   helmetChildren?: React.ReactNode | React.ReactNodeArray;
@@ -18,7 +17,6 @@ interface PageProps {
 export function Page({
   children,
   title,
-  subTitle,
   helmetProps,
   helmetChildren,
   notFluid = false,
@@ -32,13 +30,10 @@ export function Page({
   return (
     <>
       <Helmet {...helmetProps}>{helmetChildren}</Helmet>
-      <Container fixed={notFluid}>
+      <Container fixed={notFluid} classes={{ root: classes.container }}>
         <>
           <div className={classes.header}>
             <div className={classes.content}>
-              <Typography color="primary" variant="button">
-                {subTitle}
-              </Typography>
               <Typography variant="h4" gutterBottom>
                 {title}
               </Typography>

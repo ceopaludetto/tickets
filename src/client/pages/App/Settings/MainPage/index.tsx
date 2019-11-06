@@ -1,28 +1,33 @@
 import React from 'react';
-// import { Row, Col } from 'styled-bootstrap-grid';
-// import { Helmet } from 'react-helmet';
-// import { useQuery, useMutation } from '@apollo/react-hooks';
-// import { Formik, Form } from 'formik';
+import { Formik, Form } from 'formik';
+import {
+  Button,
+  Divider,
+  FormControlLabel,
+  Switch,
+  FormLabel,
+  Paper,
+  Typography,
+} from '@material-ui/core';
+import { TodayOutlined } from '@material-ui/icons';
+import { useQuery /* useMutation */ } from '@apollo/react-hooks';
+import { Helmet } from 'react-helmet';
+import clsx from 'clsx';
 
-// import { Button, IconButton, Switch } from '@/client/components/form';
-// import { Divider, TextAlign, Alert } from '@/client/components/layout';
-// import { SubTitle, List } from '@/client/components/typo';
-// import {
-//   FormikControl,
-//   FormikCalendar,
-//   FormikMaskedControl,
-// } from '@/client/components/formik';
+import { useStyles } from './styles';
 // import { useMultipleVisibility } from '@/client/utils';
-// import { Profile, UpdateUsuario } from '@/client/graphql/usuario.gql';
-// import {
-//   UpdateInfoValidation,
-//   UpdateSenhaValidation,
-//   MutableTelefone,
-// } from '@/client/providers/validations';
+import { FormikField, FormikDatePicker } from '@/client/components/composed';
+import { Profile /* UpdateUsuario */ } from '@/client/graphql/usuario.gql';
+import {
+  UpdateInfoValidation,
+  UpdateSenhaValidation,
+} from '@/client/providers/validations';
 
 export default function MainSettingsPage() {
-  // const { data } = useQuery<ProfileQuery>(Profile);
-  // const { toggleVisibility, render: renderVisibility } = useMultipleVisibility<
+  const classes = useStyles();
+
+  const { data } = useQuery<ProfileQuery>(Profile);
+  // const { toggleVisibility, renderVisibility } = useMultipleVisibility<
   //   ('v' | 'nv' | 'rnv')[]
   // >(['v', 'nv', 'rnv']);
 
@@ -47,16 +52,16 @@ export default function MainSettingsPage() {
   //     <Helmet title="Perfil" />
   //     <Formik
   //       validationSchema={UpdateInfoValidation}
-  //       initialValues={
-  //         data &&
-  //         data.profile && {
-  //           email: data.profile.email,
-  //           nome: data.profile.nome,
-  //           sobrenome: data.profile.sobrenome,
-  //           telefone: data.profile.telefone || '',
-  //           nascimento: data.profile.nascimento || new Date(),
-  //         }
-  //       }
+  // initialValues={
+  //   data &&
+  //   data.profile && {
+  //     email: data.profile.email,
+  //     nome: data.profile.nome,
+  //     sobrenome: data.profile.sobrenome,
+  //     telefone: data.profile.telefone || '',
+  //     nascimento: data.profile.nascimento || new Date(),
+  //   }
+  // }
   //       onSubmit={async mutationData => {
   //         if (data && data.profile && mutationData) {
   //           await fetchUpdate({
@@ -217,5 +222,123 @@ export default function MainSettingsPage() {
   //   </>
   // );
 
-  return <div>mainapp</div>;
+  return (
+    <>
+      <Helmet title="Perfil" />
+      <Formik
+        validationSchema={UpdateInfoValidation}
+        initialValues={
+          data &&
+          data.profile && {
+            email: data.profile.email,
+            nome: data.profile.nome,
+            sobrenome: data.profile.sobrenome,
+            telefone: data.profile.telefone || '',
+            nascimento: data.profile.nascimento || new Date(),
+          }
+        }
+        onSubmit={() => {}}
+      >
+        {() => (
+          <Form>
+            <div className={classes.fieldGroup}>
+              <div className={classes.field}>
+                <FormikField name="nome" label="Nome" id="nome" />
+              </div>
+              <div className={classes.field}>
+                <FormikField
+                  name="sobrenome"
+                  label="Sobrenome"
+                  id="sobrenome"
+                />
+              </div>
+            </div>
+            <FormikField name="email" label="Email" id="email" />
+            <div className={classes.fieldGroup}>
+              <div className={classes.field}>
+                <FormikField name="telefone" label="Telefone" id="telefone" />
+              </div>
+              <div className={classes.field}>
+                <FormikDatePicker
+                  disableFuture
+                  keyboardIcon={<TodayOutlined />}
+                  okLabel="OK"
+                  cancelLabel="Cancelar"
+                  format="dd/MM/yyyy"
+                  label="Data de Nascimento"
+                  id="nascimento"
+                  name="nascimento"
+                  invalidDateMessage="Data inválida"
+                />
+              </div>
+            </div>
+            <div className={classes.alignRight}>
+              <Button variant="contained" color="primary">
+                Salvar
+              </Button>
+            </div>
+            <Divider className={classes.divider} />
+            <FormLabel component="legend">Perfil público</FormLabel>
+            <FormControlLabel
+              label="Ao ativar sua conta fica visível a todos usuários"
+              control={<Switch />}
+            />
+            <Divider className={classes.divider} />
+          </Form>
+        )}
+      </Formik>
+      <Formik
+        initialValues={{
+          senha: '',
+          nsenha: '',
+          rnsenha: '',
+        }}
+        validationSchema={UpdateSenhaValidation}
+        onSubmit={() => {}}
+      >
+        {() => (
+          <Form>
+            <div className={classes.fieldGroup}>
+              <div className={classes.field}>
+                <FormikField name="senha" label="Senha" id="senha" />
+                <FormikField name="nsenha" label="Nova senha" id="nsenha" />
+                <FormikField
+                  name="rnsenha"
+                  label="Repetir nova senha"
+                  id="rnsenha"
+                />
+                <div className={classes.alignRight}>
+                  <Button variant="contained" color="primary">
+                    Alterar
+                  </Button>
+                </div>
+              </div>
+              <div className={clsx(classes.field, classes.paperOrder)}>
+                <Paper elevation={0} className={classes.paper}>
+                  <Typography
+                    variant="subtitle2"
+                    gutterBottom
+                    color="secondary"
+                  >
+                    Dicas de senha
+                  </Typography>
+                  <Typography variant="body2" color="textPrimary">
+                    No mínimo 8 caracteres;
+                    <br />
+                    Pelo menos 1 caractere especial;
+                    <br />
+                    Pelo menos 1 caractere maiúsculo.
+                  </Typography>
+                </Paper>
+              </div>
+            </div>
+          </Form>
+        )}
+      </Formik>
+      <Divider className={classes.divider} />
+      <div className={classes.alignCenter}>
+        <Button variant="text">Excluir conta</Button>
+      </div>
+    </>
+  );
 }

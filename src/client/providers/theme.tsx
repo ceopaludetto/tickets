@@ -43,6 +43,16 @@ export const theme = createMuiTheme({
         minWidth: 42,
       },
     },
+    MuiTab: {
+      root: {
+        borderRadius: `4px 4px 0 0`,
+      },
+    },
+    MuiTabs: {
+      indicator: {
+        borderRadius: '25px',
+      },
+    },
   },
 });
 

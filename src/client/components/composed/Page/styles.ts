@@ -1,24 +1,31 @@
 import { makeStyles, createStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 
 interface UseStylesProps {
+  notFluid?: boolean;
   hasFooter?: boolean;
 }
 
-export const useStyles = makeStyles(
+export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
+    container: {
+      padding: (props: UseStylesProps) =>
+        theme.spacing(props.notFluid ? 0 : 3, 3, 2, 3),
+      width: '100%',
+    },
     header: {
       display: 'flex',
       alignItems: 'center',
-      marginLeft: '-1rem',
-      marginRight: '-1rem',
+      marginLeft: theme.spacing(-1),
+      marginRight: theme.spacing(-1),
       marginBottom: (props: UseStylesProps) =>
-        props.hasFooter ? '0.5rem' : '1rem',
+        props.hasFooter ? theme.spacing(0.5) : theme.spacing(1),
     },
     content: {
-      padding: '0 1rem',
+      padding: theme.spacing(0, 1),
     },
     footer: {
-      marginBottom: '1.5rem',
+      marginBottom: theme.spacing(1.5),
     },
   })
 );

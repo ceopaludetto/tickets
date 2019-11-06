@@ -6,13 +6,15 @@ export const useStyles = makeStyles((theme: Theme) =>
     appBar: {
       zIndex: theme.zIndex.drawer + 1,
       width: 'calc(100% - 290px)',
-      backgroundColor: theme.palette.background.paper,
-      borderBottom: `1px solid ${theme.palette.divider}`,
+      backgroundColor: theme.palette.background.default,
       marginLeft: '290px',
       [theme.breakpoints.down('xs')]: {
         marginLeft: 0,
         width: '100%',
       },
+    },
+    appBarShadow: {
+      boxShadow: theme.shadows[1],
     },
     spacer: {
       flex: 1,

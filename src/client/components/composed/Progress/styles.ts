@@ -11,7 +11,7 @@ export const useStyles = makeStyles((theme: Theme) =>
     container: {
       pointerEvents: 'none',
       position: 'fixed',
-      zIndex: 1030,
+      zIndex: theme.zIndex.drawer + 1,
       top: 0,
       left: 0,
       width: '100%',

@@ -1,5 +1,5 @@
 import loadable from '@loadable/component';
-import { HomeOutlined, DashboardOutlined } from '@material-ui/icons';
+import { AssignmentOutlined, DashboardOutlined } from '@material-ui/icons';
 
 import { Route } from './route.dto';
 import { Profile } from '@/client/graphql/usuario.gql';
@@ -8,7 +8,7 @@ import { FindAllTickets } from '@/client/graphql/tickets.gql';
 export const appRoutes: Route[] = [
   {
     name: 'Início',
-    icon: HomeOutlined,
+    icon: DashboardOutlined,
     path: '/app',
     exact: true,
     component: loadable(() =>
@@ -17,7 +17,7 @@ export const appRoutes: Route[] = [
   },
   {
     name: 'Chamados',
-    icon: DashboardOutlined,
+    icon: AssignmentOutlined,
     path: '/app/mesa',
     exact: true,
     query: FindAllTickets,
@@ -26,6 +26,7 @@ export const appRoutes: Route[] = [
     ),
   },
   {
+    name: 'Configurações',
     path: [
       '/app/settings',
       '/app/settings/application',
@@ -45,7 +46,7 @@ export const appRoutes: Route[] = [
         query: Profile,
         component: loadable(() =>
           import(
-            /* webpackChunkName: "app.settings.userinfo" */ '@/client/pages/App/Settings/MainPage'
+            /* webpackChunkName: "app.settings.profile" */ '@/client/pages/App/Settings/MainPage'
           )
         ),
       },

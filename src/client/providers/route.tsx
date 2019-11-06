@@ -84,4 +84,4 @@ export const routes: Route[] = [
   },
 ];
 
-export { Route };
+export { Route, appRoutes as AppRoutes };
