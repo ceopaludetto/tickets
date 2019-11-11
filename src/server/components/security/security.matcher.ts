@@ -133,8 +133,8 @@ export class SecurityMatcher {
     if (
       rAcao === AcaoEnum.Ler &&
       (pAcao.includes(AcaoEnum.Criar) ||
-        (pAcao.includes(AcaoEnum.Atualizar) ||
-          pAcao.includes(AcaoEnum.Excluir)))
+        pAcao.includes(AcaoEnum.Atualizar) ||
+        pAcao.includes(AcaoEnum.Excluir))
     ) {
       return true;
     }
