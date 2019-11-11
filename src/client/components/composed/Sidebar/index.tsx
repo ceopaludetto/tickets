@@ -1,14 +1,10 @@
 import React from 'react';
-import { List, ListItem, ListItemText, ListItemIcon } from '@material-ui/core';
+import { List } from '@material-ui/core';
 
 import { ProfileBar } from '../ProfileBar';
-import { PrefetchNavLink } from '../PrefetchNavLink';
 import { useStyles } from './styles';
 import { AppRoutes } from '@/client/providers/route';
-
-interface IconProps {
-  color: 'primary' | 'secondary';
-}
+import { ListItemLink } from '../ListItemLink';
 
 export function Sidebar() {
   const classes = useStyles();
@@ -16,27 +12,13 @@ export function Sidebar() {
   return (
     <div className={classes.root}>
       <ProfileBar />
-      <List className={classes.list}>
-        {AppRoutes.filter(r => !!r.icon).map(r => {
-          const Icon = r.icon as ({ color }: IconProps) => JSX.Element;
-          return (
-            <ListItem
-              className={classes.listItem}
-              button
-              component={props => (
-                <PrefetchNavLink {...props} to={r.path} exact={r.exact} />
-              )}
-            >
-              <ListItemIcon>
-                <Icon color="primary" />
-              </ListItemIcon>
-              <ListItemText
-                primary={r.name}
-                classes={{ primary: classes.listItemText }}
-              />
-            </ListItem>
-          );
-        })}
+      <List className={classes.list} component="nav">
+        {AppRoutes.filter(r => !!r.icon).map(r => (
+          <ListItemLink
+            {...r}
+            key={typeof r.path === 'string' ? r.path : r.path[0]}
+          />
+        ))}
       </List>
     </div>
   );

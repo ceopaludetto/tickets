@@ -9,18 +9,6 @@ export const useStyles = makeStyles((theme: Theme) =>
       height: '100%',
       flex: 1,
     },
-    listItem: {
-      padding: theme.spacing(0.75, 2),
-      borderRadius: 8,
-      '& + $listItem': {
-        marginTop: theme.spacing(0.5),
-      },
-    },
-    listItemText: {
-      ...theme.typography.button,
-      fontSize: theme.typography.fontSize,
-      color: theme.palette.primary.main,
-    },
     root: {
       display: 'flex',
       alignItems: 'center',

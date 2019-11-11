@@ -42,9 +42,9 @@ export default function Settings({ route }: RouteConfigComponentProps) {
             route.routes &&
             route.routes.map(r => (
               <Tab
-                component={props => (
-                  <PrefetchLink to={r.path as string} {...props} />
-                )}
+                // eslint-disable-next-line @typescript-eslint/no-explicit-any
+                component={PrefetchLink as any}
+                to={r.path}
                 label={r.name}
               />
             ))}

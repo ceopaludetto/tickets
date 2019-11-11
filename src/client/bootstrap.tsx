@@ -21,7 +21,6 @@ export default function App() {
 
   function handleIsAnimating(next?: boolean) {
     if (next) {
-      // start
       setNewKey(
         typeof window === 'undefined'
           ? Buffer.from(String(Math.random())).toString('base64')

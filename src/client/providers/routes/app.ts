@@ -27,6 +27,7 @@ export const appRoutes: Route[] = [
   },
   {
     name: 'Configurações',
+    pathName: '/app/settings',
     path: [
       '/app/settings',
       '/app/settings/application',
