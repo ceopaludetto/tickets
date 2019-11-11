@@ -25,6 +25,11 @@ export const theme = createMuiTheme({
       variant: 'filled',
       margin: 'normal',
     },
+    MuiFormControl: {
+      fullWidth: true,
+      variant: 'filled',
+      margin: 'normal',
+    },
     MuiCheckbox: {
       indeterminateIcon: <IndeterminateCheckBoxRounded />,
       icon: <CheckBoxOutlineBlankRounded />,

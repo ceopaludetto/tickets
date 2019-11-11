@@ -25,5 +25,8 @@ export const useStyles = makeStyles((theme: Theme) =>
         display: 'none',
       },
     },
+    customPaper: {
+      padding: theme.spacing(0.75, 2),
+    },
   })
 );

@@ -42,9 +42,7 @@ export function RenderStep({ currentPage }: RenderStepProps) {
               label="Telefone"
               id="telefone"
               name="telefone"
-              mask
-              replace={validations.cel.mask}
-              format={validations.cel.formatter}
+              mask={validations.telMask}
             />
           </div>
           <div className={classes.field}>
@@ -146,9 +144,7 @@ export function RenderStep({ currentPage }: RenderStepProps) {
             label="CNPJ"
             id="cnpj"
             name="cnpj"
-            format={validations.cnpj.formatter}
-            replace={validations.cnpj.mask}
-            mask
+            mask={validations.cnpjMask}
           />
         </div>
         <div className={classes.field}>
@@ -182,9 +178,7 @@ export function RenderStep({ currentPage }: RenderStepProps) {
             label="Telefone"
             id="empresaTelefone"
             name="empresaTelefone"
-            format={validations.fixed.formatter}
-            replace={validations.fixed.mask}
-            mask
+            mask={validations.telMask}
           />
         </div>
         <div className={classes.field}>
@@ -200,9 +194,7 @@ export function RenderStep({ currentPage }: RenderStepProps) {
             label="CEP"
             id="cep"
             name="cep"
-            format={validations.cep.formatter}
-            replace={validations.cep.mask}
-            mask
+            mask={validations.cepMask}
           />
         </div>
       </div>

@@ -1,48 +1,29 @@
-import { createFormatter, addMask } from '@/client/utils/masks';
+const parseDigits = (v: string, reg: RegExp) => v.replace(reg, '');
 
-interface CreateFormatterOptions {
-  finder: RegExp;
-  ignore: RegExp;
-  replace: string;
-}
+export const telMask = (rawValue: string) => {
+  const val = parseDigits(rawValue, /(?!\d)./g);
 
-export function createFormatterAndMask(
-  mask: (string | RegExp)[],
-  { finder, ignore, replace }: CreateFormatterOptions
-) {
-  return {
-    formatter: createFormatter(mask, ignore),
-    mask: addMask(mask, replace, finder),
-  };
-}
-
-export const cel = createFormatterAndMask(
-  [
-    '(',
-    /\d/,
-    /\d/,
-    ')',
-    ' ',
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/,
-  ],
-  {
-    finder: /\d/g,
-    ignore: /(?!\d)./g,
-    replace: '_',
+  if (val > 10) {
+    return [
+      '(',
+      /\d/,
+      /\d/,
+      ')',
+      ' ',
+      /\d/,
+      /\d/,
+      /\d/,
+      /\d/,
+      /\d/,
+      '-',
+      /\d/,
+      /\d/,
+      /\d/,
+      /\d/,
+    ];
   }
-);
 
-export const fixed = createFormatterAndMask(
-  [
+  return [
     '(',
     /\d/,
     /\d/,
@@ -57,47 +38,28 @@ export const fixed = createFormatterAndMask(
     /\d/,
     /\d/,
     /\d/,
-  ],
-  {
-    finder: /\d/g,
-    ignore: /(?!\d)./g,
-    replace: '_',
-  }
-);
+  ];
+};
 
-export const cep = createFormatterAndMask(
-  [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/],
-  {
-    finder: /\d/g,
-    ignore: /(?!\d)./g,
-    replace: '_',
-  }
-);
+export const cepMask = [/\d/, /\d/, /\d/, /\d/, /\d/, '-', /\d/, /\d/, /\d/];
 
-export const cnpj = createFormatterAndMask(
-  [
-    /\d/,
-    /\d/,
-    '.',
-    /\d/,
-    /\d/,
-    /\d/,
-    '.',
-    /\d/,
-    /\d/,
-    /\d/,
-    '/',
-    /\d/,
-    /\d/,
-    /\d/,
-    /\d/,
-    '-',
-    /\d/,
-    /\d/,
-  ],
-  {
-    finder: /\d/g,
-    ignore: /(?!\d)./g,
-    replace: '_',
-  }
-);
+export const cnpjMask = [
+  /\d/,
+  /\d/,
+  '.',
+  /\d/,
+  /\d/,
+  /\d/,
+  '.',
+  /\d/,
+  /\d/,
+  /\d/,
+  '/',
+  /\d/,
+  /\d/,
+  /\d/,
+  /\d/,
+  '-',
+  /\d/,
+  /\d/,
+];

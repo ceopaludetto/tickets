@@ -11,6 +11,7 @@ import {
   Link,
   Typography,
   useScrollTrigger,
+  Paper,
 } from '@material-ui/core';
 import {
   MenuOutlined,
@@ -38,7 +39,7 @@ export function Header({ onDrawerButtonClick }: HeaderProps) {
   });
 
   const pathnames = useMemo(() => location.pathname.split('/').filter(v => v), [
-    location.pathname,
+    location,
   ]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
@@ -65,40 +66,43 @@ export function Header({ onDrawerButtonClick }: HeaderProps) {
         >
           <MenuOutlined />
         </IconButton>
-        <Breadcrumbs separator={<NavigateNextOutlined fontSize="small" />}>
-          {pathnames.map((value, index) => {
-            const last = index === pathnames.length - 1;
-            const to = `/${pathnames.slice(0, index + 1).join('/')}`;
+        <Paper className={classes.customPaper} elevation={0}>
+          <Breadcrumbs separator={<NavigateNextOutlined fontSize="small" />}>
+            {pathnames.map((value, index) => {
+              const last = index === pathnames.length - 1;
+              const to = `/${pathnames.slice(0, index + 1).join('/')}`;
 
-            let routes = AppRoutes.find(v =>
-              typeof v.path === 'string'
-                ? v.path === to
-                : !!v.path.find(nv => nv === to)
-            );
+              let routes = AppRoutes.find(v =>
+                typeof v.path === 'string'
+                  ? v.path === to
+                  : !!v.path.find(nv => nv === to)
+              );
 
-            if (routes && routes.routes) {
-              const nested = routes && routes.routes.find(v => v.path === to);
+              if (routes && routes.routes) {
+                const nested = routes && routes.routes.find(v => v.path === to);
 
-              if (nested && nested.path === to && index >= 2) {
-                routes = nested;
+                if (nested && nested.path === to && index >= 2) {
+                  routes = nested;
+                }
               }
-            }
 
-            return last ? (
-              <Typography color="textPrimary" key={to}>
-                {routes && routes.name}
-              </Typography>
-            ) : (
-              <Link component={PrefetchLink} color="inherit" to={to} key={to}>
-                {routes && routes.name}
-              </Link>
-            );
-          })}
-        </Breadcrumbs>
+              return last ? (
+                <Typography color="textPrimary" key={to}>
+                  {routes && routes.name}
+                </Typography>
+              ) : (
+                <Link component={PrefetchLink} color="inherit" to={to} key={to}>
+                  {routes && routes.name}
+                </Link>
+              );
+            })}
+          </Breadcrumbs>
+        </Paper>
         <div className={classes.spacer} />
         <IconButton
           aria-controls="profile-menu"
           aria-haspopup="true"
+          size="small"
           onClick={handleClick}
         >
           <Avatar />

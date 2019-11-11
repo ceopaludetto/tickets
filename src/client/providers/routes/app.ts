@@ -35,7 +35,7 @@ export const appRoutes: Route[] = [
     exact: true,
     component: loadable(() =>
       import(
-        /* webpackChunkName: "app.settings" */ '@/client/pages/App/Settings'
+        /* webpackChunkName: "app.settings" */ '@/client/pages/App/Settings/MainPage'
       )
     ),
     routes: [
@@ -46,7 +46,7 @@ export const appRoutes: Route[] = [
         query: Profile,
         component: loadable(() =>
           import(
-            /* webpackChunkName: "app.settings.profile" */ '@/client/pages/App/Settings/MainPage'
+            /* webpackChunkName: "app.settings.profile" */ '@/client/pages/App/Settings/UserInfo'
           )
         ),
       },
