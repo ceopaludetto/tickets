@@ -4,7 +4,7 @@ import { List } from '@material-ui/core';
 import { ProfileBar } from '../ProfileBar';
 import { useStyles } from './styles';
 import { AppRoutes } from '@/client/providers/route';
-import { ListItemLink } from '../ListItemLink';
+import { ListItemLink } from '@/client/components/customs';
 
 export function Sidebar() {
   const classes = useStyles();

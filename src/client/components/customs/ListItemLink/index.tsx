@@ -2,7 +2,7 @@ import React, { useMemo, forwardRef } from 'react';
 import { ListItem, ListItemIcon, ListItemText } from '@material-ui/core';
 
 import { Route } from '@/client/providers/route';
-import { PrefetchNavLink } from '../PrefetchNavLink';
+import { PrefetchNavLink } from '@/client/components/composed';
 import { useStyles } from './styles';
 
 interface IconProps {
