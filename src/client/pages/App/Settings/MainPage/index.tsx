@@ -27,6 +27,7 @@ export default function Settings({ route }: RouteConfigComponentProps) {
   return (
     <Page
       title="Configurações"
+      subTitle="Informações Gerais"
       helmetProps={{
         titleTemplate: '%s - Configurações | F3Desk',
       }}
@@ -50,7 +51,6 @@ export default function Settings({ route }: RouteConfigComponentProps) {
             ))}
         </Tabs>
       }
-      notFluid
     >
       {route && renderRoutes(route.routes)}
     </Page>
