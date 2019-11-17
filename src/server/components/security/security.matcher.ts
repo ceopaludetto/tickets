@@ -13,13 +13,7 @@ import { AssociacaoEnum } from '@/server/models/associacao/associacao.dto';
 
 export class SecurityMatcher {
   // Validador é chamado
-  public async isRoleValid({
-    usuario,
-    role,
-    empresa,
-    args,
-    isSameUser,
-  }: SecurityMatcherOptions) {
+  public async isRoleValid({ usuario, role, empresa, args, isSameUser }: SecurityMatcherOptions) {
     // Verifica se o usuário é sysAdmin
     if (usuario.sysAdmin) {
       return true;
@@ -27,9 +21,7 @@ export class SecurityMatcher {
 
     // Procura a associacao que ele é dono da empresa do contexto
     const verifyIfIsOwner = usuario.associacoes.find(
-      a =>
-        (a.empresa as EmpresaDoc)._id.equals(empresa) &&
-        a.tipo === AssociacaoEnum.Dono
+      a => (a.empresa as EmpresaDoc)._id.equals(empresa) && a.tipo === AssociacaoEnum.Dono
     );
 
     // Se for dono da empresa, passa
@@ -51,10 +43,7 @@ export class SecurityMatcher {
       }
 
       // Se há um customMatcher, verifica se sua verificacao é valida
-      if (
-        role.customMatcher &&
-        !role.customMatcher(usuario, assoc as AssociacaoDoc, args)
-      ) {
+      if (role.customMatcher && !role.customMatcher(usuario, assoc as AssociacaoDoc, args)) {
         throw new AuthenticationError('Comparação inválida');
       }
 
@@ -78,16 +67,10 @@ export class SecurityMatcher {
     return true;
   };
 
-  private compare = (
-    perfil: PerfilDoc,
-    role: Role,
-    isSameUser = false
-  ): boolean => {
+  private compare = (perfil: PerfilDoc, role: Role, isSameUser = false): boolean => {
     // Procura a politica que possui o recurso e acao necessaria
     const politica = perfil.politicas.find(
-      p =>
-        this.verifyRole(p.acao as AcaoEnum[], role.acao) &&
-        p.recurso === role.recurso
+      p => this.verifyRole(p.acao as AcaoEnum[], role.acao) && p.recurso === role.recurso
     );
 
     // Se há politica:
@@ -98,20 +81,13 @@ export class SecurityMatcher {
       }
 
       // Verifica se a politica é do tipo any, se for, valida a role tanto pra own quanto pra any
-      if (
-        politica.tipo === AnyOrOwnEnum.Any &&
-        (role.tipo === AnyOrOwnEnum.Own || role.tipo === AnyOrOwnEnum.Any)
-      ) {
+      if (politica.tipo === AnyOrOwnEnum.Any && (role.tipo === AnyOrOwnEnum.Own || role.tipo === AnyOrOwnEnum.Any)) {
         return true;
       }
 
       // Verifica se a politica é do tipo own, valida a role so pra own
       // Verifica entao se o usuario tenta alterar suas proprias informações, tanto pelo arg _id ou pelo seu _id de logado
-      if (
-        role.tipo === AnyOrOwnEnum.Own &&
-        politica.tipo === AnyOrOwnEnum.Own &&
-        isSameUser
-      ) {
+      if (role.tipo === AnyOrOwnEnum.Own && politica.tipo === AnyOrOwnEnum.Own && isSameUser) {
         return true;
       }
     }
@@ -132,9 +108,7 @@ export class SecurityMatcher {
 
     if (
       rAcao === AcaoEnum.Ler &&
-      (pAcao.includes(AcaoEnum.Criar) ||
-        pAcao.includes(AcaoEnum.Atualizar) ||
-        pAcao.includes(AcaoEnum.Excluir))
+      (pAcao.includes(AcaoEnum.Criar) || pAcao.includes(AcaoEnum.Atualizar) || pAcao.includes(AcaoEnum.Excluir))
     ) {
       return true;
     }

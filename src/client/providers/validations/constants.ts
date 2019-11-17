@@ -9,3 +9,5 @@ export const SPECIAL_CHARACTER = 'Pelo menos um caractere especial';
 export const SITE = 'Insira uma url válida';
 export const TELEFONE = 'Telefone inválido';
 export const DATE = 'Insira uma data válida';
+export const CNPJ = 'Insira um CNPJ válido';
+export const CEP = 'Insira um CEP válido';

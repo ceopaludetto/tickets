@@ -27,7 +27,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       position: 'fixed',
       left: 0,
       top: 0,
-      backgroundColor: theme.palette.secondary.main,
+      backgroundColor: theme.palette.secondary.dark,
       transition: (props: ContainerProps) =>
         theme.transitions.create('width', {
           duration: props.animationDuration,
@@ -42,7 +42,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       right: '0px',
       transform: 'rotate(3deg) translate(0px, -4px)',
       width: '100px',
-      boxShadow: `0 0 10px ${theme.palette.secondary.main}, 0 0 5px ${theme.palette.secondary.main}`,
+      boxShadow: `0 0 10px ${theme.palette.secondary.dark}, 0 0 5px ${theme.palette.secondary.dark}`,
     },
   })
 );

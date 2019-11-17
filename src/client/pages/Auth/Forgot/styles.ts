@@ -10,9 +10,13 @@ export const useStyles = makeStyles((theme: Theme) =>
     buttonMargin: {
       marginTop: theme.spacing(1.5),
       marginBottom: theme.spacing(3),
+      textAlign: 'right',
     },
     topOr: {
       marginTop: theme.spacing(3),
+      display: 'flex',
+      justifyContent: 'space-between',
+      alignItems: 'center',
     },
   })
 );

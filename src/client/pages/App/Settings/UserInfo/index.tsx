@@ -1,36 +1,22 @@
 import React from 'react';
 import { Formik, Form } from 'formik';
-import {
-  Button,
-  Divider,
-  FormControlLabel,
-  Switch,
-  FormLabel,
-  Paper,
-  Typography,
-  IconButton,
-} from '@material-ui/core';
+import { Button, Divider, FormControlLabel, Switch, FormLabel, Paper, Typography, IconButton } from '@material-ui/core';
 import { TodayOutlined } from '@material-ui/icons';
 import { useQuery /* useMutation */ } from '@apollo/react-hooks';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import clsx from 'clsx';
 
 import { useStyles } from './styles';
 import { useMultipleVisibility } from '@/client/utils';
 import { FormikField, FormikDatePicker } from '@/client/components/composed';
 import { Profile /* UpdateUsuario */ } from '@/client/graphql/usuario.gql';
-import {
-  UpdateInfoValidation,
-  UpdateSenhaValidation,
-} from '@/client/providers/validations';
+import { UpdateInfoValidation, UpdateSenhaValidation, telMask } from '@/client/providers/validations';
 
 export default function MainSettingsPage() {
   const classes = useStyles();
 
   const { data } = useQuery<ProfileQuery>(Profile);
-  const { toggleVisibility, renderVisibility } = useMultipleVisibility<
-    ('p' | 'np' | 'rnp')[]
-  >(['p', 'np', 'rnp']);
+  const { toggleVisibility, renderVisibility } = useMultipleVisibility<('p' | 'np' | 'rnp')[]>(['p', 'np', 'rnp']);
 
   // const [fetchUpdate] = useMutation<
   //   UpdateUsuarioMutation,
@@ -247,17 +233,13 @@ export default function MainSettingsPage() {
                 <FormikField name="nome" label="Nome" id="nome" />
               </div>
               <div className={classes.field}>
-                <FormikField
-                  name="sobrenome"
-                  label="Sobrenome"
-                  id="sobrenome"
-                />
+                <FormikField name="sobrenome" label="Sobrenome" id="sobrenome" />
               </div>
             </div>
             <FormikField name="email" label="Email" id="email" />
             <div className={classes.fieldGroup}>
               <div className={classes.field}>
-                <FormikField name="telefone" label="Telefone" id="telefone" />
+                <FormikField name="telefone" mask={telMask} label="Telefone" id="telefone" />
               </div>
               <div className={classes.field}>
                 <FormikDatePicker
@@ -312,11 +294,7 @@ export default function MainSettingsPage() {
                   InputProps={{
                     endAdornment: (
                       <IconButton
-                        aria-label={renderVisibility(
-                          'p',
-                          'Esconder Confirmar Senha',
-                          'Ver Confirmar Senha'
-                        )}
+                        aria-label={renderVisibility('p', 'Esconder Confirmar Senha', 'Ver Confirmar Senha')}
                         type="button"
                         onClick={toggleVisibility('p')}
                       >
@@ -333,11 +311,7 @@ export default function MainSettingsPage() {
                   InputProps={{
                     endAdornment: (
                       <IconButton
-                        aria-label={renderVisibility(
-                          'np',
-                          'Esconder Confirmar Senha',
-                          'Ver Confirmar Senha'
-                        )}
+                        aria-label={renderVisibility('np', 'Esconder Confirmar Senha', 'Ver Confirmar Senha')}
                         type="button"
                         onClick={toggleVisibility('np')}
                       >
@@ -354,11 +328,7 @@ export default function MainSettingsPage() {
                   InputProps={{
                     endAdornment: (
                       <IconButton
-                        aria-label={renderVisibility(
-                          'rnp',
-                          'Esconder Confirmar Senha',
-                          'Ver Confirmar Senha'
-                        )}
+                        aria-label={renderVisibility('rnp', 'Esconder Confirmar Senha', 'Ver Confirmar Senha')}
                         type="button"
                         onClick={toggleVisibility('rnp')}
                       >
@@ -375,11 +345,7 @@ export default function MainSettingsPage() {
               </div>
               <div className={clsx(classes.field, classes.paperOrder)}>
                 <Paper elevation={0} className={classes.paper}>
-                  <Typography
-                    variant="subtitle2"
-                    gutterBottom
-                    color="secondary"
-                  >
+                  <Typography variant="subtitle2" gutterBottom color="secondary">
                     Dicas de senha
                   </Typography>
                   <Typography variant="body2" color="textPrimary">

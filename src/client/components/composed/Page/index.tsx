@@ -1,6 +1,7 @@
 import React from 'react';
 import { Divider, Container, Typography } from '@material-ui/core';
-import { HelmetProps, Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
+import clsx from 'clsx';
 
 import { useStyles } from './styles';
 
@@ -8,7 +9,7 @@ interface PageProps {
   title: string;
   subTitle?: string;
   children?: React.ReactNode | React.ReactNodeArray;
-  helmetProps?: HelmetProps;
+  helmetProps?: Helmet['props'];
   helmetChildren?: React.ReactNode | React.ReactNodeArray;
   notFluid?: boolean;
   footer?: React.ReactNode | React.ReactNodeArray;
@@ -31,21 +32,17 @@ export function Page({
 
   return (
     <>
-      <Helmet {...helmetProps}>{helmetChildren}</Helmet>
-      <Container fixed={notFluid} classes={{ root: classes.container }}>
+      {(helmetChildren || helmetProps) && <Helmet {...helmetProps}>{helmetChildren}</Helmet>}
+      <Container fixed={notFluid} maxWidth={false} classes={{ root: classes.container }}>
         <>
           <div className={classes.header}>
-            <div className={classes.content}>
+            <div className={clsx(classes.content, classes.full)}>
               {subTitle && (
-                <Typography
-                  variant="button"
-                  component="small"
-                  color="secondary"
-                >
+                <Typography variant="button" component="small" color="secondary">
                   {subTitle}
                 </Typography>
               )}
-              <Typography variant="h4" gutterBottom>
+              <Typography variant="h4" component="h4" gutterBottom>
                 {title}
               </Typography>
             </div>

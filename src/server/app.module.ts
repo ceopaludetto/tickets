@@ -1,11 +1,7 @@
-import {
-  Module,
-  NestModule,
-  MiddlewareConsumer,
-  RequestMethod,
-} from '@nestjs/common';
+import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/common';
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypegooseModule } from 'nestjs-typegoose';
+import { MailerModule, HandlebarsAdapter } from '@nest-modules/mailer';
 
 import { ContextType } from '@/server/utils/common.dto';
 import { IS_PRODUCTION } from '@/server/utils/constants';
@@ -41,6 +37,29 @@ import {
       autoSchemaFile: './src/server/schema.gql',
       installSubscriptionHandlers: true,
       context: ({ req, res }: ContextType) => ({ req, res }),
+    }),
+    MailerModule.forRootAsync({
+      inject: [ConfigurationService],
+      useFactory: (config: ConfigurationService) => ({
+        transport: {
+          host: config.SMTP_HOST,
+          port: config.SMTP_PORT,
+          auth: {
+            user: config.SMTP_USER,
+            pass: config.SMTP_PASS,
+          },
+        },
+        defaults: {
+          from: config.DEFAULT_MAIL,
+        },
+        template: {
+          dir: config.TEMPLATES,
+          adapter: new HandlebarsAdapter(),
+          options: {
+            strict: true,
+          },
+        },
+      }),
     }),
     AuthModule,
     EmpresaModule,

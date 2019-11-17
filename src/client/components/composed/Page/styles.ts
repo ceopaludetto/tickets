@@ -9,8 +9,8 @@ interface UseStylesProps {
 export const useStyles = makeStyles((theme: Theme) =>
   createStyles({
     container: {
-      padding: (props: UseStylesProps) =>
-        theme.spacing(props.notFluid ? 0 : 3, 3, 2, 3),
+      padding: (props: UseStylesProps) => theme.spacing(props.notFluid ? 0 : 3, 3, 2, 3),
+      maxWidth: (props: UseStylesProps) => (props.notFluid ? 'none' : 'inherit'),
       width: '100%',
     },
     header: {
@@ -18,11 +18,13 @@ export const useStyles = makeStyles((theme: Theme) =>
       alignItems: 'center',
       marginLeft: theme.spacing(-1),
       marginRight: theme.spacing(-1),
-      marginBottom: (props: UseStylesProps) =>
-        props.hasFooter ? theme.spacing(0.5) : theme.spacing(1),
+      marginBottom: (props: UseStylesProps) => (props.hasFooter ? theme.spacing(0.5) : theme.spacing(1)),
     },
     content: {
       padding: theme.spacing(0, 1),
+    },
+    full: {
+      flex: 1,
     },
     footer: {
       marginBottom: theme.spacing(1.5),

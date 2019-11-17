@@ -10,9 +10,7 @@ import { ID } from '@/server/utils/common.dto';
 export class SecurityService {
   private readonly perfilRepository: ReturnModelType<typeof Perfil>;
 
-  public constructor(
-    @InjectModel(Perfil) perfilRepo: ReturnModelType<typeof Perfil>
-  ) {
+  public constructor(@InjectModel(Perfil) perfilRepo: ReturnModelType<typeof Perfil>) {
     this.perfilRepository = perfilRepo;
   }
 

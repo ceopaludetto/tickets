@@ -12,10 +12,7 @@ export interface SecurityMatcherOptions {
   args?: any;
 }
 
-export type SecurityCustomMatcherOptions = Pick<
-  SecurityMatcherOptions,
-  'usuario' | 'args'
-> & {
+export type SecurityCustomMatcherOptions = Pick<SecurityMatcherOptions, 'usuario' | 'args'> & {
   customMatcher: CustomMatcherOptions;
 };
 

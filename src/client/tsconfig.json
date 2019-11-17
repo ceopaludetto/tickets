@@ -1,8 +1,0 @@
-{
-  "extends": "../../tsconfig.json",
-  "include": ["./**/*", "../server/**/*"],
-  "compilerOptions": {
-    "typeRoots": ["../../node_modules/@types", "./typescript"],
-    "lib": ["es7", "dom", "dom.iterable"]
-  }
-}

@@ -14,10 +14,7 @@ export function Sidebar() {
       <ProfileBar />
       <List className={classes.list} component="nav">
         {AppRoutes.filter(r => !!r.icon).map(r => (
-          <ListItemLink
-            {...r}
-            key={typeof r.path === 'string' ? r.path : r.path[0]}
-          />
+          <ListItemLink {...r} key={typeof r.path === 'string' ? r.path : r.path[0]} />
         ))}
       </List>
     </div>

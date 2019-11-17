@@ -8,9 +8,7 @@ import { ConfigurationService } from './configuration.service';
   providers: [
     {
       provide: ConfigurationService,
-      useValue: new ConfigurationService(
-        resolve(process.env.BASE_DIR as string, `.env.${process.env.NODE_ENV}`)
-      ),
+      useValue: new ConfigurationService(resolve(process.env.BASE_DIR as string, `.env.${process.env.NODE_ENV}`)),
     },
   ],
   exports: [ConfigurationService],

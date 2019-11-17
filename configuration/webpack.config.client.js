@@ -18,10 +18,7 @@ const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = merge(baseConfig(false), {
   target: 'web',
-  entry: [
-    ...(isProd ? [] : ['razzle-dev-utils/webpackHotDevClient']),
-    path.resolve('src', 'client', 'index.tsx'),
-  ],
+  entry: [...(isProd ? [] : ['razzle-dev-utils/webpackHotDevClient']), path.resolve('src', 'client', 'index.tsx')],
   optimization: {
     splitChunks: isProd
       ? {
@@ -37,15 +34,12 @@ module.exports = merge(baseConfig(false), {
   },
   output: {
     pathinfo: true,
-    publicPath: isProd
-      ? '/static/'
-      : `http://${envs.HOST}:${envs.DEV_PORT}/static/`,
+    publicPath: isProd ? '/static/' : `http://${envs.HOST}:${envs.DEV_PORT}/static/`,
     path: path.resolve('dist', 'static'),
     libraryTarget: 'var',
     filename: isProd ? 'js/index.[contenthash:8].js' : 'index.js',
     chunkFilename: isProd ? 'js/[name].[contenthash:8].js' : '[name].chunk.js',
-    devtoolModuleFilenameTemplate: info =>
-      path.resolve(info.resourcePath).replace(/\\/g, '/'),
+    devtoolModuleFilenameTemplate: info => path.resolve(info.resourcePath).replace(/\\/g, '/'),
   },
   devServer: {
     disableHostCheck: true,

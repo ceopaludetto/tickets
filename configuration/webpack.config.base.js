@@ -31,10 +31,11 @@ module.exports = (isServer = false) => ({
         cache: true,
         parallel: true,
         terserOptions: {
+          safari10: !isServer,
           keep_classnames: isServer,
           keep_fnames: isServer,
           output: {
-            ecma: isServer ? 7 : 5,
+            ecma: isServer ? 8 : 5,
             comments: false,
           },
           parse: {
@@ -88,11 +89,7 @@ module.exports = (isServer = false) => ({
                 options: {
                   transpileOnly: true,
                   experimentalWatchApi: !isProd,
-                  configFile: path.resolve(
-                    'src',
-                    isServer ? 'server' : 'client',
-                    'tsconfig.json'
-                  ),
+                  configFile: path.resolve(`tsconfig.${isServer ? 'server' : 'client'}.json`),
                 },
               },
             ],
@@ -125,13 +122,7 @@ module.exports = (isServer = false) => ({
     extensions: ['.js', '.jsx', '.tsx', '.ts', '.gql', '.graphql', '.json'],
   },
   plugins: [
-    ...(!isProd
-      ? [
-          new webpack.WatchIgnorePlugin([
-            path.resolve('src', 'server', 'schema.gql'),
-          ]),
-        ]
-      : []),
+    ...(!isProd ? [new webpack.WatchIgnorePlugin([path.resolve('src', 'server', 'schema.gql')])] : []),
     // new WebpackBar({
     //   name: isServer ? 'Server' : 'Client',
     //   color: isServer ? '#c065f4' : '#f56be2',

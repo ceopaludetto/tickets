@@ -29,9 +29,7 @@ function mapArrToObj(props: string[]) {
 }
 
 export function useMultipleVisibility<T extends string[]>(props: T) {
-  const [visibility, setVisibility] = useState<UseMultipleVisibilityState>(
-    mapArrToObj(props)
-  );
+  const [visibility, setVisibility] = useState<UseMultipleVisibilityState>(mapArrToObj(props));
 
   function toggleVisibility(p: T[number]) {
     return () =>

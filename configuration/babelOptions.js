@@ -7,8 +7,7 @@ module.exports = (isServer = false, isTest = false) => ({
       '@babel/preset-env',
       {
         loose: true,
-        // eslint-disable-next-line no-nested-ternary
-        modules: isTest ? 'cjs' : isServer ? 'cjs' : false,
+        modules: false,
         useBuiltIns: 'entry',
         shippedProposals: true,
         corejs: 3,
@@ -16,8 +15,9 @@ module.exports = (isServer = false, isTest = false) => ({
         targets: isServer
           ? {
               node: 'current',
+              esmodules: true,
             }
-          : undefined,
+          : { browsers: ['last 2 version', '> 0.25%', 'not ie <= 8', 'not dead'] },
       },
     ],
     [
@@ -56,10 +56,7 @@ module.exports = (isServer = false, isTest = false) => ({
     ['@babel/plugin-proposal-class-properties', { loose: true }],
     ['@babel/plugin-transform-runtime', { corejs: false, regenerator: true }],
     ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }],
-    [
-      'transform-react-remove-prop-types',
-      { mode: 'remove', removeImport: true },
-    ],
+    ['transform-react-remove-prop-types', { mode: 'remove', removeImport: true }],
     [
       'transform-imports',
       {
@@ -68,18 +65,17 @@ module.exports = (isServer = false, isTest = false) => ({
           preventFullImport: true,
         },
         '@material-ui/core': {
-          transform: isServer
-            ? '@material-ui/core/${member}'
-            : '@material-ui/core/esm/${member}',
+          transform: isTest || isServer ? '@material-ui/core/${member}' : '@material-ui/core/esm/${member}',
           preventFullImport: true,
         },
         '@material-ui/icons': {
-          transform: isServer
-            ? '@material-ui/icons/${member}'
-            : '@material-ui/icons/esm/${member}',
+          transform: isTest || isServer ? '@material-ui/icons/${member}' : '@material-ui/icons/esm/${member}',
           preventFullImport: true,
         },
       },
     ],
+    ...(isTest
+      ? ['babel-plugin-dynamic-import-node', ['@babel/plugin-transform-modules-commonjs', { loose: true }]]
+      : []),
   ],
 });

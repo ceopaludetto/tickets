@@ -78,6 +78,16 @@ export class LoginUsuario {
 }
 
 @ArgsType()
+export class ForgotUsuario {
+  @Field()
+  @IsString()
+  @IsEmail()
+  @IsNotEmpty()
+  @IsDefined()
+  public email!: string;
+}
+
+@ArgsType()
 export class UsuarioUpdateArgs extends CommonFindOneArgs {
   @Field(() => UsuarioInput)
   public input!: UsuarioInput;

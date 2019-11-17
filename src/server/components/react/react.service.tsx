@@ -1,15 +1,15 @@
 /* eslint-disable react/no-danger */
 import React from 'react';
-import { renderToString, renderToStaticMarkup } from 'react-dom/server';
+import { renderToStaticMarkup } from 'react-dom/server';
 import { StaticRouter } from 'react-router-dom';
 import { Injectable, BadRequestException, Inject } from '@nestjs/common';
 import { ApolloProvider } from '@apollo/react-common';
-import { getDataFromTree } from '@apollo/react-ssr';
+import { renderToStringWithData } from '@apollo/react-ssr';
 import { SchemaLink } from 'apollo-link-schema';
 import StylesProvider from '@material-ui/styles/StylesProvider';
 import { SheetsRegistry } from 'jss';
 import { ChunkExtractorManager, ChunkExtractor } from '@loadable/server';
-import { Helmet } from 'react-helmet';
+import { HelmetProvider, FilledContext } from 'react-helmet-async';
 import { NormalizedCacheObject } from 'apollo-cache-inmemory';
 
 import ReactApp from '@/client/bootstrap';
@@ -34,6 +34,7 @@ export class ReactService {
     });
     const sheetsRegistry = new SheetsRegistry();
     const context: ReactContextType = {};
+    const helmetContext: FilledContext | {} = {};
 
     if (req.user) {
       client.cache.writeData({
@@ -60,19 +61,19 @@ export class ReactService {
           sheetsManager={new Map()}
           sheetsRegistry={sheetsRegistry}
         >
-          <ApolloProvider client={client}>
-            <StaticRouter context={context} location={req.url}>
-              <ReactApp />
-            </StaticRouter>
-          </ApolloProvider>
+          <HelmetProvider context={helmetContext}>
+            <ApolloProvider client={client}>
+              <StaticRouter context={context} location={req.url}>
+                <ReactApp />
+              </StaticRouter>
+            </ApolloProvider>
+          </HelmetProvider>
         </StylesProvider>
       </ChunkExtractorManager>
     );
 
     try {
-      await getDataFromTree(App);
-
-      const markup = renderToString(App);
+      const markup = await renderToStringWithData(App);
       const initialState = client.extract();
 
       if (context.url) {
@@ -80,7 +81,7 @@ export class ReactService {
       }
 
       return res.send(
-        this.html(markup, initialState, extractor, sheetsRegistry)
+        this.html(markup, initialState, extractor, sheetsRegistry, (helmetContext as FilledContext).helmet)
       );
     } catch (err) {
       // eslint-disable-next-line no-console
@@ -93,9 +94,10 @@ export class ReactService {
     markup: string,
     initialState: NormalizedCacheObject,
     extractor: ChunkExtractor,
-    sheetsRegistry: SheetsRegistry
+    sheetsRegistry: SheetsRegistry,
+    helmet: FilledContext['helmet']
   ) => {
-    const { htmlAttributes, bodyAttributes, ...helmet } = Helmet.renderStatic();
+    const { htmlAttributes, bodyAttributes } = helmet;
 
     const linkEls = extractor.getLinkElements();
     const styleEls = extractor.getStyleElements();
@@ -119,9 +121,7 @@ export class ReactService {
             <div id="app" dangerouslySetInnerHTML={{ __html: markup }} />
             <script
               dangerouslySetInnerHTML={{
-                __html: `window.__APOLLO_STATE__=${JSON.stringify(
-                  initialState
-                ).replace(/</g, '\\u003c')};`,
+                __html: `window.__APOLLO_STATE__=${JSON.stringify(initialState).replace(/</g, '\\u003c')};`,
               }}
             />
             {scriptEls}

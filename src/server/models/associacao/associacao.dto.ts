@@ -1,11 +1,5 @@
 import { Field, InputType, registerEnumType } from 'type-graphql';
-import {
-  IsString,
-  IsOptional,
-  IsNotEmpty,
-  IsMongoId,
-  IsEnum,
-} from 'class-validator';
+import { IsString, IsOptional, IsNotEmpty, IsMongoId, IsEnum } from 'class-validator';
 import { Ref } from '@typegoose/typegoose';
 
 import { Empresa } from '../empresa/empresa.entity';

@@ -2,23 +2,14 @@ import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Args, Mutation } from '@nestjs/graphql';
 
 import { EmpresaService } from './empresa.service';
-import {
-  Empresa,
-  EmpresaInput,
-  EmpresaArgs,
-  AcaoEnum,
-  RecursoEnum,
-  AnyOrOwnEnum,
-} from '@/server/models';
-import {
-  CommonFindAllArgs,
-  CommonFindOneArgs,
-  PayloadType,
-} from '@/server/utils/common.dto';
+import { Empresa, EmpresaInput, EmpresaArgs, AcaoEnum, RecursoEnum, AnyOrOwnEnum, UsuarioDoc } from '@/server/models';
+import { CommonFindAllArgs, CommonFindOneArgs } from '@/server/utils/common.dto';
 import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
 import { User } from '@/server/components/auth/auth.decorator';
 import { UseRole } from '@/server/components/security/security.decorators';
 import { SecurityGuard } from '@/server/components/security/security.guard';
+
+type PayloadType = Pick<UsuarioDoc, '_id' | 'email'>;
 
 @Resolver(() => Empresa)
 export class EmpresaResolver {
@@ -42,10 +33,7 @@ export class EmpresaResolver {
 
   @UseGuards(GqlAuthGuard)
   @Mutation(() => Empresa)
-  public async addEmpresa(
-    @Args('input') input: EmpresaInput,
-    @User() user: PayloadType
-  ) {
+  public async addEmpresa(@Args('input') input: EmpresaInput, @User() user: PayloadType) {
     const empresa = await this.empresaService.createOrUpdate(input);
     if (empresa) {
       await this.empresaService.postCreation(user, empresa);

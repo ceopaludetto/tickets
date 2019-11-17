@@ -17,7 +17,7 @@ export const useStyles = makeStyles((theme: Theme) =>
       width: 290,
       borderRight: 'none',
       overflowX: 'hidden',
-      zIndex: 1499,
+      zIndex: 1299,
       '&::before': {
         content: '""',
         right: '-1px',

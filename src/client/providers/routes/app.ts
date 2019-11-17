@@ -11,9 +11,7 @@ export const appRoutes: Route[] = [
     icon: DashboardOutlined,
     path: '/app',
     exact: true,
-    component: loadable(() =>
-      import(/* webpackChunkName: "app.home" */ '@/client/pages/App/Home')
-    ),
+    component: loadable(() => import(/* webpackChunkName: "app.home" */ '@/client/pages/App/Home')),
   },
   {
     name: 'Chamados',
@@ -21,24 +19,14 @@ export const appRoutes: Route[] = [
     path: '/app/mesa',
     exact: true,
     query: FindAllTickets,
-    component: loadable(() =>
-      import(/* webpackChunkName: "app.mesa" */ '@/client/pages/App/Mesa')
-    ),
+    component: loadable(() => import(/* webpackChunkName: "app.mesa" */ '@/client/pages/App/Mesa')),
   },
   {
     name: 'Configurações',
     pathName: '/app/settings',
-    path: [
-      '/app/settings',
-      '/app/settings/application',
-      '/app/settings/empresa',
-    ],
+    path: ['/app/settings', '/app/settings/application', '/app/settings/empresa'],
     exact: true,
-    component: loadable(() =>
-      import(
-        /* webpackChunkName: "app.settings" */ '@/client/pages/App/Settings/MainPage'
-      )
-    ),
+    component: loadable(() => import(/* webpackChunkName: "app.settings" */ '@/client/pages/App/Settings/MainPage')),
     routes: [
       {
         name: 'Informações pessoais',
@@ -46,9 +34,7 @@ export const appRoutes: Route[] = [
         exact: true,
         query: Profile,
         component: loadable(() =>
-          import(
-            /* webpackChunkName: "app.settings.profile" */ '@/client/pages/App/Settings/UserInfo'
-          )
+          import(/* webpackChunkName: "app.settings.profile" */ '@/client/pages/App/Settings/UserInfo')
         ),
       },
       {
@@ -56,9 +42,7 @@ export const appRoutes: Route[] = [
         path: '/app/settings/empresa',
         exact: true,
         component: loadable(() =>
-          import(
-            /* webpackChunkName: "app.settings.empresa" */ '@/client/pages/App/Settings/Empresa'
-          )
+          import(/* webpackChunkName: "app.settings.empresa" */ '@/client/pages/App/Settings/Empresa')
         ),
       },
       {
@@ -66,9 +50,7 @@ export const appRoutes: Route[] = [
         path: '/app/settings/application',
         exact: true,
         component: loadable(() =>
-          import(
-            /* webpackChunkName: "app.settings.application" */ '@/client/pages/App/Settings/Application'
-          )
+          import(/* webpackChunkName: "app.settings.application" */ '@/client/pages/App/Settings/Application')
         ),
       },
     ],

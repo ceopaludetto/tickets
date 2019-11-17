@@ -4,7 +4,7 @@ import { ReturnModelType } from '@typegoose/typegoose';
 import { UserInputError, ApolloError } from 'apollo-server-express';
 
 import { Usuario, UsuarioInput, LoginUsuario } from '@/server/models';
-import { ID } from '@/server/utils/common.dto';
+import { ID, ModelFields } from '@/server/utils/common.dto';
 
 @Injectable()
 export class UsuarioService {
@@ -37,10 +37,10 @@ export class UsuarioService {
     }
   }
 
-  public async findOne(id: ID) {
+  public async findOne(field: ModelFields<Usuario>) {
     try {
       const usuario = await this.userRepository
-        .findById(id)
+        .findOne(field)
         .populate({
           path: 'associacoes.perfil',
           populate: {
@@ -49,11 +49,13 @@ export class UsuarioService {
         })
         .populate('associacoes.empresa')
         .exec();
+
       if (!usuario) {
         throw new UserInputError('Usuário não encontrado', {
-          field: '_id',
+          field: Object.keys(field),
         });
       }
+
       return usuario;
     } catch (err) {
       throw new ApolloError(err);

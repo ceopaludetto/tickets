@@ -1,21 +1,9 @@
 import { ArgsType, Field, Int, ID } from 'type-graphql';
-import {
-  IsInt,
-  IsString,
-  IsOptional,
-  IsMongoId,
-  IsDefined,
-} from 'class-validator';
+import { IsInt, IsString, IsOptional, IsMongoId, IsDefined } from 'class-validator';
 import { Request, Response } from 'express';
 import { Schema } from 'mongoose';
 
-import {
-  UsuarioDoc,
-  RecursoEnum,
-  AcaoEnum,
-  AnyOrOwnEnum,
-  AssociacaoDoc,
-} from '@/server/models';
+import { UsuarioDoc, RecursoEnum, AcaoEnum, AnyOrOwnEnum, AssociacaoDoc } from '@/server/models';
 
 @ArgsType()
 export class CommonFindAllArgs {
@@ -75,3 +63,5 @@ export interface Args {
 export interface ReactContextType {
   url?: string;
 }
+
+export type ModelFields<T> = Partial<{ [P in keyof T]: T[P] }>;

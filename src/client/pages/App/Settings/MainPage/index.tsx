@@ -27,7 +27,8 @@ export default function Settings({ route }: RouteConfigComponentProps) {
   return (
     <Page
       title="Configurações"
-      subTitle="Informações Gerais"
+      subTitle="Visão Geral"
+      notFluid
       helmetProps={{
         titleTemplate: '%s - Configurações | F3Desk',
       }}

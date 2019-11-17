@@ -4,10 +4,11 @@ import { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
 import { GqlAuthGuard } from './auth.guard';
-import { Usuario, LoginUsuario, UsuarioInput } from '@/server/models';
+import { Usuario, LoginUsuario, UsuarioInput, UsuarioDoc, ForgotUsuario } from '@/server/models';
 import { User } from '@/server/components/auth/auth.decorator';
-import { PayloadType } from '@/server/utils/common.dto';
+// import { PayloadType } from '@/server/utils/common.dto';
 
+type PayloadType = Pick<UsuarioDoc, '_id' | 'email'>;
 interface ContextType {
   req: Request;
   res: Response;
@@ -29,10 +30,7 @@ export class AuthResolver {
   }
 
   @Mutation(() => Usuario)
-  public async login(
-    @Args() { email, senha }: LoginUsuario,
-    @Context() context: ContextType
-  ) {
+  public async login(@Args() { email, senha }: LoginUsuario, @Context() context: ContextType) {
     const usuario = await this.authService.login(email, senha);
     if (usuario) {
       await this.authService.generateAndRegisterToken(usuario, context);
@@ -41,14 +39,17 @@ export class AuthResolver {
   }
 
   @Mutation(() => Usuario)
-  public async register(
-    @Args('input') input: UsuarioInput,
-    @Context() context: ContextType
-  ) {
+  public async register(@Args('input') input: UsuarioInput, @Context() context: ContextType) {
     const usuario = await this.authService.register(input);
     if (usuario) {
       await this.authService.generateAndRegisterToken(usuario, context);
     }
+    return usuario;
+  }
+
+  @Mutation(() => Usuario)
+  public async forgot(@Args() { email }: ForgotUsuario) {
+    const usuario = await this.authService.forgot(email);
     return usuario;
   }
 }

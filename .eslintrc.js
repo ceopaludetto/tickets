@@ -14,7 +14,7 @@ module.exports = {
     "plugin:jsx-a11y/recommended",
     "prettier",
     "prettier/react",
-    "prettier/@typescript-eslint"
+    "prettier/@typescript-eslint",
   ],
   globals: {
     Atomics: "readonly",
@@ -28,18 +28,18 @@ module.exports = {
     ecmaVersion: 2019,
     sourceType: "module",
     projects: [
-      path.resolve("src", "client", "tsconfig.json"),
-      path.resolve("src", "server", "tsconfig.json")
+      path.resolve("tsconfig.client.json"),
+      path.resolve("tsconfig.server.json")
     ]
   },
-  plugins: ["@typescript-eslint", "import", "react", "react-hooks", "prettier"],
+  plugins: ["import", "react", "react-hooks", "prettier"],
   rules: {
     "no-param-reassign": "off",
     "no-underscore-dangle": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-empty-interface": "warn",
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
     "import/no-cycle": ["error", { maxDepth: 1 }],
@@ -59,10 +59,10 @@ module.exports = {
       {
         "trailingComma": "es5",
         "singleQuote": true,
-        "printWidth": 80
+        "printWidth": 120
       }
     ],
-    "max-classes-per-file": ["error", 3]
+    "max-classes-per-file": ["error", 4]
   },
   settings: {
     "import/extensions": [".js", ".jsx", ".ts", ".tsx", ".gql"],

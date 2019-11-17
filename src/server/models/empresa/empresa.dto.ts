@@ -1,14 +1,5 @@
 import { Field, InputType, registerEnumType, ArgsType } from 'type-graphql';
-import {
-  IsString,
-  IsEnum,
-  IsEmail,
-  IsUrl,
-  IsNotEmpty,
-  Length,
-  IsOptional,
-  Matches,
-} from 'class-validator';
+import { IsString, IsEnum, IsEmail, IsUrl, IsNotEmpty, Length, IsOptional, Matches } from 'class-validator';
 
 import { CommonFindOneArgs } from '@/server/utils/common.dto';
 

@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { CssBaseline } from '@material-ui/core';
 import { MuiPickersUtilsProvider } from '@material-ui/pickers';
 import { renderRoutes } from 'react-router-config';
@@ -44,30 +44,18 @@ export default function App() {
             <CssBaseline />
             <Progress isAnimating={isAnimating} key={currentKey} />
             <Helmet defaultTitle="F3Desk" titleTemplate="%s | F3Desk">
-              {IS_PRODUCTION && (
-                <link
-                  rel="manifest"
-                  href={`${PUBLIC_PATH}public/manifest.json`}
-                />
-              )}
+              {IS_PRODUCTION && <link rel="manifest" href={`${PUBLIC_PATH}public/manifest.json`} />}
               <link
                 rel="stylesheet"
                 href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap"
               />
               <meta charSet="UTF-8" />
-              <meta
-                name="viewport"
-                content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no"
-              />
+              <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
               <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
               {/* <meta
-          name="theme-color"
-          content={
-            theme.mode === Mode.Light
-              ? theme.colors.background
-              : theme.colors.backgroundDark
-          }
-        /> */}
+                name="theme-color"
+                content={theme.mode === Mode.Light ? theme.colors.background : theme.colors.backgroundDark}
+              /> */}
             </Helmet>
             {routes && renderRoutes(routes, { client })}
           </>

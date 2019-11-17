@@ -3,12 +3,7 @@ import { InjectModel } from 'nestjs-typegoose';
 import { ReturnModelType } from '@typegoose/typegoose';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 
-import {
-  Empresa,
-  EmpresaInput,
-  EmpresaDoc,
-  AssociacaoEnum,
-} from '@/server/models';
+import { Empresa, EmpresaInput, EmpresaDoc, AssociacaoEnum } from '@/server/models';
 import { ID, PayloadType } from '@/server/utils/common.dto';
 import { UsuarioService } from '@/server/components/usuario/usuario.service';
 
@@ -64,9 +59,7 @@ export class EmpresaService {
     }
 
     try {
-      const empresa = await this.empresaRepository
-        .findByIdAndUpdate(id, data, { new: true })
-        .exec();
+      const empresa = await this.empresaRepository.findByIdAndUpdate(id, data, { new: true }).exec();
       return empresa;
     } catch (err) {
       throw new ApolloError(err);

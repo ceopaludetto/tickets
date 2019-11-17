@@ -10,10 +10,7 @@ interface IconProps {
 }
 
 export function ListItemLink(r: Route) {
-  const Icon = useMemo(
-    () => r.icon as ({ color }: IconProps) => JSX.Element,
-    []
-  );
+  const Icon = useMemo(() => r.icon as ({ color }: IconProps) => JSX.Element, []);
   const renderLink = useMemo(
     () =>
       forwardRef((itemProps, ref) => (
@@ -39,10 +36,7 @@ export function ListItemLink(r: Route) {
       <ListItemIcon>
         <Icon color="primary" />
       </ListItemIcon>
-      <ListItemText
-        primary={r.name}
-        classes={{ primary: classes.listItemText }}
-      />
+      <ListItemText primary={r.name} classes={{ primary: classes.listItemText }} />
     </ListItem>
   );
 }

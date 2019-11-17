@@ -24,9 +24,7 @@ describe('Usuario', () => {
     const result = [new Usuario()];
     jest
       .spyOn(usuarioService, 'findAll')
-      .mockImplementation(
-        async (_?: number, __?: number) => (await result) as UsuarioDoc[]
-      );
+      .mockImplementation(async (_?: number, __?: number) => (await result) as UsuarioDoc[]);
 
     expect(await usuarioResolver.findAllUsuarios({})).toBe(result);
   });
@@ -36,9 +34,7 @@ describe('Usuario', () => {
     const result = new Usuario();
     jest
       .spyOn(usuarioService, 'findOne')
-      .mockImplementation(
-        async (_: Schema.Types.ObjectId) => (await result) as UsuarioDoc
-      );
+      .mockImplementation(async (_: Schema.Types.ObjectId) => (await result) as UsuarioDoc);
 
     expect(await usuarioResolver.findUsuario({ _id: id })).toBe(result);
   });

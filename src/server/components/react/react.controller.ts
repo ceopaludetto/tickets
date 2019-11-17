@@ -13,19 +13,9 @@ export class ReactController {
   }
 
   @Get('*')
-  public renderReact(
-    @Req() req: Request,
-    @Res() res: Response,
-    @Next() next: NextFunction
-  ) {
-    const ignore = [
-      '/graphql',
-      `${PUBLIC_PATH}/public/manifest.json`,
-      '/robots.txt',
-    ];
-    return ignore.filter(i => i === req.url).length
-      ? next()
-      : this.reactService.render({ req, res });
+  public renderReact(@Req() req: Request, @Res() res: Response, @Next() next: NextFunction) {
+    const ignore = ['/graphql', `${PUBLIC_PATH}/public/manifest.json`, '/robots.txt'];
+    return ignore.filter(i => i === req.url).length ? next() : this.reactService.render({ req, res });
   }
 
   @Get('/robots.txt')

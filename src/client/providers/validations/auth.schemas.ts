@@ -10,6 +10,8 @@ import {
   SITE,
   TELEFONE,
   DATE,
+  CEP,
+  CNPJ,
 } from './constants';
 
 export const RegisterValidation = Yup.object().shape({
@@ -36,60 +38,37 @@ export const RegisterValidation = Yup.object().shape({
     .oneOf([Yup.ref('senha'), null], CONFIRM_SENHA)
     .required(REQUIRED),
   hasEmpresa: Yup.boolean().required(REQUIRED),
-  cnpj: Yup.string().when(
-    'hasEmpresa',
-    (hasEmpresa: boolean, schema: Yup.StringSchema) =>
-      hasEmpresa
-        ? schema
-            .matches(
-              /[0-9]{2}\.?[0-9]{3}\.?[0-9]{3}\/?[0-9]{4}-?[0-9]{2}/,
-              'CNPJ inválido'
-            )
-            .required(REQUIRED)
-        : schema
-  ),
-  nomeFantasia: Yup.string().when(
-    'hasEmpresa',
-    (hasEmpresa: boolean, schema: Yup.StringSchema) =>
-      hasEmpresa ? schema.required(REQUIRED) : schema
-  ),
+  cnpj: Yup.string().when('hasEmpresa', {
+    is: true,
+    then: (schema: Yup.StringSchema) => schema.cnpj(CNPJ).required(REQUIRED),
+  }),
+  nomeFantasia: Yup.string().when('hasEmpresa', {
+    is: true,
+    then: (schema: Yup.StringSchema) => schema.required(REQUIRED),
+  }),
   nomeCompleto: Yup.string(),
-  empresaTelefone: Yup.string().when(
-    'hasEmpresa',
-    (hasEmpresa: boolean, schema: Yup.StringSchema) =>
-      hasEmpresa
-        ? schema
-            .matches(/\([0-9]{2}\) [0-9]{4}-[0-9]/, TELEFONE)
-            .required(REQUIRED)
-        : schema
-  ),
-  razaoSocial: Yup.string().when(
-    'hasEmpresa',
-    (hasEmpresa: boolean, schema: Yup.StringSchema) =>
-      hasEmpresa ? schema.required(REQUIRED) : schema
-  ),
-  site: Yup.string().when(
-    'hasEmpresa',
-    (hasEmpresa: boolean, schema: Yup.StringSchema) =>
-      hasEmpresa ? schema.url(SITE) : schema
-  ),
-  empresaEmail: Yup.string().when(
-    'hasEmpresa',
-    (hasEmpresa: boolean, schema: Yup.StringSchema) =>
-      hasEmpresa ? schema.email(EMAIL).required(REQUIRED) : schema
-  ),
-  endereco: Yup.string().when(
-    'hasEmpresa',
-    (hasEmpresa: boolean, schema: Yup.StringSchema) =>
-      hasEmpresa ? schema.required(REQUIRED) : schema
-  ),
-  cep: Yup.string().when(
-    'hasEmpresa',
-    (hasEmpresa: boolean, schema: Yup.StringSchema) =>
-      hasEmpresa
-        ? schema
-            .matches(/[0-9]{5}-[0-9]{3}/, 'Insira um CEP válido')
-            .required(REQUIRED)
-        : schema
-  ),
+  empresaTelefone: Yup.string().when('hasEmpresa', {
+    is: true,
+    then: (schema: Yup.StringSchema) => schema.matches(/\([0-9]{2}\) [0-9]{4}-[0-9]/, TELEFONE).required(REQUIRED),
+  }),
+  razaoSocial: Yup.string().when('hasEmpresa', {
+    is: true,
+    then: (schema: Yup.StringSchema) => schema.required(REQUIRED),
+  }),
+  site: Yup.string().when('hasEmpresa', {
+    is: true,
+    then: (schema: Yup.StringSchema) => schema.url(SITE),
+  }),
+  empresaEmail: Yup.string().when('hasEmpresa', {
+    is: true,
+    then: (schema: Yup.StringSchema) => schema.email(EMAIL).required(REQUIRED),
+  }),
+  endereco: Yup.string().when('hasEmpresa', {
+    is: true,
+    then: (schema: Yup.StringSchema) => schema.required(REQUIRED),
+  }),
+  cep: Yup.string().when('hasEmpresa', {
+    is: true,
+    then: (schema: Yup.StringSchema) => schema.matches(/[0-9]{5}-[0-9]{3}/, CEP).required(REQUIRED),
+  }),
 });

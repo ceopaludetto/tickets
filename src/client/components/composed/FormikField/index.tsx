@@ -1,16 +1,10 @@
 import React from 'react';
 import MaskedInput, { MaskedInputProps } from 'react-text-mask';
-import {
-  FilledInput,
-  FormControl,
-  InputLabel,
-  FormHelperText,
-} from '@material-ui/core';
+import { FilledInput, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 import { TextFieldProps } from '@material-ui/core/TextField';
 import { Field, FieldProps } from 'formik';
 
-export type FormikFieldProps = Omit<TextFieldProps, 'name'> &
-  MaskedInputProps & { name: string };
+export type FormikFieldProps = Omit<TextFieldProps, 'name'> & MaskedInputProps & { name: string };
 
 interface TextMaskCustomProps extends MaskedInputProps {
   inputRef: (ref: HTMLInputElement | null) => void;
@@ -52,11 +46,7 @@ export function FormikField({
     <Field
       name={name}
       render={({ field, form }: FieldProps) => (
-        <FormControl
-          margin={margin}
-          variant={variant}
-          error={!!(form.touched[field.name] && form.errors[field.name])}
-        >
+        <FormControl margin={margin} variant={variant} error={!!(form.touched[field.name] && form.errors[field.name])}>
           <>
             <InputLabel htmlFor={id}>{label}</InputLabel>
             <FilledInput
@@ -67,11 +57,8 @@ export function FormikField({
               disabled={form.isSubmitting || disabled}
               inputComponent={mask ? (TextMaskCustom as any) : undefined} // eslint-disable-line @typescript-eslint/no-explicit-any
             />
-            {((form.touched[field.name] && form.errors[field.name]) ||
-              helperText) && (
-              <FormHelperText>
-                {form.errors[field.name] || helperText}
-              </FormHelperText>
+            {((form.touched[field.name] && form.errors[field.name]) || helperText) && (
+              <FormHelperText>{form.errors[field.name] || helperText}</FormHelperText>
             )}
           </>
         </FormControl>

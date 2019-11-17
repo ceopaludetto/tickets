@@ -88,6 +88,7 @@ input LabelInput {
 type Mutation {
   login(email: String!, senha: String!): Usuario!
   register(input: UsuarioInput!): Usuario!
+  forgot(email: String!): Usuario!
   updateUsuario(_id: ID!, input: UsuarioInput!): Usuario!
   addEmpresa(input: EmpresaInput!): Empresa!
   updateEmpresa(_id: ID!, input: EmpresaInput!): Empresa!

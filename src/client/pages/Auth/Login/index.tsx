@@ -1,18 +1,14 @@
 import React from 'react';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Formik, Form } from 'formik';
 import { parse } from 'query-string';
-import { Typography, Button, IconButton, Link } from '@material-ui/core';
+import { Typography, Button, IconButton, Link, Divider } from '@material-ui/core';
 import { useHistory, useLocation } from 'react-router-dom';
 
 import { Login as LoginDocument, Profile } from '@/client/graphql/usuario.gql';
 import { Logged } from '@/client/graphql/local.gql';
-import {
-  useVisibility,
-  preloadRouteComponent,
-  fieldLevelErrorMapper,
-} from '@/client/utils';
+import { useVisibility, preloadRouteComponent, fieldLevelErrorMapper } from '@/client/utils';
 import { PrefetchLink, FormikField } from '@/client/components/composed';
 import { useStyles } from './styles';
 
@@ -21,27 +17,20 @@ export default function Login() {
   const location = useLocation();
   const history = useHistory();
   const client = useApolloClient();
-  const {
-    visibility,
-    toggleVisibility,
-    render: renderVisibility,
-  } = useVisibility();
+  const { visibility, toggleVisibility, render: renderVisibility } = useVisibility();
 
-  const [fetchLogin] = useMutation<LoginMutation, LoginMutationVariables>(
-    LoginDocument,
-    {
-      update(cache, { data }) {
-        if (data && data.login) {
-          cache.writeQuery<ProfileQuery>({
-            query: Profile,
-            data: {
-              profile: data.login,
-            },
-          });
-        }
-      },
-    }
-  );
+  const [fetchLogin] = useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, {
+    update(cache, { data }) {
+      if (data && data.login) {
+        cache.writeQuery<ProfileQuery>({
+          query: Profile,
+          data: {
+            profile: data.login,
+          },
+        });
+      }
+    },
+  });
 
   return (
     <>
@@ -97,11 +86,7 @@ export default function Login() {
                 label="Senha"
                 id="senha"
                 helperText={
-                  <Link
-                    component={PrefetchLink}
-                    color="secondary"
-                    to="/auth/forgot"
-                  >
+                  <Link component={PrefetchLink} color="secondary" to="/auth/forgot">
                     Esqueceu a senha?
                   </Link>
                 }
@@ -118,19 +103,17 @@ export default function Login() {
                 }}
               />
               <div className={classes.buttonMargin}>
-                <Button
-                  variant="contained"
-                  color="primary"
-                  size="large"
-                  disableRipple
-                  disableTouchRipple
-                  type="submit"
-                  fullWidth
-                >
+                <Button variant="contained" color="primary" type="submit">
                   Entrar
                 </Button>
               </div>
-              <div className={classes.topOr}>select with languages</div>
+              <Divider />
+              <div className={classes.topOr}>
+                select with languages
+                <Link color="secondary" component={PrefetchLink} to="/auth/register">
+                  Criar conta
+                </Link>
+              </div>
             </Form>
           )}
         </Formik>

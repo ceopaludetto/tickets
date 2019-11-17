@@ -10,9 +10,7 @@ import { ID } from '@/server/utils/common.dto';
 export class TicketService {
   private ticketRepository: ReturnModelType<typeof Ticket>;
 
-  public constructor(
-    @InjectModel(Ticket) ticketRepo: ReturnModelType<typeof Ticket>
-  ) {
+  public constructor(@InjectModel(Ticket) ticketRepo: ReturnModelType<typeof Ticket>) {
     this.ticketRepository = ticketRepo;
   }
 
@@ -55,9 +53,7 @@ export class TicketService {
     }
 
     try {
-      const empresa = await this.ticketRepository
-        .findByIdAndUpdate(id, data, { new: true })
-        .exec();
+      const empresa = await this.ticketRepository.findByIdAndUpdate(id, data, { new: true }).exec();
       return empresa;
     } catch (err) {
       throw new ApolloError(err);

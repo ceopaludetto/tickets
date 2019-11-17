@@ -5,6 +5,7 @@ import { loadableReady } from '@loadable/component';
 import { ApolloProvider } from '@apollo/react-common';
 import { HttpLink } from 'apollo-link-http';
 import { StylesProvider } from '@material-ui/styles';
+import { HelmetProvider } from 'react-helmet-async';
 
 import App from '@/client/bootstrap';
 import { createClient } from '@/client/providers/apollo';
@@ -23,11 +24,13 @@ const generateClassName = createClassGenerator();
 loadableReady(() => {
   hydrate(
     <StylesProvider generateClassName={generateClassName}>
-      <ApolloProvider client={client}>
-        <BrowserRouter>
-          <App />
-        </BrowserRouter>
-      </ApolloProvider>
+      <HelmetProvider>
+        <ApolloProvider client={client}>
+          <BrowserRouter>
+            <App />
+          </BrowserRouter>
+        </ApolloProvider>
+      </HelmetProvider>
     </StylesProvider>,
     document.querySelector('#app')
   );

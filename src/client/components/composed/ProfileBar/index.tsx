@@ -1,10 +1,6 @@
 import React from 'react';
 import { IconButton, Divider } from '@material-ui/core';
-import {
-  SearchOutlined,
-  UnfoldMoreOutlined,
-  AddOutlined,
-} from '@material-ui/icons';
+import { SearchOutlined, UnfoldMoreOutlined, AddOutlined } from '@material-ui/icons';
 
 import { useStyles } from './styles';
 

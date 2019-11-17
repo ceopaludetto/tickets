@@ -13,12 +13,7 @@ import {
   useScrollTrigger,
   Paper,
 } from '@material-ui/core';
-import {
-  MenuOutlined,
-  SettingsOutlined,
-  ExitToAppOutlined,
-  NavigateNextOutlined,
-} from '@material-ui/icons';
+import { MenuOutlined, SettingsOutlined, ExitToAppOutlined, NavigateNextOutlined } from '@material-ui/icons';
 import { useLocation } from 'react-router';
 
 import { PrefetchLink } from '../PrefetchLink';
@@ -38,9 +33,7 @@ export function Header({ onDrawerButtonClick }: HeaderProps) {
     threshold: 0,
   });
 
-  const pathnames = useMemo(() => location.pathname.split('/').filter(v => v), [
-    location,
-  ]);
+  const pathnames = useMemo(() => location.pathname.split('/').filter(v => v), [location]);
 
   const handleClick = (event: React.MouseEvent<HTMLButtonElement>) => {
     setAnchorEl(event.currentTarget);
@@ -51,11 +44,7 @@ export function Header({ onDrawerButtonClick }: HeaderProps) {
   };
 
   return (
-    <AppBar
-      position="fixed"
-      elevation={trigger ? 1 : 0}
-      className={classes.appBar}
-    >
+    <AppBar position="fixed" elevation={trigger ? 1 : 0} className={classes.appBar}>
       <Toolbar>
         <IconButton
           color="primary"
@@ -73,9 +62,7 @@ export function Header({ onDrawerButtonClick }: HeaderProps) {
               const to = `/${pathnames.slice(0, index + 1).join('/')}`;
 
               let routes = AppRoutes.find(v =>
-                typeof v.path === 'string'
-                  ? v.path === to
-                  : !!v.path.find(nv => nv === to)
+                typeof v.path === 'string' ? v.path === to : !!v.path.find(nv => nv === to)
               );
 
               if (routes && routes.routes) {
@@ -99,26 +86,11 @@ export function Header({ onDrawerButtonClick }: HeaderProps) {
           </Breadcrumbs>
         </Paper>
         <div className={classes.spacer} />
-        <IconButton
-          aria-controls="profile-menu"
-          aria-haspopup="true"
-          size="small"
-          onClick={handleClick}
-        >
+        <IconButton aria-controls="profile-menu" aria-haspopup="true" size="small" onClick={handleClick}>
           <Avatar />
         </IconButton>
-        <Menu
-          id="profile-menu"
-          anchorEl={anchorEl}
-          keepMounted
-          open={Boolean(anchorEl)}
-          onClose={handleClose}
-        >
-          <MenuItem
-            onClick={handleClose}
-            component={PrefetchLink}
-            to="/app/settings"
-          >
+        <Menu id="profile-menu" anchorEl={anchorEl} keepMounted open={Boolean(anchorEl)} onClose={handleClose}>
+          <MenuItem onClick={handleClose} component={PrefetchLink} to="/app/settings">
             <ListItemIcon>
               <SettingsOutlined />
             </ListItemIcon>

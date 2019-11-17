@@ -1,9 +1,9 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
+import { Helmet } from 'react-helmet-async';
 import { Formik, Form } from 'formik';
-import { Typography, Button } from '@material-ui/core';
+import { Typography, Button, Divider, Link } from '@material-ui/core';
 
-import { FormikField } from '@/client/components/composed';
+import { FormikField, PrefetchLink } from '@/client/components/composed';
 import { useStyles } from './styles';
 
 export default function Forgot() {
@@ -21,17 +21,16 @@ export default function Forgot() {
           <Form>
             <FormikField name="email" id="email" label="Email" />
             <div className={classes.buttonMargin}>
-              <Button
-                variant="contained"
-                color="primary"
-                size="large"
-                disableRipple
-                disableTouchRipple
-                type="submit"
-                fullWidth
-              >
+              <Button variant="contained" color="primary" type="submit">
                 Recuperar
               </Button>
+            </div>
+            <Divider />
+            <div className={classes.topOr}>
+              select with languages
+              <Link color="secondary" component={PrefetchLink} to="/auth/login">
+                Está perdido?
+              </Link>
             </div>
           </Form>
         </Formik>

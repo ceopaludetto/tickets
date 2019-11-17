@@ -44,9 +44,7 @@ export const routes: Route[] = [
         return <Redirect from={location.pathname} to={route} />;
       }
 
-      return (
-        <Auth staticContext={staticContext} location={location} {...rest} />
-      );
+      return <Auth staticContext={staticContext} location={location} {...rest} />;
     },
     routes: authRoutes,
   },
@@ -76,9 +74,7 @@ export const routes: Route[] = [
         );
       }
 
-      return (
-        <App staticContext={staticContext} location={location} {...rest} />
-      );
+      return <App staticContext={staticContext} location={location} {...rest} />;
     },
     routes: appRoutes,
   },

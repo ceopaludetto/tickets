@@ -1,19 +1,8 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 
-import {
-  Perfil,
-  PerfilInput,
-  PerfilUpdateArgs,
-  AcaoEnum,
-  RecursoEnum,
-  AnyOrOwnEnum,
-  Empresa,
-} from '@/server/models';
-import {
-  CommonFindAllArgs,
-  CommonFindOneArgs,
-} from '@/server/utils/common.dto';
+import { Perfil, PerfilInput, PerfilUpdateArgs, AcaoEnum, RecursoEnum, AnyOrOwnEnum, Empresa } from '@/server/models';
+import { CommonFindAllArgs, CommonFindOneArgs } from '@/server/utils/common.dto';
 import { SecurityService } from './security.service';
 import { SecurityGuard } from './security.guard';
 import { UseRole } from './security.decorators';
@@ -61,8 +50,7 @@ export class SecurityResolver {
     acao: AcaoEnum.Atualizar,
     recurso: RecursoEnum.Perfil,
     tipo: AnyOrOwnEnum.Any,
-    customMatcher: (user, args, assoc) =>
-      (assoc.empresa as Empresa)._id === args._id,
+    customMatcher: (user, args, assoc) => (assoc.empresa as Empresa)._id === args._id,
   })
   @UseGuards(GqlAuthGuard, SecurityGuard)
   @Mutation(() => Perfil)

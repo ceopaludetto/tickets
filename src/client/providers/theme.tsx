@@ -2,11 +2,7 @@ import React from 'react';
 import createMuiTheme from '@material-ui/core/styles/createMuiTheme';
 import blue from '@material-ui/core/colors/blue';
 import { createGenerateClassName } from '@material-ui/styles';
-import {
-  CheckBoxOutlineBlankRounded,
-  CheckBoxRounded,
-  IndeterminateCheckBoxRounded,
-} from '@material-ui/icons';
+import { CheckBoxOutlineBlankRounded, CheckBoxRounded, IndeterminateCheckBoxRounded } from '@material-ui/icons';
 
 export const theme = createMuiTheme({
   palette: {
@@ -36,11 +32,24 @@ export const theme = createMuiTheme({
       checkedIcon: <CheckBoxRounded />,
     },
   },
+  shape: {
+    borderRadius: 6,
+  },
   overrides: {
+    MuiButton: {
+      contained: {
+        boxShadow: 'none!important',
+      },
+    },
     MuiFilledInput: {
       root: {
-        borderRadius: '4px!important',
+        borderRadius: '6px',
         overflow: 'hidden',
+      },
+      underline: {
+        '&::before': {
+          display: 'none',
+        },
       },
     },
     MuiListItemIcon: {
@@ -50,7 +59,7 @@ export const theme = createMuiTheme({
     },
     MuiTab: {
       root: {
-        borderRadius: `4px 4px 0 0`,
+        borderRadius: '6px',
       },
     },
     MuiTabs: {

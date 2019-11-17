@@ -1,12 +1,7 @@
 import React from 'react';
 import { Field } from 'formik';
 import { Checkbox } from 'formik-material-ui';
-import {
-  IconButton,
-  FormControlLabel,
-  Paper,
-  Typography,
-} from '@material-ui/core';
+import { IconButton, FormControlLabel, Paper, Typography } from '@material-ui/core';
 import { TodayOutlined } from '@material-ui/icons';
 
 import { FormikDatePicker, FormikField } from '@/client/components/composed';
@@ -20,9 +15,10 @@ interface RenderStepProps {
 
 export function RenderStep({ currentPage }: RenderStepProps) {
   const classes = useRenderStyles();
-  const { toggleVisibility, renderVisibility } = useMultipleVisibility<
-    ('senha' | 'confirmar')[]
-  >(['senha', 'confirmar']);
+  const { toggleVisibility, renderVisibility } = useMultipleVisibility<('senha' | 'confirmar')[]>([
+    'senha',
+    'confirmar',
+  ]);
 
   if (currentPage === 0) {
     return (
@@ -38,12 +34,7 @@ export function RenderStep({ currentPage }: RenderStepProps) {
         <FormikField label="Email" id="email" name="email" />
         <div className={classes.fieldContainer}>
           <div className={classes.field}>
-            <FormikField
-              label="Telefone"
-              id="telefone"
-              name="telefone"
-              mask={validations.telMask}
-            />
+            <FormikField label="Telefone" id="telefone" name="telefone" mask={validations.telMask} />
           </div>
           <div className={classes.field}>
             <FormikDatePicker
@@ -76,11 +67,7 @@ export function RenderStep({ currentPage }: RenderStepProps) {
               InputProps={{
                 endAdornment: (
                   <IconButton
-                    aria-label={renderVisibility(
-                      'senha',
-                      'Esconder senha',
-                      'Ver senha'
-                    )}
+                    aria-label={renderVisibility('senha', 'Esconder senha', 'Ver senha')}
                     type="button"
                     onClick={toggleVisibility('senha')}
                   >
@@ -97,11 +84,7 @@ export function RenderStep({ currentPage }: RenderStepProps) {
               InputProps={{
                 endAdornment: (
                   <IconButton
-                    aria-label={renderVisibility(
-                      'confirmar',
-                      'Esconder Confirmar Senha',
-                      'Ver Confirmar Senha'
-                    )}
+                    aria-label={renderVisibility('confirmar', 'Esconder Confirmar Senha', 'Ver Confirmar Senha')}
                     type="button"
                     onClick={toggleVisibility('confirmar')}
                   >
@@ -134,52 +117,28 @@ export function RenderStep({ currentPage }: RenderStepProps) {
     <>
       <FormControlLabel
         label="Criar empresa?"
-        control={
-          <Field name="hasEmpresa" id="hasEmpresa" component={Checkbox} />
-        }
+        control={<Field name="hasEmpresa" id="hasEmpresa" component={Checkbox} />}
       />
       <div className={classes.fieldContainer}>
         <div className={classes.field}>
-          <FormikField
-            label="CNPJ"
-            id="cnpj"
-            name="cnpj"
-            mask={validations.cnpjMask}
-          />
+          <FormikField label="CNPJ" id="cnpj" name="cnpj" mask={validations.cnpjMask} />
         </div>
         <div className={classes.field}>
-          <FormikField
-            label="Razão Social"
-            id="razaoSocial"
-            name="razaoSocial"
-          />
+          <FormikField label="Razão Social" id="razaoSocial" name="razaoSocial" />
         </div>
       </div>
       <div className={classes.fieldContainer}>
         <div className={classes.field}>
-          <FormikField
-            label="Nome Fantasia"
-            id="nomeFantasia"
-            name="nomeFantasia"
-          />
+          <FormikField label="Nome Fantasia" id="nomeFantasia" name="nomeFantasia" />
         </div>
         <div className={classes.field}>
-          <FormikField
-            label="Nome Completo"
-            id="nomeCompleto"
-            name="nomeCompleto"
-          />
+          <FormikField label="Nome Completo" id="nomeCompleto" name="nomeCompleto" />
         </div>
       </div>
       <FormikField label="Email" id="empresaEmail" name="empresaEmail" />
       <div className={classes.fieldContainer}>
         <div className={classes.field}>
-          <FormikField
-            label="Telefone"
-            id="empresaTelefone"
-            name="empresaTelefone"
-            mask={validations.telMask}
-          />
+          <FormikField label="Telefone" id="empresaTelefone" name="empresaTelefone" mask={validations.telMask} />
         </div>
         <div className={classes.field}>
           <FormikField label="Site" id="site" name="site" />
@@ -190,12 +149,7 @@ export function RenderStep({ currentPage }: RenderStepProps) {
           <FormikField label="Endereço" id="endereco" name="endereco" />
         </div>
         <div className={classes.field}>
-          <FormikField
-            label="CEP"
-            id="cep"
-            name="cep"
-            mask={validations.cepMask}
-          />
+          <FormikField label="CEP" id="cep" name="cep" mask={validations.cepMask} />
         </div>
       </div>
     </>

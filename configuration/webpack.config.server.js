@@ -34,17 +34,13 @@ module.exports = merge(baseConfig(true), {
     },
   ],
   entry: [
-    ...(isProd
-      ? []
-      : ['razzle-dev-utils/prettyNodeErrors', 'webpack/hot/poll?300']),
+    ...(isProd ? [] : ['razzle-dev-utils/prettyNodeErrors', 'webpack/hot/poll?300']),
     'reflect-metadata',
     path.resolve('src', 'server', 'index.ts'),
   ],
   output: {
     path: path.resolve('dist'),
-    publicPath: isProd
-      ? '/static/'
-      : `http://${envs.HOST}:${envs.DEV_PORT}/static/`,
+    publicPath: isProd ? '/static/' : `http://${envs.HOST}:${envs.DEV_PORT}/static/`,
     libraryTarget: 'commonjs2',
     filename: 'index.js',
     pathinfo: false,

@@ -3,10 +3,7 @@ import { Resolver, Query, Args, Mutation, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
 import { Ticket, TicketInput, TicketUpdateArgs } from '@/server/models';
-import {
-  CommonFindAllArgs,
-  CommonFindOneArgs,
-} from '@/server/utils/common.dto';
+import { CommonFindAllArgs, CommonFindOneArgs } from '@/server/utils/common.dto';
 import { TicketService } from './ticket.service';
 import { PUB_SUB, TICKET_ASYNC_ITERATOR } from '@/server/utils/constants';
 
@@ -16,10 +13,7 @@ export class TicketResolver {
 
   private pubSub: PubSub;
 
-  public constructor(
-    ticketService: TicketService,
-    @Inject(PUB_SUB) pubSub: PubSub
-  ) {
+  public constructor(ticketService: TicketService, @Inject(PUB_SUB) pubSub: PubSub) {
     this.ticketService = ticketService;
     this.pubSub = pubSub;
   }

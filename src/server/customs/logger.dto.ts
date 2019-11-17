@@ -24,24 +24,17 @@ export const mapColors: Colors = {
 
 export const genFormat = printf(
   ({ timestamp: time, label: l, level, message }) =>
-    `[${chalk.whiteBright.bold(l)}, ${chalk.cyan(
-      dateFormat(parseISO(time), 'dd/MM/yyyy - HH:mm:ss')
-    )}] - ${mapColors[level](level.toUpperCase())} : ${message}`
+    `[${chalk.whiteBright.bold(l)}, ${chalk.cyan(dateFormat(parseISO(time), 'dd/MM/yyyy - HH:mm:ss'))}] - ${mapColors[
+      level
+    ](level.toUpperCase())} : ${message}`
 );
 
 export const genFileFormat = printf(
   ({ timestamp: time, level, message }) =>
-    `[${dateFormat(
-      parseISO(time),
-      'dd/MM/yyyy - HH:mm:ss'
-    )}] - ${level.toUpperCase()} : ${message}`
+    `[${dateFormat(parseISO(time), 'dd/MM/yyyy - HH:mm:ss')}] - ${level.toUpperCase()} : ${message}`
 );
 
-export const customFormat = combine(
-  label({ label: APP_NAME }),
-  timestamp(),
-  genFormat
-);
+export const customFormat = combine(label({ label: APP_NAME }), timestamp(), genFormat);
 
 export const fileFormat = combine(timestamp(), genFileFormat);
 export const fileJSONFormat = combine(timestamp(), json());

@@ -20,10 +20,7 @@ export function Progress({ isAnimating }: ProgressProps) {
   return (
     <NoSsr>
       <div className={classes.container}>
-        <div
-          className={classes.barContainer}
-          style={{ width: `${progress * 100}%` }}
-        >
+        <div className={classes.barContainer} style={{ width: `${progress * 100}%` }}>
           <div className={classes.barShadow} />
         </div>
       </div>

@@ -12,14 +12,11 @@ export default function App({ route }: RouteConfigComponentProps) {
   // const { data } = useQuery(Theme);
   // const theme = useContext(ThemeContext);
 
-  const toggleDrawer = (open: boolean) => (
-    event: React.KeyboardEvent | React.MouseEvent
-  ) => {
+  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
     if (
       event &&
       event.type === 'keydown' &&
-      ((event as React.KeyboardEvent).key === 'Tab' ||
-        (event as React.KeyboardEvent).key === 'Shift')
+      ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
     ) {
       return;
     }
@@ -57,9 +54,7 @@ export default function App({ route }: RouteConfigComponentProps) {
           {renderSidebar()}
         </Drawer>
       </Hidden>
-      <main className={classes.content}>
-        {route && route.routes && renderRoutes(route.routes)}
-      </main>
+      <main className={classes.content}>{route && route.routes && renderRoutes(route.routes)}</main>
     </div>
   );
 }

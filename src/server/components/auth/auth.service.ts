@@ -1,5 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
+import { MailerService } from '@nest-modules/mailer';
 
 import { UsuarioService } from '@/server/components/usuario/usuario.service';
 import { UsuarioDoc, UsuarioInput } from '@/server/models';
@@ -11,13 +12,16 @@ export class AuthService {
 
   private readonly jwtService: JwtService;
 
-  public constructor(userService: UsuarioService, jwtService: JwtService) {
+  private readonly mailerService: MailerService;
+
+  public constructor(userService: UsuarioService, jwtService: JwtService, mailerService: MailerService) {
     this.userService = userService;
     this.jwtService = jwtService;
+    this.mailerService = mailerService;
   }
 
   public async profile(_id: ID) {
-    const user = await this.userService.findOne(_id);
+    const user = await this.userService.findOne({ _id });
     return user;
   }
 
@@ -38,13 +42,40 @@ export class AuthService {
   public async register(input: UsuarioInput) {
     const funcionario = await this.userService.createOrUpdate(input);
 
+    if (funcionario) {
+      await this.mailerService.sendMail({
+        to: funcionario.email,
+        subject: 'Conta criada com sucesso',
+        template: 'register',
+        context: {
+          email: funcionario.email,
+        },
+      });
+    }
+
     return funcionario;
   }
 
-  public async generateAndRegisterToken(
-    { _id, email }: UsuarioDoc,
-    { res }: ContextType
-  ) {
+  public async forgot(email: string) {
+    const funcionario = await this.userService.findOne({
+      email,
+    });
+
+    if (funcionario) {
+      await this.mailerService.sendMail({
+        to: funcionario.email,
+        subject: 'F3desk - Alteração de senha',
+        template: 'forgot',
+        context: {
+          url: 'gerarurl',
+        },
+      });
+    }
+
+    return funcionario;
+  }
+
+  public async generateAndRegisterToken({ _id, email }: UsuarioDoc, { res }: ContextType) {
     const token = await this.jwtService.signAsync({
       _id,
       email,
