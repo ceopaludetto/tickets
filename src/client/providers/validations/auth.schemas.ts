@@ -14,6 +14,11 @@ import {
   CNPJ,
 } from './constants';
 
+export const LoginValidation = Yup.object().shape({
+  email: Yup.string().required(REQUIRED),
+  senha: Yup.string().required(REQUIRED),
+});
+
 export const RegisterValidation = Yup.object().shape({
   nome: Yup.string()
     .required(REQUIRED)

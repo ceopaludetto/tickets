@@ -8,8 +8,9 @@ import { useHistory, useLocation } from 'react-router-dom';
 
 import { Login as LoginDocument, Profile } from '@/client/graphql/usuario.gql';
 import { Logged } from '@/client/graphql/local.gql';
-import { useVisibility, preloadRouteComponent, fieldLevelErrorMapper } from '@/client/utils';
+import { useVisibility, preloadRouteComponent, fieldLevelErrorMapper, classValidatorMapper } from '@/client/utils';
 import { PrefetchLink, FormikField } from '@/client/components/composed';
+import { LoginValidation } from '@/client/providers/validations';
 import { useStyles } from './styles';
 
 export default function Login() {
@@ -41,6 +42,9 @@ export default function Login() {
           Entrar
         </Typography>
         <Formik
+          validationSchema={LoginValidation}
+          validateOnChange={false}
+          validateOnBlur={false}
           initialValues={{
             email: '',
             senha: '',
@@ -71,6 +75,13 @@ export default function Login() {
             } catch (err) {
               fieldLevelErrorMapper(err, {
                 setFieldError: actions.setFieldError,
+              });
+
+              classValidatorMapper<{ email: string; senha: string }>(err, {
+                setFieldError: actions.setFieldError,
+                maps: {
+                  email: 'batata',
+                },
               });
 
               actions.setSubmitting(false);

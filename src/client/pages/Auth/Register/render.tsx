@@ -1,10 +1,8 @@
 import React from 'react';
-import { Field } from 'formik';
-import { Checkbox } from 'formik-material-ui';
-import { IconButton, FormControlLabel, Paper, Typography } from '@material-ui/core';
+import { IconButton, Paper, Typography } from '@material-ui/core';
 import { TodayOutlined } from '@material-ui/icons';
 
-import { FormikDatePicker, FormikField } from '@/client/components/composed';
+import { FormikDatePicker, FormikField, FormikCheckbox } from '@/client/components/composed';
 import * as validations from '@/client/providers/validations/masks';
 import { useMultipleVisibility } from '@/client/utils';
 import { useRenderStyles } from './styles';
@@ -115,10 +113,7 @@ export function RenderStep({ currentPage }: RenderStepProps) {
 
   return (
     <>
-      <FormControlLabel
-        label="Criar empresa?"
-        control={<Field name="hasEmpresa" id="hasEmpresa" component={Checkbox} />}
-      />
+      <FormikCheckbox name="hasEmpresa" id="hasEmpresa" label="Criar empresa?" />
       <div className={classes.fieldContainer}>
         <div className={classes.field}>
           <FormikField label="CNPJ" id="cnpj" name="cnpj" mask={validations.cnpjMask} />

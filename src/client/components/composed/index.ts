@@ -1,9 +1,10 @@
 export { Page } from './Page';
 export { Progress } from './Progress';
-export { ThemeChanger } from './ThemeChanger';
+export { Providers } from './Providers';
 export { PrefetchLink } from './PrefetchLink';
 export { FormikDatePicker } from './FormikDatePicker';
 export { FormikField } from './FormikField';
+export { FormikCheckbox } from './FormikCheckbox';
 export { Header } from './Header';
 export { Sidebar } from './Sidebar';
 export { PrefetchNavLink } from './PrefetchNavLink';

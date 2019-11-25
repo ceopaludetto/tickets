@@ -1,8 +1,8 @@
-import React from 'react';
+import React, { useCallback } from 'react';
 import MaskedInput, { MaskedInputProps } from 'react-text-mask';
 import { FilledInput, FormControl, InputLabel, FormHelperText } from '@material-ui/core';
 import { TextFieldProps } from '@material-ui/core/TextField';
-import { Field, FieldProps } from 'formik';
+import { useField, useFormikContext } from 'formik';
 
 export type FormikFieldProps = Omit<TextFieldProps, 'name'> & MaskedInputProps & { name: string };
 
@@ -26,8 +26,11 @@ export function FormikField({
   variant = 'filled',
   ...props
 }: FormikFieldProps) {
-  function TextMaskCustom({ inputRef, ...other }: TextMaskCustomProps) {
-    return (
+  const [field, meta] = useField(name);
+  const { isSubmitting } = useFormikContext();
+
+  const TextMaskCustom = useCallback(
+    ({ inputRef, ...other }: TextMaskCustomProps) => (
       <MaskedInput
         {...other}
         // eslint-disable-next-line @typescript-eslint/no-explicit-any
@@ -39,30 +42,26 @@ export function FormikField({
         placeholderChar={placeholderChar}
         showMask={showMask}
       />
-    );
-  }
+    ),
+    [mask, guide, placeholderChar, showMask]
+  );
 
   return (
-    <Field
-      name={name}
-      render={({ field, form }: FieldProps) => (
-        <FormControl margin={margin} variant={variant} error={!!(form.touched[field.name] && form.errors[field.name])}>
-          <>
-            <InputLabel htmlFor={id}>{label}</InputLabel>
-            <FilledInput
-              id={id}
-              {...field}
-              {...props}
-              {...InputProps}
-              disabled={form.isSubmitting || disabled}
-              inputComponent={mask ? (TextMaskCustom as any) : undefined} // eslint-disable-line @typescript-eslint/no-explicit-any
-            />
-            {((form.touched[field.name] && form.errors[field.name]) || helperText) && (
-              <FormHelperText>{form.errors[field.name] || helperText}</FormHelperText>
-            )}
-          </>
-        </FormControl>
-      )}
-    />
+    <FormControl margin={margin} variant={variant} error={!!(meta.touched && !!meta.error)}>
+      <>
+        <InputLabel htmlFor={id}>{label}</InputLabel>
+        <FilledInput
+          id={id}
+          {...field}
+          {...props}
+          {...InputProps}
+          disabled={isSubmitting || disabled}
+          inputComponent={mask ? (TextMaskCustom as any) : undefined} // eslint-disable-line @typescript-eslint/no-explicit-any
+        />
+        {((meta.touched && !!meta.error) || !!helperText) && (
+          <FormHelperText>{meta.error || helperText}</FormHelperText>
+        )}
+      </>
+    </FormControl>
   );
 }

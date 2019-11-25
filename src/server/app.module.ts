@@ -2,6 +2,7 @@ import { Module, NestModule, MiddlewareConsumer, RequestMethod } from '@nestjs/c
 import { GraphQLModule } from '@nestjs/graphql';
 import { TypegooseModule } from 'nestjs-typegoose';
 import { MailerModule, HandlebarsAdapter } from '@nest-modules/mailer';
+import { setGlobalOptions } from '@typegoose/typegoose';
 
 import { ContextType } from '@/server/utils/common.dto';
 import { IS_PRODUCTION } from '@/server/utils/constants';
@@ -17,6 +18,8 @@ import {
   ConfigurationService,
   SecurityModule,
 } from '@/server/components';
+
+setGlobalOptions({ globalOptions: { useNewEnum: true } });
 
 @Module({
   imports: [
