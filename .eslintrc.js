@@ -6,7 +6,7 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
-    jest: true,
+    jest: true
   },
   extends: [
     "airbnb",
@@ -14,7 +14,7 @@ module.exports = {
     "plugin:jsx-a11y/recommended",
     "prettier",
     "prettier/react",
-    "prettier/@typescript-eslint",
+    "prettier/@typescript-eslint"
   ],
   globals: {
     Atomics: "readonly",
@@ -57,12 +57,14 @@ module.exports = {
     "prettier/prettier": [
       "error",
       {
-        "trailingComma": "es5",
-        "singleQuote": true,
-        "printWidth": 120
+        trailingComma: "es5",
+        singleQuote: true,
+        printWidth: 120
       }
     ],
-    "max-classes-per-file": ["error", 4]
+    "max-classes-per-file": ["error", 4],
+    "no-return-await": 0,
+    "no-useless-constructor": 0
   },
   settings: {
     "import/extensions": [".js", ".jsx", ".ts", ".tsx", ".gql"],

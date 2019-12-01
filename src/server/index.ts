@@ -1,14 +1,11 @@
 import { NestFactory } from '@nestjs/core';
 
 import { ApplicationModule } from '@/server/app.module';
-import { installMiddlewaresAndConfigurations } from '@/server/utils/middlewares';
-import { Logger } from '@/server/customs/logger';
+import { installMiddlewares } from '@/server/utils/middlewares';
 
 async function bootstrap() {
-  const app = await NestFactory.create(ApplicationModule, {
-    logger: new Logger(),
-  });
-  installMiddlewaresAndConfigurations(app);
+  const app = await NestFactory.create(ApplicationModule);
+  installMiddlewares(app);
 
   app.listen(process.env.PORT as string);
 

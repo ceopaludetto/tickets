@@ -1,32 +1,14 @@
-import { Module, Global } from '@nestjs/common';
-import { TypegooseModule } from 'nestjs-typegoose';
+import { Module } from '@nestjs/common';
 
-import { UsuarioResolver } from './usuario.resolver';
+import { DatabaseModule } from '@/server/components/Database';
+import { UsuarioController } from './usuario.controller';
 import { UsuarioService } from './usuario.service';
-import { Usuario, Associacao } from '@/server/models';
-import { USUARIO, ASSOCIACAO } from '@/server/utils/constants';
+import { Usuario } from './usuario.entity';
 
-@Global()
 @Module({
-  imports: [
-    TypegooseModule.forFeature([
-      {
-        typegooseClass: Usuario,
-        schemaOptions: {
-          timestamps: true,
-          collection: USUARIO,
-        },
-      },
-      {
-        typegooseClass: Associacao,
-        schemaOptions: {
-          timestamps: true,
-          collection: ASSOCIACAO,
-        },
-      },
-    ]),
-  ],
-  providers: [UsuarioResolver, UsuarioService],
+  imports: [DatabaseModule.forFeature([Usuario])],
+  controllers: [UsuarioController],
+  providers: [UsuarioService],
   exports: [UsuarioService],
 })
 export class UsuarioModule {}

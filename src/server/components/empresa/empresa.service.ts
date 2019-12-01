@@ -1,93 +1,56 @@
-import { Injectable } from '@nestjs/common';
-import { InjectModel } from 'nestjs-typegoose';
-import { ReturnModelType } from '@typegoose/typegoose';
-import { ApolloError, UserInputError } from 'apollo-server-express';
+import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 
-import { Empresa, EmpresaInput, EmpresaDoc, AssociacaoEnum } from '@/server/models';
-import { ID, PayloadType } from '@/server/utils/common.dto';
-import { UsuarioService } from '@/server/components/usuario/usuario.service';
+import { InjectModel } from '@/server/components/Database';
+import { CreateOrUpdateEmpresaDto } from './empresa.dto';
+import { Empresa } from './empresa.entity';
 
 @Injectable()
 export class EmpresaService {
-  private readonly empresaRepository: ReturnModelType<typeof Empresa>;
+  public constructor(@InjectModel(Empresa) private readonly empresaRepository: typeof Empresa) {}
 
-  private readonly usuarioService: UsuarioService;
-
-  public constructor(
-    @InjectModel(Empresa) empresaRepository: ReturnModelType<typeof Empresa>,
-    usuarioService: UsuarioService
-  ) {
-    this.empresaRepository = empresaRepository;
-    this.usuarioService = usuarioService;
-  }
-
-  public async findAll(skip = 0, take = 100) {
+  public async findAll() {
     try {
-      const empresas = await this.empresaRepository
-        .find()
-        .skip(skip)
-        .limit(take)
-        .exec();
-      return empresas;
+      return await this.empresaRepository.findAll();
     } catch (err) {
-      throw new ApolloError(err);
+      throw new BadRequestException(err);
     }
   }
 
-  public async findOne(id: ID) {
+  public async findOne(id: string) {
     try {
-      const empresa = await this.empresaRepository.findById(id);
+      return await this.empresaRepository.findByPk(id);
+    } catch (err) {
+      throw new BadRequestException(err);
+    }
+  }
+
+  public async createOrUpdate(data: CreateOrUpdateEmpresaDto, id?: string) {
+    try {
+      if (!id) {
+        return await this.empresaRepository.create(data);
+      }
+
+      const empresa = await this.empresaRepository.findByPk(id);
       if (!empresa) {
-        throw new UserInputError('Empresa não encontrada.', {
-          field: '_id',
-        });
+        throw new NotFoundException('Falha ao encontrar empresa');
       }
-      return empresa;
+
+      return await empresa.update(data);
     } catch (err) {
-      throw new ApolloError(err);
+      throw new BadRequestException(err);
     }
   }
 
-  public async createOrUpdate(data: EmpresaInput, id?: ID) {
-    if (!id) {
-      try {
-        const empresa = await this.empresaRepository.create(data);
-        return empresa;
-      } catch (err) {
-        throw new ApolloError(err);
-      }
-    }
-
+  public async delete(id: string) {
     try {
-      const empresa = await this.empresaRepository.findByIdAndUpdate(id, data, { new: true }).exec();
+      const empresa = await this.empresaRepository.findByPk(id);
+      if (!empresa) {
+        throw new NotFoundException('Falha ao encontrar empresa');
+      }
+      await empresa.destroy();
       return empresa;
     } catch (err) {
-      throw new ApolloError(err);
-    }
-  }
-
-  public async postCreation(user: PayloadType, empresa: EmpresaDoc) {
-    try {
-      const usuario = await this.usuarioService.findOne(user._id);
-      if (!usuario) {
-        throw new ApolloError('Usuário não encontrado.');
-      }
-
-      const updated = await this.usuarioService.createOrUpdate(
-        {
-          associacoes: [
-            ...usuario.associacoes,
-            {
-              empresa: empresa._id,
-              tipo: AssociacaoEnum.Dono,
-            },
-          ],
-        },
-        user._id
-      );
-      return updated;
-    } catch (err) {
-      throw new ApolloError('Erro ao criar associações');
+      throw new BadRequestException(err);
     }
   }
 }

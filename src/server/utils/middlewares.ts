@@ -6,7 +6,7 @@ import Compression from 'compression';
 
 import { IS_PRODUCTION, PUBLIC_PATH, STATIC_FOLDER } from '@/server/utils/constants';
 
-export function installMiddlewaresAndConfigurations(app: INestApplication) {
+export function installMiddlewares(app: INestApplication) {
   app.useGlobalPipes(new ValidationPipe({ transform: true, forbidUnknownValues: true }));
 
   app.use(CookieParser());

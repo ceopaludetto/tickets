@@ -1,12 +1,10 @@
-import { Types } from 'mongoose';
-
 import { Role, CustomMatcherOptions } from '@/server/utils/common.dto';
 import { UsuarioDoc } from '@/server/models';
 
 export interface SecurityMatcherOptions {
   usuario: UsuarioDoc;
   role: Role;
-  empresa?: Types.ObjectId;
+  empresa?: string;
   isSameUser?: boolean;
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   args?: any;

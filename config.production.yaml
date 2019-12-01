@@ -1,0 +1,17 @@
+database:
+  dialect: postgres
+  host: localhost
+  port: 5432
+  user: docker
+  pass: docker
+  database: f3desk
+  sync: false
+
+auth:
+  secret: teste
+
+email:
+  host: smtp.mailtrap.io
+  user: af9c948b78b1a1
+  pass: 9ffc61ed7dd98e
+  port: 2525

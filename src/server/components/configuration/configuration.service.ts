@@ -1,34 +1,57 @@
-import dotenv from 'dotenv';
+import yaml from 'yaml';
 import path from 'path';
 import fs from 'fs';
 import * as Yup from 'yup';
 
 interface EnvConfig {
-  [key: string]: string | number;
-  MONGO_URI: string;
-  SECRET: string;
-  SMTP_HOST: string;
-  SMTP_USER: string;
-  SMTP_PASS: string;
-  SMTP_PORT: number;
-  DEFAULT_MAIL: string;
+  database: {
+    dialect: 'postgres' | 'sqlite';
+    host: string;
+    port: number;
+    user: string;
+    pass: string;
+    database: string;
+    sync?: boolean;
+  };
+  auth: {
+    secret: string;
+  };
+  email: {
+    host: string;
+    port: number;
+    user: string;
+    pass: string;
+  };
 }
 
 const EnvSchema = Yup.object().shape({
-  MONGO_URI: Yup.string().required('Campo obrigatório'),
-  SECRET: Yup.string().required('Campo obrigatório'),
-  SMTP_HOST: Yup.string().required('Campo obrigatório'),
-  SMTP_USER: Yup.string().required('Campo obrigatório'),
-  SMTP_PASS: Yup.string().required('Campo obrigatório'),
-  SMTP_PORT: Yup.string().required('Campo obrigatório'),
-  DEFAULT_MAIL: Yup.string().required('Campo obrigatório'),
+  database: Yup.object().shape({
+    dialect: Yup.string()
+      .required('Campo obrigatório')
+      .oneOf(['postgres', 'sqlite']),
+    host: Yup.string().required('Campo obrigatório'),
+    port: Yup.number().required('Campo obrigatório'),
+    user: Yup.string().required('Campo obrigatório'),
+    pass: Yup.string().required('Campo obrigatório'),
+    database: Yup.string().required('Campo obrigatório'),
+    sync: Yup.boolean().notRequired(),
+  }),
+  auth: Yup.object().shape({
+    secret: Yup.string().required('Campo obrigatório'),
+  }),
+  email: Yup.object().shape({
+    host: Yup.string().required('Campo obrigatório'),
+    port: Yup.number().required('Campo obrigatório'),
+    user: Yup.string().required('Campo obrigatório'),
+    pass: Yup.string().required('Campo obrigatório'),
+  }),
 });
 
 export class ConfigurationService {
   private readonly envConfig: EnvConfig;
 
   public constructor(filePath: string) {
-    const config = dotenv.parse(fs.readFileSync(filePath));
+    const config = yaml.parse(fs.readFileSync(filePath, 'UTF-8'));
     this.envConfig = this.validateInput(config);
   }
 
@@ -37,42 +60,26 @@ export class ConfigurationService {
     const isValid = EnvSchema.isValidSync(config);
 
     if (!isValid) {
-      throw new Error('Invalid .env configuration');
+      throw new Error('Invalid .yml configuration');
     }
 
     return config as EnvConfig;
   };
 
-  public get SECRET() {
-    return this.envConfig.SECRET;
+  public get auth() {
+    return this.envConfig.auth;
   }
 
-  public get MONGO_URI() {
-    return this.envConfig.MONGO_URI;
+  public get database() {
+    return this.envConfig.database;
   }
 
-  public get SMTP_HOST() {
-    return this.envConfig.SMTP_HOST;
-  }
-
-  public get SMTP_USER() {
-    return this.envConfig.SMTP_USER;
-  }
-
-  public get SMTP_PASS() {
-    return this.envConfig.SMTP_PASS;
-  }
-
-  public get SMTP_PORT() {
-    return this.envConfig.SMTP_PORT;
-  }
-
-  public get DEFAULT_MAIL() {
-    return this.envConfig.DEFAULT_MAIL;
+  public get email() {
+    return this.envConfig.email;
   }
 
   // eslint-disable-next-line class-methods-use-this
-  public get TEMPLATES() {
+  public get templates() {
     return path.resolve('src', 'server', 'templates');
   }
 }

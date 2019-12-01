@@ -12,14 +12,9 @@ export const VERSION = '1';
 export const APP_NAME = 'F3Desk';
 
 /**
- * SecurityModule
+ * Sequelize
  */
-export const SECURITY_ROLE_DECORATOR = 'SECURITY_ROLE';
-export const SECURITY_CUSTOM_MATCHER_DECORATOR = 'SECURITY_CUSTOM_MATCHER';
-
-/**
- * Model Names
- */
+export const SEQUELIZE_PROVIDER = 'SEQUELIZE';
 export const POLITICA = 'Politica';
 export const PERFIL = 'Perfil';
 export const EMPRESA = 'Empresa';
@@ -29,8 +24,7 @@ export const LABEL = 'Label';
 export const TICKET = 'Ticket';
 
 /**
- * GraphQL
+ * SecurityModule
  */
-export const PUB_SUB = 'PUB_SUB';
-export const SCHEMA_LINK = 'SCHEMA_LINK';
-export const TICKET_ASYNC_ITERATOR = 'TICKET_ITERATOR';
+export const SECURITY_ROLE_DECORATOR = 'SECURITY_ROLE';
+export const SECURITY_CUSTOM_MATCHER_DECORATOR = 'SECURITY_CUSTOM_MATCHER';

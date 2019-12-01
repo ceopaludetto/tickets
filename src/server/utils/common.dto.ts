@@ -1,67 +1,12 @@
-import { ArgsType, Field, Int, ID } from 'type-graphql';
-import { IsInt, IsString, IsOptional, IsMongoId, IsDefined } from 'class-validator';
-import { Request, Response } from 'express';
-import { Schema } from 'mongoose';
+import { IsUUID, IsString } from 'class-validator';
 
-import { UsuarioDoc, RecursoEnum, AcaoEnum, AnyOrOwnEnum, AssociacaoDoc } from '@/server/models';
-
-@ArgsType()
-export class CommonFindAllArgs {
-  @Field(() => Int)
-  @IsInt()
-  @IsOptional()
-  public skip?: number = 0;
-
-  @Field(() => Int)
-  @IsInt()
-  @IsOptional()
-  public take?: number = 100;
-}
-
-@ArgsType()
-export class CommonFindOneArgs {
-  @Field(() => ID)
+export class FindOneParam {
+  @IsUUID()
   @IsString()
-  @IsMongoId()
-  @IsDefined()
-  public _id!: Schema.Types.ObjectId;
+  public id!: string;
 }
 
-export interface ContextType {
-  req: Request;
-  res: Response;
+export interface PayloadType {
+  id: string;
+  email: string;
 }
-
-export type ID = Schema.Types.ObjectId;
-
-export type PayloadType = Pick<UsuarioDoc, '_id' | 'email'>;
-
-export interface Role {
-  recurso: RecursoEnum;
-  acao: AcaoEnum;
-  tipo: AnyOrOwnEnum;
-  useUserID?: boolean;
-  customMatcher?: (
-    user: UsuarioDoc,
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    args: any,
-    assoc: AssociacaoDoc
-  ) => boolean;
-}
-
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
-export type CustomMatcher = (user: UsuarioDoc, args: any) => boolean;
-export interface CustomMatcherOptions {
-  customMatcher: CustomMatcher;
-  errorText?: string;
-}
-
-export interface Args {
-  empresa?: Schema.Types.ObjectId;
-}
-
-export interface ReactContextType {
-  url?: string;
-}
-
-export type ModelFields<T> = Partial<{ [P in keyof T]: T[P] }>;

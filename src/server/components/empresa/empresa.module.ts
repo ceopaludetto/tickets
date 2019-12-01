@@ -1,23 +1,14 @@
 import { Module } from '@nestjs/common';
-import { TypegooseModule } from 'nestjs-typegoose';
 
-import { EmpresaResolver } from './empresa.resolver';
+import { DatabaseModule } from '@/server/components/Database';
+import { EmpresaController } from './empresa.controller';
 import { EmpresaService } from './empresa.service';
-import { Empresa } from '@/server/models';
-import { EMPRESA } from '@/server/utils/constants';
+import { Empresa } from './empresa.entity';
 
 @Module({
-  imports: [
-    TypegooseModule.forFeature([
-      {
-        typegooseClass: Empresa,
-        schemaOptions: {
-          timestamps: true,
-          collection: EMPRESA,
-        },
-      },
-    ]),
-  ],
-  providers: [EmpresaResolver, EmpresaService],
+  imports: [DatabaseModule.forFeature([Empresa])],
+  controllers: [EmpresaController],
+  providers: [EmpresaService],
+  exports: [EmpresaService],
 })
 export class EmpresaModule {}

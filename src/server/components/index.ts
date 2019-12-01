@@ -1,24 +1,19 @@
-export { ReactModule } from './react/react.module';
+// export { ReactModule } from "./react/react.module";
 
-export { EmpresaModule } from './empresa/empresa.module';
-export { EmpresaMiddleware } from './empresa/empresa.middleware';
-export { EmpresaResolver } from './empresa/empresa.resolver';
+import { Usuario } from './Usuario/usuario.entity';
+import { Empresa } from './Empresa/empresa.entity';
 
-export { UsuarioModule } from './usuario/usuario.module';
-export { UsuarioResolver } from './usuario/usuario.resolver';
+export { AuthModule } from './Authentication';
 
-export { AuthModule } from './auth/auth.module';
-export { AuthResolver } from './auth/auth.resolver';
+export { ConfigurationModule, ConfigurationService } from './Configuration';
 
-export { ConfigurationModule } from './configuration/configuration.module';
-export { ConfigurationService } from './configuration/configuration.service';
+// export { SecurityModule } from "./Security/security.module";
+// export { SecurityResolver } from "./Security/security.resolver";
 
-export { SecurityModule } from './security/security.module';
-export { SecurityResolver } from './security/security.resolver';
+export { DatabaseModule, InjectModel } from './Database';
 
-export { TicketModule } from './ticket/ticket.module';
-export { TicketResolver } from './ticket/ticket.resolver';
+export { UsuarioModule, UsuarioService } from './Usuario';
 
-export { PubSubModule } from './pubsub/pubsub.module';
+export { EmpresaModule, EmpresaService } from './Empresa';
 
-export { SchemaModule } from './schema/schema.module';
+export const Entities = [Usuario, Empresa];

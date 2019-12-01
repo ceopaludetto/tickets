@@ -1,3 +1,4 @@
 *.gql
 *.json
+*.hbs
 src/client/typescript/operations.d.ts
