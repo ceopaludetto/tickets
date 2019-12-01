@@ -1,12 +1,5 @@
 import { InputType, Field, ArgsType } from 'type-graphql';
-import {
-  IsString,
-  IsMongoId,
-  IsOptional,
-  IsNotEmpty,
-  IsArray,
-  ValidateNested,
-} from 'class-validator';
+import { IsString, IsMongoId, IsOptional, IsNotEmpty, IsArray, ValidateNested } from 'class-validator';
 
 import { PoliticaInput } from '../politica/politica.dto';
 import { CommonFindOneArgs } from '@/server/utils/common.dto';

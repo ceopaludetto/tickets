@@ -1,39 +1,33 @@
-import styled, { css } from 'styled-components';
-import { Row, Container as BTContainer } from 'styled-bootstrap-grid';
+import { makeStyles, createStyles } from '@material-ui/styles';
+import { Theme } from '@material-ui/core';
 
-import { MapBackgroundDarken } from '@/client/styles/maps';
-
-export const Container = styled(BTContainer)`
-  background-color: ${MapBackgroundDarken};
-  ${props =>
-    props.fluid
-      ? css`
-          padding-top: 1rem;
-        `
-      : css`
-          padding-top: 2.5rem;
-        `}
-`;
-
-interface HeaderProps {
+interface UseStylesProps {
+  notFluid?: boolean;
   hasFooter?: boolean;
 }
 
-export const Header = styled(Row)<HeaderProps>`
-  ${props =>
-    props.hasFooter
-      ? css`
-          margin-bottom: 0.5rem;
-        `
-      : css`
-          margin-bottom: 1rem;
-        `}
-`;
-
-export const Footer = styled.div`
-  margin-bottom: 1.5rem;
-`;
-
-export const Append = styled.div`
-  padding: 0 1rem;
-`;
+export const useStyles = makeStyles((theme: Theme) =>
+  createStyles({
+    container: {
+      padding: (props: UseStylesProps) => theme.spacing(props.notFluid ? 0 : 3, 3, 2, 3),
+      maxWidth: (props: UseStylesProps) => (props.notFluid ? 'none' : 'inherit'),
+      width: '100%',
+    },
+    header: {
+      display: 'flex',
+      alignItems: 'center',
+      marginLeft: theme.spacing(-1),
+      marginRight: theme.spacing(-1),
+      marginBottom: (props: UseStylesProps) => (props.hasFooter ? theme.spacing(0.5) : theme.spacing(1)),
+    },
+    content: {
+      padding: theme.spacing(0, 1),
+    },
+    full: {
+      flex: 1,
+    },
+    footer: {
+      marginBottom: theme.spacing(1.5),
+    },
+  })
+);

@@ -1,115 +1,134 @@
 import React from 'react';
 import { useMutation, useApolloClient } from '@apollo/react-hooks';
-import { Helmet } from 'react-helmet';
-import { Formik, Form, Field } from 'formik';
-import * as Yup from 'yup';
+import { Helmet } from 'react-helmet-async';
+import { Formik, Form } from 'formik';
+import { parse } from 'query-string';
+import { Typography, Button, IconButton, Link, Divider } from '@material-ui/core';
+import { useHistory, useLocation } from 'react-router-dom';
 
-import {
-  LoginMutation,
-  LoginMutationVariables,
-  LoggedQuery,
-} from '@/client/typescript/graphql';
-import { Button, IconButton } from '@/client/components/form';
-import { Divider } from '@/client/components/layout';
-import { PrefetchLink, Title, SubTitle } from '@/client/components/typo';
-import { FormikControl } from '@/client/components/composed';
-import { Login as LoginDocument } from '@/client/graphql/usuario.gql';
+import { Login as LoginDocument, Profile } from '@/client/graphql/usuario.gql';
 import { Logged } from '@/client/graphql/local.gql';
-import { useVisibility, preloadRouteComponent } from '@/client/utils';
-
-const LoginValidation = Yup.object().shape({
-  email: Yup.string()
-    .required('Campo Obrigatório')
-    .email('Insira um email válido'),
-  senha: Yup.string().required('Campo Obrigatório'),
-});
+import { useVisibility, preloadRouteComponent, fieldLevelErrorMapper, classValidatorMapper } from '@/client/utils';
+import { PrefetchLink, FormikField } from '@/client/components/composed';
+import { LoginValidation } from '@/client/providers/validations';
+import { useStyles } from './styles';
 
 export default function Login() {
+  const classes = useStyles();
+  const location = useLocation();
+  const history = useHistory();
   const client = useApolloClient();
-  const {
-    visibility,
-    toggleVisibility,
-    render: renderVisibility,
-  } = useVisibility();
+  const { visibility, toggleVisibility, render: renderVisibility } = useVisibility();
 
-  const [fetchLogin] = useMutation<LoginMutation, LoginMutationVariables>(
-    LoginDocument
-  );
+  const [fetchLogin] = useMutation<LoginMutation, LoginMutationVariables>(LoginDocument, {
+    update(cache, { data }) {
+      if (data && data.login) {
+        cache.writeQuery<ProfileQuery>({
+          query: Profile,
+          data: {
+            profile: data.login,
+          },
+        });
+      }
+    },
+  });
 
   return (
     <>
       <Helmet title="Entrar" />
-      <SubTitle>Fazer Login</SubTitle>
-      <Title>Bem vindo</Title>
-      <Formik
-        validationSchema={LoginValidation}
-        initialValues={{
-          email: '',
-          senha: '',
-        }}
-        onSubmit={async ({ email, senha }, actions) => {
-          try {
-            await fetchLogin({
-              variables: {
-                email,
-                senha,
-              },
-            });
-
-            client.writeQuery<LoggedQuery>({
-              query: Logged,
-              data: {
-                logged: true,
-              },
-            });
-
-            await preloadRouteComponent('/app', client);
-          } catch (err) {
-            const firstError = err.graphQLErrors[0];
-
-            if (firstError.extensions) {
-              const { field } = firstError.extensions.exception;
-
-              actions.setErrors({
-                [field]: firstError.message,
+      <div className={classes.form}>
+        <Typography variant="h4">Bem vindo de volta!</Typography>
+        <Typography variant="button" gutterBottom color="secondary">
+          Entrar
+        </Typography>
+        <Formik
+          validationSchema={LoginValidation}
+          validateOnChange={false}
+          validateOnBlur={false}
+          initialValues={{
+            email: '',
+            senha: '',
+          }}
+          onSubmit={async ({ email, senha }, actions) => {
+            try {
+              await fetchLogin({
+                variables: {
+                  email,
+                  senha,
+                },
               });
+
+              client.writeQuery<LoggedQuery>({
+                query: Logged,
+                data: {
+                  logged: true,
+                },
+              });
+
+              const route = (parse(location.search).from as string) || '/app';
+
+              await preloadRouteComponent(route, client);
+
+              history.push({
+                pathname: route,
+              });
+            } catch (err) {
+              fieldLevelErrorMapper(err, {
+                setFieldError: actions.setFieldError,
+              });
+
+              classValidatorMapper<{ email: string; senha: string }>(err, {
+                setFieldError: actions.setFieldError,
+                maps: {
+                  email: 'batata',
+                },
+              });
+
+              actions.setSubmitting(false);
             }
-          }
-        }}
-      >
-        {() => (
-          <Form>
-            <Field
-              name="email"
-              component={FormikControl}
-              label="Email"
-              id="email"
-              type="email"
-            />
-            <Field
-              name="senha"
-              component={FormikControl}
-              type={visibility ? 'text' : 'password'}
-              label="Senha"
-              id="senha"
-              append={
-                <IconButton
-                  aria-label={visibility ? 'Esconder senha' : 'Ver senha'}
-                  type="button"
-                  onClick={toggleVisibility}
-                >
-                  {renderVisibility()}
-                </IconButton>
-              }
-            />
-            <Button type="submit" block>
-              Entrar
-            </Button>
-          </Form>
-        )}
-      </Formik>
-      <Divider />
-      <PrefetchLink to="/auth/register">Criar conta</PrefetchLink>
+          }}
+        >
+          {() => (
+            <Form>
+              <FormikField name="email" label="Email" id="email" type="email" />
+              <FormikField
+                name="senha"
+                type={visibility ? 'text' : 'password'}
+                label="Senha"
+                id="senha"
+                helperText={
+                  <Link component={PrefetchLink} color="secondary" to="/auth/forgot">
+                    Esqueceu a senha?
+                  </Link>
+                }
+                InputProps={{
+                  endAdornment: (
+                    <IconButton
+                      aria-label={visibility ? 'Esconder senha' : 'Ver senha'}
+                      type="button"
+                      onClick={toggleVisibility}
+                    >
+                      {renderVisibility()}
+                    </IconButton>
+                  ),
+                }}
+              />
+              <div className={classes.buttonMargin}>
+                <Button variant="contained" color="primary" type="submit">
+                  Entrar
+                </Button>
+              </div>
+              <Divider />
+              <div className={classes.topOr}>
+                select with languages
+                <Link color="secondary" component={PrefetchLink} to="/auth/register">
+                  Criar conta
+                </Link>
+              </div>
+            </Form>
+          )}
+        </Formik>
+      </div>
     </>
   );
 }

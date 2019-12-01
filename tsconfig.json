@@ -5,6 +5,8 @@
     "target": "esnext",
     "esModuleInterop": true,
     "allowSyntheticDefaultImports": true,
+    "experimentalDecorators": true,
+    "emitDecoratorMetadata": true,
     "moduleResolution": "node",
     "module": "esnext",
     "strict": true,
@@ -14,5 +16,6 @@
       "@/*": ["src/*"]
     }
   },
+  "include": ["src"],
   "exclude": ["node_modules", "configuration", "dist", "public", "__tests__"]
 }

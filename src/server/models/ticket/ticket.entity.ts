@@ -1,4 +1,4 @@
-import { Typegoose, prop, arrayProp, Ref, InstanceType } from 'typegoose';
+import { prop, arrayProp, Ref, DocumentType } from '@typegoose/typegoose';
 import { ObjectType, Field, ID } from 'type-graphql';
 import { Schema } from 'mongoose';
 
@@ -7,7 +7,7 @@ import { Label } from '../label/label.entity';
 import { TicketStatusEnum } from './ticket.dto';
 
 @ObjectType()
-export class Ticket extends Typegoose {
+export class Ticket {
   @Field(() => ID)
   public _id!: Schema.Types.ObjectId;
 
@@ -36,4 +36,4 @@ export class Ticket extends Typegoose {
   public labels?: Label[];
 }
 
-export type TicketInstance = InstanceType<Ticket>;
+export type TicketDoc = DocumentType<Ticket>;

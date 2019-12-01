@@ -1,7 +1,7 @@
 import { RouteConfig, RouteConfigComponentProps } from 'react-router-config';
 import { DocumentNode } from 'graphql';
 
-import { LoggedQuery } from '@/client/typescript/graphql';
+import { ApolloClient } from 'apollo-client';
 
 export type Route = Omit<RouteConfig, 'path'> & {
   path: string | string[];
@@ -11,4 +11,6 @@ export type Route = Omit<RouteConfig, 'path'> & {
   query?: DocumentNode;
 };
 
-export type RenderProps = { data?: LoggedQuery } & RouteConfigComponentProps;
+export type RenderProps = {
+  client: ApolloClient<object>;
+} & RouteConfigComponentProps;

@@ -1,14 +1,5 @@
 import { Field, InputType, registerEnumType, ArgsType } from 'type-graphql';
-import {
-  IsString,
-  IsEnum,
-  IsEmail,
-  IsUrl,
-  IsNotEmpty,
-  Length,
-  IsOptional,
-  Matches,
-} from 'class-validator';
+import { IsString, IsEnum, IsEmail, IsUrl, IsNotEmpty, Length, IsOptional, Matches } from 'class-validator';
 
 import { CommonFindOneArgs } from '@/server/utils/common.dto';
 
@@ -72,6 +63,7 @@ export class EmpresaInput {
   @IsOptional()
   @IsString()
   @IsNotEmpty()
+  @Matches(/\(\d{2}\) \d{4}-\d{4}/)
   public telefone?: string;
 
   @Field({ nullable: true })

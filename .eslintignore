@@ -1,0 +1,3 @@
+*.gql
+*.json
+src/client/typescript/operations.d.ts

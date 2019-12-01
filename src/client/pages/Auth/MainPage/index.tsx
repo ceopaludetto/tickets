@@ -1,31 +1,10 @@
-import React, { useEffect, useState } from 'react';
+import React from 'react';
 import { RouteConfigComponentProps, renderRoutes } from 'react-router-config';
 
-import { Paper } from '@/client/components/layout';
-import { useRouter } from '@/client/utils/useRouter';
-import { Container, Row, Col } from './styles';
+import { useStyles } from './styles';
 
 export default function Auth({ route }: RouteConfigComponentProps) {
-  const { location } = useRouter();
-  const [isRegister, setIsRegister] = useState();
+  const classes = useStyles();
 
-  useEffect(() => {
-    if (location.pathname.includes('/auth/register')) {
-      setIsRegister(true);
-    } else {
-      setIsRegister(false);
-    }
-  }, [location.pathname]);
-
-  return (
-    <Container isRegister={isRegister} fluid>
-      <Row justifyContent="center">
-        <Col isRegister={isRegister}>
-          <Paper isElevated={!isRegister}>
-            {route && renderRoutes(route.routes)}
-          </Paper>
-        </Col>
-      </Row>
-    </Container>
-  );
+  return <div className={classes.container}>{route && renderRoutes(route.routes)}</div>;
 }

@@ -1,0 +1,17 @@
+fragment EmpresaInfo on Empresa {
+  _id
+  nomeFantasia
+  cnpj
+}
+
+mutation AddEmpresa($input: EmpresaInput!) {
+  addEmpresa(input: $input) {
+    ...EmpresaInfo
+  }
+}
+
+query FindEmpresa($id: ID!){
+  findEmpresa(_id: $id){
+    ...EmpresaInfo
+  }
+}

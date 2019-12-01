@@ -1,56 +1,60 @@
-import React, { useContext } from 'react';
-import { ThemeProvider, ThemeContext } from 'styled-components';
+import React, { useState } from 'react';
 import { RouteConfigComponentProps, renderRoutes } from 'react-router-config';
-import { useQuery } from '@apollo/react-hooks';
-import { FiSettings, FiSearch } from 'react-icons/fi';
+import { Drawer, Hidden, SwipeableDrawer } from '@material-ui/core';
+// import { useQuery } from '@apollo/react-hooks';
 
-import { Content, GlobalBackground } from './styles';
-import { Sidebar, SidebarItem } from '@/client/components/composed';
-import { IconButton } from '@/client/components/form';
-import { PrefetchLink } from '@/client/components/typo';
-import { Theme } from '@/client/graphql/local.gql';
-import { Mode } from '@/client/providers/theme';
+import { Header, Sidebar } from '@/client/components/composed';
+import { useStyles } from './styles';
 
 export default function App({ route }: RouteConfigComponentProps) {
-  const { data } = useQuery(Theme);
-  const theme = useContext(ThemeContext);
+  const classes = useStyles();
+  const [isDrawerOpen, setDrawerOpen] = useState(false);
+  // const { data } = useQuery(Theme);
+  // const theme = useContext(ThemeContext);
+
+  const toggleDrawer = (open: boolean) => (event: React.KeyboardEvent | React.MouseEvent) => {
+    if (
+      event &&
+      event.type === 'keydown' &&
+      ((event as React.KeyboardEvent).key === 'Tab' || (event as React.KeyboardEvent).key === 'Shift')
+    ) {
+      return;
+    }
+
+    setDrawerOpen(open);
+  };
+
+  function renderSidebar() {
+    return <Sidebar />;
+  }
 
   return (
-    <ThemeProvider
-      theme={{ ...theme, mode: data.isDark ? Mode.Dark : Mode.Light }}
-    >
-      <>
-        <GlobalBackground />
-        <Sidebar
-          profileContent={
-            <>
-              <IconButton>
-                <FiSearch />
-              </IconButton>
-              <IconButton as={PrefetchLink} to="/app/settings">
-                <FiSettings />
-              </IconButton>
-            </>
-          }
+    <div className={classes.root}>
+      <Header onDrawerButtonClick={toggleDrawer(!isDrawerOpen)} />
+      <Hidden smUp implementation="css">
+        <SwipeableDrawer
+          onOpen={toggleDrawer(true)}
+          onClose={toggleDrawer(false)}
+          open={isDrawerOpen}
+          classes={{
+            paper: classes.drawerPaper,
+          }}
         >
-          {route &&
-            route.routes &&
-            route.routes
-              .filter(r => !!r.name)
-              .map(r => {
-                return (
-                  <SidebarItem
-                    icon={r.icon}
-                    exact={r.exact}
-                    to={r.path as string}
-                  >
-                    {r.name}
-                  </SidebarItem>
-                );
-              })}
-        </Sidebar>
-        <Content>{route && renderRoutes(route.routes)}</Content>
-      </>
-    </ThemeProvider>
+          {renderSidebar()}
+        </SwipeableDrawer>
+      </Hidden>
+      <Hidden xsDown implementation="css">
+        <Drawer
+          classes={{
+            paper: classes.drawerPaper,
+          }}
+          variant="permanent"
+          open
+        >
+          {renderSidebar()}
+        </Drawer>
+      </Hidden>
+      <main className={classes.content}>{route && route.routes && renderRoutes(route.routes)}</main>
+    </div>
   );
 }

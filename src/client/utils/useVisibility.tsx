@@ -1,12 +1,12 @@
 import React, { useState } from 'react';
-import { FiEye, FiEyeOff } from 'react-icons/fi';
+import { VisibilityOffOutlined, VisibilityOutlined } from '@material-ui/icons';
 import { useToggle } from 'react-use';
 
-export function useVisibility(initial: boolean = false) {
+export function useVisibility(initial = false) {
   const [visibility, toggleVisibility] = useToggle(initial);
 
   function render() {
-    return visibility ? <FiEyeOff /> : <FiEye />;
+    return visibility ? <VisibilityOffOutlined /> : <VisibilityOutlined />;
   }
 
   return { visibility, toggleVisibility, render };
@@ -29,9 +29,7 @@ function mapArrToObj(props: string[]) {
 }
 
 export function useMultipleVisibility<T extends string[]>(props: T) {
-  const [visibility, setVisibility] = useState<UseMultipleVisibilityState>(
-    mapArrToObj(props)
-  );
+  const [visibility, setVisibility] = useState<UseMultipleVisibilityState>(mapArrToObj(props));
 
   function toggleVisibility(p: T[number]) {
     return () =>
@@ -42,13 +40,13 @@ export function useMultipleVisibility<T extends string[]>(props: T) {
   }
 
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  function render(p: T[number], tru?: any, fals?: any) {
+  function renderVisibility(p: T[number], tru?: any, fals?: any) {
     if (tru && fals) {
       return visibility[p] ? tru : fals;
     }
 
-    return visibility[p] ? <FiEyeOff /> : <FiEye />;
+    return visibility[p] ? <VisibilityOffOutlined /> : <VisibilityOutlined />;
   }
 
-  return { visibility, toggleVisibility, render };
+  return { visibility, toggleVisibility, renderVisibility };
 }

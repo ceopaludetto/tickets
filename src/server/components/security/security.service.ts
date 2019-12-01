@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { ModelType } from 'typegoose';
+import { ReturnModelType } from '@typegoose/typegoose';
 import { InjectModel } from 'nestjs-typegoose';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 
@@ -8,9 +8,9 @@ import { ID } from '@/server/utils/common.dto';
 
 @Injectable()
 export class SecurityService {
-  private readonly perfilRepository: ModelType<Perfil>;
+  private readonly perfilRepository: ReturnModelType<typeof Perfil>;
 
-  public constructor(@InjectModel(Perfil) perfilRepo: ModelType<Perfil>) {
+  public constructor(@InjectModel(Perfil) perfilRepo: ReturnModelType<typeof Perfil>) {
     this.perfilRepository = perfilRepo;
   }
 

@@ -1,18 +1,22 @@
 import React from 'react';
+import { List } from '@material-ui/core';
 
-import { Container, Items, Profile } from './styles';
+import { ProfileBar } from '../ProfileBar';
+import { useStyles } from './styles';
+import { AppRoutes } from '@/client/providers/route';
+import { ListItemLink } from '@/client/components/customs';
 
-interface SidebarProps extends React.HTMLAttributes<HTMLDivElement> {
-  profileContent?: React.ReactNode;
-}
+export function Sidebar() {
+  const classes = useStyles();
 
-export function Sidebar({ children, profileContent, ...rest }: SidebarProps) {
   return (
-    <Container {...rest}>
-      <Items>{children}</Items>
-      <Profile>{profileContent}</Profile>
-    </Container>
+    <div className={classes.root}>
+      <ProfileBar />
+      <List className={classes.list} component="nav">
+        {AppRoutes.filter(r => !!r.icon).map(r => (
+          <ListItemLink {...r} key={typeof r.path === 'string' ? r.path : r.path[0]} />
+        ))}
+      </List>
+    </div>
   );
 }
-
-export { SidebarItem } from './item';

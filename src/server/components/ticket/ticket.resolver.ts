@@ -3,10 +3,7 @@ import { Resolver, Query, Args, Mutation, Subscription } from '@nestjs/graphql';
 import { PubSub } from 'apollo-server-express';
 
 import { Ticket, TicketInput, TicketUpdateArgs } from '@/server/models';
-import {
-  CommonFindAllArgs,
-  CommonFindOneArgs,
-} from '@/server/utils/common.dto';
+import { CommonFindAllArgs, CommonFindOneArgs } from '@/server/utils/common.dto';
 import { TicketService } from './ticket.service';
 import { PUB_SUB, TICKET_ASYNC_ITERATOR } from '@/server/utils/constants';
 
@@ -16,53 +13,34 @@ export class TicketResolver {
 
   private pubSub: PubSub;
 
-  public constructor(
-    ticketService: TicketService,
-    @Inject(PUB_SUB) pubSub: PubSub
-  ) {
+  public constructor(ticketService: TicketService, @Inject(PUB_SUB) pubSub: PubSub) {
     this.ticketService = ticketService;
     this.pubSub = pubSub;
   }
 
   @Query(() => [Ticket])
   public async findAllTickets(@Args() { skip, take }: CommonFindAllArgs) {
-    try {
-      const tickets = await this.ticketService.findAll(skip, take);
-      return tickets;
-    } catch (err) {
-      throw err;
-    }
+    const tickets = await this.ticketService.findAll(skip, take);
+    return tickets;
   }
 
   @Query(() => Ticket)
   public async findTicket(@Args() { _id }: CommonFindOneArgs) {
-    try {
-      const ticket = await this.ticketService.findOne(_id);
-      return ticket;
-    } catch (err) {
-      throw err;
-    }
+    const ticket = await this.ticketService.findOne(_id);
+    return ticket;
   }
 
   @Mutation(() => Ticket)
   public async addTicket(@Args('input') input: TicketInput) {
-    try {
-      const ticket = await this.ticketService.createOrUpdate(input);
-      this.pubSub.publish(TICKET_ASYNC_ITERATOR, ticket);
-      return ticket;
-    } catch (err) {
-      throw err;
-    }
+    const ticket = await this.ticketService.createOrUpdate(input);
+    this.pubSub.publish(TICKET_ASYNC_ITERATOR, ticket);
+    return ticket;
   }
 
   @Mutation(() => Ticket)
   public async updateTicket(@Args() { input, _id }: TicketUpdateArgs) {
-    try {
-      const ticket = await this.ticketService.createOrUpdate(input, _id);
-      return ticket;
-    } catch (err) {
-      throw err;
-    }
+    const ticket = await this.ticketService.createOrUpdate(input, _id);
+    return ticket;
   }
 
   @Subscription(() => Ticket)

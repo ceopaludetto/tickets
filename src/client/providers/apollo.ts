@@ -15,7 +15,9 @@ export function createClient(isSsr = false, link: any) {
 
   if (!isSsr) {
     cache.restore(window.__APOLLO_STATE__);
-    delete window.__APOLLO_STATE__;
+    if (!module.hot) {
+      delete window.__APOLLO_STATE__;
+    }
   }
 
   return client;

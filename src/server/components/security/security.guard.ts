@@ -5,16 +5,8 @@ import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
 import { Request } from 'express';
 import { AuthenticationError } from 'apollo-server-express';
 
-import {
-  ContextType,
-  PayloadType,
-  Role,
-  CustomMatcherOptions,
-} from '@/server/utils/common.dto';
-import {
-  SECURITY_ROLE_DECORATOR,
-  SECURITY_CUSTOM_MATCHER_DECORATOR,
-} from '@/server/utils/constants';
+import { ContextType, PayloadType, Role, CustomMatcherOptions } from '@/server/utils/common.dto';
+import { SECURITY_ROLE_DECORATOR, SECURITY_CUSTOM_MATCHER_DECORATOR } from '@/server/utils/constants';
 import { UsuarioService } from '@/server/components/usuario/usuario.service';
 import { SecurityMatcher } from './security.matcher';
 
@@ -63,9 +55,7 @@ export class SecurityGuard implements CanActivate {
     }
 
     // Captura informações do usuário
-    const usuario = await this.usuarioService.findOne(
-      (req.user as PayloadType)._id
-    );
+    const usuario = await this.usuarioService.findOne((req.user as PayloadType)._id);
 
     // Verifica se as informações foram capturadas
     if (!usuario) {
@@ -73,10 +63,7 @@ export class SecurityGuard implements CanActivate {
     }
 
     // Captura a role injetada com o decorator
-    const role = this.reflector.get<Role>(
-      SECURITY_ROLE_DECORATOR,
-      context.getHandler()
-    );
+    const role = this.reflector.get<Role>(SECURITY_ROLE_DECORATOR, context.getHandler());
 
     const customMatcher = this.reflector.get<CustomMatcherOptions>(
       SECURITY_CUSTOM_MATCHER_DECORATOR,
@@ -86,9 +73,7 @@ export class SecurityGuard implements CanActivate {
     if (role) {
       // Verifica se o usuário logado tenta alterar suas próprias informações, se a opção useUserID esta marcada, sera usado o ID do usuario logado
       // Caso contrario, sera usado o _id do argumento
-      const isSameUser = role.useUserID
-        ? !!req.user._id
-        : req.user._id === args._id;
+      const isSameUser = role.useUserID ? !!req.user._id : req.user._id === args._id;
 
       // Chama o validador
       const isValid = await this.securityMatcher.isRoleValid({

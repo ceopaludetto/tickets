@@ -6,6 +6,7 @@ module.exports = {
     browser: true,
     es6: true,
     node: true,
+    jest: true,
   },
   extends: [
     "airbnb",
@@ -13,7 +14,7 @@ module.exports = {
     "plugin:jsx-a11y/recommended",
     "prettier",
     "prettier/react",
-    "prettier/@typescript-eslint"
+    "prettier/@typescript-eslint",
   ],
   globals: {
     Atomics: "readonly",
@@ -27,18 +28,18 @@ module.exports = {
     ecmaVersion: 2019,
     sourceType: "module",
     projects: [
-      path.resolve("src", "client", "tsconfig.json"),
-      path.resolve("src", "server", "tsconfig.json")
+      path.resolve("tsconfig.client.json"),
+      path.resolve("tsconfig.server.json")
     ]
   },
-  plugins: ["@typescript-eslint", "import", "react", "react-hooks", "prettier"],
+  plugins: ["import", "react", "react-hooks", "prettier"],
   rules: {
     "no-param-reassign": "off",
     "no-underscore-dangle": "off",
     "@typescript-eslint/interface-name-prefix": "off",
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
-    "@typescript-eslint/no-empty-interface": "off",
+    "@typescript-eslint/no-empty-interface": "warn",
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
     "import/no-cycle": ["error", { maxDepth: 1 }],
@@ -50,6 +51,7 @@ module.exports = {
     ],
     "react-hooks/rules-of-hooks": "error",
     "react/prop-types": "off",
+    "react/jsx-props-no-spreading": "off",
     "jsx-a11y/label-has-for": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "prettier/prettier": [
@@ -57,9 +59,10 @@ module.exports = {
       {
         "trailingComma": "es5",
         "singleQuote": true,
-        "printWidth": 80
+        "printWidth": 120
       }
-    ]
+    ],
+    "max-classes-per-file": ["error", 4]
   },
   settings: {
     "import/extensions": [".js", ".jsx", ".ts", ".tsx", ".gql"],

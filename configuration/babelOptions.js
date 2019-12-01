@@ -1,12 +1,13 @@
+/* eslint-disable no-template-curly-in-string */
 const isProd = process.env.NODE_ENV === 'production';
 
-module.exports = (isServer = false) => ({
+module.exports = (isServer = false, isTest = false) => ({
   presets: [
     [
       '@babel/preset-env',
       {
         loose: true,
-        modules: isServer ? 'cjs' : false,
+        modules: false,
         useBuiltIns: 'entry',
         shippedProposals: true,
         corejs: 3,
@@ -14,8 +15,9 @@ module.exports = (isServer = false) => ({
         targets: isServer
           ? {
               node: 'current',
+              esmodules: true,
             }
-          : null,
+          : { browsers: ['last 2 version', '> 0.25%', 'not ie <= 8', 'not dead'] },
       },
     ],
     [
@@ -27,16 +29,11 @@ module.exports = (isServer = false) => ({
     ],
   ],
   plugins: [
+    'lodash',
+    'optimize-clsx',
     '@loadable/babel-plugin',
-    'graphql-tag',
     '@babel/plugin-transform-react-constant-elements',
     '@babel/plugin-transform-react-inline-elements',
-    [
-      'styled-components',
-      {
-        displayName: !isProd,
-      },
-    ],
     [
       '@babel/plugin-transform-destructuring',
       {
@@ -56,51 +53,29 @@ module.exports = (isServer = false) => ({
       },
     ],
     ['@babel/plugin-proposal-decorators', { legacy: true }],
-    [
-      '@babel/plugin-proposal-class-properties',
-      {
-        loose: true,
-      },
-    ],
-    [
-      '@babel/plugin-transform-runtime',
-      {
-        corejs: false,
-        regenerator: true,
-      },
-    ],
-    [
-      '@babel/plugin-proposal-object-rest-spread',
-      {
-        useBuiltIns: true,
-      },
-    ],
-    [
-      'transform-react-remove-prop-types',
-      {
-        mode: 'remove',
-        removeImport: true,
-      },
-    ],
+    ['@babel/plugin-proposal-class-properties', { loose: true }],
+    ['@babel/plugin-transform-runtime', { corejs: false, regenerator: true }],
+    ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }],
+    ['transform-react-remove-prop-types', { mode: 'remove', removeImport: true }],
     [
       'transform-imports',
       {
         'react-use': {
-          // eslint-disable-next-line no-template-curly-in-string
           transform: 'react-use/lib/${member}',
           preventFullImport: true,
         },
-        ...(isServer
-          ? {}
-          : {
-              'mdi-norm': {
-                // eslint-disable-next-line no-template-curly-in-string
-                transform: 'mdi-norm/es/${member}',
-                preventFullImport: true,
-                skipDefaultConversion: true,
-              },
-            }),
+        '@material-ui/core': {
+          transform: isTest || isServer ? '@material-ui/core/${member}' : '@material-ui/core/esm/${member}',
+          preventFullImport: true,
+        },
+        '@material-ui/icons': {
+          transform: isTest || isServer ? '@material-ui/icons/${member}' : '@material-ui/icons/esm/${member}',
+          preventFullImport: true,
+        },
       },
     ],
+    ...(isTest
+      ? ['babel-plugin-dynamic-import-node', ['@babel/plugin-transform-modules-commonjs', { loose: true }]]
+      : []),
   ],
 });

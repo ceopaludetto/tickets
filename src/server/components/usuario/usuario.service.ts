@@ -1,23 +1,23 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
-import { ModelType } from 'typegoose';
+import { ReturnModelType } from '@typegoose/typegoose';
 import { UserInputError, ApolloError } from 'apollo-server-express';
 
 import { Usuario, UsuarioInput, LoginUsuario } from '@/server/models';
-import { ID } from '@/server/utils/common.dto';
+import { ID, ModelFields } from '@/server/utils/common.dto';
 
 @Injectable()
 export class UsuarioService {
-  private readonly userRepository: ModelType<Usuario>;
+  private readonly userRepository: ReturnModelType<typeof Usuario>;
 
   public constructor(
     @InjectModel(Usuario)
-    userRepository: ModelType<Usuario>
+    userRepository: ReturnModelType<typeof Usuario>
   ) {
     this.userRepository = userRepository;
   }
 
-  public async findAll(skip: number = 0, take: number = 100) {
+  public async findAll(skip = 0, take = 100) {
     try {
       const usuarios = await this.userRepository
         .find()
@@ -37,10 +37,10 @@ export class UsuarioService {
     }
   }
 
-  public async findOne(id: ID) {
+  public async findOne(field: ModelFields<Usuario>) {
     try {
       const usuario = await this.userRepository
-        .findById(id)
+        .findOne(field)
         .populate({
           path: 'associacoes.perfil',
           populate: {
@@ -49,11 +49,13 @@ export class UsuarioService {
         })
         .populate('associacoes.empresa')
         .exec();
+
       if (!usuario) {
         throw new UserInputError('Usuário não encontrado', {
-          field: '_id',
+          field: Object.keys(field),
         });
       }
+
       return usuario;
     } catch (err) {
       throw new ApolloError(err);

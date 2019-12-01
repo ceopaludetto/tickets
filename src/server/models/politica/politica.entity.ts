@@ -1,11 +1,11 @@
 import { ObjectType, Field, ID } from 'type-graphql';
-import { Typegoose, prop, InstanceType, arrayProp } from 'typegoose';
+import { prop, arrayProp, DocumentType } from '@typegoose/typegoose';
 import { Schema } from 'mongoose';
 
 import { AcaoEnum, RecursoEnum, AnyOrOwnEnum } from './politica.dto';
 
 @ObjectType()
-export class Politica extends Typegoose {
+export class Politica {
   @Field(() => ID)
   public _id!: Schema.Types.ObjectId;
 
@@ -26,4 +26,4 @@ export class Politica extends Typegoose {
   public tipo!: string;
 }
 
-export type PoliticaInstance = InstanceType<Politica>;
+export type PoliticaDoc = DocumentType<Politica>;

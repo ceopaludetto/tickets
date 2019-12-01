@@ -1,12 +1,4 @@
-import {
-  IsMongoId,
-  IsOptional,
-  IsEnum,
-  IsArray,
-  IsString,
-  IsNotEmpty,
-  ValidateNested,
-} from 'class-validator';
+import { IsMongoId, IsOptional, IsEnum, IsArray, IsString, IsNotEmpty, ValidateNested } from 'class-validator';
 import { registerEnumType, InputType, Field, ID, ArgsType } from 'type-graphql';
 import { Schema } from 'mongoose';
 

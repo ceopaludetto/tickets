@@ -1,12 +1,12 @@
 import { ObjectType, Field, ID } from 'type-graphql';
-import { Typegoose, Ref, prop, arrayProp, InstanceType } from 'typegoose';
+import { Ref, prop, arrayProp, DocumentType } from '@typegoose/typegoose';
 import { Schema } from 'mongoose';
 
 import { Politica } from '../politica/politica.entity';
 import { Empresa } from '../empresa/empresa.entity';
 
 @ObjectType()
-export class Perfil extends Typegoose {
+export class Perfil {
   @Field(() => ID)
   public _id!: Schema.Types.ObjectId;
 
@@ -31,4 +31,4 @@ export class Perfil extends Typegoose {
   public empresa!: Ref<Empresa>;
 }
 
-export type PerfilInstance = InstanceType<Perfil>;
+export type PerfilDoc = DocumentType<Perfil>;

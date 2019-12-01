@@ -1,0 +1,16 @@
+fragment TicketInfo on Ticket {
+  _id
+  nome
+  descricao
+  status
+  labels{
+    cor
+    descricao
+  }
+}
+
+query FindAllTickets{
+  findAllTickets {
+    ...TicketInfo
+  }
+}

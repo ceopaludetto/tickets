@@ -1,43 +1,43 @@
 import React from 'react';
-import { Helmet } from 'react-helmet';
-import { ThemeProvider } from 'styled-components';
-import { GridThemeProvider } from 'styled-bootstrap-grid';
+import { Helmet } from 'react-helmet-async';
+import { CssBaseline } from '@material-ui/core';
 import { renderRoutes } from 'react-router-config';
-import { useQuery } from '@apollo/react-hooks';
+import { useApolloClient } from '@apollo/react-hooks';
 
-import { LoggedQuery } from '@/client/typescript/graphql';
-import { Logged } from '@/client/graphql/local.gql';
-import { theme, gridTheme } from '@/client/providers/theme';
 import { routes } from '@/client/providers/route';
-import { GlobalStyle } from '@/client/styles/global';
-import { IS_PRODUCTION, PUBLIC_PATH } from '@/client/utils';
+import { ProgressContext } from '@/client/providers/progress';
+import { Progress, Providers } from '@/client/components/composed';
+import { IS_PRODUCTION, PUBLIC_PATH, useRandomString } from '@/client/utils';
 
 export default function App() {
-  const { data } = useQuery<LoggedQuery>(Logged);
+  const { isAnimating, toggleIsAnimating, currentKey } = useRandomString();
+  const client = useApolloClient();
 
   return (
-    <ThemeProvider theme={theme}>
-      <GridThemeProvider gridTheme={gridTheme}>
+    <Providers>
+      <ProgressContext.Provider
+        value={{
+          isAnimating,
+          toggleIsAnimating,
+        }}
+      >
         <>
-          <GlobalStyle />
+          <CssBaseline />
+          <Progress isAnimating={isAnimating} key={currentKey} />
           <Helmet defaultTitle="F3Desk" titleTemplate="%s | F3Desk">
-            {IS_PRODUCTION && (
-              <link
-                rel="manifest"
-                href={`${PUBLIC_PATH}public/manifest.json`}
-              />
-            )}
+            {IS_PRODUCTION && <link rel="manifest" href={`${PUBLIC_PATH}public/manifest.json`} />}
+            <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Roboto:300,400,500,700&display=swap" />
             <meta charSet="UTF-8" />
-            <meta
-              name="viewport"
-              content="width=device-width, initial-scale=1.0"
-            />
+            <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
             <meta httpEquiv="X-UA-Compatible" content="ie=edge" />
-            <meta name="theme-color" content={theme.colors.background.main} />
+            {/* <meta
+                name="theme-color"
+                content={theme.mode === Mode.Light ? theme.colors.background : theme.colors.backgroundDark}
+              /> */}
           </Helmet>
-          {renderRoutes(routes, { data })}
+          {routes && renderRoutes(routes, { client })}
         </>
-      </GridThemeProvider>
-    </ThemeProvider>
+      </ProgressContext.Provider>
+    </Providers>
   );
 }

@@ -1,0 +1,9 @@
+{
+  "extends": "./tsconfig.json",
+  "include": ["./src/server/**/*", "./src/client/**/*"],
+  "compilerOptions": {
+    "lib": ["es7"],
+    "typeRoots": ["./node_modules/@types", "./src/server/typescript"],
+    "skipLibCheck": false
+  }
+}

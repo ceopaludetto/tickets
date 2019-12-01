@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { InjectModel } from 'nestjs-typegoose';
-import { ModelType } from 'typegoose';
+import { ReturnModelType } from '@typegoose/typegoose';
 import { ApolloError, UserInputError } from 'apollo-server-express';
 
 import { Ticket, TicketInput } from '@/server/models';
@@ -8,13 +8,13 @@ import { ID } from '@/server/utils/common.dto';
 
 @Injectable()
 export class TicketService {
-  private ticketRepository: ModelType<Ticket>;
+  private ticketRepository: ReturnModelType<typeof Ticket>;
 
-  public constructor(@InjectModel(Ticket) ticketRepo: ModelType<Ticket>) {
+  public constructor(@InjectModel(Ticket) ticketRepo: ReturnModelType<typeof Ticket>) {
     this.ticketRepository = ticketRepo;
   }
 
-  public async findAll(skip: number = 0, take: number = 100) {
+  public async findAll(skip = 0, take = 100) {
     try {
       const tickets = await this.ticketRepository
         .find()
@@ -53,9 +53,7 @@ export class TicketService {
     }
 
     try {
-      const empresa = await this.ticketRepository
-        .findByIdAndUpdate(id, data, { new: true })
-        .exec();
+      const empresa = await this.ticketRepository.findByIdAndUpdate(id, data, { new: true }).exec();
       return empresa;
     } catch (err) {
       throw new ApolloError(err);

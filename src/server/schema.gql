@@ -33,6 +33,11 @@ input AssociacaoInput {
   tipo: AssociacaoEnum
 }
 
+"""
+The javascript `Date` as string. Type represents date and time as the ISO Date string.
+"""
+scalar DateTime
+
 enum DiaDePagamentoEnum {
   D7
   D10
@@ -83,6 +88,7 @@ input LabelInput {
 type Mutation {
   login(email: String!, senha: String!): Usuario!
   register(input: UsuarioInput!): Usuario!
+  forgot(email: String!): Usuario!
   updateUsuario(_id: ID!, input: UsuarioInput!): Usuario!
   addEmpresa(input: EmpresaInput!): Empresa!
   updateEmpresa(_id: ID!, input: EmpresaInput!): Empresa!
@@ -182,7 +188,8 @@ type Usuario {
   sobrenome: String!
   email: String!
   senha: String!
-  cargo: String!
+  telefone: String
+  nascimento: DateTime!
   associacoes: [Associacao!]!
   sysAdmin: Boolean!
 }
@@ -191,7 +198,8 @@ input UsuarioInput {
   nome: String
   sobrenome: String
   email: String
-  cargo: String
   senha: String
+  telefone: String
+  nascimento: DateTime
   associacoes: [AssociacaoInput!]
 }

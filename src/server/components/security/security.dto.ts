@@ -1,10 +1,10 @@
 import { Types } from 'mongoose';
 
 import { Role, CustomMatcherOptions } from '@/server/utils/common.dto';
-import { UsuarioInstance } from '@/server/models';
+import { UsuarioDoc } from '@/server/models';
 
 export interface SecurityMatcherOptions {
-  usuario: UsuarioInstance;
+  usuario: UsuarioDoc;
   role: Role;
   empresa?: Types.ObjectId;
   isSameUser?: boolean;
@@ -12,19 +12,11 @@ export interface SecurityMatcherOptions {
   args?: any;
 }
 
-export type SecurityCustomMatcherOptions = Pick<
-  SecurityMatcherOptions,
-  'usuario' | 'args'
-> & {
+export type SecurityCustomMatcherOptions = Pick<SecurityMatcherOptions, 'usuario' | 'args'> & {
   customMatcher: CustomMatcherOptions;
 };
 
-export {
-  EmpresaInstance,
-  UsuarioInstance,
-  PerfilInstance,
-  AssociacaoInstance,
-} from '@/server/models';
+export { EmpresaDoc, PerfilDoc, AssociacaoDoc } from '@/server/models';
 
 export { Role };
 export { CustomMatcherOptions };

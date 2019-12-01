@@ -1,12 +1,5 @@
 import { registerEnumType, InputType, Field } from 'type-graphql';
-import {
-  IsOptional,
-  IsEnum,
-  IsBoolean,
-  IsString,
-  IsNotEmpty,
-  ArrayUnique,
-} from 'class-validator';
+import { IsOptional, IsEnum, IsBoolean, IsString, IsNotEmpty, ArrayUnique } from 'class-validator';
 
 export enum RecursoEnum {
   Usuario = 'USUARIO', // Manipular informações sobre o modulo usuario

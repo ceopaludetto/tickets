@@ -3,12 +3,12 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
-const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
+// const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
-const tsFormatter = require('react-dev-utils/typescriptFormatter');
+// const tsFormatter = require('react-dev-utils/typescriptFormatter');
 // const { GenerateSW } = require('workbox-webpack-plugin');
 
 const envs = require('./envs');
@@ -18,29 +18,28 @@ const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = merge(baseConfig(false), {
   target: 'web',
-  entry: [
-    ...(isProd ? [] : ['razzle-dev-utils/webpackHotDevClient']),
-    path.resolve('src', 'client', 'index.tsx'),
-  ],
+  entry: [...(isProd ? [] : ['razzle-dev-utils/webpackHotDevClient']), path.resolve('src', 'client', 'index.tsx')],
   optimization: {
-    removeAvailableModules: isProd,
-    removeEmptyChunks: isProd,
     splitChunks: isProd
       ? {
           chunks: 'all',
         }
       : false,
-    runtimeChunk: isProd,
+    moduleIds: isProd ? 'hashed' : false,
+    runtimeChunk: isProd
+      ? {
+          name: 'runtime',
+        }
+      : false,
   },
   output: {
-    pathinfo: isProd,
-    publicPath: '/static/',
+    pathinfo: true,
+    publicPath: isProd ? '/static/' : `http://${envs.HOST}:${envs.DEV_PORT}/static/`,
     path: path.resolve('dist', 'static'),
     libraryTarget: 'var',
     filename: isProd ? 'js/index.[contenthash:8].js' : 'index.js',
     chunkFilename: isProd ? 'js/[name].[contenthash:8].js' : '[name].chunk.js',
-    devtoolModuleFilenameTemplate: info =>
-      path.resolve(info.resourcePath).replace(/\\/g, '/'),
+    devtoolModuleFilenameTemplate: info => path.resolve(info.resourcePath).replace(/\\/g, '/'),
   },
   devServer: {
     disableHostCheck: true,
@@ -55,7 +54,7 @@ module.exports = merge(baseConfig(false), {
     hot: true,
     noInfo: true,
     overlay: false,
-    writeToDisk: true,
+    // writeToDisk: true,
     publicPath: '/static/',
     host: envs.HOST,
     port: envs.DEV_PORT,
@@ -118,21 +117,21 @@ module.exports = merge(baseConfig(false), {
             multiStep: true,
           }),
           new WatchMissingNodeModulesPlugin(path.resolve('node_modules')),
+          // new ForkTsCheckerWebpackPlugin({
+          //   async: true,
+          //   tsconfig: path.resolve('src', 'client', 'tsconfig.json'),
+          //   watch: ['./src'],
+          //   typeCheck: true,
+          //   formatter: tsFormatter,
+          //   eslint: true,
+          //   eslintOptions: {
+          //     configFile: path.resolve('.eslintrc.js'),
+          //   },
+          // }),
         ]),
     new LoadablePlugin({
       filename: 'manifest.json',
       writeToDisk: true,
-    }),
-    new ForkTsCheckerWebpackPlugin({
-      async: true,
-      tsconfig: path.resolve('src', 'client', 'tsconfig.json'),
-      watch: ['./src'],
-      typeCheck: true,
-      formatter: tsFormatter,
-      eslint: true,
-      eslintOptions: {
-        configFile: path.resolve('.eslintrc.js'),
-      },
     }),
     new ModuleNotFoundPlugin(path.resolve('src')),
   ],
