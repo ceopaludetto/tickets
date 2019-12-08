@@ -10,7 +10,7 @@ export class EmpresaService {
 
   public async findAll() {
     try {
-      return await this.empresaRepository.findAll();
+      return this.empresaRepository.findAll();
     } catch (err) {
       throw new BadRequestException(err);
     }
@@ -18,7 +18,7 @@ export class EmpresaService {
 
   public async findOne(id: string) {
     try {
-      return await this.empresaRepository.findByPk(id);
+      return this.empresaRepository.findByPk(id);
     } catch (err) {
       throw new BadRequestException(err);
     }
@@ -27,7 +27,7 @@ export class EmpresaService {
   public async createOrUpdate(data: CreateOrUpdateEmpresaDto, id?: string) {
     try {
       if (!id) {
-        return await this.empresaRepository.create(data);
+        return this.empresaRepository.create(data);
       }
 
       const empresa = await this.empresaRepository.findByPk(id);
@@ -35,7 +35,7 @@ export class EmpresaService {
         throw new NotFoundException('Falha ao encontrar empresa');
       }
 
-      return await empresa.update(data);
+      return empresa.update(data);
     } catch (err) {
       throw new BadRequestException(err);
     }

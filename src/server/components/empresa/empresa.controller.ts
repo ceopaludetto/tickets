@@ -10,26 +10,26 @@ export class EmpresaController {
 
   @Get('/')
   public async findAllEmpresas() {
-    return await this.empresaService.findAll();
+    return this.empresaService.findAll();
   }
 
   @Get('/:id')
   public async findOneEmpresa(@Param() { id }: FindOneParam) {
-    return await this.empresaService.findOne(id);
+    return this.empresaService.findOne(id);
   }
 
   @Post('/')
   public async createEmpresa(@Body() data: CreateOrUpdateEmpresaDto) {
-    return await this.empresaService.createOrUpdate(data);
+    return this.empresaService.createOrUpdate(data);
   }
 
   @Put('/:id')
   public async updateEmpresa(@Body() data: CreateOrUpdateEmpresaDto, @Param() { id }: FindOneParam) {
-    return await this.empresaService.createOrUpdate(data, id);
+    return this.empresaService.createOrUpdate(data, id);
   }
 
   @Delete('/:id')
   public async deleteEmpresa(@Param() { id }: FindOneParam) {
-    return await this.empresaService.delete(id);
+    return this.empresaService.delete(id);
   }
 }

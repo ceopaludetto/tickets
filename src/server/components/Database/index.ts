@@ -1,3 +1,3 @@
-export { DatabaseModule } from './database.module';
 export { DatabaseProvider } from './database.provider';
-export { InjectModel } from './database.decorator';
+export { DatabaseModule } from './database.module';
+export { InjectModel, InjectSequelize, Sequelize } from './database.decorator';

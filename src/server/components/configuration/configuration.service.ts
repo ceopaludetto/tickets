@@ -8,10 +8,10 @@ interface EnvConfig {
     dialect: 'postgres' | 'sqlite';
     host: string;
     port: number;
-    user: string;
-    pass: string;
+    username: string;
+    password: string;
     database: string;
-    sync?: boolean;
+    synchronize?: boolean;
   };
   auth: {
     secret: string;
@@ -19,8 +19,8 @@ interface EnvConfig {
   email: {
     host: string;
     port: number;
-    user: string;
-    pass: string;
+    username: string;
+    password: string;
   };
 }
 
@@ -31,10 +31,10 @@ const EnvSchema = Yup.object().shape({
       .oneOf(['postgres', 'sqlite']),
     host: Yup.string().required('Campo obrigatório'),
     port: Yup.number().required('Campo obrigatório'),
-    user: Yup.string().required('Campo obrigatório'),
-    pass: Yup.string().required('Campo obrigatório'),
+    username: Yup.string().required('Campo obrigatório'),
+    password: Yup.string().required('Campo obrigatório'),
     database: Yup.string().required('Campo obrigatório'),
-    sync: Yup.boolean().notRequired(),
+    synchronize: Yup.boolean().notRequired(),
   }),
   auth: Yup.object().shape({
     secret: Yup.string().required('Campo obrigatório'),
@@ -42,8 +42,8 @@ const EnvSchema = Yup.object().shape({
   email: Yup.object().shape({
     host: Yup.string().required('Campo obrigatório'),
     port: Yup.number().required('Campo obrigatório'),
-    user: Yup.string().required('Campo obrigatório'),
-    pass: Yup.string().required('Campo obrigatório'),
+    username: Yup.string().required('Campo obrigatório'),
+    password: Yup.string().required('Campo obrigatório'),
   }),
 });
 

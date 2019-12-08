@@ -28,3 +28,8 @@ export const TICKET = 'Ticket';
  */
 export const SECURITY_ROLE_DECORATOR = 'SECURITY_ROLE';
 export const SECURITY_CUSTOM_MATCHER_DECORATOR = 'SECURITY_CUSTOM_MATCHER';
+
+/**
+ * Custom ID generator
+ */
+export { generate as SHORTID } from 'shortid';

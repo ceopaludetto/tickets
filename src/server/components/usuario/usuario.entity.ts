@@ -1,31 +1,26 @@
 import {
-  Model,
-  Column,
   Table,
-  CreatedAt,
+  Column,
   UpdatedAt,
-  DeletedAt,
-  PrimaryKey,
-  DataType,
-  BeforeCreate,
-  BeforeUpdate,
-  AllowNull,
+  CreatedAt,
+  Model,
   Default,
+  DeletedAt,
+  BeforeUpdate,
+  BeforeCreate,
   Unique,
+  AllowNull,
+  PrimaryKey,
 } from 'sequelize-typescript';
 import { compare, hash } from 'bcryptjs';
 
-import { USUARIO } from '@/server/utils/constants';
+import { USUARIO, SHORTID } from '@/server/utils/constants';
 
-@Table({
-  freezeTableName: true,
-  modelName: USUARIO,
-  tableName: USUARIO,
-})
+@Table({ modelName: USUARIO, tableName: USUARIO })
 export class Usuario extends Model<Usuario> {
   @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
+  @Default(SHORTID)
+  @Column
   public id!: string;
 
   @Column
@@ -66,6 +61,6 @@ export class Usuario extends Model<Usuario> {
   }
 
   public async comparePassword(senha: string) {
-    return await compare(senha, this.senha);
+    return compare(senha, this.senha);
   }
 }

@@ -10,21 +10,21 @@ export class UsuarioController {
 
   @Get('/')
   public async findAllUsuarios() {
-    return await this.usuarioService.findAll();
+    return this.usuarioService.findAll();
   }
 
   @Get('/:id')
   public async findOneUsuario(@Param() { id }: FindOneParam) {
-    return await this.usuarioService.findOne(id);
+    return this.usuarioService.findOne(id);
   }
 
   @Put('/:id')
   public async updateUsuario(@Body() data: CreateOrUpdateUsuarioDto, @Param() { id }: FindOneParam) {
-    return await this.usuarioService.createOrUpdate(data, id);
+    return this.usuarioService.createOrUpdate(data, id);
   }
 
   @Delete('/:id')
   public async deleteUsuario(@Param() { id }: FindOneParam) {
-    return await this.usuarioService.delete(id);
+    return this.usuarioService.delete(id);
   }
 }

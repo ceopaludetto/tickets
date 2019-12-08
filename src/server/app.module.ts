@@ -1,6 +1,5 @@
 import { Module } from '@nestjs/common';
 import { MailerModule, HandlebarsAdapter } from '@nest-modules/mailer';
-import { setGlobalOptions } from '@typegoose/typegoose';
 
 import {
   // ReactModule,
@@ -11,9 +10,9 @@ import {
   DatabaseModule,
   UsuarioModule,
   EmpresaModule,
+  TicketModule,
+  LabelModule,
 } from '@/server/components';
-
-setGlobalOptions({ globalOptions: { useNewEnum: true } });
 
 @Module({
   imports: [
@@ -21,13 +20,13 @@ setGlobalOptions({ globalOptions: { useNewEnum: true } });
     DatabaseModule,
     MailerModule.forRootAsync({
       inject: [ConfigurationService],
-      useFactory: ({ email: { host, port, user, pass }, templates }: ConfigurationService) => ({
+      useFactory: ({ email: { host, port, username, password }, templates }: ConfigurationService) => ({
         transport: {
           host,
           port,
           auth: {
-            user,
-            pass,
+            user: username,
+            pass: password,
           },
         },
         template: {
@@ -42,6 +41,8 @@ setGlobalOptions({ globalOptions: { useNewEnum: true } });
     AuthModule,
     EmpresaModule,
     UsuarioModule,
+    TicketModule,
+    LabelModule,
     // SecurityModule
     // ReactModule,
   ],

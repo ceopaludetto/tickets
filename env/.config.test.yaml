@@ -1,6 +1,6 @@
 database:
   dialect: sqlite
-  sync: true
+  synchronize: true
   storage: "./__tests__/sqlite.storage"
 
 auth:
@@ -8,6 +8,6 @@ auth:
 
 email:
   host: smtp.mailtrap.io
-  user: af9c948b78b1a1
-  pass: 9ffc61ed7dd98e
+  username: af9c948b78b1a1
+  password: 9ffc61ed7dd98e
   port: 2525

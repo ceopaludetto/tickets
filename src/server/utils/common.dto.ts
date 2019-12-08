@@ -1,7 +1,9 @@
-import { IsUUID, IsString } from 'class-validator';
+import { IsString } from 'class-validator';
+
+import { IsShortID } from './isShortid';
 
 export class FindOneParam {
-  @IsUUID()
+  @IsShortID()
   @IsString()
   public id!: string;
 }

@@ -8,16 +8,14 @@ interface ExtractOptions {
 export function ExtractAuthTokenFromCookie(
   req: Request,
   { shouldThrowException = true }: ExtractOptions = {
-    shouldThrowException: true,
+    shouldThrowException: false,
   }
 ) {
-  const authCookie = req.cookies.auth;
+  const { auth } = req.cookies;
 
-  if (!authCookie) {
-    if (shouldThrowException) {
-      throw new UnauthorizedException('Falha na autenticação');
-    }
+  if (!auth && shouldThrowException) {
+    throw new UnauthorizedException('Falha na autenticação');
   }
 
-  return authCookie;
+  return auth;
 }

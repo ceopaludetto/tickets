@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
 import { MailerService } from '@nest-modules/mailer';
 import { Response } from 'express';
@@ -20,19 +20,19 @@ export class AuthService {
   }
 
   public async profile(id: string) {
-    const user = await this.userService.findOne(id);
-    return user;
+    return this.userService.findOne(id);
   }
 
   public async verify(token: string) {
-    const payload = await this.jwtService.verifyAsync(token);
-    return payload;
+    try {
+      return this.jwtService.verifyAsync(token);
+    } catch (err) {
+      throw new UnauthorizedException(err);
+    }
   }
 
   public async login(email: string, senha: string) {
-    const usuario = await this.userService.login(email, senha);
-
-    return usuario;
+    return this.userService.login(email, senha);
   }
 
   public async register(data: CreateOrUpdateUsuarioDto) {

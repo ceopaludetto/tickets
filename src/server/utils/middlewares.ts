@@ -1,15 +1,19 @@
-import { INestApplication, ValidationPipe } from '@nestjs/common';
-import { static as ExpressStatic } from 'express';
-import CookieParser from 'cookie-parser';
+import { ValidationPipe } from '@nestjs/common';
+import { NestExpressApplication } from '@nestjs/platform-express';
+import { static as Static } from 'express';
+import { useContainer as ClassValidatorWrapper } from 'class-validator';
+
+import Cookie from 'cookie-parser';
 import Helmet from 'helmet';
 import Compression from 'compression';
 
 import { IS_PRODUCTION, PUBLIC_PATH, STATIC_FOLDER } from '@/server/utils/constants';
 
-export function installMiddlewares(app: INestApplication) {
-  app.useGlobalPipes(new ValidationPipe({ transform: true, forbidUnknownValues: true }));
+export function installMiddlewares(app: NestExpressApplication) {
+  ClassValidatorWrapper(app, { fallback: true });
+  app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
-  app.use(CookieParser());
+  app.use(Cookie());
 
   if (IS_PRODUCTION) {
     app.use(Compression());
@@ -18,8 +22,8 @@ export function installMiddlewares(app: INestApplication) {
 
   app.use(
     PUBLIC_PATH,
-    ExpressStatic(STATIC_FOLDER, {
-      maxAge: IS_PRODUCTION ? '1y' : undefined,
+    Static(STATIC_FOLDER, {
+      maxAge: '1y',
     })
   );
 }

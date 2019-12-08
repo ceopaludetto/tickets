@@ -1,26 +1,12 @@
-import {
-  Model,
-  Column,
-  Table,
-  CreatedAt,
-  UpdatedAt,
-  DeletedAt,
-  PrimaryKey,
-  DataType,
-  Default,
-} from 'sequelize-typescript';
+import { Table, Column, PrimaryKey, Default, CreatedAt, UpdatedAt, DeletedAt, Model } from 'sequelize-typescript';
 
-import { EMPRESA } from '@/server/utils/constants';
+import { EMPRESA, SHORTID } from '@/server/utils/constants';
 
-@Table({
-  freezeTableName: true,
-  modelName: EMPRESA,
-  tableName: EMPRESA,
-})
-export class Empresa extends Model<Usuario> {
+@Table({ modelName: EMPRESA, tableName: EMPRESA })
+export class Empresa extends Model<Empresa> {
   @PrimaryKey
-  @Default(DataType.UUIDV4)
-  @Column(DataType.UUID)
+  @Default(SHORTID)
+  @Column
   public id!: string;
 
   @Column

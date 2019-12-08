@@ -2,12 +2,11 @@
 const path = require('path');
 const webpack = require('webpack');
 // const WebpackBar = require('webpackbar');
-const TerserPlugin = require('terser-webpack-plugin');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
+const TerserPlugin = require('terser-webpack-plugin');
 const LodashPlugin = require('lodash-webpack-plugin');
 
 const babelOptions = require('./babelOptions');
-
 const envs = require('./envs');
 
 const isProd = process.env.NODE_ENV === 'production';

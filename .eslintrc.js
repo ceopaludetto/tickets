@@ -63,7 +63,6 @@ module.exports = {
       }
     ],
     "max-classes-per-file": ["error", 4],
-    "no-return-await": 0,
     "no-useless-constructor": 0
   },
   settings: {

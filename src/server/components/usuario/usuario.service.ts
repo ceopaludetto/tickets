@@ -10,7 +10,7 @@ export class UsuarioService {
 
   public async findAll() {
     try {
-      return await this.usuarioRepository.findAll();
+      return this.usuarioRepository.findAll();
     } catch (err) {
       throw new BadRequestException(err);
     }
@@ -18,7 +18,7 @@ export class UsuarioService {
 
   public async findOne(id: string) {
     try {
-      return await this.usuarioRepository.findByPk(id);
+      return this.usuarioRepository.findByPk(id);
     } catch (err) {
       throw new BadRequestException(err);
     }
@@ -27,14 +27,14 @@ export class UsuarioService {
   public async createOrUpdate(data: CreateOrUpdateUsuarioDto, id?: string) {
     try {
       if (!id) {
-        return await this.usuarioRepository.create(data);
+        return this.usuarioRepository.create(data);
       }
 
       const usuario = await this.usuarioRepository.findByPk(id);
       if (!usuario) {
         throw new NotFoundException('Falha ao encontrar Usuário');
       }
-      return await usuario.update(data);
+      return usuario.update(data);
     } catch (err) {
       throw new BadRequestException(err);
     }

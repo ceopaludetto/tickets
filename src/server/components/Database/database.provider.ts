@@ -2,25 +2,25 @@ import { Provider } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 
 import { Entities } from '@/server/components';
-import { SEQUELIZE_PROVIDER } from '@/server/utils/constants';
 import { ConfigurationService } from '@/server/components/Configuration';
+import { SEQUELIZE_PROVIDER } from '@/server/utils/constants';
 
 export const DatabaseProvider: Provider = {
   provide: SEQUELIZE_PROVIDER,
   inject: [ConfigurationService],
-  useFactory: async ({ database: { host, dialect, port, user, pass, database, sync } }: ConfigurationService) => {
+  useFactory: async ({ database: { host, username, password, database, port, synchronize } }: ConfigurationService) => {
     const sequelize = new Sequelize({
-      logging: false,
-      dialect,
+      dialect: 'postgres',
       host,
-      port,
+      username,
       database,
-      username: user,
-      password: pass,
+      password,
+      port,
     });
+
     sequelize.addModels(Entities);
 
-    if (sync) {
+    if (synchronize) {
       await sequelize.sync();
     }
 
