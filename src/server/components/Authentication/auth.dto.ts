@@ -1,6 +1,11 @@
 import { IsString, IsEmail, IsNotEmpty } from 'class-validator';
 
-export class LoginUsuarioDto {
+export interface LoginInputDTO {
+  email?: string;
+  senha?: string;
+}
+
+export class LoginInput implements LoginInputDTO {
   @IsString()
   @IsEmail()
   @IsNotEmpty()

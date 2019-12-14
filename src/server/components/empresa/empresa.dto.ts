@@ -1,21 +1,28 @@
 import { IsString, IsOptional, Matches } from 'class-validator';
 
-export class CreateOrUpdateEmpresaDto {
+export interface EmpresaInputDTO {
+  razaoSocial?: string;
+  cnpj?: string;
+  cep?: string;
+  telefone?: string;
+}
+
+export class EmpresaInput implements EmpresaInputDTO {
   @IsString()
   @IsOptional()
-  public razaoSocial!: string;
+  public razaoSocial?: string;
 
   @IsString()
   @IsOptional()
-  public cnpj!: string;
+  public cnpj?: string;
 
   @IsString()
   @IsOptional()
   @Matches(/(\d){5}-(\d){3}/)
-  public cep!: string;
+  public cep?: string;
 
   @IsString()
   @IsOptional()
   @Matches(/\((\d){2}\) \d?(\d){4}-(\d){4}/)
-  public telefone!: string;
+  public telefone?: string;
 }

@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 
 import { InjectModel } from '@/server/components/Database';
-import { CreateOrUpdateEmpresaDto } from './empresa.dto';
+import { EmpresaInput } from './empresa.dto';
 import { Empresa } from './empresa.entity';
 
 @Injectable()
@@ -24,7 +24,7 @@ export class EmpresaService {
     }
   }
 
-  public async createOrUpdate(data: CreateOrUpdateEmpresaDto, id?: string) {
+  public async createOrUpdate(data: EmpresaInput, id?: string) {
     try {
       if (!id) {
         return this.empresaRepository.create(data);

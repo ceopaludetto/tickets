@@ -14,7 +14,7 @@ export type SecurityCustomMatcherOptions = Pick<SecurityMatcherOptions, 'usuario
   customMatcher: CustomMatcherOptions;
 };
 
-export { EmpresaDoc, PerfilDoc, AssociacaoDoc } from '@/server/models';
+export { Empresa } from '@/server/components';
 
 export { Role };
 export { CustomMatcherOptions };

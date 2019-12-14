@@ -1,18 +1,24 @@
 import { IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
 
-import { CreateOrUpdateLabelDto } from '@/server/components/Label';
+import { LabelInput, LabelInputDTO } from '@/server/components/Label';
 
-export class CreateOrUpdateTicketDto {
+export interface TicketInputDTO {
+  nome?: string;
+  descricao?: string;
+  label?: LabelInputDTO[];
+}
+
+export class TicketInput implements TicketInputDTO {
   @IsString()
   @IsOptional()
-  public nome!: string;
+  public nome?: string;
 
   @IsString()
   @IsOptional()
-  public descricao!: string;
+  public descricao?: string;
 
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
-  public label!: CreateOrUpdateLabelDto[];
+  public label?: LabelInput[];
 }

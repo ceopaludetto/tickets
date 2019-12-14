@@ -1,7 +1,7 @@
 import { Controller, Get, Put, Delete, Body, Param } from '@nestjs/common';
 
 import { UsuarioService } from './usuario.service';
-import { CreateOrUpdateUsuarioDto } from './usuario.dto';
+import { UsuarioInput } from './usuario.dto';
 import { FindOneParam } from '@/server/utils/common.dto';
 
 @Controller('/usuario')
@@ -19,7 +19,7 @@ export class UsuarioController {
   }
 
   @Put('/:id')
-  public async updateUsuario(@Body() data: CreateOrUpdateUsuarioDto, @Param() { id }: FindOneParam) {
+  public async updateUsuario(@Body() data: UsuarioInput, @Param() { id }: FindOneParam) {
     return this.usuarioService.createOrUpdate(data, id);
   }
 

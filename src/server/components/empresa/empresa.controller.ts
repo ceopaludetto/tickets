@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 
 import { FindOneParam } from '@/server/utils/common.dto';
-import { CreateOrUpdateEmpresaDto } from './empresa.dto';
+import { EmpresaInput } from './empresa.dto';
 import { EmpresaService } from './empresa.service';
 
 @Controller('empresa')
@@ -19,12 +19,12 @@ export class EmpresaController {
   }
 
   @Post('/')
-  public async createEmpresa(@Body() data: CreateOrUpdateEmpresaDto) {
+  public async createEmpresa(@Body() data: EmpresaInput) {
     return this.empresaService.createOrUpdate(data);
   }
 
   @Put('/:id')
-  public async updateEmpresa(@Body() data: CreateOrUpdateEmpresaDto, @Param() { id }: FindOneParam) {
+  public async updateEmpresa(@Body() data: EmpresaInput, @Param() { id }: FindOneParam) {
     return this.empresaService.createOrUpdate(data, id);
   }
 

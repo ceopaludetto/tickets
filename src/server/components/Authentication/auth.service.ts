@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { MailerService } from '@nest-modules/mailer';
 import { Response } from 'express';
 
-import { Usuario, UsuarioService, CreateOrUpdateUsuarioDto } from '@/server/components/Usuario';
+import { Usuario, UsuarioService, UsuarioInput } from '@/server/components/Usuario';
 
 @Injectable()
 export class AuthService {
@@ -35,7 +35,7 @@ export class AuthService {
     return this.userService.login(email, senha);
   }
 
-  public async register(data: CreateOrUpdateUsuarioDto) {
+  public async register(data: UsuarioInput) {
     const usuario = await this.userService.createOrUpdate(data);
 
     if (usuario) {

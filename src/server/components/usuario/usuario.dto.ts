@@ -1,6 +1,15 @@
 import { IsOptional, IsString, IsEmail, Matches } from 'class-validator';
 
-export class CreateOrUpdateUsuarioDto {
+export interface UsuarioInputDTO {
+  nome?: string;
+  sobrenome?: string;
+  email?: string;
+  senha?: string;
+  telefone?: string;
+  dataNascimento?: Date;
+}
+
+export class UsuarioInput implements UsuarioInputDTO {
   @IsString()
   @IsOptional()
   public nome?: string;

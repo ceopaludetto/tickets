@@ -1,6 +1,7 @@
 import { Module } from '@nestjs/common';
-import { TypegooseModule } from 'nestjs-typegoose';
 
+import { DatabaseModule } from '@/server/components/Database';
+import { UsuarioModule } from '@/server/components/Usuario';
 import { SecurityService } from './security.service';
 import { SecurityResolver } from './security.resolver';
 import { Politica, Perfil } from '@/server/models';
@@ -10,7 +11,8 @@ import { POLITICA, PERFIL } from '@/server/utils/constants';
 @Module({
   providers: [SecurityResolver, SecurityService],
   imports: [
-    TypegooseModule.forFeature([
+    UsuarioModule,
+    DatabaseModule.forFeature([
       {
         typegooseClass: Politica,
         schemaOptions: {
