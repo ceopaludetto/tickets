@@ -104,6 +104,7 @@
     "react-dnd-html5-backend-cjs": "^9.3.9",
     "sequelize-cli": "^5.5.1",
     "source-map-explorer": "^2.0.1",
+    "source-map-support": "^0.5.16",
     "sqlite3": "^4.1.0",
     "start-server-webpack-plugin": "^2.2.5",
     "terser-webpack-plugin": "^2.1.2",

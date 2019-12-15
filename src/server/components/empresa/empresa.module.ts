@@ -6,7 +6,7 @@ import { EmpresaService } from './empresa.service';
 import { Empresa } from './empresa.entity';
 
 @Module({
-  imports: [DatabaseModule.forFeature([Empresa])],
+  imports: [DatabaseModule.forFeature([() => Empresa])],
   controllers: [EmpresaController],
   providers: [EmpresaService],
   exports: [EmpresaService],

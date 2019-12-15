@@ -1,5 +1,16 @@
-import { Table, Column, PrimaryKey, Default, CreatedAt, UpdatedAt, DeletedAt, Model } from 'sequelize-typescript';
+import {
+  Table,
+  Column,
+  PrimaryKey,
+  Default,
+  CreatedAt,
+  UpdatedAt,
+  DeletedAt,
+  Model,
+  HasMany,
+} from 'sequelize-typescript';
 
+import { Perfil } from '@/server/components/Perfil';
 import { EMPRESA, SHORTID } from '@/server/utils/constants';
 
 @Table({ modelName: EMPRESA, tableName: EMPRESA })
@@ -20,6 +31,9 @@ export class Empresa extends Model<Empresa> {
 
   @Column
   public telefone!: string;
+
+  @HasMany(() => Perfil)
+  public perfis!: Perfil[];
 
   @CreatedAt
   public dataCriacao!: Date;

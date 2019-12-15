@@ -8,10 +8,12 @@ import {
   DeletedAt,
   UpdatedAt,
   BelongsTo,
+  ForeignKey,
+  AllowNull,
   Model,
 } from 'sequelize-typescript';
 
-import { Perfil } from '../Perfil';
+import { Perfil } from './perfil.entity'; // eslint-disable-line import/no-cycle
 import { EnumNivelAcesso, EnumTipoAcesso } from './politica.dto';
 import { POLITICA, SHORTID } from '@/server/utils/constants';
 
@@ -21,6 +23,10 @@ export class Politica extends Model<Politica> {
   @Default(SHORTID)
   @Column
   public id!: string;
+
+  @AllowNull
+  @Column
+  public descricao!: string;
 
   @Default(EnumTipoAcesso.Proprio)
   @Column(DataType.ENUM(EnumTipoAcesso.Qualquer, EnumTipoAcesso.Proprio))
@@ -33,6 +39,10 @@ export class Politica extends Model<Politica> {
   @Default(false)
   @Column
   public negacao!: boolean;
+
+  @ForeignKey(() => Perfil)
+  @Column
+  public perfilID!: string;
 
   @BelongsTo(() => Perfil)
   public perfil!: Perfil;

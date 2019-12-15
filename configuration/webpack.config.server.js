@@ -34,7 +34,7 @@ module.exports = merge(baseConfig(true), {
     },
   ],
   entry: [
-    ...(isProd ? [] : ['razzle-dev-utils/prettyNodeErrors', 'webpack/hot/poll?300']),
+    ...(isProd ? [] : ['webpack/hot/poll?300', 'source-map-support/register']),
     'reflect-metadata',
     path.resolve('src', 'server', 'index.ts'),
   ],

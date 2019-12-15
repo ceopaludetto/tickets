@@ -1,13 +1,13 @@
 import { IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
 
-import { PoliticaInput, PoliticaInputDTO } from '@/server/components/Politica';
 import { IsShortID } from '@/server/utils/isShortid';
+import { PoliticaInput, PoliticaInputDTO } from './politica.dto';
 
 export interface PerfilInputDTO {
   nome?: string;
   descricao?: string;
   herda?: string;
-  politicas?: PoliticaInputDTO[];
+  politica?: PoliticaInputDTO[];
   empresa?: string;
 }
 
@@ -28,7 +28,7 @@ export class PerfilInput implements PerfilInputDTO {
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
-  public politicas?: PoliticaInput[];
+  public politica?: PoliticaInput[];
 
   @IsString()
   @IsShortID()

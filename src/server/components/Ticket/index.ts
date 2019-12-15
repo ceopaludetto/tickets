@@ -1,5 +1,5 @@
 export { Ticket } from './ticket.entity';
+export { TicketModule } from './ticket.module';
 export { TicketService } from './ticket.service';
 export { TicketController } from './ticket.controller';
-export { TicketModule } from './ticket.module';
-export { CreateOrUpdateTicketDto } from './ticket.dto';
+export { TicketInput } from './ticket.dto';

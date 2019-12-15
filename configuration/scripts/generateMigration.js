@@ -1,5 +1,6 @@
 /* eslint-disable no-console */
 const path = require('path');
+const glob = require('glob');
 const fs = require('fs');
 
 console.log('-> Creating new Migration:', process.argv[2]);
@@ -21,7 +22,8 @@ export default {
 const migrationsPath = path.resolve('src', 'server', 'migrations');
 
 const date = new Date();
-const format = `${date.getFullYear()}${date.getMonth()}${date.getDate()}${date.getHours()}${date.getMinutes()}${date.getSeconds()}${date.getMilliseconds()}`;
+const number = glob.sync(`${migrationsPath}/*.ts`).length + 1;
+const format = `${date.getFullYear()}_${number}`;
 
 fs.writeFileSync(`${migrationsPath}/${format}-${process.argv[2] || ''}.ts`, model);
 

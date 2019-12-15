@@ -1,7 +1,7 @@
 /* eslint-disable global-require, @typescript-eslint/camelcase */
 const path = require('path');
 const webpack = require('webpack');
-// const WebpackBar = require('webpackbar');
+const WebpackBar = require('webpackbar');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const TerserPlugin = require('terser-webpack-plugin');
 const LodashPlugin = require('lodash-webpack-plugin');
@@ -14,7 +14,7 @@ const isProd = process.env.NODE_ENV === 'production';
 module.exports = (isServer = false) => ({
   bail: isProd,
   name: isServer ? 'Server' : 'Client',
-  devtool: isProd ? 'source-map' : 'cheap-module-source-map',
+  devtool: 'source-map',
   mode: isProd ? 'production' : 'development',
   performance: false,
   watchOptions: {
@@ -26,7 +26,7 @@ module.exports = (isServer = false) => ({
     minimize: isProd,
     minimizer: [
       new TerserPlugin({
-        sourceMap: isProd && !isServer,
+        sourceMap: isProd,
         cache: true,
         parallel: true,
         terserOptions: {
@@ -122,11 +122,11 @@ module.exports = (isServer = false) => ({
   },
   plugins: [
     ...(!isProd ? [new webpack.WatchIgnorePlugin([path.resolve('src', 'server', 'schema.gql')])] : []),
-    // new WebpackBar({
-    //   name: isServer ? 'Server' : 'Client',
-    //   color: isServer ? '#c065f4' : '#f56be2',
-    //   profile: true,
-    // }),
+    new WebpackBar({
+      name: isServer ? 'Server' : 'Client',
+      color: isServer ? '#c065f4' : '#f56be2',
+      profile: true,
+    }),
     new webpack.EnvironmentPlugin({
       PORT: envs.PORT,
       HOST: envs.HOST,

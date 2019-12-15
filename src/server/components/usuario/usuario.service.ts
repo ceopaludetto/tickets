@@ -1,12 +1,12 @@
 import { Injectable, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 
 import { InjectModel } from '@/server/components/Database';
-import { CreateOrUpdateUsuarioDto } from './usuario.dto';
+import { UsuarioInput } from './usuario.dto';
 import { Usuario } from './usuario.entity';
 
 @Injectable()
 export class UsuarioService {
-  public constructor(@InjectModel(Usuario) private readonly usuarioRepository: typeof Usuario) {}
+  public constructor(@InjectModel(() => Usuario) private readonly usuarioRepository: typeof Usuario) {}
 
   public async findAll() {
     try {
@@ -24,7 +24,7 @@ export class UsuarioService {
     }
   }
 
-  public async createOrUpdate(data: CreateOrUpdateUsuarioDto, id?: string) {
+  public async createOrUpdate(data: UsuarioInput, id?: string) {
     try {
       if (!id) {
         return this.usuarioRepository.create(data);

@@ -1,10 +1,9 @@
-import { IsEnum, IsString, IsBoolean, IsOptional } from 'class-validator';
-
+import { IsString, IsEnum, IsBoolean, IsOptional } from 'class-validator';
 import { IsShortID } from '@/server/utils/isShortid';
 
 export enum EnumTipoAcesso {
-  Qualquer = 'QUALQUER',
   Proprio = 'PROPRIO',
+  Qualquer = 'QUALQUER',
 }
 
 export enum EnumNivelAcesso {
@@ -14,29 +13,32 @@ export enum EnumNivelAcesso {
 }
 
 export interface PoliticaInputDTO {
+  descricao?: string;
   tipo?: EnumTipoAcesso;
   nivel?: EnumNivelAcesso;
   negacao?: boolean;
-  perfil?: string;
+  perfilID?: string;
 }
 
-export class PoliticaInput implements PoliticaInputDTO {
+export class PoliticaInput {
   @IsString()
+  @IsOptional()
+  public descricao?: string;
+
   @IsOptional()
   @IsEnum(EnumTipoAcesso)
   public tipo?: EnumTipoAcesso;
 
-  @IsString()
   @IsOptional()
   @IsEnum(EnumNivelAcesso)
   public nivel?: EnumNivelAcesso;
 
-  @IsOptional()
   @IsBoolean()
-  public negacao?: boolean;
+  @IsOptional()
+  negacao?: boolean;
 
   @IsString()
   @IsShortID()
   @IsOptional()
-  public perfil?: string;
+  public perfilID?: string;
 }

@@ -11,6 +11,7 @@ import {
   UsuarioModule,
   EmpresaModule,
   TicketModule,
+  PerfilModule,
   LabelModule,
 } from '@/server/components';
 
@@ -43,6 +44,7 @@ import {
     UsuarioModule,
     TicketModule,
     LabelModule,
+    PerfilModule,
     // SecurityModule
     // ReactModule,
   ],

@@ -6,7 +6,7 @@ import { UsuarioService } from './usuario.service';
 import { Usuario } from './usuario.entity';
 
 @Module({
-  imports: [DatabaseModule.forFeature([Usuario])],
+  imports: [DatabaseModule.forFeature([() => Usuario])],
   controllers: [UsuarioController],
   providers: [UsuarioService],
   exports: [UsuarioService],

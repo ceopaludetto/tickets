@@ -6,7 +6,7 @@ import { LabelController } from './label.controller';
 import { DatabaseModule } from '@/server/components/Database';
 
 @Module({
-  imports: [DatabaseModule.forFeature([Label])],
+  imports: [DatabaseModule.forFeature([() => Label])],
   controllers: [LabelController],
   providers: [LabelService],
   exports: [LabelService],

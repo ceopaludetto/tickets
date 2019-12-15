@@ -3,6 +3,7 @@
 import { Usuario } from './Usuario';
 import { Empresa } from './Empresa';
 import { Ticket } from './Ticket';
+import { Perfil, Politica } from './Perfil';
 import { Label } from './Label';
 
 export { ConfigurationModule, ConfigurationService } from './Configuration';
@@ -15,6 +16,7 @@ export { AuthModule, AuthMiddleware, AuthService } from './Authentication';
 export { UsuarioModule, UsuarioService } from './Usuario';
 export { EmpresaModule, EmpresaService } from './Empresa';
 export { TicketModule, TicketService } from './Ticket';
-export { LabelModule } from './Label';
+export { LabelModule, LabelService } from './Label';
+export { PerfilModule, PerfilService } from './Perfil';
 
-export const Entities = [Usuario, Empresa, Ticket, Label];
+export const Entities = [Usuario, Empresa, Ticket, Label, Perfil, Politica];

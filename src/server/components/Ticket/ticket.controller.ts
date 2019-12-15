@@ -1,7 +1,7 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 
 import { TicketService } from './ticket.service';
-import { CreateOrUpdateTicketDto } from './ticket.dto';
+import { TicketInput } from './ticket.dto';
 import { FindOneParam } from '@/server/utils/common.dto';
 
 @Controller('ticket')
@@ -19,12 +19,12 @@ export class TicketController {
   }
 
   @Post('/')
-  public async createTicket(@Body() data: CreateOrUpdateTicketDto) {
+  public async createTicket(@Body() data: TicketInput) {
     return this.ticketsService.createOrUpdate(data);
   }
 
   @Put('/:id')
-  public async updateTicket(@Body() data: CreateOrUpdateTicketDto, @Param() { id }: FindOneParam) {
+  public async updateTicket(@Body() data: TicketInput, @Param() { id }: FindOneParam) {
     return this.ticketsService.createOrUpdate(data, id);
   }
 

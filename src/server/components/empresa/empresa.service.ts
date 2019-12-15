@@ -6,7 +6,7 @@ import { Empresa } from './empresa.entity';
 
 @Injectable()
 export class EmpresaService {
-  public constructor(@InjectModel(Empresa) private readonly empresaRepository: typeof Empresa) {}
+  public constructor(@InjectModel(() => Empresa) private readonly empresaRepository: typeof Empresa) {}
 
   public async findAll() {
     try {

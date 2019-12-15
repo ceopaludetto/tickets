@@ -6,7 +6,7 @@ import { Label } from './label.entity';
 
 @Injectable()
 export class LabelService {
-  public constructor(@InjectModel(Label) private readonly labelRepository: typeof Label) {}
+  public constructor(@InjectModel(() => Label) private readonly labelRepository: typeof Label) {}
 
   public async findAll() {
     try {

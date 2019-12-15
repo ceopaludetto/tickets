@@ -7,15 +7,20 @@ import {
   CreatedAt,
   DeletedAt,
   UpdatedAt,
-  HasOne,
   HasMany,
   AllowNull,
+  BelongsTo,
+  ForeignKey,
+  DefaultScope,
 } from 'sequelize-typescript';
 
-import { Politica } from '../Politica';
-import { Empresa } from '../Empresa';
+import { Politica } from './politica.entity'; // eslint-disable-line import/no-cycle
+import { Empresa } from '@/server/components/Empresa';
 import { PERFIL, SHORTID } from '@/server/utils/constants';
 
+@DefaultScope({
+  include: [() => Politica, () => Empresa],
+})
 @Table({ modelName: PERFIL, tableName: PERFIL })
 export class Perfil extends Model<Perfil> {
   @PrimaryKey
@@ -30,13 +35,21 @@ export class Perfil extends Model<Perfil> {
   public descricao!: string;
 
   @AllowNull
-  @HasOne(() => Perfil)
+  @ForeignKey(() => Perfil)
+  @Column
+  public herdaID!: string;
+
+  @BelongsTo(() => Perfil)
   public herda!: Perfil;
 
   @HasMany(() => Politica)
-  public politicas!: Politica[];
+  public politica!: Politica[];
 
-  @HasOne(() => Empresa)
+  @ForeignKey(() => Empresa)
+  @Column
+  public empresaID!: string;
+
+  @BelongsTo(() => Empresa)
   public empresa!: Empresa;
 
   @CreatedAt
