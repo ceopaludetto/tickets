@@ -1,6 +1,6 @@
 import { Injectable, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 
-import { InjectModel } from '@/server/components/Database';
+import { InjectModel } from '@/server/components/database';
 import { UsuarioInput } from './usuario.dto';
 import { Usuario } from './usuario.entity';
 

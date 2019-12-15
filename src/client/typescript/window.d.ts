@@ -1,7 +1,3 @@
-import { NormalizedCacheObject } from 'apollo-cache-inmemory';
-
-declare global {
-  interface Window {
-    __APOLLO_STATE__: NormalizedCacheObject;
-  }
-}
+export type Window = {
+  __PRELOADED_STATE__: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+};

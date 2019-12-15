@@ -3,7 +3,7 @@
   "include": ["./src/server/**/*", "./src/client/**/*"],
   "compilerOptions": {
     "lib": ["es7"],
-    "typeRoots": ["./node_modules/@types", "./src/server/typescript"],
+    "typeRoots": ["./node_modules/@types", "./src/server/Typescript"],
     "skipLibCheck": false
   }
 }

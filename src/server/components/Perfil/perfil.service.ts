@@ -1,6 +1,7 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 
-import { InjectModel, InjectSequelize, Sequelize } from '@/server/components/Database';
+import { InjectModel, InjectSequelize, Sequelize } from '@/server/components/database';
+import { Empresa } from '@/server/components/empresa';
 import { PerfilInput } from './perfil.dto';
 import { Politica } from './politica.entity';
 import { Perfil } from './perfil.entity';
@@ -39,7 +40,7 @@ export class PerfilService {
               politica.map(async p => this.politicaRepository.create({ ...p, perfilID: perfil.id }, { transaction: t }))
             );
           }
-          return perfil.reload({ transaction: t, include: [Politica] });
+          return perfil.reload({ transaction: t, include: [Politica, Empresa] });
         });
       }
 
@@ -57,7 +58,7 @@ export class PerfilService {
           perfil.politica = politicas;
         }
         const updated = await perfil.update(rest, { transaction: t });
-        return updated.reload({ transaction: t });
+        return updated.reload({ transaction: t, include: [Politica, Empresa] });
       });
     } catch (err) {
       throw new BadRequestException(err);

@@ -1,6 +1,6 @@
 import { IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
 
-import { LabelInput, LabelInputDTO } from '@/server/components/Label/label.dto';
+import { LabelInput, LabelInputDTO } from '@/server/components/label/label.dto';
 
 export interface TicketInputDTO {
   nome?: string;

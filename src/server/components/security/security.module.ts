@@ -1,7 +1,7 @@
 import { Module } from '@nestjs/common';
 
-import { DatabaseModule } from '@/server/components/Database';
-import { UsuarioModule } from '@/server/components/Usuario';
+import { DatabaseModule } from '@/server/components/database';
+import { UsuarioModule } from '@/server/components/usuario';
 import { SecurityService } from './security.service';
 import { SecurityResolver } from './security.resolver';
 import { Politica, Perfil } from '@/server/models';

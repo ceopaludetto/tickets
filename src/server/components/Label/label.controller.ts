@@ -3,7 +3,7 @@ import { Controller, Get, Param } from '@nestjs/common';
 import { LabelService } from './label.service';
 import { FindOneParam } from '@/server/utils/common.dto';
 
-@Controller('label')
+@Controller('/api/label')
 export class LabelController {
   public constructor(private readonly labelService: LabelService) {}
 

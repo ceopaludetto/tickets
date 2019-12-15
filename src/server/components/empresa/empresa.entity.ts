@@ -10,7 +10,7 @@ import {
   HasMany,
 } from 'sequelize-typescript';
 
-import { Perfil } from '@/server/components/Perfil';
+import { Perfil } from '@/server/components/perfil';
 import { EMPRESA, SHORTID } from '@/server/utils/constants';
 
 @Table({ modelName: EMPRESA, tableName: EMPRESA })

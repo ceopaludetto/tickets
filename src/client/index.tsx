@@ -1,37 +1,30 @@
+/* eslint-disable @typescript-eslint/no-explicit-any */
 import React from 'react';
 import { hydrate } from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
 import { loadableReady } from '@loadable/component';
-import { ApolloProvider } from '@apollo/react-common';
-import { HttpLink } from 'apollo-link-http';
-import { StylesProvider } from '@material-ui/styles';
 import { HelmetProvider } from 'react-helmet-async';
+import { Provider } from 'react-redux';
 
 import App from '@/client/bootstrap';
-import { createClient } from '@/client/providers/apollo';
-import { createClassGenerator } from '@/client/providers/theme';
+import { createReduxStore } from '@/client/providers/store';
+import { IS_PRODUCTION } from '@/client/utils/constants';
 
-const client = createClient(
-  false,
-  new HttpLink({
-    credentials: 'include',
-    uri: '/graphql',
-  })
-);
+const store = createReduxStore(((window as unknown) as any).__PRELOADED_STATE__);
 
-const generateClassName = createClassGenerator();
+if (IS_PRODUCTION) {
+  delete ((window as unknown) as any).__PRELOADED_STATE__;
+}
 
 loadableReady(() => {
   hydrate(
-    <StylesProvider generateClassName={generateClassName}>
-      <HelmetProvider>
-        <ApolloProvider client={client}>
-          <BrowserRouter>
-            <App />
-          </BrowserRouter>
-        </ApolloProvider>
-      </HelmetProvider>
-    </StylesProvider>,
+    <HelmetProvider>
+      <BrowserRouter>
+        <Provider store={store}>
+          <App />
+        </Provider>
+      </BrowserRouter>
+    </HelmetProvider>,
     document.querySelector('#app')
   );
 });

@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { MailerModule, HandlebarsAdapter } from '@nest-modules/mailer';
 
 import {
-  // ReactModule,
+  ReactModule,
   AuthModule,
   ConfigurationModule,
   ConfigurationService,
@@ -46,7 +46,7 @@ import {
     LabelModule,
     PerfilModule,
     // SecurityModule
-    // ReactModule,
+    ReactModule,
   ],
 })
 export class ApplicationModule {}

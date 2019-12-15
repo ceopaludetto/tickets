@@ -1,7 +1,7 @@
 import SequelizeStatic, { QueryInterface } from 'sequelize';
 
 import { POLITICA, SHORTID, PERFIL } from '@/server/utils/constants';
-import { EnumNivelAcesso, EnumTipoAcesso } from '@/server/components/Perfil/politica.dto';
+import { EnumNivelAcesso, EnumTipoAcesso } from '@/server/components/perfil/politica.dto';
 
 export default {
   async up(queryInterface: QueryInterface, Sequelize: typeof SequelizeStatic) {

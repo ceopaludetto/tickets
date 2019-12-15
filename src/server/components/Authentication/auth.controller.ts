@@ -4,9 +4,9 @@ import { Request, Response } from 'express';
 
 import { AuthService } from './auth.service';
 import { LoginInput } from './auth.dto';
-import { UsuarioInput } from '@/server/components/Usuario';
+import { UsuarioInput } from '@/server/components/usuario';
 
-@Controller('auth')
+@Controller('/api/auth')
 export class AuthController {
   public constructor(private readonly authService: AuthService) {}
 

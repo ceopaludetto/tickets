@@ -11,7 +11,6 @@ async function bootstrap() {
   installMiddlewares(app);
   injectApplicationModule(app.select(ApplicationModule), { fallbackOnErrors: true });
 
-  app.setGlobalPrefix('api');
   app.useGlobalFilters(new ErrorFormatter());
 
   app.listen(process.env.PORT as string);

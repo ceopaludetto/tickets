@@ -3,7 +3,7 @@ import { JwtService } from '@nestjs/jwt';
 import { MailerService } from '@nest-modules/mailer';
 import { Response } from 'express';
 
-import { Usuario, UsuarioService, UsuarioInput } from '@/server/components/Usuario';
+import { Usuario, UsuarioService, UsuarioInput } from '@/server/components/usuario';
 
 @Injectable()
 export class AuthService {

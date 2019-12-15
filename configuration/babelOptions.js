@@ -30,10 +30,15 @@ module.exports = (isServer = false, isTest = false) => ({
   ],
   plugins: [
     'lodash',
-    'optimize-clsx',
     '@loadable/babel-plugin',
     '@babel/plugin-transform-react-constant-elements',
     '@babel/plugin-transform-react-inline-elements',
+    [
+      'babel-plugin-styled-components',
+      {
+        displayName: false,
+      },
+    ],
     [
       '@babel/plugin-transform-destructuring',
       {
@@ -62,14 +67,6 @@ module.exports = (isServer = false, isTest = false) => ({
       {
         'react-use': {
           transform: 'react-use/lib/${member}',
-          preventFullImport: true,
-        },
-        '@material-ui/core': {
-          transform: isTest || isServer ? '@material-ui/core/${member}' : '@material-ui/core/esm/${member}',
-          preventFullImport: true,
-        },
-        '@material-ui/icons': {
-          transform: isTest || isServer ? '@material-ui/icons/${member}' : '@material-ui/icons/esm/${member}',
           preventFullImport: true,
         },
       },

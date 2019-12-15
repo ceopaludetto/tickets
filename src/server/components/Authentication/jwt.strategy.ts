@@ -3,7 +3,7 @@ import { PassportStrategy } from '@nestjs/passport';
 import { Strategy } from 'passport-jwt';
 
 import { PayloadType } from '@/server/utils/common.dto';
-import { ConfigurationService } from '@/server/components/Configuration';
+import { ConfigurationService } from '@/server/components/configuration';
 import { ExtractAuthTokenFromCookie } from '@/server/utils/jwt.cookie.extractor';
 
 @Injectable()

@@ -8,11 +8,9 @@ module.exports = (isServer = false) => {
 
   return {
     testEnvironment: isServer ? 'node' : 'jsdom',
-    moduleFileExtensions: ['js', 'ts', 'tsx', 'gql', 'graphql', 'json'],
-    setupFilesAfterEnv: ['<rootDir>/__tests__/setupEnzyme.ts'],
+    moduleFileExtensions: ['js', 'ts', 'tsx', 'json'],
     transform: {
       ...tsjPreset.transform,
-      '\\.(gql|graphql)$': 'jest-transform-graphql',
     },
     moduleNameMapper: {
       '^@/(.*)$': '<rootDir>/src/$1',

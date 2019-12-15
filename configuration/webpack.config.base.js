@@ -114,11 +114,10 @@ module.exports = (isServer = false) => ({
   resolve: {
     alias: {
       '@': path.resolve('src'),
-      jss: require.resolve('jss'),
       lodash: 'lodash-es',
       'webpack/hot/poll': require.resolve('webpack/hot/poll'),
     },
-    extensions: ['.js', '.jsx', '.tsx', '.ts', '.gql', '.graphql', '.json'],
+    extensions: ['.js', '.jsx', '.tsx', '.ts', '.json'],
   },
   plugins: [
     ...(!isProd ? [new webpack.WatchIgnorePlugin([path.resolve('src', 'server', 'schema.gql')])] : []),

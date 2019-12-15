@@ -2,7 +2,7 @@
   "extends": "./tsconfig.json",
   "include": ["./src/client/**/*", "./src/server/**/*"],
   "compilerOptions": {
-    "typeRoots": ["./node_modules/@types", "./src/client/typescript"],
+    "typeRoots": ["./node_modules/@types", "./src/client/Typescript"],
     "lib": ["es7", "dom", "dom.iterable"]
   }
 }

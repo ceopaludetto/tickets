@@ -2,7 +2,7 @@ import { Provider } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 
 import { Entities } from '@/server/components';
-import { ConfigurationService } from '@/server/components/Configuration';
+import { ConfigurationService } from '@/server/components/configuration';
 import { SEQUELIZE_PROVIDER } from '@/server/utils/constants';
 
 export const DatabaseProvider: Provider = {

@@ -1,6 +1,6 @@
 import { Module } from '@nestjs/common';
 
-import { DatabaseModule } from '@/server/components/Database';
+import { DatabaseModule } from '@/server/components/database';
 import { EmpresaController } from './empresa.controller';
 import { EmpresaService } from './empresa.service';
 import { Empresa } from './empresa.entity';

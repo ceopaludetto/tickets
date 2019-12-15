@@ -1,7 +1,0 @@
-query Logged {
-  logged @client
-}
-
-query Theme {
-  isDark @client
-}

@@ -4,7 +4,7 @@ import { TicketService } from './ticket.service';
 import { TicketInput } from './ticket.dto';
 import { FindOneParam } from '@/server/utils/common.dto';
 
-@Controller('ticket')
+@Controller('/api/ticket')
 export class TicketController {
   public constructor(private readonly ticketsService: TicketService) {}
 

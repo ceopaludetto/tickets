@@ -54,7 +54,6 @@ module.exports = merge(baseConfig(false), {
     hot: true,
     noInfo: true,
     overlay: false,
-    // writeToDisk: true,
     publicPath: '/static/',
     host: envs.HOST,
     port: envs.DEV_PORT,
@@ -85,7 +84,7 @@ module.exports = merge(baseConfig(false), {
             minSizeReduce: 1.5,
           }),
           new CompressionPlugin({
-            exclude: /\.map/,
+            exclude: /(\.map|\.LICENSE|\.json)/,
             cache: true,
             minRatio: Number.MAX_SAFE_INTEGER,
           }),

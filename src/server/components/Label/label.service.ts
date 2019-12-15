@@ -1,7 +1,7 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 
-import { InjectModel } from '@/server/components/Database';
-import { Ticket } from '@/server/components/Ticket';
+import { InjectModel } from '@/server/components/database';
+import { Ticket } from '@/server/components/ticket';
 import { Label } from './label.entity';
 
 @Injectable()

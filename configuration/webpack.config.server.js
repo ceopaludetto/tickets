@@ -19,19 +19,8 @@ module.exports = merge(baseConfig(true), {
   },
   externals: [
     NodeExternals({
-      whitelist: [
-        ...(isProd ? [] : ['webpack/hot/poll?300']),
-        'react-dnd',
-        'react-dnd-html5-backend',
-        'dnd-core',
-        /\.(gql|graphql)$/,
-      ],
+      whitelist: [...(isProd ? [] : ['webpack/hot/poll?300'])],
     }),
-    {
-      'react-dnd': require.resolve('react-dnd-cjs'),
-      'react-dnd-html5-backend': require.resolve('react-dnd-html5-backend-cjs'),
-      'dnd-core': require.resolve('dnd-core-cjs'),
-    },
   ],
   entry: [
     ...(isProd ? [] : ['webpack/hot/poll?300', 'source-map-support/register']),

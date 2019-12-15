@@ -4,7 +4,7 @@ import { FindOneParam } from '@/server/utils/common.dto';
 import { EmpresaInput } from './empresa.dto';
 import { EmpresaService } from './empresa.service';
 
-@Controller('empresa')
+@Controller('/api/empresa')
 export class EmpresaController {
   constructor(private readonly empresaService: EmpresaService) {}
 

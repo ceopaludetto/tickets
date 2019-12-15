@@ -15,7 +15,7 @@ import {
 } from 'sequelize-typescript';
 
 import { Politica } from './politica.entity'; // eslint-disable-line import/no-cycle
-import { Empresa } from '@/server/components/Empresa';
+import { Empresa } from '@/server/components/empresa';
 import { PERFIL, SHORTID } from '@/server/utils/constants';
 
 @DefaultScope({

@@ -1,6 +1,6 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 
-import { InjectModel } from '@/server/components/Database';
+import { InjectModel } from '@/server/components/database';
 import { EmpresaInput } from './empresa.dto';
 import { Empresa } from './empresa.entity';
 

@@ -13,7 +13,7 @@ import {
 } from 'sequelize-typescript';
 
 import { TICKET, SHORTID } from '@/server/utils/constants';
-import { Label } from '@/server/components/Label';
+import { Label } from '@/server/components/label';
 
 @DefaultScope({
   include: [() => Label],

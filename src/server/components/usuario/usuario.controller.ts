@@ -4,7 +4,7 @@ import { UsuarioService } from './usuario.service';
 import { UsuarioInput } from './usuario.dto';
 import { FindOneParam } from '@/server/utils/common.dto';
 
-@Controller('/usuario')
+@Controller('/api/usuario')
 export class UsuarioController {
   public constructor(private readonly usuarioService: UsuarioService) {}
 

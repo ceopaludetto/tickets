@@ -4,7 +4,7 @@ import { PerfilInput } from './perfil.dto';
 import { PerfilService } from './perfil.service';
 import { FindOneParam } from '@/server/utils/common.dto';
 
-@Controller('perfil')
+@Controller('/api/perfil')
 export class PerfilController {
   public constructor(private readonly perfilService: PerfilService) {}
 
