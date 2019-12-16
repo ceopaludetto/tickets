@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { Label } from './label.entity';
 import { LabelService } from './label.service';
 import { LabelController } from './label.controller';
-import { DatabaseModule } from '@/server/components/database';
+import { DatabaseModule } from '@/server/components/Database';
 
 @Module({
   imports: [DatabaseModule.forFeature([() => Label])],

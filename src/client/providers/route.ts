@@ -13,7 +13,7 @@ export const routes: Route[] = [
   {
     path: ['/'],
     exact: true,
-    component: loadable(() => import(/* webpackChunkName: "auth" */ '@/client/pages/root/main')),
+    component: loadable(() => import(/* webpackChunkName: "root" */ '@/client/pages/root/main')),
   },
   {
     path: ['/auth/login', '/auth/register', '/auth/forgot'],
@@ -23,7 +23,7 @@ export const routes: Route[] = [
       {
         path: '/auth/login',
         exact: true,
-        component: loadable(() => import(/* webpackChunkName: "auth" */ '@/client/pages/auth/login')),
+        component: loadable(() => import(/* webpackChunkName: "auth.login" */ '@/client/pages/auth/login')),
       },
     ],
   },
