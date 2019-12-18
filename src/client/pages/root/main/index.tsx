@@ -19,6 +19,12 @@ export default function RootMain() {
       <Button icon={<Settings />} size="large">
         Configurações
       </Button>
+      <Button variant="outlined" icon={<Settings />} size="large">
+        Configurações
+      </Button>
+      <Button variant="flat" icon={<Settings />} size="small">
+        Configurações
+      </Button>
     </div>
   );
 }

@@ -2,26 +2,27 @@ import React, { cloneElement } from 'react';
 
 import { Container, Icon, ButtonProps } from './styles';
 
+const mapSizeLineHeight = {
+  small: 1.75,
+  medium: 2.5,
+  large: 3.5,
+};
+
+const mapSizeIcon = {
+  small: 16,
+  medium: 20,
+  large: 24,
+};
+
 export function Button({
   children,
   icon,
   iconPosition = 'before',
   size = 'medium',
-  variant = 'primary',
+  color = 'primary',
+  variant = 'contained',
   ...rest
 }: ButtonProps) {
-  const mapSizeLineHeight = {
-    small: 1.75,
-    medium: 2.5,
-    large: 3.5,
-  };
-
-  const mapSizeIcon = {
-    small: 16,
-    medium: 20,
-    large: 24,
-  };
-
   return (
     <Container
       borderRadius={6}
@@ -33,6 +34,7 @@ export function Button({
       px={size === 'medium' || size === 'large' ? 3 : 2}
       display="inline-flex"
       alignItems="center"
+      color={color}
       variant={variant}
       {...rest}
     >
