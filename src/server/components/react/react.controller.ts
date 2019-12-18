@@ -1,5 +1,5 @@
-import { Controller, Get, Req, Res } from '@nestjs/common';
-import { Request, Response } from 'express';
+import { Controller, Get, Req, Res, Next } from '@nestjs/common';
+import { Request, Response, NextFunction } from 'express';
 
 import { ReactService } from './react.service';
 import { STATIC_FOLDER } from '@/server/utils/constants';
@@ -13,8 +13,9 @@ export class ReactController {
   }
 
   @Get('*')
-  public renderReact(@Req() req: Request, @Res() res: Response) {
-    return this.reactService.render({ req, res });
+  public renderReact(@Req() req: Request, @Res() res: Response, @Next() next: NextFunction) {
+    const ignore = ['/robots.txt'];
+    return ignore.filter(v => req.url === v).length ? next() : this.reactService.render({ req, res });
   }
 
   @Get('/robots.txt')

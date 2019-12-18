@@ -31,6 +31,7 @@ module.exports = (isServer = false, isTest = false) => ({
       '@emotion/babel-preset-css-prop',
       {
         autoLabel: !isProd,
+        useBuiltIns: true,
       },
     ],
   ],
