@@ -27,18 +27,18 @@ module.exports = (isServer = false, isTest = false) => ({
         development: !isProd,
       },
     ],
+    [
+      '@emotion/babel-preset-css-prop',
+      {
+        autoLabel: !isProd,
+      },
+    ],
   ],
   plugins: [
     'lodash',
     '@loadable/babel-plugin',
     '@babel/plugin-transform-react-constant-elements',
     '@babel/plugin-transform-react-inline-elements',
-    [
-      'babel-plugin-styled-components',
-      {
-        displayName: false,
-      },
-    ],
     [
       '@babel/plugin-transform-destructuring',
       {
@@ -68,6 +68,11 @@ module.exports = (isServer = false, isTest = false) => ({
         'react-use': {
           transform: 'react-use/lib/${member}',
           preventFullImport: true,
+        },
+        'mdi-norm': {
+          transform: `mdi-norm/${isServer ? 'lib' : 'es'}/\${member}`,
+          preventFullImport: true,
+          skipDefaultConversion: true,
         },
       },
     ],

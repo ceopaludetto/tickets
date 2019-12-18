@@ -114,7 +114,7 @@ module.exports = (isServer = false) => ({
   resolve: {
     alias: {
       '@': path.resolve('src'),
-      lodash: 'lodash-es',
+      // lodash: 'lodash-es',
       'webpack/hot/poll': require.resolve('webpack/hot/poll'),
     },
     extensions: ['.js', '.jsx', '.tsx', '.ts', '.json'],
