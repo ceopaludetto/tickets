@@ -101,7 +101,6 @@
     "prop-types": "^15.7.2",
     "razzle-dev-utils": "^3.0.0",
     "react-dev-utils": "^9.1.0",
-    "react-docgen-typescript-loader": "^3.6.0",
     "redux-devtools-extension": "^2.13.8",
     "sequelize-cli": "^5.5.1",
     "source-map-explorer": "^2.0.1",
