@@ -66,7 +66,7 @@ module.exports = {
     "no-useless-constructor": 0
   },
   settings: {
-    "import/extensions": [".js", ".jsx", ".ts", ".tsx", ".gql"],
+    "import/extensions": [".js", ".jsx", ".ts", ".tsx"],
     "import/parsers": {
       "@typescript-eslint/parser": [".ts", ".tsx"]
     },

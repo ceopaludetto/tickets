@@ -1,11 +1,11 @@
 import React, { useState } from 'react';
-import { Visibility, VisibilityOff } from 'mdi-norm';
+import { FiEye, FiEyeOff } from 'react-icons/fi';
 
 export function useVisibility() {
   const [isVisible, setVisible] = useState(false);
 
   const toggleVisibility = (toggle?: boolean) => (toggle ? setVisible(toggle) : setVisible(!isVisible));
-  const render = () => (isVisible ? <VisibilityOff /> : <Visibility />);
+  const render = () => (isVisible ? <FiEyeOff /> : <FiEye />);
 
   return { isVisible, render, toggleVisibility };
 }
