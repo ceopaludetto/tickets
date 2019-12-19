@@ -7,9 +7,10 @@ import { Box } from '@/client/components/primitives';
 import { genTransition } from '@/client/utils/styles';
 
 export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  color?: 'primary' | 'secondary';
+  color?: 'primary' | 'secondary' | 'negative';
   size?: 'small' | 'medium' | 'large';
   variant?: 'contained' | 'outlined' | 'flat';
+  block?: boolean;
 }
 
 const mapPY = {
@@ -33,6 +34,8 @@ export const Container = styled(Box.withComponent('button'))<
       letterSpacing: 1.5,
       display: 'inline-flex',
       alignItems: 'center',
+      justifyContent: 'center',
+      width: props.block ? '100%' : 'auto',
       px: props.forwardedSize === 'medium' || props.forwardedSize === 'large' ? 3 : 2,
       py: mapPY[props.forwardedSize ? props.forwardedSize : 'small'],
       '&:focus': {

@@ -8,19 +8,21 @@ import { genTransition } from '@/client/utils/styles';
 export interface ControlProps extends React.InputHTMLAttributes<HTMLInputElement> {
   label?: string;
   block?: boolean;
+  append?: React.ReactElement<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
 }
 
 export const Container = styled(Box)<{ block: ControlProps['block'] }>(props =>
   css({
     mb: 3,
     display: 'flex',
-    flexDirection: 'column',
     position: 'relative',
     alignItems: 'stretch',
     border: '2px solid',
     borderColor: 'background.dark',
     backgroundColor: 'border.main',
     borderRadius: 6,
+    flexWrap: 'wrap',
+    width: props.block ? '100%' : 'auto',
     maxWidth: props.block ? 'none' : '300px',
     transition: genTransition(['background-color', 'box-shadow', 'border-color'], 125, 'ease-in-out'),
     '&:focus-within': {
@@ -50,13 +52,21 @@ export const Label = styled(Box.withComponent('label'))<{ hasFocus: boolean }>(p
 export const Input = styled(Box.withComponent('input'))<ControlProps & { hasLabel?: boolean }>(props =>
   css({
     border: 'none',
-    width: props.block ? '100%' : 'auto',
     padding: props.hasLabel ? '1.45rem 0.75rem 0.55rem' : '1rem 0.75rem',
     fontSize: 14,
+    flex: 1,
     backgroundColor: 'transparent',
     color: 'background.contrast',
     '&:focus': {
       outline: 'none',
     },
+  })
+);
+
+export const Append = styled(Box)(
+  css({
+    display: 'flex',
+    alignItems: 'center',
+    paddingRight: 2,
   })
 );

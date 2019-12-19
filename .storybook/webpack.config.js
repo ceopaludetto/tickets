@@ -36,13 +36,6 @@ module.exports = ({ config }) => {
           configFile: path.resolve('tsconfig.client.json'),
         },
       },
-      {
-        loader: require.resolve('react-docgen-typescript-loader'),
-      },
-      // Optional
-      // {
-      //   loader: require.resolve("react-docgen-typescript-loader")
-      // }
     ]
   });
   config.resolve.extensions.push(".ts", ".tsx");

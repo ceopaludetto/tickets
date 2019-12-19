@@ -1,30 +1,28 @@
-import React, { useState } from 'react';
+import React, { useState, useRef } from 'react';
 import { useIsomorphicLayoutEffect } from 'react-use';
 
-import { Container, Input, ControlProps, Label } from './styles';
+import { Container, Input, Label, Append, ControlProps } from './styles';
 
-export function Control({ label, id, block, ...rest }: ControlProps) {
-  const [value, setValue] = useState('');
+export function Control({ label, id, block, onFocus, onBlur, append, ...rest }: ControlProps) {
+  const inputRef = useRef<HTMLInputElement>(null);
   const [hasFocus, setFocus] = useState(false);
 
   useIsomorphicLayoutEffect(() => {
-    if (value && !hasFocus) {
+    if (inputRef.current && inputRef.current.value && !hasFocus) {
       setFocus(true);
     }
-  }, [value]);
+  }, [inputRef]);
 
-  function handleFocus() {
+  function handleFocus(e: React.FocusEvent<HTMLInputElement>) {
     setFocus(true);
+    if (onFocus) onFocus(e);
   }
 
-  function handleBlur() {
-    if (!value) {
+  function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
+    if (inputRef.current && !inputRef.current.value) {
       setFocus(false);
     }
-  }
-
-  function handleChange(e: React.ChangeEvent<HTMLInputElement>) {
-    setValue(e.target.value);
+    if (onBlur) onBlur(e);
   }
 
   return (
@@ -35,15 +33,8 @@ export function Control({ label, id, block, ...rest }: ControlProps) {
             {label}
           </Label>
         )}
-        <Input
-          hasLabel={!!label}
-          value={value}
-          onChange={handleChange}
-          onFocus={handleFocus}
-          onBlur={handleBlur}
-          id={id}
-          {...rest}
-        />
+        <Input ref={inputRef} hasLabel={!!label} onFocus={handleFocus} onBlur={handleBlur} id={id} {...rest} />
+        {!!append && <Append>{append}</Append>}
       </>
     </Container>
   );

@@ -7,11 +7,21 @@ export default { title: 'Button' };
 
 export const normal = () => <Button onClick={action('onClick')}>Hello Button</Button>;
 
+export const block = () => <Button block>Hello block button</Button>;
+
 export const tamanhos = () => (
   <>
     <Button size="small">Hello Button</Button>
     <Button size="medium">Hello Button</Button>
     <Button size="large">Hello Button</Button>
+  </>
+);
+
+export const cores = () => (
+  <>
+    <Button color="primary">Hello Button</Button>
+    <Button color="secondary">Hello Button</Button>
+    <Button color="negative">Hello Button</Button>
   </>
 );
 
