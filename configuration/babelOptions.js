@@ -70,11 +70,6 @@ module.exports = (isServer = false, isTest = false) => ({
           transform: 'react-use/lib/${member}',
           preventFullImport: true,
         },
-        'mdi-norm': {
-          transform: `mdi-norm/${isServer ? 'lib' : 'es'}/\${member}`,
-          preventFullImport: true,
-          skipDefaultConversion: true,
-        },
       },
     ],
     ...(isTest

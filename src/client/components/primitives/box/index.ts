@@ -1,6 +1,7 @@
 import styled from '@emotion/styled';
 import shouldForwardProp from '@styled-system/should-forward-prop';
 import {
+  compose,
   color,
   layout,
   space,
@@ -27,4 +28,4 @@ export const Box = styled('div', {
     BorderProps &
     FlexboxProps &
     ShadowProps
->(color, layout, space, typography, border, flexbox, shadow);
+>(compose(color, layout, space, typography, border, flexbox, shadow));
