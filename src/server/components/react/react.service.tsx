@@ -5,12 +5,10 @@ import { StaticRouter } from 'react-router-dom';
 import { Injectable, BadRequestException } from '@nestjs/common';
 import { ChunkExtractorManager, ChunkExtractor } from '@loadable/server';
 import { HelmetProvider, FilledContext } from 'react-helmet-async';
-import { CacheProvider } from '@emotion/core';
 import { Provider } from 'react-redux';
 
 import ReactApp from '@/client/bootstrap';
 import { createReduxStore } from '@/client/providers/store';
-import { generateCache } from '@/client/providers/emotion.cache';
 import { Types } from '@/client/services/ducks/auth';
 import { ContextType, ReactContextType } from '@/server/utils/common.dto';
 
@@ -18,7 +16,6 @@ import { ContextType, ReactContextType } from '@/server/utils/common.dto';
 export class ReactService {
   public async render({ req, res }: ContextType) {
     try {
-      const cache = generateCache();
       const extractor = new ChunkExtractor({
         statsFile: process.env.MANIFEST as string,
       });
@@ -37,15 +34,13 @@ export class ReactService {
 
       const markup = renderToString(
         <ChunkExtractorManager extractor={extractor}>
-          <CacheProvider value={cache}>
-            <HelmetProvider context={helmetContext}>
-              <StaticRouter context={context} location={req.url}>
-                <Provider store={store}>
-                  <ReactApp />
-                </Provider>
-              </StaticRouter>
-            </HelmetProvider>
-          </CacheProvider>
+          <HelmetProvider context={helmetContext}>
+            <StaticRouter context={context} location={req.url}>
+              <Provider store={store}>
+                <ReactApp />
+              </Provider>
+            </StaticRouter>
+          </HelmetProvider>
         </ChunkExtractorManager>
       );
 
@@ -57,8 +52,7 @@ export class ReactService {
 
       return res.send(this.html(markup, initialState, extractor, (helmetContext as FilledContext).helmet));
     } catch (err) {
-      console.log(err);
-      throw new BadRequestException('Erro ao coletar estilos');
+      throw new BadRequestException(err);
     }
   }
 

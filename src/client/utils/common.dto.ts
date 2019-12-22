@@ -1,5 +1,3 @@
-import { Theme as DefaultTheme } from '@/client/providers/theme';
-
 export interface ActionType<T> {
   type: T;
   payload: any; // eslint-disable-line @typescript-eslint/no-explicit-any
@@ -11,8 +9,6 @@ export type CreatorType<T> = {
   [index: string]: (...args: any[]) => ActionType<T>; // eslint-disable-line @typescript-eslint/no-explicit-any
 };
 
-export type Colors = DefaultTheme['colors']['modes']['dark'];
-
-export interface Theme {
-  colors: Colors;
-}
+export type ElementProps<
+  E extends keyof JSX.IntrinsicElements | React.ComponentType<any> // eslint-disable-line @typescript-eslint/no-explicit-any
+> = E extends keyof JSX.IntrinsicElements ? JSX.IntrinsicElements[E] : React.ComponentProps<E>;

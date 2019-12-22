@@ -1,0 +1,53 @@
+@import '~@/client/scss/variables';
+
+@function color-yiq($color, $if-true, $if-false) {
+  $r: red($color);
+  $g: green($color);
+  $b: blue($color);
+
+  $yiq: (($r * 299) + ($g * 587) + ($b * 114)) / 1000;
+
+  @if ($yiq >= 150) {
+    @return $if-true;
+  } @else {
+    @return $if-false;
+  }
+}
+
+@mixin generate-theme-definition() {
+  @each $theme, $values in $colors {
+    :root[data-theme="#{$theme}"] {
+      @each $k, $v in $values {
+        $r: red($v);
+        $g: green($v);
+        $b: blue($v);
+        --#{$k}: #{$v};
+        --#{$k}-hover: #{darken($v, 2.5%)};
+        --#{$k}-active: #{darken($v, 5%)};
+        --#{$k}-contrast: #{color-yiq($v, #000000, #ffffff)};
+        @for $i from 1 through 3 {
+          --#{$k}-shadow-#{$i}: rgba(#{$r, $g, $b}, #{$i / 10});
+        }
+      }
+      --disabled-color: #{map-get($disabled-color, $theme)};
+      --disabled-color-contrast: #{map-get($disabled-color-text, $theme)};
+    }
+  }
+}
+
+@function get-theme-color($color, $type: "") {
+  @if $type == ""{
+    @return var(--#{$color});
+  } @else {
+    @return var(--#{$color}-#{$type});
+  }
+}
+
+@function create-transition($props, $dur: 125ms, $fn: ease-in-out) {
+  $res: unquote("");
+  @for $i from 1 through length($props) {
+    $res: unquote("#{$res} #{nth($props, $i)} #{if(type-of($dur) == 'list', nth($dur, $i), $dur)} #{if(type-of($fn) == 'list', nth($fn, $i), $fn)},");
+  }
+
+  @return $res;
+}

@@ -1,0 +1,29 @@
+$flex-props: (
+  justify: (
+    prop: "justify-content", 
+    values: (flex-start, flex-end, center, space-around, space-between)
+  ),
+  align: (
+    prop: "align-items", 
+    values: (flex-start, flex-end, center, stretch, baseline)
+  ),
+  w: (
+    prop: "flex-wrap", 
+    values: (wrap, nowrap, wrap-reverse)
+  ),
+);
+  
+
+.row {
+  display: flex;
+  margin: 0 #{-1rem};
+  @each $k, $v in $flex-props {
+    $values: map-get($v, 'values');
+    $prop: map-get($v, 'prop');
+    @for $i from 1 through length($values) {
+      &.#{$k}-#{nth($values, $i)}{
+        #{unquote($prop)}: #{nth($values, $i)};
+      }
+    }
+  }
+}

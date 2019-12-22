@@ -1,16 +1,15 @@
 import React from 'react';
 import { Helmet } from 'react-helmet-async';
+import '@/client/scss/normalize.scss';
 
 import { MainRoutes } from '@/client/routes/main';
-import { IS_PRODUCTION, PUBLIC_PATH } from '@/client/utils/constants';
 import { ThemeChanger } from '@/client/components/logic';
-import { Normalize } from '@/client/components/primitives';
+import { IS_PRODUCTION, PUBLIC_PATH } from '@/client/utils/constants';
 
 export default function App() {
   return (
     <ThemeChanger>
       <>
-        <Normalize />
         <Helmet defaultTitle="F3Desk" titleTemplate="%s | F3Desk">
           {IS_PRODUCTION && <link rel="manifest" href={`${PUBLIC_PATH}public/manifest.json`} />}
           <meta charSet="UTF-8" />

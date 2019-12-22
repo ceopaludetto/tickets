@@ -52,6 +52,7 @@ module.exports = {
     "react-hooks/rules-of-hooks": "error",
     "react/prop-types": "off",
     "react/jsx-props-no-spreading": "off",
+    "react/button-has-type": "off",
     "jsx-a11y/label-has-for": "off",
     "jsx-a11y/anchor-is-valid": "off",
     "prettier/prettier": [

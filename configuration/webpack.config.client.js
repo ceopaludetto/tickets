@@ -8,6 +8,7 @@ const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtract = require('mini-css-extract-plugin');
 // const tsFormatter = require('react-dev-utils/typescriptFormatter');
 // const { GenerateSW } = require('workbox-webpack-plugin');
 
@@ -37,8 +38,8 @@ module.exports = merge(baseConfig(false), {
     publicPath: isProd ? '/static/' : `http://${envs.HOST}:${envs.DEV_PORT}/static/`,
     path: path.resolve('dist', 'static'),
     libraryTarget: 'var',
-    filename: isProd ? 'js/index.[contenthash:8].js' : 'index.js',
-    chunkFilename: isProd ? 'js/[name].[contenthash:8].js' : '[name].chunk.js',
+    filename: isProd ? 'js/[contenthash:8].js' : 'index.js',
+    chunkFilename: isProd ? 'js/[contenthash:8].js' : '[name].chunk.js',
     devtoolModuleFilenameTemplate: info => path.resolve(info.resourcePath).replace(/\\/g, '/'),
   },
   devServer: {
@@ -128,6 +129,10 @@ module.exports = merge(baseConfig(false), {
           //   },
           // }),
         ]),
+    new MiniCssExtract({
+      filename: isProd ? 'css/[contenthash:8].css' : 'index.css',
+      chunkFilename: isProd ? 'css/[contenthash:8].css' : '[name].css',
+    }),
     new LoadablePlugin({
       filename: 'manifest.json',
       writeToDisk: true,

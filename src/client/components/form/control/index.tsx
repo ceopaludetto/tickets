@@ -1,41 +1,29 @@
-import React, { useState, useRef } from 'react';
-import { useIsomorphicLayoutEffect } from 'react-use';
+import React, { useRef } from 'react';
+import clsx from 'clsx';
 
-import { Container, Input, Label, Append, ControlProps } from './styles';
+import styles from './index.scss';
+import { Typography } from '@/client/components/primitive';
 
-export function Control({ label, id, block, onFocus, onBlur, append, ...rest }: ControlProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
-  const [hasFocus, setFocus] = useState(false);
+interface ControlProps extends React.InputHTMLAttributes<HTMLInputElement> {
+  label?: string;
+  append?: React.ReactElement<any>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  color?: 'primary' | 'secondary' | 'background' | 'paper';
+}
 
-  useIsomorphicLayoutEffect(() => {
-    if (inputRef.current && inputRef.current.value && !hasFocus) {
-      setFocus(true);
-    }
-  }, [inputRef]);
-
-  function handleFocus(e: React.FocusEvent<HTMLInputElement>) {
-    setFocus(true);
-    if (onFocus) onFocus(e);
-  }
-
-  function handleBlur(e: React.FocusEvent<HTMLInputElement>) {
-    if (inputRef.current && !inputRef.current.value) {
-      setFocus(false);
-    }
-    if (onBlur) onBlur(e);
-  }
+export function Control({ label, id, append, color = 'primary', placeholder = ' ', ...rest }: ControlProps) {
+  const ref = useRef<HTMLInputElement>(null);
 
   return (
-    <Container block={block}>
+    <div className={clsx(styles['form-group'], styles[color])}>
       <>
-        {!!label && (
-          <Label hasFocus={hasFocus} htmlFor={id}>
+        <input placeholder={placeholder} ref={ref} className={styles.input} id={id} {...rest} />
+        {label && (
+          <Typography className={styles.label} variant="label" as="label" htmlFor={id}>
             {label}
-          </Label>
+          </Typography>
         )}
-        <Input ref={inputRef} hasLabel={!!label} onFocus={handleFocus} onBlur={handleBlur} id={id} {...rest} />
-        {!!append && <Append>{append}</Append>}
+        {append && <div className={styles.append}>{append}</div>}
       </>
-    </Container>
+    </div>
   );
 }

@@ -1,48 +1,25 @@
 import React from 'react';
-import { action } from '@storybook/addon-actions';
 
 import { Button } from './index';
 
 export default { title: 'Button' };
 
-export const normal = () => <Button onClick={action('onClick')}>Hello Button</Button>;
+export const normal = () => <Button>Hello Button</Button>;
 
-export const block = () => <Button block>Hello block button</Button>;
-
-export const tamanhos = () => (
-  <>
-    <Button size="small">Hello Button</Button>
-    <Button size="medium">Hello Button</Button>
-    <Button size="large">Hello Button</Button>
-  </>
-);
+export const desabilitado = () => <Button disabled>Hello Button</Button>;
 
 export const cores = () => (
   <>
     <Button color="primary">Hello Button</Button>
     <Button color="secondary">Hello Button</Button>
-    <Button color="negative">Hello Button</Button>
+    <Button color="background">Hello Button</Button>
+    <Button color="paper">Hello Button</Button>
   </>
 );
 
 export const variacoes = () => (
   <>
     <Button variant="contained">Hello Button</Button>
-    <Button variant="outlined">Hello Button</Button>
     <Button variant="flat">Hello Button</Button>
-  </>
-);
-
-export const todos = () => (
-  <>
-    <Button variant="outlined" size="small">
-      Hello Button
-    </Button>
-    <Button variant="flat" size="medium">
-      Hello Button
-    </Button>
-    <Button variant="contained" size="large">
-      Hello Button
-    </Button>
   </>
 );

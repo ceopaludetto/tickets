@@ -1,19 +1,19 @@
 import React, { cloneElement } from 'react';
+import clsx from 'clsx';
 
-import { Container, IconButtonProps } from './styles';
+import styles from './index.scss';
 
-const mapIconSize = {
-  small: 17,
-  medium: 20,
-  large: 25,
-};
+interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactElement<{ size: number }>; // eslint-disable-line @typescript-eslint/no-explicit-any
+  color?: 'primary' | 'secondary' | 'background' | 'paper';
+}
 
-export function IconButton({ children, size = 'medium', color = 'primary', ...rest }: IconButtonProps) {
+export function IconButton({ children, color = 'primary', ...rest }: IconButtonProps) {
   return (
-    <Container forwardedSize={size} color={color} {...rest}>
+    <button className={clsx(styles.button, styles[color])} {...rest}>
       {cloneElement(children, {
-        size: mapIconSize[size],
+        size: 20,
       })}
-    </Container>
+    </button>
   );
 }

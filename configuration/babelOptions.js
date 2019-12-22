@@ -27,16 +27,10 @@ module.exports = (isServer = false, isTest = false) => ({
         development: !isProd,
       },
     ],
-    [
-      '@emotion/babel-preset-css-prop',
-      {
-        autoLabel: !isProd,
-        useBuiltIns: true,
-      },
-    ],
   ],
   plugins: [
     'lodash',
+    'optimize-clsx',
     '@loadable/babel-plugin',
     '@babel/plugin-transform-react-constant-elements',
     '@babel/plugin-transform-react-inline-elements',

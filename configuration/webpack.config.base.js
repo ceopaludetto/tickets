@@ -3,13 +3,36 @@ const path = require('path');
 const webpack = require('webpack');
 const WebpackBar = require('webpackbar');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
+const safePostCssParser = require('postcss-safe-parser');
 const TerserPlugin = require('terser-webpack-plugin');
 const LodashPlugin = require('lodash-webpack-plugin');
+const MiniCssExtract = require('mini-css-extract-plugin');
+const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 
 const babelOptions = require('./babelOptions');
 const envs = require('./envs');
 
 const isProd = process.env.NODE_ENV === 'production';
+
+const postcssOptions = {
+  ident: 'postcss',
+  plugins: () => [
+    require('postcss-flexbugs-fixes'),
+    require('postcss-preset-env')({
+      autoprefixer: {
+        flexbox: 'no-2009',
+      },
+      stage: 3,
+    }),
+    ...[
+      isProd
+        ? require('@fullhuman/postcss-purgecss')({
+            content: ['./src/**/*.tsx'],
+          })
+        : [],
+    ],
+  ],
+};
 
 module.exports = (isServer = false) => ({
   bail: isProd,
@@ -51,6 +74,15 @@ module.exports = (isServer = false) => ({
             : null,
         },
       }),
+      new OptimizeCSSAssetsPlugin({
+        cssProcessorOptions: {
+          parser: safePostCssParser,
+          map: {
+            inline: false,
+            annotation: true,
+          },
+        },
+      }),
     ],
   },
   module: {
@@ -68,46 +100,60 @@ module.exports = (isServer = false) => ({
         enforce: 'pre',
       },
       {
-        oneOf: [
+        test: /\.tsx?$/,
+        use: [
           {
-            test: /\.tsx?$/,
-            use: [
-              {
-                loader: 'babel-loader',
-                options: {
-                  babelrc: false,
-                  configFile: false,
-                  cacheDirectory: true,
-                  cacheCompression: !isProd,
-                  compact: !isProd,
-                  ...babelOptions(isServer),
-                },
-              },
-              {
-                loader: 'ts-loader',
-                options: {
-                  transpileOnly: true,
-                  experimentalWatchApi: !isProd,
-                  configFile: path.resolve(`tsconfig.${isServer ? 'server' : 'client'}.json`),
-                },
-              },
-            ],
-            exclude: /node_modules/,
-          },
-          {
-            test: /\.(gql|graphql)$/,
-            exclude: /node_modules/,
-            use: 'graphql-tag/loader',
-          },
-          {
-            loader: 'file-loader',
-            exclude: [/\.(js|mjs|ts|tsx|gql|graphql|html|json)$/],
+            loader: 'babel-loader',
             options: {
-              name: 'assets/[name].[contenthash:8].[ext]',
-              emitFile: !isServer,
+              babelrc: false,
+              configFile: false,
+              cacheDirectory: true,
+              cacheCompression: !isProd,
+              compact: !isProd,
+              ...babelOptions(isServer),
+            },
+          },
+          {
+            loader: 'ts-loader',
+            options: {
+              transpileOnly: true,
+              experimentalWatchApi: !isProd,
+              configFile: path.resolve(`tsconfig.${isServer ? 'server' : 'client'}.json`),
             },
           },
         ],
+        exclude: /node_modules/,
+      },
+      {
+        test: /\.scss$/,
+        use: [
+          ...(isServer ? [] : [{ loader: MiniCssExtract.loader, options: { hmr: !isProd, reloadAll: !isProd } }]),
+          'css-modules-types-generator-loader',
+          {
+            loader: 'css-loader',
+            options: {
+              importLoaders: 2,
+              sourceMap: true,
+              onlyLocals: isServer,
+              modules: {
+                localIdentName: isProd ? '_[hash:base64:5]' : '[path][name]__[local]--[hash:base64:5]',
+              },
+            },
+          },
+          {
+            loader: 'postcss-loader',
+            options: postcssOptions,
+          },
+          'sass-loader',
+        ],
+      },
+      {
+        loader: 'file-loader',
+        exclude: [/\.(js|mjs|ts|tsx|scss|html|json)$/],
+        options: {
+          name: 'assets/[name].[contenthash:8].[ext]',
+          emitFile: !isServer,
+        },
       },
     ],
   },
@@ -117,7 +163,7 @@ module.exports = (isServer = false) => ({
       // lodash: 'lodash-es',
       'webpack/hot/poll': require.resolve('webpack/hot/poll'),
     },
-    extensions: ['.js', '.jsx', '.tsx', '.ts', '.json'],
+    extensions: ['.js', '.jsx', '.tsx', '.ts', '.json', '.scss'],
   },
   plugins: [
     ...(!isProd ? [new webpack.WatchIgnorePlugin([path.resolve('src', 'server', 'schema.gql')])] : []),

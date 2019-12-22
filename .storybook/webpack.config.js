@@ -1,46 +1,80 @@
-const path = require('path');
+const path = require("path");
 
-const babelOptions = require('../configuration/babelOptions');
+const babelOptions = require("../configuration/babelOptions");
 
 module.exports = ({ config }) => {
   config.module.rules.push({
     test: /\.stories\.(ts|tsx)?$/,
     use: [
       {
-        loader: require.resolve('@storybook/source-loader'),
-        options: { parser: 'typescript' },
-      },
+        loader: require.resolve("@storybook/source-loader"),
+        options: { parser: "typescript" }
+      }
     ],
-    enforce: 'pre',
+    enforce: "pre"
   });
 
   config.module.rules.push({
     test: /\.(ts|tsx)$/,
     use: [
       {
-        loader: require.resolve('babel-loader'),
+        loader: require.resolve("babel-loader"),
         options: {
           babelrc: false,
           configFile: false,
           cacheDirectory: true,
           cacheCompression: false,
           compact: false,
-          ...babelOptions(false),
-        },
+          ...babelOptions(false)
+        }
       },
       {
-        loader: require.resolve('ts-loader'),
+        loader: require.resolve("ts-loader"),
         options: {
           transpileOnly: true,
           experimentalWatchApi: true,
-          configFile: path.resolve('tsconfig.client.json'),
-        },
-      },
+          configFile: path.resolve("tsconfig.client.json")
+        }
+      }
     ]
   });
-  config.resolve.extensions.push(".ts", ".tsx");
-  config.resolve.alias =  {
-    '@': path.resolve('src'),
+  config.module.rules.push({
+    test: /\.s?css$/,
+    use: [
+      "style-loader",
+      "css-modules-types-generator-loader",
+      {
+        loader: "css-loader",
+        options: {
+          importLoaders: 2,
+          sourceMap: true,
+          esModule: true,
+          modules: {
+            localIdentName: "[path][name]__[local]--[hash:base64:5]"
+          }
+        }
+      },
+      {
+        loader: 'postcss-loader',
+        options: {
+          ident: 'postcss',
+          plugins: () => [
+            require('postcss-flexbugs-fixes'),
+            require('postcss-preset-env')({
+              autoprefixer: {
+                flexbox: 'no-2009',
+              },
+              stage: 3,
+            }),
+          ],
+        }
+      },
+      "sass-loader"
+    ]
+  });
+  config.resolve.extensions.push(".ts", ".tsx", ".scss");
+  config.resolve.alias = {
+    "@": path.resolve("src")
   };
   return config;
 };

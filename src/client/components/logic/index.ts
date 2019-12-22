@@ -1,1 +1,1 @@
-export { ThemeChanger } from './themechanger';
+export { ThemeChanger, ThemeChangerContext } from './theme';

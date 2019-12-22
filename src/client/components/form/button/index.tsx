@@ -1,11 +1,20 @@
 import React from 'react';
+import clsx from 'clsx';
 
-import { Container, ButtonProps } from './styles';
+import styles from './index.scss';
+import { Typography } from '@/client/components/primitive';
 
-export function Button({ children, size = 'medium', color = 'primary', variant = 'contained', ...rest }: ButtonProps) {
+interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'contained' | 'flat';
+  color?: 'primary' | 'secondary' | 'background' | 'paper';
+}
+
+export function Button({ children, variant = 'contained', color = 'primary', type = 'button', ...rest }: ButtonProps) {
   return (
-    <Container forwardedSize={size} color={color} variant={variant} {...rest}>
-      {children}
-    </Container>
+    <button type={type} className={clsx(styles.button, styles[variant], styles[color])} {...rest}>
+      <Typography as="span" variant="button">
+        {children}
+      </Typography>
+    </button>
   );
 }
