@@ -1,7 +1,6 @@
 /* eslint-disable global-require, @typescript-eslint/camelcase */
 const path = require('path');
 const webpack = require('webpack');
-const WebpackBar = require('webpackbar');
 const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const safePostCssParser = require('postcss-safe-parser');
 const TerserPlugin = require('terser-webpack-plugin');
@@ -16,6 +15,8 @@ const isProd = process.env.NODE_ENV === 'production';
 
 const postcssOptions = {
   ident: 'postcss',
+  syntax: 'postcss-scss',
+  sourceMap: true,
   plugins: () => [
     require('postcss-flexbugs-fixes'),
     require('postcss-preset-env')({
@@ -24,20 +25,22 @@ const postcssOptions = {
       },
       stage: 3,
     }),
-    ...[
-      isProd
-        ? require('@fullhuman/postcss-purgecss')({
+    ...(isProd
+      ? [
+          require('@fullhuman/postcss-purgecss')({
             content: ['./src/**/*.tsx'],
-          })
-        : [],
-    ],
+            defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
+          }),
+        ]
+      : []),
+    require('postcss-normalize'),
   ],
 };
 
 module.exports = (isServer = false) => ({
   bail: isProd,
   name: isServer ? 'Server' : 'Client',
-  devtool: 'source-map',
+  devtool: isProd ? 'nosources-source-map' : 'eval-source-map',
   mode: isProd ? 'production' : 'development',
   performance: false,
   watchOptions: {
@@ -126,8 +129,15 @@ module.exports = (isServer = false) => ({
       },
       {
         test: /\.scss$/,
+        sideEffects: true,
         use: [
-          ...(isServer ? [] : [{ loader: MiniCssExtract.loader, options: { hmr: !isProd, reloadAll: !isProd } }]),
+          ...(isServer
+            ? []
+            : [
+                isProd
+                  ? { loader: MiniCssExtract.loader, options: { esModule: !isServer } }
+                  : { loader: 'style-loader', options: { esModule: !isServer } },
+              ]),
           'css-modules-types-generator-loader',
           {
             loader: 'css-loader',
@@ -135,8 +145,9 @@ module.exports = (isServer = false) => ({
               importLoaders: 2,
               sourceMap: true,
               onlyLocals: isServer,
+              esModule: !isServer,
               modules: {
-                localIdentName: isProd ? '_[hash:base64:5]' : '[path][name]__[local]--[hash:base64:5]',
+                localIdentName: isProd ? '_[hash:base64:5]' : '[path]__[local]--[hash:base64:5]',
               },
             },
           },
@@ -144,7 +155,12 @@ module.exports = (isServer = false) => ({
             loader: 'postcss-loader',
             options: postcssOptions,
           },
-          'sass-loader',
+          {
+            loader: 'sass-loader',
+            options: {
+              sourceMap: true,
+            },
+          },
         ],
       },
       {
@@ -166,13 +182,8 @@ module.exports = (isServer = false) => ({
     extensions: ['.js', '.jsx', '.tsx', '.ts', '.json', '.scss'],
   },
   plugins: [
-    ...(!isProd ? [new webpack.WatchIgnorePlugin([path.resolve('src', 'server', 'schema.gql')])] : []),
-    new WebpackBar({
-      name: isServer ? 'Server' : 'Client',
-      color: isServer ? '#c065f4' : '#f56be2',
-      profile: true,
-    }),
     new webpack.EnvironmentPlugin({
+      URL: `${envs.PROTOCOL}://${envs.HOST}:${envs.PORT}`,
       PORT: envs.PORT,
       HOST: envs.HOST,
       TARGET: isServer ? 'server' : 'web',
@@ -180,6 +191,7 @@ module.exports = (isServer = false) => ({
       STATIC_FOLDER: path.resolve('dist', 'static'),
       MANIFEST: path.resolve('dist', 'static', 'manifest.json'),
       BASE_DIR: path.resolve('.'),
+      PROTOCOL: envs.PROTOCOL,
     }),
     new LodashPlugin(),
   ],

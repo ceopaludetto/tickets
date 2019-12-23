@@ -1,16 +1,15 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import styles from './index.scss';
+import styles from './paper.scss';
 
 interface PaperProps extends React.HTMLAttributes<HTMLDivElement> {
   elevate?: boolean;
-  hoverable?: boolean;
 }
 
-export function Paper({ children, elevate = false, hoverable = false, ...rest }: PaperProps) {
+export function Paper({ children, elevate = false, className, ...rest }: PaperProps) {
   return (
-    <div className={clsx(styles.paper, { [styles.elevate]: elevate, [styles.hoverable]: hoverable })} {...rest}>
+    <div className={clsx(styles.paper, { [styles.elevate]: elevate }, className)} {...rest}>
       {children}
     </div>
   );

@@ -24,8 +24,16 @@ module.exports = merge(baseConfig(false), {
     splitChunks: isProd
       ? {
           chunks: 'all',
+          cacheGroups: {
+            styles: {
+              name: 'index',
+              test: /\.scss$/,
+              chunks: 'all',
+              enforce: true,
+            },
+          },
         }
-      : false,
+      : undefined,
     moduleIds: isProd ? 'hashed' : false,
     runtimeChunk: isProd
       ? {
@@ -38,8 +46,8 @@ module.exports = merge(baseConfig(false), {
     publicPath: isProd ? '/static/' : `http://${envs.HOST}:${envs.DEV_PORT}/static/`,
     path: path.resolve('dist', 'static'),
     libraryTarget: 'var',
-    filename: isProd ? 'js/[contenthash:8].js' : 'index.js',
-    chunkFilename: isProd ? 'js/[contenthash:8].js' : '[name].chunk.js',
+    filename: isProd ? 'js/[name].[contenthash:8].js' : 'index.js',
+    chunkFilename: isProd ? 'js/[name].[contenthash:8].js' : '[name].chunk.js',
     devtoolModuleFilenameTemplate: info => path.resolve(info.resourcePath).replace(/\\/g, '/'),
   },
   devServer: {
@@ -95,6 +103,11 @@ module.exports = merge(baseConfig(false), {
               to: path.resolve('dist', 'static', 'public'),
             },
           ]),
+          new MiniCssExtract({
+            filename: isProd ? 'css/[name].[contenthash:8].css' : 'index.css',
+            chunkFilename: isProd ? 'css/[name].[contenthash:8].css' : '[name].css',
+            allChunks: true,
+          }),
           // new GenerateSW({
           //   swDest: 'public/sw.js',
           //   exclude: [/\.map$/, /\.gz$/, /asset-manifest\.json$/],
@@ -129,10 +142,6 @@ module.exports = merge(baseConfig(false), {
           //   },
           // }),
         ]),
-    new MiniCssExtract({
-      filename: isProd ? 'css/[contenthash:8].css' : 'index.css',
-      chunkFilename: isProd ? 'css/[contenthash:8].css' : '[name].css',
-    }),
     new LoadablePlugin({
       filename: 'manifest.json',
       writeToDisk: true,

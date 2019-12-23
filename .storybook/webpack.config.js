@@ -48,7 +48,6 @@ module.exports = ({ config }) => {
         options: {
           importLoaders: 2,
           sourceMap: true,
-          esModule: true,
           modules: {
             localIdentName: "[path][name]__[local]--[hash:base64:5]"
           }

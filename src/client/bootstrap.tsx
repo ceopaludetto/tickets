@@ -12,6 +12,7 @@ export default function App() {
       <>
         <Helmet defaultTitle="F3Desk" titleTemplate="%s | F3Desk">
           {IS_PRODUCTION && <link rel="manifest" href={`${PUBLIC_PATH}public/manifest.json`} />}
+          {/* <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500&display=swap" rel="stylesheet" /> */}
           <meta charSet="UTF-8" />
           <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />
           <meta httpEquiv="X-UA-Compatible" content="ie=edge" />

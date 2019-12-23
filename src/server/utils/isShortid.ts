@@ -20,7 +20,6 @@ export class IsShortidConstraint implements ValidatorConstraintInterface {
 }
 
 export function IsShortID(validationOptions?: ValidationOptions) {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   return function verify(object: Record<string, any>, propertyName: string) {
     registerDecorator({
       target: object.constructor,

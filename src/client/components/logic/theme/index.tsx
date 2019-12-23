@@ -1,7 +1,7 @@
 import React, { useState, createContext } from 'react';
 import { Helmet } from 'react-helmet-async';
 
-const enum Theme {
+export const enum Theme {
   Dark = 'dark',
   Light = 'light',
 }

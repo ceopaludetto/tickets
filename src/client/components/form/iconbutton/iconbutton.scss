@@ -1,0 +1,28 @@
+@import "~@/client/scss/functions";
+
+.button {
+  border: none;
+  border-radius: 6px;
+  background-color: transparent;
+  transition: create-transition((background-color), 100ms, ease-in-out);
+  padding: 0.5rem;
+  height: 36px;
+  &:focus {
+    outline: none;
+  }
+  &:not(:disabled) {
+    cursor: pointer;
+    @each $k, $v in map-get($colors, "light") {
+      &.#{$k} {
+        color: get-theme-color($k);
+        &:hover {
+          background-color: get-theme-color($k, "shadow-2");
+        }
+        &:active,
+        &:focus {
+          background-color: get-theme-color($k, "shadow-3");
+        }
+      }
+    }
+  }
+}

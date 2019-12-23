@@ -1,0 +1,89 @@
+@import "~@/client/scss/variables";
+
+@each $bk, $bv in $breakpoints {
+  @media (min-width: $bv) {
+    @each $k, $v in $utils-props {
+      $values: map-get($v, "values");
+      $prop: unquote(map-get($v, "prop"));
+      @for $i from 1 through length($values) {
+        .#{$bk}\:#{$k}-#{nth($values, $i)} {
+          #{$prop}: #{nth($values, $i)};
+        }
+      }
+    }
+
+    $directions: (
+      t: top,
+      b: bottom,
+      l: left,
+      r: right,
+      y: (
+        top,
+        bottom
+      ),
+      x: (
+        left,
+        right
+      )
+    );
+
+    @each $k, $v in $space-props {
+      $values: map-get($v, "values");
+      $prop: unquote(map-get($v, "prop"));
+      @for $i from 1 through length($values) {
+        .#{$bk}\:#{$k}-#{$i} {
+          #{$prop}: #{nth($values, $i)} !important;
+        }
+        .-#{$bk}\:#{$k}-#{$i} {
+          #{$prop}: -#{nth($values, $i)} !important;
+        }
+        @each $dk, $dv in $directions {
+          @if type-of($dv) == "list" {
+            .#{$bk}\:#{$k}#{$dk}-#{$i} {
+              @for $di from 1 through length($dv) {
+                #{$prop}-#{nth($dv, $di)}: #{nth($values, $i)} !important;
+              }
+            }
+            .-#{$bk}\:#{$k}#{$dk}-#{$i} {
+              @for $di from 1 through length($dv) {
+                #{$prop}-#{nth($dv, $di)}: -#{nth($values, $i)} !important;
+              }
+            }
+          } @else {
+            .#{$bk}\:#{$k}#{$dk}-#{$i} {
+              #{$prop}-#{$dv}: #{nth($values, $i)} !important;
+            }
+            .-#{$bk}\:#{$k}#{$dk}-#{$i} {
+              #{$prop}-#{$dv}: -#{nth($values, $i)} !important;
+            }
+          }
+        }
+      }
+    }
+
+    @each $k, $v in $max-props {
+      $prop: $v;
+      @for $i from 1 through 10 {
+        .#{$bk}\:#{$k}-#{$i} {
+          #{$prop}: #{100px * $i};
+        }
+      }
+    }
+
+    .#{$bk}\:h-100 {
+      height: 100%;
+    }
+
+    .#{$bk}\:w-100 {
+      width: 100%;
+    }
+
+    .#{$bk}\:h-100vh {
+      height: 100vh;
+    }
+
+    .#{$bk}\:w-100vw {
+      width: 100vw;
+    }
+  }
+}

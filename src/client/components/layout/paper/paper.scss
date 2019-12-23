@@ -1,0 +1,10 @@
+@import "~@/client/scss/functions";
+
+.paper {
+  background-color: get-theme-color("paper");
+  border-radius: 6px;
+  padding: 2rem;
+  &.elevate {
+    box-shadow: 0 0.75rem 1.5rem get-theme-color("paper-shadow");
+  }
+}

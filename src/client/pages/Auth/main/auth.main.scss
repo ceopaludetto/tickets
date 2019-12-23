@@ -1,0 +1,9 @@
+@import "~@/client/scss/functions";
+
+.paper {
+  @media (max-width: 500px) {
+    align-self: flex-start;
+    border-radius: 0px;
+    height: 100%;
+  }
+}

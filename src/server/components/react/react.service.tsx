@@ -9,8 +9,9 @@ import { Provider } from 'react-redux';
 
 import ReactApp from '@/client/bootstrap';
 import { createReduxStore } from '@/client/providers/store';
-import { Types } from '@/client/services/ducks/auth';
+import { AuthTypes } from '@/client/services/ducks/auth';
 import { ContextType, ReactContextType } from '@/server/utils/common.dto';
+import { getInitialContent } from '@/client/utils/prefetch.routes';
 
 @Injectable()
 export class ReactService {
@@ -21,11 +22,11 @@ export class ReactService {
       });
       const context: ReactContextType = {};
       const helmetContext: FilledContext | {} = {};
-      const store = createReduxStore();
+      const { store, api } = createReduxStore();
 
       if (req.user) {
         store.dispatch({
-          type: Types.LOGIN_SUCCESS,
+          type: AuthTypes.SUCCESS,
           payload: {
             data: req.user,
           },
@@ -47,6 +48,8 @@ export class ReactService {
       if (context.url) {
         return res.redirect(context.url);
       }
+
+      await getInitialContent({ dispatch: store.dispatch, getState: store.getState, api }, req.url);
 
       const initialState = store.getState();
 

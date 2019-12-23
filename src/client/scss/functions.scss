@@ -1,4 +1,4 @@
-@import '~@/client/scss/variables';
+@import "~@/client/scss/variables";
 
 @function color-yiq($color, $if-true, $if-false) {
   $r: red($color);
@@ -31,22 +31,33 @@
       }
       --disabled-color: #{map-get($disabled-color, $theme)};
       --disabled-color-contrast: #{map-get($disabled-color-text, $theme)};
+      --paper-shadow: #{map-get($paper-shadow, $theme)};
     }
   }
 }
 
 @function get-theme-color($color, $type: "") {
-  @if $type == ""{
+  @if $type == "" {
     @return var(--#{$color});
   } @else {
     @return var(--#{$color}-#{$type});
   }
 }
 
+@function get-font-weight($weight: "regular") {
+  @return map-get($font-weights, $weight);
+}
+
+@function get-breakpoint($bk) {
+  @return map-get($breakpoints, $bk);
+}
+
 @function create-transition($props, $dur: 125ms, $fn: ease-in-out) {
   $res: unquote("");
   @for $i from 1 through length($props) {
-    $res: unquote("#{$res} #{nth($props, $i)} #{if(type-of($dur) == 'list', nth($dur, $i), $dur)} #{if(type-of($fn) == 'list', nth($fn, $i), $fn)},");
+    $res: unquote(
+      "#{$res} #{nth($props, $i)} #{if(type-of($dur) == 'list', nth($dur, $i), $dur)} #{if(type-of($fn) == 'list', nth($fn, $i), $fn)},"
+    );
   }
 
   @return $res;

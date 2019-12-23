@@ -1,4 +1,5 @@
 const path = require("path");
+const restrictedGlobals = require('confusing-browser-globals');
 
 module.exports = {
   parser: "@typescript-eslint/parser",
@@ -40,6 +41,7 @@ module.exports = {
     "@typescript-eslint/no-var-requires": "off",
     "@typescript-eslint/explicit-function-return-type": "off",
     "@typescript-eslint/no-empty-interface": "warn",
+    "@typescript-eslint/no-explicit-any": "off",
     "import/prefer-default-export": "off",
     "import/no-extraneous-dependencies": ["error", { devDependencies: true }],
     "import/no-cycle": ["error", { maxDepth: 1 }],
@@ -64,7 +66,8 @@ module.exports = {
       }
     ],
     "max-classes-per-file": ["error", 4],
-    "no-useless-constructor": 0
+    "no-useless-constructor": 0,
+    'no-restricted-globals': ['error'].concat(restrictedGlobals),
   },
   settings: {
     "import/extensions": [".js", ".jsx", ".ts", ".tsx"],

@@ -1,8 +1,8 @@
 import React from 'react';
 import clsx from 'clsx';
 
-import styles from './index.scss';
-import { Typography } from '@/client/components/primitive';
+import s from './switch.scss';
+import { Label } from '@/client/components/typography';
 
 interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;
@@ -11,17 +11,17 @@ interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 
 
 export function Switch({ color = 'primary', label, id, ...rest }: SwitchProps) {
   return (
-    <div className={styles['form-group']}>
+    <div className={s['form-group']}>
       <>
         {label && (
-          <Typography htmlFor={id} className={styles.label} variant="label" as="label">
+          <Label htmlFor={id} className={s.label}>
             {label}
-          </Typography>
+          </Label>
         )}
-        <div className={styles.wrapper}>
+        <div className={s.wrapper}>
           <>
-            <input id={id} type="checkbox" className={clsx(styles.input, styles[color])} {...rest} />
-            <div className={styles.switch} />
+            <input id={id} type="checkbox" className={clsx(s.input, s[color])} {...rest} />
+            <div className={s.switch} />
           </>
         </div>
       </>

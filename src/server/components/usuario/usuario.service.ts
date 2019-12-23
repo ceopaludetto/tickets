@@ -25,19 +25,15 @@ export class UsuarioService {
   }
 
   public async createOrUpdate(data: UsuarioInput, id?: string) {
-    try {
-      if (!id) {
-        return this.usuarioRepository.create(data);
-      }
-
-      const usuario = await this.usuarioRepository.findByPk(id);
-      if (!usuario) {
-        throw new NotFoundException('Falha ao encontrar Usuário');
-      }
-      return usuario.update(data);
-    } catch (err) {
-      throw new BadRequestException(err);
+    if (!id) {
+      return this.usuarioRepository.create(data);
     }
+
+    const usuario = await this.usuarioRepository.findByPk(id);
+    if (!usuario) {
+      throw new NotFoundException('Falha ao encontrar Usuário');
+    }
+    return usuario.update(data);
   }
 
   public async login(email: string, senha: string) {

@@ -8,12 +8,11 @@ interface Error {
   status?: HttpStatus;
   type?: 'ClassValidator' | 'Sequelize' | 'Runtime' | 'Http' | 'Other';
   message?: string;
-  context?: any; // eslint-disable-line @typescript-eslint/no-explicit-any
+  context?: any;
 }
 
 @Catch()
 export class ErrorFormatter implements ExceptionFilter {
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   public catch(error: any, host: ArgumentsHost) {
     const ctx = host.switchToHttp();
     const res: Response = ctx.getResponse();
@@ -59,7 +58,8 @@ export class ErrorFormatter implements ExceptionFilter {
 
     formatted.type = 'Http';
     formatted.status = error.getStatus();
-    formatted.message = error.message.message;
+    formatted.message =
+      typeof error.message.message === 'object' ? error.message.message.message : error.message.message;
     formatted.context = error.stack;
 
     return formatted;

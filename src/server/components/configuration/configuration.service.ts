@@ -55,7 +55,6 @@ export class ConfigurationService {
     this.envConfig = this.validateInput(config);
   }
 
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
   private validateInput = (config: any) => {
     const isValid = EnvSchema.isValidSync(config);
 

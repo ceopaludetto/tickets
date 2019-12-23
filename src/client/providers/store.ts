@@ -1,30 +1,32 @@
 import { composeWithDevTools } from 'redux-devtools-extension';
 import { createStore, applyMiddleware } from 'redux';
-import createSagaMiddleware from 'redux-saga';
+import { AxiosInstance } from 'axios';
+import thunk, { ThunkMiddleware } from 'redux-thunk';
 
-import { reducers } from '@/client/services/ducks';
-import { root } from '@/client/services/sagas';
+import { reducers, AllReducers, AllActions } from '@/client/services/ducks';
 import { IS_PRODUCTION } from '@/client/utils/constants';
+import { createApi } from './api';
 
-// eslint-disable-next-line @typescript-eslint/no-explicit-any
+export type ThunkType = ThunkMiddleware<AllReducers, AllActions, AxiosInstance>;
+
 export function createReduxStore(initialState?: any) {
-  const sagaMiddleware = createSagaMiddleware();
+  const api = createApi();
 
   const store = createStore(
     reducers,
     initialState,
-    IS_PRODUCTION ? applyMiddleware(sagaMiddleware) : composeWithDevTools(applyMiddleware(sagaMiddleware))
+    IS_PRODUCTION
+      ? applyMiddleware(thunk.withExtraArgument(api) as ThunkType)
+      : composeWithDevTools(applyMiddleware(thunk.withExtraArgument(api) as ThunkType))
   );
 
   if (module.hot) {
     module.hot.accept('@/client/services/ducks', () => {
       // eslint-disable-next-line global-require
-      const nextRootReducer = require('@/client/services/ducks').default;
+      const nextRootReducer = require('@/client/services/ducks').reducers;
       store.replaceReducer(nextRootReducer);
     });
   }
 
-  sagaMiddleware.run(root);
-
-  return store;
+  return { store, api };
 }

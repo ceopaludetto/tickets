@@ -6,7 +6,7 @@ export interface SecurityMatcherOptions {
   role: Role;
   empresa?: string;
   isSameUser?: boolean;
-  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+
   args?: any;
 }
 

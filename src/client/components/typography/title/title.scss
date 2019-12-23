@@ -1,0 +1,9 @@
+@import "~@/client/scss/functions";
+
+.title {
+  color: get-theme-color("background", "contrast");
+  font-size: nth($font-sizes, 6);
+  font-weight: get-font-weight("medium");
+  margin-top: 0;
+  margin-bottom: 0;
+}

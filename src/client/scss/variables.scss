@@ -1,16 +1,18 @@
 $colors: (
   light: (
-    primary: #1E1E24,
+    primary: #1e1e24,
     secondary: #2196f3,
     background: #fafafa,
-    paper: #ffffff
+    paper: #ffffff,
+    danger: #ef3054
   ),
   dark: (
     primary: #f7f7f2,
     secondary: #2196f3,
     background: #2a2a2a,
-    paper: #1a1a1a
-  ),
+    paper: #303030,
+    danger: #ef3054
+  )
 );
 
 $disabled-color: (
@@ -23,4 +25,111 @@ $disabled-color-text: (
   dark: #111111
 );
 
-$font-sizes: .875rem, 1rem, 1.25rem, 1.5rem, 1.75rem, 2rem;
+$paper-shadow: (
+  light: rgba(18, 38, 63, 0.03),
+  dark: rgba(18, 38, 63, 0.01)
+);
+
+$font-family: Roboto;
+$font-weights: (
+  light: 300,
+  regular: 400,
+  medium: 500
+);
+$font-sizes: 0.875rem, 1rem, 1.25rem, 1.5rem, 1.75rem, 2rem;
+
+$breakpoints: (
+  xs: 0,
+  sm: 576px,
+  md: 768px,
+  lg: 992px,
+  xl: 1200px
+);
+
+$utils-props: (
+  d: (
+    prop: "display",
+    values: (
+      block,
+      inline-block,
+      flex,
+      inline-flex
+    )
+  ),
+  jc: (
+    prop: "justify-content",
+    values: (
+      flex-start,
+      flex-end,
+      center,
+      space-around,
+      space-between
+    )
+  ),
+  ai: (
+    prop: "align-items",
+    values: (
+      flex-start,
+      flex-end,
+      center,
+      stretch,
+      baseline
+    )
+  ),
+  fw: (
+    prop: "flex-wrap",
+    values: (
+      wrap,
+      nowrap,
+      wrap-reverse
+    )
+  ),
+  po: (
+    prop: "position",
+    values: (
+      relative,
+      absolute,
+      fixed
+    )
+  ),
+  ta: (
+    prop: "text-align",
+    values: (
+      left,
+      center,
+      right
+    )
+  )
+);
+
+$space-props: (
+  m: (
+    prop: "margin",
+    values: (
+      0.5rem,
+      0.75rem,
+      1rem,
+      1.25rem,
+      1.5rem,
+      1.75rem,
+      2rem
+    )
+  ),
+  p: (
+    prop: "padding",
+    values: (
+      0.5rem,
+      0.75rem,
+      1rem,
+      1.25rem,
+      1.5rem,
+      1.75rem,
+      2rem
+    )
+  )
+);
+
+$max-props: (
+  mw: "max-width",
+  mh: "max-height"
+);
