@@ -1,17 +1,19 @@
-interface ApiErrorConstructorProps {
-  message: string;
-  status: number;
-  type: 'ClassValidator' | 'Sequelize' | 'Runtime' | 'Http' | 'Other';
-}
+import { HttpStatus } from '@nestjs/common/enums/http-status.enum';
 
-export class ApiError extends Error {
-  public status = 200;
+import { F3DeskError } from '@/server/utils/exception.filter';
 
-  public type: 'ClassValidator' | 'Sequelize' | 'Runtime' | 'Http' | 'Other' = 'Other';
+export class ApiError extends Error implements F3DeskError {
+  public status: HttpStatus;
 
-  public constructor({ message, status }: ApiErrorConstructorProps) {
+  public type: F3DeskError['type'] = 'Other';
+
+  public context: any; // eslint-disable-line react/static-property-placement
+
+  public constructor({ message, status = HttpStatus.BAD_REQUEST, type, context }: F3DeskError) {
     super(message);
+
     this.status = status;
-    this.name = 'ApiError';
+    this.type = type;
+    this.context = context;
   }
 }

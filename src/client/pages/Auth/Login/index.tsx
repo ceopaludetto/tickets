@@ -2,8 +2,8 @@ import React from 'react';
 import useForm, { FormContext } from 'react-hook-form';
 
 import c from '@/client/scss/utils.scss';
-import { Button, Title, Overline, FormControl, Form } from '@/client/components';
-import { useVisibility, useThunkDispatch, useTypedSelector, useValidator } from '@/client/utils';
+import { Button, Title, Overline, FormControl, Form, Link } from '@/client/components';
+import { useVisibility, useThunkDispatch, useTypedSelector } from '@/client/utils';
 import { LoginValidationSchema } from '@/client/services/validations/auth/login';
 import { requestLogin } from '@/client/services/ducks/auth';
 
@@ -16,7 +16,6 @@ export default function AuthLogin() {
   const authState = useTypedSelector(state => state.auth);
   const dispatch = useThunkDispatch();
   const methods = useForm<LoginData>({ validationSchema: LoginValidationSchema });
-  const { hasError, fieldLevelError, errorInfo } = useValidator(authState);
   const { mapVisibilityProps } = useVisibility();
 
   const onSubmit = methods.handleSubmit(values => dispatch(requestLogin(values)));
@@ -26,14 +25,18 @@ export default function AuthLogin() {
       <>
         <Overline>Login</Overline>
         <Title gutterBottom>Bem vindo!</Title>
-        <Form error={hasError && !fieldLevelError ? errorInfo?.message : ''} onSubmit={onSubmit}>
+        <Form statesToValidate={[authState]} onSubmit={onSubmit}>
           <>
             <FormControl disabled={authState.loading} name="email" label="Email" id="email" />
             <FormControl
               name="senha"
               label="Senha"
               id="senha"
-              helperText="Esqueceu a senha?"
+              helperText={
+                <Link color="secondary" to="/auth/register">
+                  Esqueceu a senha?
+                </Link>
+              }
               disabled={authState.loading}
               {...mapVisibilityProps()}
             />

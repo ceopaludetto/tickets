@@ -55,17 +55,21 @@ export async function getInitialContent(
 ) {
   const path = typeof currentRoute === 'string' ? currentRoute : currentRoute.pathname;
 
-  const matchingRoute = findRoute(path, allRoutes);
+  if (!path.includes('/api')) {
+    const matchingRoute = findRoute(path, allRoutes);
 
-  if (matchingRoute && matchingRoute.component.load) {
-    const c = await matchingRoute.component.load();
+    if (matchingRoute && matchingRoute.component.load) {
+      const c = await matchingRoute.component.load();
 
-    if (matchingRoute.thunks && matchingRoute.thunks.length) {
-      await Promise.all(matchingRoute.thunks.map(async t => t()(dispatch, getState, api)));
+      if (matchingRoute.thunks && matchingRoute.thunks.length) {
+        await Promise.all(matchingRoute.thunks.map(async t => t()(dispatch, getState, api)));
+      }
+
+      return c;
     }
 
-    return c;
+    throw new Error('Route not found');
   }
 
-  throw new Error('Route not found');
+  return null;
 }

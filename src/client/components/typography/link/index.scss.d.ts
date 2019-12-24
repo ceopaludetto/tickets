@@ -1,19 +1,16 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
-export interface SwitchStyles {
+export interface IndexStyles {
   [index: string]: string;
-	'form-group': string;
-	'wrapper': string;
-	'input': string;
-	'switch': string;
+	'link': string;
+	'gutter-bottom': string;
 	'primary': string;
 	'secondary': string;
 	'background': string;
 	'paper': string;
 	'disabled': string;
-	'label': string;
 }
 
-export type ISwitchStyles = SwitchStyles;
-export const locals: SwitchStyles;
+export type IIndexStyles = IndexStyles;
+export const locals: IndexStyles;
 export default locals;

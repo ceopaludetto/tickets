@@ -10,7 +10,7 @@ export interface ControlProps extends React.InputHTMLAttributes<HTMLInputElement
   append?: React.ReactElement<any>;
   color?: 'primary' | 'secondary' | 'background' | 'paper';
   error?: boolean;
-  helperText?: string;
+  helperText?: React.ReactNode;
 }
 
 export const Control = forwardRef(

@@ -2,6 +2,7 @@ import immer from 'immer';
 import { Reducer } from 'redux';
 
 import { Thunk } from '@/client/utils/common.dto';
+import { ApiError } from '@/client/utils/error';
 
 export const enum TicketTypes {
   REQUEST = 'TICKETS:REQUEST',
@@ -12,13 +13,13 @@ export const enum TicketTypes {
 export type TicketActions =
   | { type: TicketTypes.REQUEST }
   | { type: TicketTypes.SUCCESS; payload: any[] }
-  | { type: TicketTypes.FAILURE; payload: Error };
+  | { type: TicketTypes.FAILURE; payload: ApiError };
 
 export type TicketState = {
   loading: boolean;
   success: boolean;
   failure: boolean;
-  data: any[] | Error;
+  data: any[] | ApiError;
 };
 
 export const ticketsInitialState: TicketState = {

@@ -40,7 +40,7 @@ const postcssOptions = {
 module.exports = (isServer = false) => ({
   bail: isProd,
   name: isServer ? 'Server' : 'Client',
-  devtool: isProd ? 'nosources-source-map' : 'eval-source-map',
+  devtool: isProd ? 'nosources-source-map' : 'source-map',
   mode: isProd ? 'production' : 'development',
   performance: false,
   watchOptions: {

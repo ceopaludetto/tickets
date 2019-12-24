@@ -4,7 +4,7 @@
   border: none;
   border-radius: 6px;
   background-color: transparent;
-  transition: create-transition((background-color), 100ms, ease-in-out);
+  transition: create-transition((background-color, box-shadow), 100ms, ease-in-out);
   padding: 0.5rem;
   height: 36px;
   &:focus {
@@ -20,6 +20,7 @@
         }
         &:active,
         &:focus {
+          box-shadow: 0 0 0 3px get-theme-color($k, "shadow-1");
           background-color: get-theme-color($k, "shadow-3");
         }
       }

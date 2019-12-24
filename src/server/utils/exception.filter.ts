@@ -1,12 +1,13 @@
 import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus, HttpException } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
+import { BaseError as SequelizeError } from 'sequelize';
 import { Response } from 'express';
 
 import { IS_PRODUCTION } from '@/server/utils/constants';
 
-interface Error {
+export interface F3DeskError {
   status?: HttpStatus;
-  type?: 'ClassValidator' | 'Sequelize' | 'Runtime' | 'Http' | 'Other';
+  type?: 'ClassValidator' | 'Sequelize' | 'Http' | 'Other';
   message?: string;
   context?: any;
 }
@@ -17,20 +18,23 @@ export class ErrorFormatter implements ExceptionFilter {
     const ctx = host.switchToHttp();
     const res: Response = ctx.getResponse();
 
-    let formatted: Error = {};
+    let formatted: F3DeskError = {};
 
-    if (error.message.message[0] instanceof ValidationError) {
+    if (error instanceof SequelizeError) {
+      formatted = this.isSequelize(error);
+    } else if (error.message.message[0] instanceof ValidationError) {
       formatted = this.isClassValidator(error.message.message as ValidationError[]);
     } else if (error instanceof HttpException) {
       formatted = this.isHttp(error);
     } else {
+      formatted.type = 'Other';
       formatted = error;
     }
 
     return res.status(formatted.status || 400).send(this.removeContext(formatted));
   }
 
-  public removeContext = (formatted: Error) => {
+  private removeContext = (formatted: F3DeskError) => {
     if (IS_PRODUCTION) {
       delete formatted.context;
       return formatted;
@@ -39,8 +43,8 @@ export class ErrorFormatter implements ExceptionFilter {
     return formatted;
   };
 
-  public isClassValidator = (error: ValidationError[]) => {
-    const formatted: Error = {};
+  private isClassValidator = (error: ValidationError[]) => {
+    const formatted: F3DeskError = {};
 
     const firstProperty = error[0].property;
     const firstConstraint = error[0].constraints[Object.keys(error[0].constraints)[0]];
@@ -53,13 +57,24 @@ export class ErrorFormatter implements ExceptionFilter {
     return formatted as Error;
   };
 
-  public isHttp = (error: HttpException) => {
-    const formatted: Error = {};
+  private isHttp = (error: HttpException) => {
+    const formatted: F3DeskError = {};
 
     formatted.type = 'Http';
     formatted.status = error.getStatus();
     formatted.message =
       typeof error.message.message === 'object' ? error.message.message.message : error.message.message;
+    formatted.context = error.stack;
+
+    return formatted;
+  };
+
+  private isSequelize = (error: SequelizeError) => {
+    const formatted: F3DeskError = {};
+
+    formatted.type = 'Sequelize';
+    formatted.status = HttpStatus.BAD_REQUEST;
+    formatted.message = error.message;
     formatted.context = error.stack;
 
     return formatted;

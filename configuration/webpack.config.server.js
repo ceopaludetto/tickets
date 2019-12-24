@@ -19,7 +19,7 @@ module.exports = merge(baseConfig(true), {
   },
   externals: [
     NodeExternals({
-      whitelist: [...(isProd ? [] : ['webpack/hot/poll?300']), /\.(css|scss|sass|sss|less)$/],
+      whitelist: [...(isProd ? [] : ['webpack/hot/poll?300']), /\.(scss|sass)$/],
     }),
   ],
   entry: [

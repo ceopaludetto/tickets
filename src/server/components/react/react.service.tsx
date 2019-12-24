@@ -26,7 +26,7 @@ export class ReactService {
 
       if (req.user) {
         store.dispatch({
-          type: AuthTypes.SUCCESS,
+          type: AuthTypes.SUCCESS_LOGIN,
           payload: {
             data: req.user,
           },

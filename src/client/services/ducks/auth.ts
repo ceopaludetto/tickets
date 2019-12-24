@@ -2,6 +2,7 @@ import immer from 'immer';
 import { Reducer } from 'redux';
 
 import { LoginInputDTO } from '@/server/components/authentication/auth.dto';
+import { ApiError } from '@/client/utils/error';
 import { Thunk } from '@/client/utils/common.dto';
 
 export const enum AuthTypes {
@@ -13,13 +14,13 @@ export const enum AuthTypes {
 export type AuthActions =
   | { type: AuthTypes.REQUEST_LOGIN }
   | { type: AuthTypes.SUCCESS_LOGIN; payload: any[] }
-  | { type: AuthTypes.FAILURE_LOGIN; payload: Error };
+  | { type: AuthTypes.FAILURE_LOGIN; payload: ApiError };
 
 export type AuthState = {
   loading: boolean;
   success: boolean;
   failure: boolean;
-  data: any[] | Error;
+  data: any[] | ApiError;
 };
 
 export const authInitialState: AuthState = {
@@ -42,23 +43,14 @@ export const auth: Reducer<AuthState, AuthActions> = immer((state: AuthState, ac
   }
 }, authInitialState);
 
-function delay() {
-  return new Promise(resolve => {
-    setTimeout(() => {
-      resolve();
-    }, 2500);
-  });
-}
-
 export const requestLogin: Thunk<AuthState, AuthActions> = ({ email, senha }: LoginInputDTO) => {
   return async (dispatch, getState, api) => {
     dispatch({ type: AuthTypes.REQUEST_LOGIN });
-    await delay();
     try {
       const res = await api.post('/auth/login', { email, senha });
       dispatch({ type: AuthTypes.SUCCESS_LOGIN, payload: res.data });
     } catch (err) {
-      dispatch({ type: AuthTypes.FAILURE_LOGIN, payload: err });
+      dispatch({ type: AuthTypes.FAILURE_LOGIN, payload: err as ApiError });
     }
   };
 };
