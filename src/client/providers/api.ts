@@ -1,14 +1,24 @@
-import axios, { AxiosInstance } from 'axios';
+import axios, { AxiosInstance, AxiosError } from 'axios';
 import { createContext } from 'react';
 import { cacheAdapterEnhancer, throttleAdapterEnhancer } from 'axios-extensions';
 
+import { ApiError } from '@/client/utils/error';
+
+function injectErrorType(error: AxiosError) {
+  return Promise.reject(new ApiError(error.response?.data));
+}
+
 export function createApi() {
-  return axios.create({
+  const api = axios.create({
     baseURL: `${process.env.URL}/api`,
     adapter: !axios.defaults.adapter
       ? undefined
       : throttleAdapterEnhancer(cacheAdapterEnhancer(axios.defaults.adapter)),
   });
+
+  api.interceptors.response.use(res => res, injectErrorType);
+
+  return api;
 }
 
 export const ApiContext = createContext<{ api: AxiosInstance }>({ api: axios });

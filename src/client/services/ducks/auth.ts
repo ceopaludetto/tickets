@@ -5,15 +5,15 @@ import { LoginInputDTO } from '@/server/components/authentication/auth.dto';
 import { Thunk } from '@/client/utils/common.dto';
 
 export const enum AuthTypes {
-  REQUEST = 'AUTH_LOGIN:REQUEST',
-  SUCCESS = 'AUTH_LOGIN:SUCCESS',
-  FAILURE = 'AUTH_LOGIN:FAILURE',
+  REQUEST_LOGIN = 'AUTH:REQUEST_LOGIN',
+  SUCCESS_LOGIN = 'AUTH:SUCCESS_LOGIN',
+  FAILURE_LOGIN = 'AUTH:FAILURE_LOGIN',
 }
 
 export type AuthActions =
-  | { type: AuthTypes.REQUEST }
-  | { type: AuthTypes.SUCCESS; payload: any[] }
-  | { type: AuthTypes.FAILURE; payload: Error };
+  | { type: AuthTypes.REQUEST_LOGIN }
+  | { type: AuthTypes.SUCCESS_LOGIN; payload: any[] }
+  | { type: AuthTypes.FAILURE_LOGIN; payload: Error };
 
 export type AuthState = {
   loading: boolean;
@@ -31,25 +31,34 @@ export const authInitialState: AuthState = {
 
 export const auth: Reducer<AuthState, AuthActions> = immer((state: AuthState, action: AuthActions): AuthState => {
   switch (action.type) {
-    case AuthTypes.REQUEST:
+    case AuthTypes.REQUEST_LOGIN:
       return { ...state, loading: true };
-    case AuthTypes.SUCCESS:
+    case AuthTypes.SUCCESS_LOGIN:
       return { ...state, loading: false, success: true, data: action.payload };
-    case AuthTypes.FAILURE:
+    case AuthTypes.FAILURE_LOGIN:
       return { ...state, loading: false, failure: true, data: action.payload };
     default:
       return state;
   }
 }, authInitialState);
 
-export const requestAuth: Thunk<AuthState, AuthActions> = ({ email, senha }: LoginInputDTO) => {
+function delay() {
+  return new Promise(resolve => {
+    setTimeout(() => {
+      resolve();
+    }, 2500);
+  });
+}
+
+export const requestLogin: Thunk<AuthState, AuthActions> = ({ email, senha }: LoginInputDTO) => {
   return async (dispatch, getState, api) => {
-    dispatch({ type: AuthTypes.REQUEST });
+    dispatch({ type: AuthTypes.REQUEST_LOGIN });
+    await delay();
     try {
       const res = await api.post('/auth/login', { email, senha });
-      dispatch({ type: AuthTypes.SUCCESS, payload: res.data });
+      dispatch({ type: AuthTypes.SUCCESS_LOGIN, payload: res.data });
     } catch (err) {
-      dispatch({ type: AuthTypes.FAILURE, payload: err });
+      dispatch({ type: AuthTypes.FAILURE_LOGIN, payload: err });
     }
   };
 };

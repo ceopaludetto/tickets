@@ -4,11 +4,14 @@ export interface ControlStyles {
   [index: string]: string;
 	'container': string;
 	'form-group': string;
+	'disabled': string;
 	'label': string;
 	'primary': string;
 	'secondary': string;
 	'background': string;
 	'paper': string;
+	'danger': string;
+	'disabled-text': string;
 	'error': string;
 	'helper': string;
 	'input': string;

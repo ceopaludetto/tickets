@@ -18,19 +18,14 @@
   @each $theme, $values in $colors {
     :root[data-theme="#{$theme}"] {
       @each $k, $v in $values {
-        $r: red($v);
-        $g: green($v);
-        $b: blue($v);
         --#{$k}: #{$v};
         --#{$k}-hover: #{darken($v, 2.5%)};
         --#{$k}-active: #{darken($v, 5%)};
         --#{$k}-contrast: #{color-yiq($v, #000000, #ffffff)};
         @for $i from 1 through 3 {
-          --#{$k}-shadow-#{$i}: rgba(#{$r, $g, $b}, #{$i / 10});
+          --#{$k}-shadow-#{$i}: #{rgba($v, $i / 10)};
         }
       }
-      --disabled-color: #{map-get($disabled-color, $theme)};
-      --disabled-color-contrast: #{map-get($disabled-color-text, $theme)};
       --paper-shadow: #{map-get($paper-shadow, $theme)};
     }
   }

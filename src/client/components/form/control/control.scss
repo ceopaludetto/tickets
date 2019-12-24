@@ -15,34 +15,36 @@
       100ms,
       ease-in-out
     );
-    &:hover {
-      background-color: get-theme-color("background");
-    }
-    &:focus-within {
-      background-color: get-theme-color("background");
-      & .label {
-        font-size: nth($font-sizes, 1);
-        top: 27.5%;
+    &:not(.disabled) {
+      &:hover {
+        background-color: get-theme-color("background");
       }
-    }
-    @each $k, $v in map-get($colors, "light") {
-      &.#{$k} {
-        &:focus-within {
-          box-shadow: 0 0 0 3px get-theme-color($k, "shadow-3");
-          border-color: get-theme-color($k, "active");
+      &:focus-within {
+        background-color: get-theme-color("background");
+        & .label {
+          font-size: nth($font-sizes, 1);
+          top: 27.5%;
         }
       }
-    }
-    &.error {
-      border-color: get-theme-color("danger") !important;
-      &:focus-within {
-        box-shadow: 0 0 0 3px get-theme-color("danger", "shadow-3");
+      @each $k, $v in map-get($colors, "light") {
+        &.#{$k} {
+          &:focus-within {
+            box-shadow: 0 0 0 3px get-theme-color($k, "shadow-3");
+            border-color: get-theme-color($k, "active");
+          }
+        }
       }
-      .label {
-        color: get-theme-color("danger");
-      }
-      & + .helper {
-        color: get-theme-color("danger");
+      &.error {
+        border-color: get-theme-color("danger") !important;
+        &:focus-within {
+          box-shadow: 0 0 0 3px get-theme-color("danger", "shadow-3");
+        }
+        .label {
+          color: get-theme-color("danger");
+        }
+        & + .helper {
+          color: get-theme-color("danger");
+        }
       }
     }
     .label {
@@ -64,6 +66,9 @@
       background-color: transparent;
       font-size: 1rem;
       color: get-theme-color("background", "contrast");
+      &:disabled {
+        user-select: none;
+      }
       &:focus {
         outline: none;
       }
@@ -72,6 +77,13 @@
           font-size: nth($font-sizes, 1);
           top: 27.5%;
         }
+      }
+    }
+    &.disabled {
+      background-color: get-theme-color("disabled");
+      border-color: get-theme-color("disabled", "active");
+      .label {
+        color: get-theme-color("disabled-text");
       }
     }
     .append {

@@ -10,6 +10,9 @@ export interface SwitchStyles {
 	'secondary': string;
 	'background': string;
 	'paper': string;
+	'danger': string;
+	'disabled': string;
+	'disabled-text': string;
 	'label': string;
 }
 
