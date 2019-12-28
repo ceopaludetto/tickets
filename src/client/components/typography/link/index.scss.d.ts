@@ -8,9 +8,7 @@ export interface IndexStyles {
 	'secondary': string;
 	'background': string;
 	'paper': string;
-	'danger': string;
 	'disabled': string;
-	'disabled-text': string;
 }
 
 export type IIndexStyles = IndexStyles;
