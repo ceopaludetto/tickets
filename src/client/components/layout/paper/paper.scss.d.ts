@@ -4,6 +4,7 @@ export interface PaperStyles {
   [index: string]: string;
 	'paper': string;
 	'elevate': string;
+	'inner': string;
 }
 
 export type IPaperStyles = PaperStyles;

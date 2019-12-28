@@ -1,7 +1,6 @@
 import loadable, { LoadableComponent } from '@loadable/component';
 
 import { Thunk } from '@/client/utils/common.dto';
-import { requestTickets } from '@/client/services/ducks/tickets';
 
 export interface Route {
   path: string | string[];
@@ -32,8 +31,12 @@ export const routes: Route[] = [
       {
         path: '/auth/register',
         exact: true,
-        thunks: [requestTickets],
         component: loadable(() => import(/* webpackChunkName: "auth.register" */ '@/client/pages/auth/register')),
+      },
+      {
+        path: '/auth/forgot',
+        exact: true,
+        component: loadable(() => import(/* webpackChunkName: "auth.forgot" */ '@/client/pages/auth/forgot')),
       },
     ],
   },
