@@ -32,6 +32,7 @@ export const Control = forwardRef(
       showMask,
       disabled,
       error,
+      required,
       helperText,
       ...rest
     }: ControlProps,
@@ -50,6 +51,7 @@ export const Control = forwardRef(
                 pipe={pipe}
                 keepCharPositions={keepCharPositions}
                 ref={ref as React.Ref<MaskInput>}
+                {...rest}
                 render={(innerRef, innerProps) => (
                   <input
                     ref={innerRef}
@@ -57,7 +59,6 @@ export const Control = forwardRef(
                     disabled={disabled}
                     className={s.input}
                     id={id}
-                    {...rest}
                     {...innerProps}
                   />
                 )}
@@ -75,6 +76,7 @@ export const Control = forwardRef(
             {label && (
               <Label className={s.label} htmlFor={id}>
                 {label}
+                {required && '*'}
               </Label>
             )}
             {append && <div className={s.append}>{cloneElement(append, { disabled })}</div>}

@@ -1,17 +1,19 @@
 import React from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useField, useFormikContext } from 'formik';
 
 import { Control, ControlProps } from '@/client/components/form/control';
 
 export function FormControl({ name, helperText, ...rest }: Omit<ControlProps, 'ref' | 'name'> & { name: string }) {
-  const { register, errors } = useFormContext();
+  const [field, meta] = useField(name);
+  const { isSubmitting } = useFormikContext();
 
   return (
     <Control
+      {...field}
       name={name}
-      ref={register}
-      error={!!errors[name]}
-      helperText={typeof errors[name] !== 'undefined' ? errors[name]?.message : helperText}
+      disabled={isSubmitting}
+      error={!!meta.error && !!meta.touched}
+      helperText={typeof meta.error !== 'undefined' && meta.touched ? meta.error : helperText}
       {...rest}
     />
   );

@@ -1,3 +1,4 @@
 export const REQUIRED = 'Campo obrigatório';
 export const EMAIL = 'Email inválido';
-export const TELEFONE = 'Telefone inválido';
+export const PHONE = 'Telefone inválido';
+export const PASSWORD = 'As senhas não coincidem';

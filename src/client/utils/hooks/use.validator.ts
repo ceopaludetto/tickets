@@ -14,7 +14,7 @@ interface ErrorMappingState {
   fieldLevelError?: boolean;
 }
 
-export function useValidator(s: AllReducers[keyof AllReducers][]) {
+export function useValidator(s: AllReducers[keyof AllReducers][] = []) {
   const [errorMapping, setErrorMapping] = useImmer<ErrorMappingState[]>([]);
 
   useDeepCompareEffect(() => {

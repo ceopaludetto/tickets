@@ -1,7 +1,7 @@
-import { useState, useMemo } from 'react';
+import { useState, useMemo, cloneElement } from 'react';
 
 type UseStepperReturn = [
-  () => React.ReactNode,
+  () => React.ReactElement<any>,
   {
     currentPage: number;
     nextPage: () => void;
@@ -13,13 +13,15 @@ type UseStepperReturn = [
   }
 ];
 
-export function useStepper(pages: React.ReactNodeArray): UseStepperReturn {
+export function useStepper(pages: React.ReactElement<any>[]): UseStepperReturn {
   const [currentPage, setCurrentPage] = useState(0);
   const isFirst = useMemo(() => currentPage === 0, [currentPage]);
   const isLast = useMemo(() => currentPage + 1 === pages.length, [currentPage]);
 
   function render() {
-    return pages[currentPage];
+    return cloneElement(pages[currentPage], {
+      key: currentPage,
+    });
   }
 
   const nextPage = () => {

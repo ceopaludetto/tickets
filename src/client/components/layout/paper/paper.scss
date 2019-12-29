@@ -6,8 +6,15 @@
   &.elevate {
     box-shadow: 0 0.75rem 1.5rem get-theme-color("paper-shadow");
   }
+  &.border {
+    border: 1px solid get-theme-color("background", "active");
+  }
 }
 
 .inner {
   padding: 2rem;
+}
+
+.inner-small {
+  padding: 1rem;
 }

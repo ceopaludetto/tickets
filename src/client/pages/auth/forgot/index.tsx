@@ -1,30 +1,30 @@
 import React from 'react';
-import useForm, { FormContext } from 'react-hook-form';
+import { Formik } from 'formik';
 
 import c from '@/client/scss/utils.scss';
 import { Button, Title, Overline, FormControl, Form } from '@/client/components';
 import { useThunkDispatch, useTypedSelector } from '@/client/utils';
-import { LoginValidationSchema } from '@/client/services/validations/auth/login';
+import { ForgotValidationSchema } from '@/client/services/validations';
 import { requestLogin } from '@/client/services/ducks/auth';
 
-interface LoginData {
+interface ForgotData {
   email: string;
-  senha: string;
 }
 
-export default function AuthLogin() {
+export default function AuthForgot() {
   const authState = useTypedSelector(state => state.auth);
   const dispatch = useThunkDispatch();
-  const methods = useForm<LoginData>({ validationSchema: LoginValidationSchema });
-
-  const onSubmit = methods.handleSubmit(values => dispatch(requestLogin(values)));
 
   return (
-    <FormContext {...methods}>
+    <Formik
+      initialValues={{ email: '' }}
+      onSubmit={(values: ForgotData) => dispatch(requestLogin(values))}
+      validationSchema={ForgotValidationSchema}
+    >
       <>
         <Overline>Recuperar Senha</Overline>
         <Title gutterBottom>Vamos te ajudar!</Title>
-        <Form statesToValidate={[authState]} onSubmit={onSubmit}>
+        <Form statesToValidate={[authState]}>
           <>
             <FormControl name="email" label="Email" id="email" disabled={authState.loading} />
             <div className={c['xs:ta-right']}>
@@ -36,6 +36,6 @@ export default function AuthLogin() {
           </>
         </Form>
       </>
-    </FormContext>
+    </Formik>
   );
 }

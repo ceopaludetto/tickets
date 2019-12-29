@@ -1,3 +1,3 @@
 export { Paper } from './paper';
-export { Grid } from './grid';
+export { Grid, GridItem } from './grid';
 export { Stepper } from './stepper';

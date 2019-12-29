@@ -1,10 +1,10 @@
 import React from 'react';
-import useForm, { FormContext } from 'react-hook-form';
+import { Formik } from 'formik';
 
 import c from '@/client/scss/utils.scss';
 import { Button, Title, Overline, FormControl, Form, Link } from '@/client/components';
 import { useVisibility, useThunkDispatch, useTypedSelector } from '@/client/utils';
-import { LoginValidationSchema } from '@/client/services/validations/auth/login';
+import { LoginValidationSchema } from '@/client/services/validations';
 import { requestLogin } from '@/client/services/ducks/auth';
 
 interface LoginData {
@@ -15,17 +15,18 @@ interface LoginData {
 export default function AuthLogin() {
   const authState = useTypedSelector(state => state.auth);
   const dispatch = useThunkDispatch();
-  const methods = useForm<LoginData>({ validationSchema: LoginValidationSchema });
   const { mapVisibilityProps } = useVisibility();
 
-  const onSubmit = methods.handleSubmit(values => dispatch(requestLogin(values)));
-
   return (
-    <FormContext {...methods}>
+    <Formik
+      onSubmit={(values: LoginData) => dispatch(requestLogin(values))}
+      initialValues={{ email: '', senha: '' }}
+      validationSchema={LoginValidationSchema}
+    >
       <>
         <Overline>Login</Overline>
         <Title gutterBottom>Bem vindo!</Title>
-        <Form statesToValidate={[authState]} onSubmit={onSubmit}>
+        <Form statesToValidate={[authState]}>
           <>
             <FormControl disabled={authState.loading} name="email" label="Email" id="email" />
             <FormControl
@@ -49,6 +50,6 @@ export default function AuthLogin() {
           </>
         </Form>
       </>
-    </FormContext>
+    </Formik>
   );
 }

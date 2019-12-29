@@ -1,5 +1,5 @@
 import React, { useMemo } from 'react';
-import { useFormContext } from 'react-hook-form';
+import { useFormikContext, Form as FormikForm } from 'formik';
 import { useDeepCompareEffect } from 'react-use';
 import { ValidationError } from 'class-validator/validation/ValidationError';
 import clsx from 'clsx';
@@ -11,11 +11,11 @@ import { AllReducers } from '@/client/services/ducks';
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   error?: string;
-  statesToValidate: AllReducers[keyof AllReducers][];
+  statesToValidate?: AllReducers[keyof AllReducers][];
 }
 
 export function Form({ children, error, statesToValidate, ...rest }: FormProps) {
-  const { setError } = useFormContext();
+  const { setFieldError } = useFormikContext();
   const res = useValidator(statesToValidate);
 
   useDeepCompareEffect(() => {
@@ -25,7 +25,7 @@ export function Form({ children, error, statesToValidate, ...rest }: FormProps) 
       if (firstError?.errorInfo?.context[0].constraints) {
         (firstError.errorInfo.context as ValidationError[]).forEach(err => {
           Object.keys(err.constraints).forEach(c => {
-            setError(err.property, c, err.constraints[c]);
+            setFieldError(err.property, err.constraints[c]);
           });
         });
       }
@@ -46,11 +46,11 @@ export function Form({ children, error, statesToValidate, ...rest }: FormProps) 
   }, [res, error]);
 
   return (
-    <form {...rest}>
+    <FormikForm {...rest}>
       <>
         {!!mappedError && <span className={clsx(s.error, u['xs:mt-1'], u['xs:mb-2'])}>{mappedError}</span>}
         {children}
       </>
-    </form>
+    </FormikForm>
   );
 }

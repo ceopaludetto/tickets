@@ -6,9 +6,13 @@
   align-items: center;
   padding: 0.5rem 0 1.5rem;
   .item {
+    cursor: pointer;
     display: flex;
     padding: 0 1rem;
     align-items: center;
+    &:focus {
+      outline: none;
+    }
     .text {
       font-size: 1.25rem;
       color: get-theme-color("disabled-text");

@@ -26,7 +26,7 @@ export default function AuthMain() {
         animate={{
           height: height + 64,
           maxWidth: isRegister ? 900 : 500,
-          transition: { when: 'afterChildren', ease: 'easeInOut' },
+          transition: { when: 'afterChildren', ease: 'easeInOut', duration: 0.2 },
         }}
         className={clsx(c['xs:w-100'], s.paper)}
         elevate={!isRegister}

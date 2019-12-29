@@ -26,3 +26,37 @@ export function useVisibility() {
 
   return { isVisible, render, toggleVisibility, mapVisibilityProps };
 }
+
+function initialState<T extends any[]>(visibilities: T) {
+  let props = {};
+  visibilities.forEach(t => {
+    props = { ...props, [t]: false };
+  });
+
+  return props as { [P in T[number]]: boolean };
+}
+
+export function useMultipleVisibility<T extends any[]>(visibilities: T) {
+  const [isVisible, setVisible] = useState(initialState(visibilities));
+
+  const toggleVisibility = (v: T[number], toggle?: boolean) => () =>
+    toggle ? setVisible({ [v]: toggle }) : setVisible({ [v]: !isVisible[v] });
+
+  const render = (v: T[number], is?: any, isNot?: any) => {
+    if (is && isNot) {
+      return isVisible[v] ? is : isNot;
+    }
+    return isVisible[v] ? <FiEyeOff /> : <FiEye />;
+  };
+
+  const mapVisibilityProps = (v: T[number]) => ({
+    type: render(v, 'text', 'password'),
+    append: (
+      <IconButton onClick={toggleVisibility(v)} type="button" aria-label={render('Esconder senha', 'Mostrar senha')}>
+        {render(v)}
+      </IconButton>
+    ),
+  });
+
+  return { isVisible, render, toggleVisibility, mapVisibilityProps };
+}
