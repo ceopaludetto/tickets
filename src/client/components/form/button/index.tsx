@@ -34,7 +34,12 @@ export const Button: Overload = ({ onClick, ...rest }: ButtonProps | PrefetchLin
 
   const { children, variant = 'contained', color = 'primary', type = 'button', ...other } = rest;
   return (
-    <button onClick={handleClick} type={type} className={clsx(s.button, s[variant], s[color])} {...other}>
+    <button
+      onClick={onClick as (e: React.MouseEvent<HTMLButtonElement>) => void}
+      type={type}
+      className={clsx(s.button, s[variant], s[color])}
+      {...other}
+    >
       {children}
     </button>
   );

@@ -47,11 +47,11 @@
   @return map-get($breakpoints, $bk);
 }
 
-@function create-transition($props, $dur: 125ms, $fn: ease-in-out) {
+@function create-transition($props, $dur: 125ms, $fn: ease-in-out, $delay: 0ms) {
   $res: unquote("");
   @for $i from 1 through length($props) {
     $res: unquote(
-      "#{$res} #{nth($props, $i)} #{if(type-of($dur) == 'list', nth($dur, $i), $dur)} #{if(type-of($fn) == 'list', nth($fn, $i), $fn)},"
+      "#{$res} #{nth($props, $i)} #{if(type-of($dur) == 'list', nth($dur, $i), $dur)} #{if(type-of($fn) == 'list', nth($fn, $i), $fn)} #{if(type-of($delay) == 'list', nth($delay, $i), $delay)},"
     );
   }
 

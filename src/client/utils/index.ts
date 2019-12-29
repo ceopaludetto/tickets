@@ -4,3 +4,4 @@ export * from './hooks/use.typed.selector';
 export * from './hooks/use.preload';
 export * from './hooks/use.validator';
 export * from './hooks/use.ssr';
+export * from './hooks/use.stepper';

@@ -1,2 +1,3 @@
 export const REQUIRED = 'Campo obrigatório';
-export const EMAIL = 'E-mail inválido';
+export const EMAIL = 'Email inválido';
+export const TELEFONE = 'Telefone inválido';

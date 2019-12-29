@@ -7,17 +7,14 @@ import { nested } from '@/client/utils/nested.routes';
 const routeVariants = {
   enter: {
     opacity: 1,
-    x: '0%',
     transition: { duration: 0.25, ease: 'easeInOut', delay: 0.1 },
   },
   exit: {
     opacity: 0,
-    x: '-5%',
     transition: { duration: 0.25, ease: 'easeInOut' },
   },
   initial: {
     opacity: 0,
-    x: '5%',
     transition: { duration: 0.25, ease: 'easeInOut' },
   },
 };

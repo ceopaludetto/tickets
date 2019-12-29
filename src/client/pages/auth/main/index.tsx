@@ -13,7 +13,11 @@ export default function AuthMain() {
   const [ref, { height }] = useMeasure();
 
   return (
-    <div className={clsx(c['xs:d-flex'], c['xs:h-100vh'], c['xs:jc-center'], c['xs:ai-center'])}>
+    <div
+      className={clsx(c['xs:d-flex'], c['xs:h-100vh'], c['xs:jc-center'], c['xs:ai-center'], s.root, {
+        [s.register]: isRegister,
+      })}
+    >
       <Paper
         initial={{
           height: 'auto',
@@ -22,11 +26,11 @@ export default function AuthMain() {
         animate={{
           height: height + 64,
           maxWidth: isRegister ? 900 : 500,
-          transition: { when: 'afterChildren', delay: 0.3, ease: 'easeInOut' },
+          transition: { when: 'afterChildren', ease: 'easeInOut' },
         }}
         className={clsx(c['xs:w-100'], s.paper)}
+        elevate={!isRegister}
         hasInner
-        elevate
       >
         <Paper.Inner ref={ref}>
           <AuthRoutes />
