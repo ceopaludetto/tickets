@@ -17,7 +17,7 @@ import {
   Paper,
   FormCheckbox,
 } from '@/client/components';
-import { RegisterValidationSchema, telMask, dateMask } from '@/client/services/validations';
+import { RegisterValidationSchema, telMask, dateMask, cnpjMask, cepMask } from '@/client/services/validations';
 import { useStepper, useMultipleVisibility } from '@/client/utils';
 
 const animationVariants = {
@@ -64,15 +64,15 @@ export default function AuthRegister() {
           <FormControl required name="email" label="Email" id="email" />
         </GridItem>
         <GridItem column={6}>
-          <FormControl name="telefone" label="Telefone" mask={telMask} />
+          <FormControl name="telefone" label="Telefone" mask={telMask} id="telefone" />
         </GridItem>
         <GridItem column={6}>
-          <FormControl required name="dataNascimento" label="Data de Nascimento" mask={dateMask} />
+          <FormControl required name="dataNascimento" label="Data de Nascimento" mask={dateMask} id="dataNascimento" />
         </GridItem>
       </Grid>
     </motion.div>,
     <motion.div variants={animationVariants} initial="initial" animate="enter" exit="exit">
-      <Grid>
+      <Grid ref={ref}>
         <GridItem column={6}>
           <>
             <FormControl required name="senha" label="Senha" id="senha" {...mapVisibilityProps('senha')} />
@@ -91,12 +91,27 @@ export default function AuthRegister() {
       </Grid>
     </motion.div>,
     <motion.div variants={animationVariants} initial="initial" animate="enter" exit="exit">
-      <Grid>
+      <Grid ref={ref}>
         <GridItem column={12}>
           <FormCheckbox labelPlacement="right" name="hasEmpresa" label="Criar empresa?" id="hasEmpresa" />
         </GridItem>
         <GridItem column={6}>
           <FormControl name="razaoSocial" label="Razão Social" id="razaoSocial" />
+        </GridItem>
+        <GridItem column={6}>
+          <FormControl name="cnpj" label="CNPJ" id="cnpj" mask={cnpjMask} />
+        </GridItem>
+        <GridItem column={6}>
+          <FormControl name="nomeCompleto" label="Nome Completo" id="nomeCompleto" />
+        </GridItem>
+        <GridItem column={6}>
+          <FormControl name="site" label="Site" id="site" />
+        </GridItem>
+        <GridItem column={6}>
+          <FormControl name="empresaTelefone" label="Telefone" id="empresaTelefone" mask={telMask} />
+        </GridItem>
+        <GridItem column={6}>
+          <FormControl name="cep" label="CEP" id="cep" mask={cepMask} />
         </GridItem>
       </Grid>
     </motion.div>,
@@ -142,6 +157,7 @@ export default function AuthRegister() {
             currentPage={currentPage}
             togglePage={togglePage}
             totalPages={totalPages}
+            nextPage={nextPage}
           />
           <Form onSubmit={handleValidate({ errors, submitForm })}>
             <motion.div animate={{ height, transition: { ease: 'easeInOut', duration: 0.2 } }}>

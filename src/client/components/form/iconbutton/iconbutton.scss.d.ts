@@ -7,9 +7,7 @@ export interface IconbuttonStyles {
 	'secondary': string;
 	'background': string;
 	'paper': string;
-	'danger': string;
 	'disabled': string;
-	'disabled-text': string;
 }
 
 export type IIconbuttonStyles = IconbuttonStyles;

@@ -6,6 +6,7 @@ import s from './stepper.scss';
 interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
   currentPage: number;
   totalPages: number;
+  nextPage: () => void;
   togglePage: (value: number) => (e: React.MouseEvent<any>) => void;
   labels: {
     text: string;
@@ -13,14 +14,14 @@ interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
   }[];
 }
 
-export function Stepper({ totalPages, labels, currentPage, togglePage, ...rest }: StepperProps) {
+export function Stepper({ totalPages, labels, currentPage, togglePage, nextPage, ...rest }: StepperProps) {
   if (labels.length !== totalPages) {
     throw new Error('Stepper must have same quantity of labels');
   }
 
-  const handleKeyUp = (page: number) => (e: React.KeyboardEvent<HTMLDivElement>) => {
-    if (e.key === 'Enter') {
-      togglePage(page);
+  const handleKeyUp = (e: React.KeyboardEvent<HTMLDivElement>) => {
+    if (e.key === ' ') {
+      nextPage();
     }
   };
 
@@ -31,7 +32,7 @@ export function Stepper({ totalPages, labels, currentPage, togglePage, ...rest }
           <div
             tabIndex={0}
             role="button"
-            onKeyUp={handleKeyUp(i)}
+            onKeyUp={handleKeyUp}
             onClick={togglePage(i)}
             className={clsx(s.item, { [s.active]: i <= currentPage })}
           >
