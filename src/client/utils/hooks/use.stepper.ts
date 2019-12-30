@@ -1,31 +1,22 @@
-import { useState, useMemo, cloneElement } from 'react';
+import { useState, useMemo } from 'react';
 
-type UseStepperReturn = [
-  () => React.ReactElement<any>,
-  {
-    currentPage: number;
-    nextPage: () => void;
-    prevPage: () => void;
-    togglePage: (value: number) => (e: React.MouseEvent<any>) => void;
-    totalPages: number;
-    isFirst: boolean;
-    isLast: boolean;
-  }
-];
+type UseStepperReturn = {
+  currentPage: number;
+  nextPage: () => void;
+  prevPage: () => void;
+  togglePage: (value: number) => (e: React.MouseEvent<any>) => void;
+  totalPages: number;
+  isFirst: boolean;
+  isLast: boolean;
+};
 
-export function useStepper(pages: React.ReactElement<any>[]): UseStepperReturn {
+export function useStepper(pages: number): UseStepperReturn {
   const [currentPage, setCurrentPage] = useState(0);
   const isFirst = useMemo(() => currentPage === 0, [currentPage]);
-  const isLast = useMemo(() => currentPage + 1 === pages.length, [currentPage]);
-
-  function render() {
-    return cloneElement(pages[currentPage], {
-      key: currentPage,
-    });
-  }
+  const isLast = useMemo(() => currentPage + 1 === pages, [currentPage]);
 
   const nextPage = () => {
-    if (currentPage + 1 < pages.length) {
+    if (currentPage + 1 < pages) {
       setCurrentPage(currentPage + 1);
     }
   };
@@ -37,10 +28,10 @@ export function useStepper(pages: React.ReactElement<any>[]): UseStepperReturn {
   };
 
   const togglePage = (value: number) => () => {
-    if (value < pages.length || value > -1) {
+    if (value < pages || value > -1) {
       setCurrentPage(value);
     }
   };
 
-  return [render, { currentPage, nextPage, prevPage, togglePage, totalPages: pages.length, isFirst, isLast }];
+  return { currentPage, nextPage, prevPage, togglePage, totalPages: pages, isFirst, isLast };
 }

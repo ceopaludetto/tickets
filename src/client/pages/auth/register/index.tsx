@@ -1,22 +1,12 @@
-import React from 'react';
+import React, { cloneElement, useCallback } from 'react';
 import { Formik, FormikErrors } from 'formik';
 import { FiUser, FiLock, FiAirplay } from 'react-icons/fi';
 import { useMeasure } from 'react-use';
 import { motion, AnimatePresence } from 'framer-motion';
+import clsx from 'clsx';
 
 import u from '@/client/scss/utils.scss';
-import {
-  FormControl,
-  Form,
-  Overline,
-  Title,
-  Grid,
-  GridItem,
-  Button,
-  Stepper,
-  Paper,
-  FormCheckbox,
-} from '@/client/components';
+import { FormControl, Form, Overline, Title, Grid, Button, Stepper, Paper, FormCheckbox } from '@/client/components';
 import { RegisterValidationSchema, telMask, dateMask, cnpjMask, cepMask } from '@/client/services/validations';
 import { useStepper, useMultipleVisibility } from '@/client/utils';
 
@@ -51,71 +41,7 @@ interface RegisterData {
 export default function AuthRegister() {
   const { mapVisibilityProps } = useMultipleVisibility<('senha' | 'rsenha')[]>(['senha', 'rsenha']);
   const [ref, { height }] = useMeasure();
-  const [render, { currentPage, togglePage, totalPages, nextPage, prevPage, isFirst, isLast }] = useStepper([
-    <motion.div variants={animationVariants} initial="initial" animate="enter" exit="exit">
-      <Grid ref={ref}>
-        <GridItem column={6}>
-          <FormControl required name="nome" label="Nome" id="nome" />
-        </GridItem>
-        <GridItem column={6}>
-          <FormControl required name="sobrenome" label="Sobrenome" id="sobrenome" />
-        </GridItem>
-        <GridItem column={12}>
-          <FormControl required name="email" label="Email" id="email" />
-        </GridItem>
-        <GridItem column={6}>
-          <FormControl name="telefone" label="Telefone" mask={telMask} id="telefone" />
-        </GridItem>
-        <GridItem column={6}>
-          <FormControl required name="dataNascimento" label="Data de Nascimento" mask={dateMask} id="dataNascimento" />
-        </GridItem>
-      </Grid>
-    </motion.div>,
-    <motion.div variants={animationVariants} initial="initial" animate="enter" exit="exit">
-      <Grid ref={ref}>
-        <GridItem column={6}>
-          <>
-            <FormControl required name="senha" label="Senha" id="senha" {...mapVisibilityProps('senha')} />
-            <FormControl required name="rsenha" label="Repetir Senha" id="rsenha" {...mapVisibilityProps('rsenha')} />
-          </>
-        </GridItem>
-        <GridItem column={6}>
-          <Paper small border>
-            <ul>
-              <li>Pelo menos uma letra maiúscula</li>
-              <li>Pelo menos uma letra minúscula</li>
-              <li>Pelo menos um número</li>
-            </ul>
-          </Paper>
-        </GridItem>
-      </Grid>
-    </motion.div>,
-    <motion.div variants={animationVariants} initial="initial" animate="enter" exit="exit">
-      <Grid ref={ref}>
-        <GridItem column={12}>
-          <FormCheckbox labelPlacement="right" name="hasEmpresa" label="Criar empresa?" id="hasEmpresa" />
-        </GridItem>
-        <GridItem column={6}>
-          <FormControl name="razaoSocial" label="Razão Social" id="razaoSocial" />
-        </GridItem>
-        <GridItem column={6}>
-          <FormControl name="cnpj" label="CNPJ" id="cnpj" mask={cnpjMask} />
-        </GridItem>
-        <GridItem column={6}>
-          <FormControl name="nomeCompleto" label="Nome Completo" id="nomeCompleto" />
-        </GridItem>
-        <GridItem column={6}>
-          <FormControl name="site" label="Site" id="site" />
-        </GridItem>
-        <GridItem column={6}>
-          <FormControl name="empresaTelefone" label="Telefone" id="empresaTelefone" mask={telMask} />
-        </GridItem>
-        <GridItem column={6}>
-          <FormControl name="cep" label="CEP" id="cep" mask={cepMask} />
-        </GridItem>
-      </Grid>
-    </motion.div>,
-  ]);
+  const { currentPage, togglePage, totalPages, nextPage, prevPage, isFirst, isLast } = useStepper(3);
 
   const handleValidate = ({
     errors,
@@ -138,13 +64,30 @@ export default function AuthRegister() {
     });
   };
 
+  const renderPage = useCallback(
+    (pages: React.ReactElement<any>[]) =>
+      cloneElement(pages[currentPage], {
+        key: currentPage,
+      }),
+    [currentPage]
+  );
+
   return (
     <Formik
       onSubmit={values => console.log(values)}
-      initialValues={{ nome: '', sobrenome: '', email: '', telefone: '', dataNascimento: '', senha: '', rsenha: '' }}
+      initialValues={{
+        nome: '',
+        sobrenome: '',
+        email: '',
+        telefone: '',
+        dataNascimento: '',
+        senha: '',
+        rsenha: '',
+        hasEmpresa: false,
+      }}
       validationSchema={RegisterValidationSchema}
     >
-      {({ errors, submitForm }) => (
+      {({ errors, submitForm, values }) => (
         <>
           <Overline>Cadastro</Overline>
           <Title gutterBottom>Vamos começar!</Title>
@@ -162,7 +105,105 @@ export default function AuthRegister() {
           <Form onSubmit={handleValidate({ errors, submitForm })}>
             <motion.div animate={{ height, transition: { ease: 'easeInOut', duration: 0.2 } }}>
               <AnimatePresence exitBeforeEnter initial={false}>
-                {render()}
+                {renderPage([
+                  <motion.div variants={animationVariants} initial="initial" animate="enter" exit="exit">
+                    <Grid ref={ref}>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl required name="nome" label="Nome" id="nome" />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl required name="sobrenome" label="Sobrenome" id="sobrenome" />
+                      </div>
+                      <div className={u['xs:grid-column-12']}>
+                        <FormControl required name="email" label="Email" id="email" />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl name="telefone" label="Telefone" mask={telMask} id="telefone" />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl
+                          required
+                          name="dataNascimento"
+                          label="Data de Nascimento"
+                          mask={dateMask}
+                          id="dataNascimento"
+                        />
+                      </div>
+                    </Grid>
+                  </motion.div>,
+                  <motion.div variants={animationVariants} initial="initial" animate="enter" exit="exit">
+                    <Grid ref={ref}>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <>
+                          <FormControl
+                            required
+                            name="senha"
+                            label="Senha"
+                            id="senha"
+                            {...mapVisibilityProps('senha')}
+                          />
+                          <FormControl
+                            required
+                            name="rsenha"
+                            label="Repetir Senha"
+                            id="rsenha"
+                            {...mapVisibilityProps('rsenha')}
+                          />
+                        </>
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <Paper small border>
+                          <ul>
+                            <li>Pelo menos uma letra maiúscula</li>
+                            <li>Pelo menos uma letra minúscula</li>
+                            <li>Pelo menos um número</li>
+                          </ul>
+                        </Paper>
+                      </div>
+                    </Grid>
+                  </motion.div>,
+                  <motion.div variants={animationVariants} initial="initial" animate="enter" exit="exit">
+                    <Grid ref={ref}>
+                      <div className={u['xs:grid-column-12']}>
+                        <FormCheckbox labelPlacement="right" name="hasEmpresa" label="Criar empresa?" id="hasEmpresa" />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl
+                          required={values.hasEmpresa}
+                          name="razaoSocial"
+                          label="Razão Social"
+                          id="razaoSocial"
+                        />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl required={values.hasEmpresa} name="cnpj" label="CNPJ" id="cnpj" mask={cnpjMask} />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl
+                          required={values.hasEmpresa}
+                          name="nomeCompleto"
+                          label="Nome Completo"
+                          id="nomeCompleto"
+                        />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl name="site" label="Site" id="site" />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl
+                          required={values.hasEmpresa}
+                          name="empresaTelefone"
+                          label="Telefone"
+                          id="empresaTelefone"
+                          mask={telMask}
+                        />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl required={values.hasEmpresa} name="cep" label="CEP" id="cep" mask={cepMask} />
+                      </div>
+                    </Grid>
+                  </motion.div>,
+                ])}
               </AnimatePresence>
             </motion.div>
             <div className={u['xs:ta-right']}>

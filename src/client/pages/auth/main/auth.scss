@@ -5,6 +5,13 @@
   transition: create-transition((background-color), 300ms, 'ease-in-out', 200ms);
   &.register {
     background-color: get-theme-color("paper");
+    .paper{
+      @media (max-width: 900px) {
+        align-self: flex-start;
+        border-radius: 0px;
+        height: 100%!important;
+      }
+    }
   }
   .paper {
     transition: create-transition((box-shadow), 100ms, 'ease-in-out', 200ms);

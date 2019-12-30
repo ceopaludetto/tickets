@@ -9,7 +9,9 @@ export interface ButtonStyles {
 	'secondary': string;
 	'background': string;
 	'paper': string;
+	'danger': string;
 	'disabled': string;
+	'disabled-text': string;
 }
 
 export type IButtonStyles = ButtonStyles;
