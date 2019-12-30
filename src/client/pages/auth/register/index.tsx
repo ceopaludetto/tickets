@@ -84,6 +84,16 @@ export default function AuthRegister() {
         senha: '',
         rsenha: '',
         hasEmpresa: false,
+        razaoSocial: '',
+        nomeFantasia: '',
+        nomeCompleto: '',
+        cnpj: '',
+        empresaEmail: '',
+        empresaTelefone: '',
+        site: '',
+        cep: '',
+        endereco: '',
+        numero: '',
       }}
       validationSchema={RegisterValidationSchema}
     >
@@ -168,6 +178,9 @@ export default function AuthRegister() {
                         <FormCheckbox labelPlacement="right" name="hasEmpresa" label="Criar empresa?" id="hasEmpresa" />
                       </div>
                       <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl required={values.hasEmpresa} name="cnpj" label="CNPJ" id="cnpj" mask={cnpjMask} />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
                         <FormControl
                           required={values.hasEmpresa}
                           name="razaoSocial"
@@ -176,18 +189,12 @@ export default function AuthRegister() {
                         />
                       </div>
                       <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
-                        <FormControl required={values.hasEmpresa} name="cnpj" label="CNPJ" id="cnpj" mask={cnpjMask} />
-                      </div>
-                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
                         <FormControl
                           required={values.hasEmpresa}
-                          name="nomeCompleto"
-                          label="Nome Completo"
-                          id="nomeCompleto"
+                          name="nomeFantasia"
+                          label="Nome Fantasia"
+                          id="nomeFantasia"
                         />
-                      </div>
-                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
-                        <FormControl name="site" label="Site" id="site" />
                       </div>
                       <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
                         <FormControl
@@ -198,8 +205,23 @@ export default function AuthRegister() {
                           mask={telMask}
                         />
                       </div>
+                      <div className={u['xs:grid-column-12']}>
+                        <FormControl name="nomeCompleto" label="Nome Completo" id="nomeCompleto" />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl name="site" label="Site" id="site" />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                        <FormControl required={values.hasEmpresa} name="empresaEmail" label="Email" id="empresaEmail" />
+                      </div>
                       <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
                         <FormControl required={values.hasEmpresa} name="cep" label="CEP" id="cep" mask={cepMask} />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-9'], u['md:grid-column-4'])}>
+                        <FormControl required={values.hasEmpresa} name="endereco" label="Endereço" id="endereco" />
+                      </div>
+                      <div className={clsx(u['xs:grid-column-3'], u['md:grid-column-2'])}>
+                        <FormControl required={values.hasEmpresa} name="numero" label="Nº" id="numero" />
                       </div>
                     </Grid>
                   </motion.div>,

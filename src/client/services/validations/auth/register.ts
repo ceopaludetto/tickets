@@ -14,7 +14,12 @@ export const RegisterValidationSchema = Yup.object().shape({
     .required(REQUIRED),
   senha: Yup.string().required(REQUIRED),
   rsenha: Yup.string()
-    .oneOf([Yup.ref('senha'), null], PASSWORD)
+    .oneOf([Yup.ref('senha')], PASSWORD)
     .required(REQUIRED),
   hasEmpresa: Yup.boolean(),
+  razaoSocial: Yup.string().when('hasEmpresa', {
+    is: true,
+    then: schema => schema.required(REQUIRED),
+    otherwise: schema => schema,
+  }),
 });
