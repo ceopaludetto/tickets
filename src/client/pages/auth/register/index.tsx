@@ -125,10 +125,10 @@ export default function AuthRegister() {
                         <FormControl required name="sobrenome" label="Sobrenome" id="sobrenome" />
                       </div>
                       <div className={u['xs:grid-column-12']}>
-                        <FormControl required name="email" label="Email" id="email" />
+                        <FormControl required name="email" label="Email" id="email" type="email" />
                       </div>
                       <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
-                        <FormControl name="telefone" label="Telefone" mask={telMask} id="telefone" />
+                        <FormControl name="telefone" label="Telefone" mask={telMask} id="telefone" type="tel" />
                       </div>
                       <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
                         <FormControl
@@ -202,6 +202,7 @@ export default function AuthRegister() {
                           name="empresaTelefone"
                           label="Telefone"
                           id="empresaTelefone"
+                          type="tel"
                           mask={telMask}
                         />
                       </div>
@@ -209,7 +210,7 @@ export default function AuthRegister() {
                         <FormControl name="nomeCompleto" label="Nome Completo" id="nomeCompleto" />
                       </div>
                       <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
-                        <FormControl name="site" label="Site" id="site" />
+                        <FormControl name="site" label="Site" id="site" type="url" />
                       </div>
                       <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
                         <FormControl required={values.hasEmpresa} name="empresaEmail" label="Email" id="empresaEmail" />

@@ -65,6 +65,7 @@
       border-radius: 6px;
       background-color: transparent;
       font-size: 1rem;
+      max-width: 100%;
       color: get-theme-color("background", "contrast");
       &:disabled {
         user-select: none;

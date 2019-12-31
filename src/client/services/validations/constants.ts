@@ -3,3 +3,7 @@ export const EMAIL = 'Email inválido';
 export const PHONE = 'Telefone inválido';
 export const PASSWORD = 'As senhas não coincidem';
 export const DATE = 'Data inválida';
+export const CNPJ = 'CNPJ inválido';
+export const CEP = 'CEP inválido';
+export const SITE = 'URL inválida';
+export const NUMERO = 'Valor não numérico';
