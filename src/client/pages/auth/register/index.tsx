@@ -1,6 +1,6 @@
 import React, { cloneElement, useCallback } from 'react';
 import { Formik, FormikErrors } from 'formik';
-import { FiUser, FiLock, FiAirplay } from 'react-icons/fi';
+import { FiUser, FiLock, FiBriefcase } from 'react-icons/fi';
 import { useMeasure } from 'react-use';
 import { motion, AnimatePresence } from 'framer-motion';
 import clsx from 'clsx';
@@ -105,7 +105,7 @@ export default function AuthRegister() {
             labels={[
               { text: 'Usuário', icon: FiUser },
               { text: 'Senha', icon: FiLock },
-              { text: 'Empresa', icon: FiAirplay },
+              { text: 'Empresa', icon: FiBriefcase },
             ]}
             currentPage={currentPage}
             togglePage={togglePage}
