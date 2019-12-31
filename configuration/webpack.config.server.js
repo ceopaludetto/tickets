@@ -3,8 +3,9 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 const NodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
-const baseConfig = require('./webpack.config.base');
+const FriendlyErrorsPlugin = require('razzle-dev-utils/FriendlyErrorsPlugin');
 
+const baseConfig = require('./webpack.config.base');
 const envs = require('./envs');
 
 const isProd = process.env.NODE_ENV === 'production';
@@ -19,11 +20,11 @@ module.exports = merge(baseConfig(true), {
   },
   externals: [
     NodeExternals({
-      whitelist: [...(isProd ? [] : ['webpack/hot/poll?300']), /\.(scss|sass)$/],
+      whitelist: [...(isProd ? [] : [`${path.resolve('configuration', 'customLogger')}?300`]), /\.(scss|sass)$/],
     }),
   ],
   entry: [
-    ...(isProd ? [] : ['webpack/hot/poll?300', 'source-map-support/register']),
+    ...(isProd ? [] : [`${path.resolve('configuration', 'customLogger')}?300`, 'source-map-support/register']),
     'reflect-metadata',
     path.resolve('src', 'server', 'index.ts'),
   ],
@@ -38,7 +39,10 @@ module.exports = merge(baseConfig(true), {
     ...(isProd
       ? []
       : [
-          new webpack.HotModuleReplacementPlugin(),
+          new FriendlyErrorsPlugin({
+            onSuccessMessage: `Application will be available in ${envs.PROTOCOL}://${envs.HOST}:${envs.PORT}`,
+          }),
+          new webpack.HotModuleReplacementPlugin({ quiet: true }),
           new StartServerPlugin({
             name: 'index.js',
             keyboard: true,

@@ -3,14 +3,14 @@ const merge = require('webpack-merge');
 const webpack = require('webpack');
 const LoadablePlugin = require('@loadable/webpack-plugin');
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
-// const ForkTsCheckerWebpackPlugin = require('react-dev-utils/ForkTsCheckerWebpackPlugin');
+const evalSourceMapMiddleware = require('react-dev-utils/evalSourceMapMiddleware');
+const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
 const CompressionPlugin = require('compression-webpack-plugin');
 const CopyWebpackPlugin = require('copy-webpack-plugin');
 const MiniCssExtract = require('mini-css-extract-plugin');
-// const tsFormatter = require('react-dev-utils/typescriptFormatter');
-// const { GenerateSW } = require('workbox-webpack-plugin');
+const { GenerateSW } = require('workbox-webpack-plugin');
 
 const envs = require('./envs');
 const baseConfig = require('./webpack.config.base');
@@ -54,6 +54,9 @@ module.exports = merge(baseConfig(false), {
     disableHostCheck: true,
     clientLogLevel: 'none',
     compress: true,
+    contentBase: path.resolve('public'),
+    watchContentBase: true,
+    injectClient: false,
     headers: {
       'Access-Control-Allow-Origin': '*',
     },
@@ -70,8 +73,10 @@ module.exports = merge(baseConfig(false), {
     watchOptions: {
       ignored: /node_modules/,
     },
-    before(app) {
+    before(app, server) {
+      app.use(evalSourceMapMiddleware(server));
       app.use(errorOverlayMiddleware());
+      app.use(noopServiceWorkerMiddleware());
     },
   },
   node: {
@@ -108,39 +113,28 @@ module.exports = merge(baseConfig(false), {
             chunkFilename: isProd ? 'css/[name].[contenthash:8].css' : '[name].css',
             allChunks: true,
           }),
-          // new GenerateSW({
-          //   swDest: 'public/sw.js',
-          //   exclude: [/\.map$/, /\.gz$/, /asset-manifest\.json$/],
-          //   importWorkboxFrom: 'cdn',
-          //   clientsClaim: true,
-          //   runtimeCaching: [
-          //     {
-          //       urlPattern: /api/,
-          //       handler: 'NetworkFirst',
-          //     },
-          //   ],
-          //   navigateFallbackBlacklist: [
-          //     new RegExp('^/_'),
-          //     new RegExp('/[^/]+\\.[^/]+$'),
-          //   ],
-          // }),
+          new GenerateSW({
+            swDest: 'public/sw.js',
+            exclude: [/\.map$/, /\.gz$/, /\.LICENSE$/, /manifest\.json$/, /robots\.txt/],
+            importWorkboxFrom: 'cdn',
+            clientsClaim: true,
+            skipWaiting: true,
+            precacheManifestFilename: '[manifestHash].js',
+            runtimeCaching: [
+              {
+                urlPattern: /api/,
+                handler: 'NetworkFirst',
+              },
+            ],
+            navigateFallbackBlacklist: [new RegExp('^/_'), new RegExp('/[^/]+\\.[^/]+$')],
+          }),
         ]
       : [
           new webpack.HotModuleReplacementPlugin({
             multiStep: true,
+            quiet: true,
           }),
           new WatchMissingNodeModulesPlugin(path.resolve('node_modules')),
-          // new ForkTsCheckerWebpackPlugin({
-          //   async: true,
-          //   tsconfig: path.resolve('src', 'client', 'tsconfig.json'),
-          //   watch: ['./src'],
-          //   typeCheck: true,
-          //   formatter: tsFormatter,
-          //   eslint: true,
-          //   eslintOptions: {
-          //     configFile: path.resolve('.eslintrc.js'),
-          //   },
-          // }),
         ]),
     new LoadablePlugin({
       filename: 'manifest.json',

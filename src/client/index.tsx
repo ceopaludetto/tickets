@@ -9,6 +9,7 @@ import App from '@/client/bootstrap';
 import { createReduxStore } from '@/client/providers/store';
 import { ApiContext } from '@/client/providers/api';
 import { IS_PRODUCTION } from '@/client/utils/constants';
+import * as serviceWorker from './registerServiceWorker';
 
 const { store, api } = createReduxStore(((window as unknown) as any).__PRELOADED_STATE__);
 
@@ -33,4 +34,9 @@ loadableReady(() => {
 
 if (module.hot) {
   module.hot.accept();
+}
+if (IS_PRODUCTION) {
+  serviceWorker.register();
+} else {
+  serviceWorker.unregister();
 }

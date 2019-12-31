@@ -1,4 +1,7 @@
 /* eslint-disable no-template-curly-in-string */
+const fs = require('fs');
+const path = require('path');
+
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = (isServer = false, isTest = false) => ({
@@ -17,7 +20,7 @@ module.exports = (isServer = false, isTest = false) => ({
               node: 'current',
               esmodules: true,
             }
-          : { browsers: ['last 2 version', '> 0.25%', 'not ie <= 8', 'not dead'] },
+          : { browsers: fs.readFileSync(path.resolve('.browserslistrc'), 'UTF-8').split('\n') },
       },
     ],
     [
@@ -62,7 +65,7 @@ module.exports = (isServer = false, isTest = false) => ({
       'transform-imports',
       {
         'react-use': {
-          transform: 'react-use/lib/${member}',
+          transform: isServer ? 'react-use/lib/${member}' : 'react-use/esm/${member}',
           preventFullImport: true,
         },
       },

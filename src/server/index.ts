@@ -5,9 +5,10 @@ import { useContainer as injectApplicationModule } from 'class-validator';
 import { ApplicationModule } from '@/server/app.module';
 import { installMiddlewares } from '@/server/utils/middlewares';
 import { ErrorFormatter } from '@/server/utils/exception.filter';
+import { IS_PRODUCTION } from '@/server/utils/constants';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(ApplicationModule);
+  const app = await NestFactory.create<NestExpressApplication>(ApplicationModule, { logger: IS_PRODUCTION });
   installMiddlewares(app);
   injectApplicationModule(app.select(ApplicationModule), { fallbackOnErrors: true });
 

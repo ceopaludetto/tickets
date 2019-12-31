@@ -2,7 +2,6 @@
 process.env.NODE_ENV === 'development';
 
 const fs = require('fs-extra');
-const path = require('path');
 const webpack = require('webpack');
 const printErrors = require('razzle-dev-utils/printErrors');
 const DevServer = require('webpack-dev-server');
@@ -27,15 +26,12 @@ function compile(config) {
 }
 
 function main() {
-  logger.start('Compiling...');
-
   fs.emptyDirSync(serverConfig.output.path);
-  fs.emptyDirSync(path.resolve('logs'));
 
   const clientCompiler = compile(clientConfig);
   const serverCompiler = compile(serverConfig);
 
-  let watching;
+  let watching = null;
 
   clientCompiler.hooks.done.tap('done', () => {
     if (watching) return;

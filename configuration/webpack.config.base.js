@@ -29,11 +29,13 @@ const postcssOptions = {
       ? [
           require('@fullhuman/postcss-purgecss')({
             content: ['./src/**/*.tsx'],
+            keyframes: true,
+            fontFace: true,
             defaultExtractor: content => content.match(/[\w-/:]+(?<!:)/g) || [],
           }),
         ]
       : []),
-    require('postcss-normalize'),
+    require('postcss-normalize')(),
   ],
 };
 
@@ -55,6 +57,7 @@ module.exports = (isServer = false) => ({
         sourceMap: isProd,
         cache: true,
         parallel: true,
+        extractComments: false,
         terserOptions: {
           safari10: !isServer,
           keep_classnames: isServer,
@@ -176,7 +179,7 @@ module.exports = (isServer = false) => ({
   resolve: {
     alias: {
       '@': path.resolve('src'),
-      // lodash: 'lodash-es',
+      lodash: 'lodash-es',
       'webpack/hot/poll': require.resolve('webpack/hot/poll'),
     },
     extensions: ['.js', '.jsx', '.tsx', '.ts', '.json', '.scss'],
@@ -188,6 +191,7 @@ module.exports = (isServer = false) => ({
       HOST: envs.HOST,
       TARGET: isServer ? 'server' : 'web',
       PUBLIC_PATH: '/static/',
+      PUBLIC_URL: '/static',
       STATIC_FOLDER: path.resolve('dist', 'static'),
       MANIFEST: path.resolve('dist', 'static', 'manifest.json'),
       BASE_DIR: path.resolve('.'),

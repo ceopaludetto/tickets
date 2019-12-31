@@ -68,10 +68,7 @@ Promise.all([
     return prevFileSizes;
   })
   .then(prevFileSizes =>
-    Promise.all([
-      build(prevFileSizes[0], serverConfig, true),
-      build(prevFileSizes[1], clientConfig, false),
-    ])
+    Promise.all([build(prevFileSizes[0], serverConfig, true), build(prevFileSizes[1], clientConfig, false)])
   )
   .then(
     info => {
@@ -79,16 +76,8 @@ Promise.all([
         if (warnings.length) {
           logger.warn('Compiled with warnings.\n');
           logger.log(warnings.join('\n\n'));
-          logger.log(
-            `\nSearch for the ${chalk.underline(
-              chalk.yellow('keywords')
-            )} to learn more about each warning.`
-          );
-          logger.log(
-            `To ignore, add ${chalk.cyan(
-              '// eslint-disable-next-line'
-            )} to the line before.\n`
-          );
+          logger.log(`\nSearch for the ${chalk.underline(chalk.yellow('keywords'))} to learn more about each warning.`);
+          logger.log(`To ignore, add ${chalk.cyan('// eslint-disable-next-line')} to the line before.\n`);
         }
         logger.done(`[${i === 0 ? 'SERVER' : 'CLIENT'}] Compiled done.`);
         logger.log('File sizes after gzip:\n');
