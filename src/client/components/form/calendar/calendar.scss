@@ -1,0 +1,63 @@
+@import "~@/client/scss/functions";
+
+.week {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+}
+
+.week-item {
+  font-size: nth($font-sizes, 1);
+  padding-bottom: 0.25rem;
+  color: get-theme-color("secondary");
+}
+
+.week-button {
+  padding: 0.65rem 0 !important;
+  width: 100%;
+}
+
+.gap {
+  gap: 0.675rem !important;
+}
+
+.overflow {
+  overflow-y: auto;
+}
+
+.button {
+  font-size: nth($font-sizes, 2);
+  color: get-theme-color("primary");
+  width: 100%;
+  border: none;
+  background-color: transparent;
+  padding: 0.675rem 0;
+  transition: create-transition((color, font-size), 100ms, ease-in-out);
+  cursor: pointer;
+  &:active,
+  &:focus {
+    color: get-theme-color("secondary");
+  }
+  &:focus {
+    outline: none;
+  }
+  &.active {
+    font-size: nth($font-sizes, 4);
+    padding: 0.875rem 0;
+    color: get-theme-color("secondary");
+  }
+}
+
+.showing-date {
+  font-size: nth($font-sizes, 4);
+}
+
+.button-like {
+  font-weight: get-font-weight("medium");
+  letter-spacing: 1.25px;
+  text-transform: capitalize;
+}
+
+.hidden-button {
+  padding: calc(1rem + 2.39px) 0 !important;
+  cursor: default !important;
+}

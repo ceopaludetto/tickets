@@ -4,7 +4,7 @@ type UseStepperReturn = {
   currentPage: number;
   nextPage: () => void;
   prevPage: () => void;
-  togglePage: (value: number) => (e: React.MouseEvent<any>) => void;
+  togglePage: (value: number) => void;
   totalPages: number;
   isFirst: boolean;
   isLast: boolean;
@@ -27,7 +27,7 @@ export function useStepper(pages: number): UseStepperReturn {
     }
   };
 
-  const togglePage = (value: number) => () => {
+  const togglePage = (value: number) => {
     if (value < pages || value > -1) {
       setCurrentPage(value);
     }

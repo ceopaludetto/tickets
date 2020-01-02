@@ -20,13 +20,13 @@ type Overload = {
   (props: PrefetchLinkProps): JSX.Element;
 };
 
-export const Button: Overload = ({ onClick, ...rest }: ButtonProps | PrefetchLinkProps) => {
+export const Button: Overload = ({ onClick, className, ...rest }: ButtonProps | PrefetchLinkProps) => {
   const { handleClick } = usePreload((rest as PrefetchLinkProps).to as string, onClick as any);
 
   if ('to' in rest) {
     const { children, variant = 'contained', color = 'primary', to, ...other } = rest;
     return (
-      <Link to={to} onClick={handleClick as any} className={clsx(s.button, s[variant], s[color])} {...other}>
+      <Link to={to} onClick={handleClick as any} className={clsx(s.button, s[variant], s[color], className)} {...other}>
         {children}
       </Link>
     );
@@ -37,7 +37,7 @@ export const Button: Overload = ({ onClick, ...rest }: ButtonProps | PrefetchLin
     <button
       onClick={onClick as (e: React.MouseEvent<HTMLButtonElement>) => void}
       type={type}
-      className={clsx(s.button, s[variant], s[color])}
+      className={clsx(s.button, s[variant], s[color], className)}
       {...other}
     >
       {children}

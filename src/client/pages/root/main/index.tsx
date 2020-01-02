@@ -1,7 +1,14 @@
 import React from 'react';
 
-import c from '@/client/scss/utils.scss';
+import u from '@/client/scss/utils.scss';
+import { Calendar } from '@/client/components';
 
 export default function RootMain() {
-  return <div className={c['xs:ai-center']}>mainroot</div>;
+  return (
+    <div className={u['xs:ai-center']}>
+      mainroot
+      <Calendar />
+      <Calendar enableBefore={false} />
+    </div>
+  );
 }

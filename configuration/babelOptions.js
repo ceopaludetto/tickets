@@ -68,6 +68,10 @@ module.exports = (isServer = false, isTest = false) => ({
           transform: isServer ? 'react-use/lib/${member}' : 'react-use/esm/${member}',
           preventFullImport: true,
         },
+        'date-fns': {
+          transform: isServer ? 'date-fns/${member}' : 'date-fns/esm/${member}',
+          preventFullImport: true,
+        },
       },
     ],
     ...(isTest

@@ -7,7 +7,7 @@ interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
   currentPage: number;
   totalPages: number;
   nextPage: () => void;
-  togglePage: (value: number) => (e: React.MouseEvent<any>) => void;
+  togglePage: (value: number) => void;
   labels: {
     text: string;
     icon: React.ElementType<any>;
@@ -33,7 +33,7 @@ export function Stepper({ totalPages, labels, currentPage, togglePage, nextPage,
             tabIndex={0}
             role="button"
             onKeyUp={handleKeyUp}
-            onClick={togglePage(i)}
+            onClick={() => togglePage(i)}
             className={clsx(s.item, { [s.active]: i <= currentPage })}
           >
             <div className={s.icon}>

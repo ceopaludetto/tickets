@@ -12,6 +12,15 @@
       }
     }
 
+    .#{$bk}\:col {
+      flex: 1;
+    }
+    @for $i from 1 through 12 {
+      .#{$bk}\:col-#{$i} {
+        flex: 0 0 #{$i * 100% / 12};
+      }
+    }
+
     $directions: (
       t: top,
       b: bottom,
@@ -30,6 +39,22 @@
     @each $k, $v in $space-props {
       $values: map-get($v, "values");
       $prop: unquote(map-get($v, "prop"));
+      .#{$bk}\:#{$k}-0 {
+        #{$prop}: 0 !important;
+      }
+      @each $dk, $dv in $directions {
+        @if type-of($dv) == "list" {
+          .#{$bk}\:#{$k}#{$dk}-0 {
+            @for $di from 1 through length($dv) {
+              #{$prop}-#{nth($dv, $di)}: 0 !important;
+            }
+          }
+        } @else {
+          .#{$bk}\:#{$k}#{$dk}-0 {
+            #{$prop}-#{$dv}: 0 !important;
+          }
+        }
+      }
       @for $i from 1 through length($values) {
         .#{$bk}\:#{$k}-#{$i} {
           #{$prop}: #{nth($values, $i)} !important;

@@ -1,7 +1,7 @@
-import React from 'react';
+import React, { useMemo } from 'react';
 import clsx from 'clsx';
 import { useRouteMatch } from 'react-router-dom';
-import { useMeasure } from 'react-use';
+import { useMeasure, useWindowSize } from 'react-use';
 
 import c from '@/client/scss/utils.scss';
 import s from './auth.scss';
@@ -9,8 +9,10 @@ import { Paper } from '@/client/components/layout';
 import { AuthRoutes } from '@/client/routes/auth';
 
 export default function AuthMain() {
-  const isRegister = useRouteMatch('/auth/register');
+  const { height: windowHeight } = useWindowSize();
   const [ref, { height }] = useMeasure();
+  const isRegister = useRouteMatch('/auth/register');
+  const isGTDevice = useMemo(() => height + 64 > windowHeight, [height, windowHeight]);
 
   return (
     <div
@@ -26,9 +28,11 @@ export default function AuthMain() {
         animate={{
           height: height + 64,
           maxWidth: isRegister ? 900 : 500,
-          transition: { when: 'afterChildren', ease: 'easeInOut', duration: 0.2 },
+          transition: { ease: 'easeInOut', duration: 0.2 },
         }}
-        className={clsx(c['xs:w-100'], s.paper)}
+        className={clsx(c['xs:w-100'], s.paper, {
+          [s['paper-force']]: isGTDevice,
+        })}
         elevate={!isRegister}
         hasInner
       >

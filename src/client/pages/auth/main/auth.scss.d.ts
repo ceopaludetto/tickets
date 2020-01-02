@@ -5,6 +5,7 @@ export interface AuthStyles {
 	'root': string;
 	'register': string;
 	'paper': string;
+	'paper-force': string;
 }
 
 export type IAuthStyles = AuthStyles;

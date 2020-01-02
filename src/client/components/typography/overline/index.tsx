@@ -3,9 +3,13 @@ import clsx from 'clsx';
 
 import s from './overline.scss';
 
-export function Overline({ children, className, ...rest }: React.HTMLAttributes<HTMLParagraphElement>) {
+interface OverlineProps extends React.HTMLAttributes<HTMLParagraphElement> {
+  gutterBottom?: boolean;
+}
+
+export function Overline({ children, className, gutterBottom = false, ...rest }: OverlineProps) {
   return (
-    <small className={clsx(s.overline, className)} {...rest}>
+    <small className={clsx(s.overline, { [s.margin]: gutterBottom }, className)} {...rest}>
       {children}
     </small>
   );

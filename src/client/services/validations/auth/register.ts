@@ -1,6 +1,19 @@
 import * as Yup from 'yup';
 
-import { REQUIRED, EMAIL, PHONE, PASSWORD, DATE, CNPJ, CEP, SITE } from '../constants';
+import {
+  REQUIRED,
+  EMAIL,
+  PHONE,
+  PASSWORD_MATCH,
+  PASSWORD_LOWER,
+  PASSWORD_UPPER,
+  PASSWORD_NUMBER,
+  PASSWORD_MIN,
+  DATE,
+  CNPJ,
+  CEP,
+  SITE,
+} from '../constants';
 
 export const RegisterValidationSchema = Yup.object().shape({
   nome: Yup.string().required(REQUIRED),
@@ -12,9 +25,14 @@ export const RegisterValidationSchema = Yup.object().shape({
   dataNascimento: Yup.date()
     .typeError(DATE)
     .required(REQUIRED),
-  senha: Yup.string().required(REQUIRED),
+  senha: Yup.string()
+    .matches(/(?=.*[a-z])/, PASSWORD_LOWER)
+    .matches(/(?=.*[A-Z])/, PASSWORD_UPPER)
+    .matches(/(?=.*\d)/, PASSWORD_NUMBER)
+    .min(8, PASSWORD_MIN)
+    .required(REQUIRED),
   rsenha: Yup.string()
-    .oneOf([Yup.ref('senha')], PASSWORD)
+    .oneOf([Yup.ref('senha')], PASSWORD_MATCH)
     .required(REQUIRED),
   hasEmpresa: Yup.boolean(),
   cnpj: Yup.string()

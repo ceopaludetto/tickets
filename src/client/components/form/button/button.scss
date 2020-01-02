@@ -7,7 +7,7 @@
   letter-spacing: 1.25px;
   text-transform: uppercase;
   font-weight: get-font-weight("medium");
-  font-size: 14px;
+  font-size: nth($font-sizes, 1);
   text-decoration: none;
   &:focus {
     outline: none;
@@ -58,12 +58,12 @@
   &:disabled {
     cursor: not-allowed;
     &.contained {
-      background-color: get-theme-color("disabled-color");
-      color: get-theme-color("disabled-color", "contrast");
+      background-color: get-theme-color("disabled");
+      color: get-theme-color("disabled-text");
     }
     &.flat {
       background-color: transparent;
-      color: get-theme-color("disabled-color");
+      color: get-theme-color("disabled-text");
     }
   }
 }

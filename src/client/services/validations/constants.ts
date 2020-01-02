@@ -1,7 +1,11 @@
 export const REQUIRED = 'Campo obrigatório';
 export const EMAIL = 'Email inválido';
 export const PHONE = 'Telefone inválido';
-export const PASSWORD = 'As senhas não coincidem';
+export const PASSWORD_NUMBER = 'A senha deve conter um número';
+export const PASSWORD_LOWER = 'A senha deve conter uma letra minúscula';
+export const PASSWORD_UPPER = 'A senha deve conter uma letra maiúscula';
+export const PASSWORD_MATCH = 'As senhas não coincidem';
+export const PASSWORD_MIN = 'A senha deve conter ${min} caracteres'; // eslint-disable-line no-template-curly-in-string
 export const DATE = 'Data inválida';
 export const CNPJ = 'CNPJ inválido';
 export const CEP = 'CEP inválido';

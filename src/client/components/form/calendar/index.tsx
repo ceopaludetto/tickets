@@ -1,0 +1,289 @@
+import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
+import {
+  format,
+  addDays,
+  addMonths,
+  subMonths,
+  startOfWeek,
+  startOfMonth,
+  endOfWeek,
+  endOfMonth,
+  isSameDay,
+  isSameMonth,
+  isSameYear,
+  setYear,
+  getYear,
+} from 'date-fns';
+import ptBR from 'date-fns/locale/pt-BR';
+import produce from 'immer';
+import clsx from 'clsx';
+import { useMeasure, useMedia } from 'react-use';
+import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
+import { motion, AnimatePresence, HTMLMotionProps } from 'framer-motion';
+
+import s from './calendar.scss';
+import u from '@/client/scss/utils.scss';
+import { Grid } from '@/client/components/layout/grid';
+import { Paper } from '@/client/components/layout/paper';
+import { IconButton } from '@/client/components/form/iconbutton';
+import { Button } from '@/client/components/form/button';
+
+interface CalendarProps extends Omit<HTMLMotionProps<'div'>, 'onChange' | 'onSubmit'> {
+  float?: boolean;
+  value?: Date;
+  showButtons?: boolean;
+  enableBefore?: boolean;
+  enableAfter?: boolean;
+  minDate?: Date;
+  maxDate?: Date;
+  onChange?: (v: Date) => void;
+  onCancel?: (e: React.MouseEvent) => void;
+  onSubmit?: (d: Date, e: React.MouseEvent) => void;
+}
+
+export function Calendar({
+  value = new Date(),
+  float = false,
+  showButtons = true,
+  enableAfter = true,
+  enableBefore = true,
+  minDate = setYear(new Date(), 1899),
+  maxDate = setYear(new Date(), 2099),
+  onChange,
+  onCancel,
+  onSubmit,
+  ...rest
+}: CalendarProps) {
+  const [ref, { height }] = useMeasure();
+  const [selected, setSelected] = useState(value);
+  const [showingDate, setShowingDate] = useState(new Date());
+  const [type, setType] = useState<'d' | 'y'>('d');
+  const showingFormatted = useMemo(() => format(showingDate, 'MMM yyyy', { locale: ptBR }), [showingDate]);
+  const formattedYear = useMemo(() => format(selected, 'yyyy', { locale: ptBR }), [selected]);
+  const formattedDate = useMemo(() => format(selected, "eee, d 'de' MMMM", { locale: ptBR }), [selected]);
+  const currentYear = useMemo(() => getYear(new Date()), []);
+  const minYear = useMemo(() => getYear(minDate), [minDate]);
+  const maxYear = useMemo(() => getYear(maxDate), [maxDate]);
+  const smallWindow = useMedia('(max-width: 375px)');
+  const selectedYearRef = useRef<HTMLButtonElement>();
+  const [isPreviousAfter, setIsPreviousAfter] = useState(false);
+
+  function nextMonth() {
+    setIsPreviousAfter(false);
+    setShowingDate(addMonths(showingDate, 1));
+  }
+
+  function prevMonth() {
+    setIsPreviousAfter(true);
+    setShowingDate(subMonths(showingDate, 1));
+  }
+
+  function handleDate(d: Date, t?: 'd' | 'y') {
+    setSelected(d);
+    if (t) setType(t);
+  }
+
+  function handleShowingDate(d: Date, t?: 'd' | 'y') {
+    setShowingDate(d);
+    if (t) setType(t);
+  }
+
+  useEffect(() => {
+    if (onChange) onChange(selected);
+  }, [selected]);
+
+  useEffect(() => {
+    if (type === 'y' && selectedYearRef.current && selectedYearRef.current.scrollIntoView) {
+      try {
+        selectedYearRef.current.scrollIntoView({
+          block: 'center',
+        });
+      } catch (e) {
+        selectedYearRef.current.scrollIntoView();
+      }
+    }
+  }, [type]);
+
+  const renderWeekDays = useCallback(() => {
+    const dateFormat = smallWindow ? 'EEEEE' : 'EE';
+    let els: React.ReactNodeArray = [];
+
+    const startDate = startOfWeek(showingDate);
+    els = produce(els, draft => {
+      for (let i = 0; i < 7; i += 1) {
+        draft.push(
+          <div key={i} className={clsx(u['xs:grid-column-1'], s['week-item'], s['button-like'])}>
+            {format(addDays(startDate, i), dateFormat, { locale: ptBR })}
+          </div>
+        );
+      }
+    });
+
+    return els;
+  }, [smallWindow]);
+
+  const renderCells = useCallback(() => {
+    const monthStart = startOfMonth(showingDate);
+    const monthEnd = endOfMonth(monthStart);
+    const startDate = startOfWeek(monthStart);
+    const endDate = endOfWeek(monthEnd);
+
+    const dateFormat = 'd';
+    let days: React.ReactNodeArray = [];
+    let day = startDate;
+
+    days = produce(days, draft => {
+      while (day <= endDate) {
+        const cloneDate = day;
+        draft.push(
+          <div className={u['xs:grid-column-1']}>
+            <Button
+              disabled={!isSameMonth(cloneDate, monthStart)}
+              variant={isSameDay(cloneDate, selected) ? 'contained' : 'flat'}
+              key={format(day, 'd/M/Y')}
+              onClick={() => handleDate(cloneDate)}
+              className={s['week-button']}
+            >
+              {format(day, dateFormat, { locale: ptBR })}
+            </Button>
+          </div>
+        );
+        day = addDays(day, 1);
+      }
+      const rowsRendered = 6 - draft.length / 7;
+      const cloneDate = day;
+      for (let i = 0; i < 7 * rowsRendered; i += 1) {
+        draft.push(
+          <Button
+            disabled={!isSameMonth(cloneDate, monthStart)}
+            variant={isSameDay(cloneDate, selected) ? 'contained' : 'flat'}
+            key={format(day, 'd/M/Y')}
+            className={clsx(s['week-button'], s['hidden-button'])}
+          />
+        );
+        day = addDays(day, 1);
+      }
+    });
+
+    return days;
+  }, [showingDate, selected]);
+
+  const renderYears = useCallback(() => {
+    const yearStart = selected;
+
+    const dateFormat = 'yyyy';
+    let months: React.ReactNodeArray = [];
+
+    months = produce(months, draft => {
+      for (let i = enableBefore ? minYear : currentYear; i <= (enableAfter ? maxYear : currentYear); i += 1) {
+        const cloneDate = setYear(yearStart, i);
+        const isYearSelected = isSameYear(cloneDate, selected);
+        draft.push(
+          <button
+            ref={isYearSelected ? (selectedYearRef as React.MutableRefObject<HTMLButtonElement>) : undefined}
+            className={clsx(s.button, s['button-like'], {
+              [s.active]: isYearSelected,
+            })}
+            key={format(cloneDate, dateFormat)}
+            onClick={() => {
+              handleShowingDate(setYear(showingDate, i));
+              handleDate(cloneDate, 'd');
+            }}
+          >
+            {format(cloneDate, dateFormat, { locale: ptBR })}
+          </button>
+        );
+      }
+    });
+
+    return months;
+  }, [showingDate, selected, smallWindow]);
+
+  return (
+    <Paper className={u['xs:mw-4']} small={float} {...rest}>
+      <>
+        <div className={clsx(u['xs:d-flex'], u['-xs:mx-3'], u['xs:ai-center'], u['xs:pb-1'], u['xs:fw-wrap'])}>
+          <div className={clsx(u['xs:px-3'], u['xs:col-12'], u['xs:mb-1'])}>
+            <Button
+              color={type === 'y' ? 'secondary' : 'primary'}
+              className={u['xs:p-0']}
+              onClick={() => setType('y')}
+              variant="flat"
+            >
+              {formattedYear}
+            </Button>
+          </div>
+          <div className={clsx(u['xs:px-3'], u['xs:col-12'])}>
+            <Button
+              color={type === 'd' ? 'secondary' : 'primary'}
+              className={clsx(u['xs:p-0'], s['showing-date'])}
+              onClick={() => setType('d')}
+              variant="flat"
+            >
+              {formattedDate}
+            </Button>
+          </div>
+        </div>
+        {type === 'd' && (
+          <div ref={ref}>
+            <div className={clsx(u['xs:d-flex'], u['-xs:mx-3'], u['xs:ai-center'], u['xs:pb-2'])}>
+              <div className={u['xs:px-3']}>
+                <IconButton onClick={prevMonth}>
+                  <FiArrowLeft />
+                </IconButton>
+              </div>
+              <div className={clsx(u['xs:px-3'], u['xs:col'], u['xs:ta-center'], s['button-like'])}>
+                {showingFormatted}
+              </div>
+              <div className={u['xs:px-3']}>
+                <IconButton onClick={nextMonth}>
+                  <FiArrowRight />
+                </IconButton>
+              </div>
+            </div>
+            <AnimatePresence exitBeforeEnter initial={false}>
+              <motion.div
+                animate={{
+                  x: '0%',
+                  opacity: 1,
+                  transition: { duration: 0.2, ease: 'easeInOut' },
+                }}
+                initial={{
+                  x: isPreviousAfter ? '-10%' : '10%',
+                  opacity: 0,
+                }}
+                exit={{
+                  x: isPreviousAfter ? '10%' : '-10%',
+                  opacity: 0,
+                  transition: { duration: 0.2, ease: 'easeInOut' },
+                }}
+                key={showingFormatted}
+                className={clsx(s.week, s.gap, u['xs:ta-center'])}
+              >
+                {renderWeekDays()}
+                {renderCells()}
+              </motion.div>
+            </AnimatePresence>
+          </div>
+        )}
+        {type === 'y' && (
+          <Grid className={clsx(u['xs:ta-center'], s.gap)}>
+            <div className={clsx(u['xs:grid-column-12'], s.overflow)} style={{ height }}>
+              {renderYears()}
+            </div>
+          </Grid>
+        )}
+        {showButtons && (
+          <div className={clsx(u['xs:ta-right'], u['xs:mt-2'])}>
+            <Button variant="flat" color="secondary" onClick={onCancel}>
+              Cancelar
+            </Button>{' '}
+            <Button variant="contained" onClick={e => (onSubmit ? onSubmit(selected, e) : {})}>
+              OK
+            </Button>
+          </div>
+        )}
+      </>
+    </Paper>
+  );
+}

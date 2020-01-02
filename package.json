@@ -155,7 +155,7 @@
     "clsx": "^1.0.4",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.4",
-    "date-fns": "2.1.0",
+    "date-fns": "^2.8.1",
     "express": "^4.17.1",
     "formik": "^2.0.8",
     "framer-motion": "^1.7.0",
