@@ -12,7 +12,7 @@ export default {
   component: Progress,
 };
 
-export function Normal() {
+export const Normal = () => {
   const [key, setKey] = useState(generate());
   const [isAnimating, toggleAnimation] = useToggle(false);
 
@@ -32,4 +32,4 @@ export function Normal() {
       ))}
     </>
   );
-}
+};

@@ -43,6 +43,7 @@ interface CalendarProps extends Omit<HTMLMotionProps<'div'>, 'onChange' | 'onSub
   onChange?: (v: Date) => void;
   onCancel?: (e: React.MouseEvent) => void;
   onSubmit?: (d: Date, e: React.MouseEvent) => void;
+  onPageChange?: (d: Date, isPreviousAfter: boolean, e: React.MouseEvent) => void;
 }
 
 const animationVariants = {
@@ -73,6 +74,7 @@ export function Calendar({
   onChange,
   onCancel,
   onSubmit,
+  onPageChange,
   ...rest
 }: CalendarProps) {
   const currDate = new Date();
@@ -116,15 +118,19 @@ export function Calendar({
     });
   }
 
-  function nextMonth() {
+  function nextMonth(e: React.MouseEvent) {
     changePreviousAfter(false).then(() => {
-      setShowingDate(addMonths(showingDate, 1));
+      const newMonth = addMonths(showingDate, 1);
+      if (onPageChange) onPageChange(newMonth, false, e);
+      setShowingDate(newMonth);
     });
   }
 
-  function prevMonth() {
+  function prevMonth(e: React.MouseEvent) {
     changePreviousAfter(true).then(() => {
-      setShowingDate(subMonths(showingDate, 1));
+      const newMonth = subMonths(showingDate, 1);
+      if (onPageChange) onPageChange(newMonth, true, e);
+      setShowingDate(newMonth);
     });
   }
 
@@ -250,7 +256,7 @@ export function Calendar({
   }, [showingDate, selected, smallWindow]);
 
   return (
-    <Paper className={u['xs:mw-4']} small={float} {...rest}>
+    <Paper className={clsx(u['xs:mw-4'], u['xs:w-100'])} small={float} {...rest}>
       <>
         <div className={clsx(u['xs:d-flex'], u['-xs:mx-3'], u['xs:ai-center'], u['xs:pb-1'], u['xs:fw-wrap'])}>
           <div className={clsx(u['xs:px-3'], u['xs:col-12'], u['xs:mb-1'])}>

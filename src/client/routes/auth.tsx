@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from 'framer-motion';
 import React, { useMemo } from 'react';
-import { Switch, Route } from 'react-router-dom';
+import { Switch, Route, useLocation } from 'react-router-dom';
 
 import { nested } from '@/client/utils/nested.routes';
 
@@ -21,27 +21,24 @@ const routeVariants = {
 
 export function AuthRoutes() {
   const routes = useMemo(() => nested([1, 'children']), []);
+  const location = useLocation();
 
   return (
-    <Route>
-      {({ location }) => (
-        <AnimatePresence initial={false} exitBeforeEnter>
-          <Switch location={location} key={location.pathname}>
-            {routes.map(r => (
-              <Route
-                path={r.path}
-                exact={r.exact}
-                strict={r.strict}
-                render={() => (
-                  <motion.div variants={routeVariants} exit="exit" animate="enter" initial="initial">
-                    <r.component />
-                  </motion.div>
-                )}
-              />
-            ))}
-          </Switch>
-        </AnimatePresence>
-      )}
-    </Route>
+    <AnimatePresence initial={false} exitBeforeEnter>
+      <Switch location={location} key={location.pathname}>
+        {routes.map(r => (
+          <Route
+            path={r.path}
+            exact={r.exact}
+            strict={r.strict}
+            render={() => (
+              <motion.div variants={routeVariants} exit="exit" animate="enter" initial="initial">
+                <r.component />
+              </motion.div>
+            )}
+          />
+        ))}
+      </Switch>
+    </AnimatePresence>
   );
 }

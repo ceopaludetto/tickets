@@ -1,3 +1,4 @@
+import { action } from '@storybook/addon-actions';
 import React from 'react';
 
 import { AlignToCenter } from '@/client/utils/storybook.decorators';
@@ -6,7 +7,14 @@ import { Calendar } from './index';
 
 export default { title: 'F3Desk|Form/Calendar', component: Calendar, decorators: [AlignToCenter] };
 
-export const normal = () => <Calendar />;
+export const normal = () => (
+  <Calendar
+    onCancel={action('onCancel')}
+    onSubmit={action('onSubmit')}
+    onChange={action('onChange')}
+    onPageChange={action('onPageChange')}
+  />
+);
 
 export const disableButtons = () => <Calendar showButtons={false} />;
 

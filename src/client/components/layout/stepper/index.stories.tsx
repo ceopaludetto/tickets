@@ -12,7 +12,7 @@ export default {
   decorators: [AlignToCenterWithMaxWidth],
 };
 
-export function Normal() {
+export const Normal = () => {
   const { currentPage, totalPages, togglePage, nextPage } = useStepper(3);
 
   return (
@@ -37,4 +37,4 @@ export function Normal() {
       ]}
     />
   );
-}
+};
