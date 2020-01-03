@@ -1,11 +1,11 @@
-import React from 'react';
 import { Formik } from 'formik';
+import React from 'react';
 
-import c from '@/client/scss/utils.scss';
 import { Button, Title, Overline, FormControl, Form, Link } from '@/client/components';
-import { useVisibility, useThunkDispatch, useTypedSelector } from '@/client/utils';
-import { LoginValidationSchema } from '@/client/services/validations';
+import c from '@/client/scss/utils.scss';
 import { requestLogin } from '@/client/services/ducks/auth';
+import { LoginValidationSchema } from '@/client/services/validations';
+import { useVisibility, useThunkDispatch, useTypedSelector } from '@/client/utils';
 
 interface LoginData {
   email: string;

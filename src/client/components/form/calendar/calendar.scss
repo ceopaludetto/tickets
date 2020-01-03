@@ -48,7 +48,7 @@
 }
 
 .showing-date {
-  font-size: nth($font-sizes, 4);
+  font-size: nth($font-sizes, 4) !important;
 }
 
 .button-like {

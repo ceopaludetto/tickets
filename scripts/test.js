@@ -1,5 +1,5 @@
-const path = require('path');
 const jest = require('jest');
+const path = require('path');
 
 const envs = require('../configuration/envs');
 const config = require('../jest.config');

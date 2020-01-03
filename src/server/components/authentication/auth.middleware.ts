@@ -1,8 +1,9 @@
 import { NestMiddleware, Injectable } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
-import { AuthService } from './auth.service';
 import { ExtractAuthTokenFromCookie } from '@/server/utils/jwt.cookie.extractor';
+
+import { AuthService } from './auth.service';
 
 @Injectable()
 export class AuthMiddleware implements NestMiddleware {

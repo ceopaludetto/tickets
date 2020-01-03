@@ -1,30 +1,39 @@
+const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const path = require('path');
-const merge = require('webpack-merge');
-const webpack = require('webpack');
-const NodeExternals = require('webpack-node-externals');
 const StartServerPlugin = require('start-server-webpack-plugin');
-const FriendlyErrorsPlugin = require('razzle-dev-utils/FriendlyErrorsPlugin');
+const webpack = require('webpack');
+const merge = require('webpack-merge');
+const NodeExternals = require('webpack-node-externals');
 
-const baseConfig = require('./webpack.config.base');
 const envs = require('./envs');
+const baseConfig = require('./webpack.config.base');
 
 const isProd = process.env.NODE_ENV === 'production';
+
+const nodeArgs = ['-r', 'source-map-support/register'];
+
+if (process.env.INSPECT_BRK) {
+  nodeArgs.push(process.env.INSPECT_BRK);
+} else if (process.env.INSPECT) {
+  nodeArgs.push(process.env.INSPECT);
+}
 
 module.exports = merge(baseConfig(true), {
   watch: !isProd,
   name: 'server',
   target: 'node',
   node: {
+    __console: false,
     __dirname: false,
     __filename: false,
   },
   externals: [
     NodeExternals({
-      whitelist: [...(isProd ? [] : [`${path.resolve('configuration', 'customLogger')}?300`]), /\.(scss|sass)$/],
+      whitelist: [...(isProd ? [] : ['webpack/hot/poll?300']), /\.(scss|sass)$/],
     }),
   ],
   entry: [
-    ...(isProd ? [] : [`${path.resolve('configuration', 'customLogger')}?300`, 'source-map-support/register']),
+    ...(isProd ? [] : ['razzle-dev-utils/prettyNodeErrors', 'webpack/hot/poll?300']),
     'reflect-metadata',
     path.resolve('src', 'server', 'index.ts'),
   ],
@@ -40,12 +49,15 @@ module.exports = merge(baseConfig(true), {
       ? []
       : [
           new FriendlyErrorsPlugin({
-            onSuccessMessage: `Application will be available in ${envs.PROTOCOL}://${envs.HOST}:${envs.PORT}`,
+            compilationSuccessInfo: {
+              messages: [`The application is available in ${envs.PROTOCOL}://${envs.HOST}:${envs.PORT}`],
+            },
           }),
           new webpack.HotModuleReplacementPlugin({ quiet: true }),
           new StartServerPlugin({
             name: 'index.js',
-            keyboard: true,
+            keyboard: !isProd,
+            nodeArgs,
           }),
         ]),
     new webpack.optimize.LimitChunkCountPlugin({

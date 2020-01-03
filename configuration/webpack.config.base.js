@@ -1,12 +1,12 @@
 /* eslint-disable global-require, @typescript-eslint/camelcase */
-const path = require('path');
-const webpack = require('webpack');
-const eslintFormatter = require('react-dev-utils/eslintFormatter');
-const safePostCssParser = require('postcss-safe-parser');
-const TerserPlugin = require('terser-webpack-plugin');
 const LodashPlugin = require('lodash-webpack-plugin');
 const MiniCssExtract = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
+const path = require('path');
+const safePostCssParser = require('postcss-safe-parser');
+const eslintFormatter = require('react-dev-utils/eslintFormatter');
+const TerserPlugin = require('terser-webpack-plugin');
+const webpack = require('webpack');
 
 const babelOptions = require('./babelOptions');
 const envs = require('./envs');
@@ -42,7 +42,7 @@ const postcssOptions = {
 module.exports = (isServer = false) => ({
   bail: isProd,
   name: isServer ? 'Server' : 'Client',
-  devtool: isProd ? 'nosources-source-map' : 'source-map',
+  devtool: isProd ? 'source-map' : 'inline-source-map',
   mode: isProd ? 'production' : 'development',
   performance: false,
   watchOptions: {
@@ -54,7 +54,7 @@ module.exports = (isServer = false) => ({
     minimize: isProd,
     minimizer: [
       new TerserPlugin({
-        sourceMap: isProd,
+        sourceMap: true,
         cache: true,
         parallel: true,
         extractComments: false,
@@ -100,79 +100,114 @@ module.exports = (isServer = false) => ({
         use: {
           loader: 'eslint-loader',
           options: {
+            cache: true,
             formatter: eslintFormatter,
           },
         },
         enforce: 'pre',
       },
       {
-        test: /\.tsx?$/,
-        use: [
+        oneOf: [
           {
-            loader: 'babel-loader',
-            options: {
-              babelrc: false,
-              configFile: false,
-              cacheDirectory: true,
-              cacheCompression: !isProd,
-              compact: !isProd,
-              ...babelOptions(isServer),
-            },
-          },
-          {
-            loader: 'ts-loader',
-            options: {
-              transpileOnly: true,
-              experimentalWatchApi: !isProd,
-              configFile: path.resolve(`tsconfig.${isServer ? 'server' : 'client'}.json`),
-            },
-          },
-        ],
-        exclude: /node_modules/,
-      },
-      {
-        test: /\.scss$/,
-        sideEffects: true,
-        use: [
-          ...(isServer
-            ? []
-            : [
-                isProd
-                  ? { loader: MiniCssExtract.loader, options: { esModule: !isServer } }
-                  : { loader: 'style-loader', options: { esModule: !isServer } },
-              ]),
-          'css-modules-types-generator-loader',
-          {
-            loader: 'css-loader',
-            options: {
-              importLoaders: 2,
-              sourceMap: true,
-              onlyLocals: isServer,
-              esModule: !isServer,
-              modules: {
-                localIdentName: isProd ? '_[hash:base64:5]' : '[path]__[local]--[hash:base64:5]',
+            test: [/\.bmp$/, /\.gif$/, /\.jpe?g$/, /\.png$/],
+            use: [
+              {
+                loader: 'url-loader',
+                options: {
+                  limit: 10 * 1024,
+                },
               },
-            },
+              'image-webpack-loader',
+            ],
           },
           {
-            loader: 'postcss-loader',
-            options: postcssOptions,
+            test: /\.svg$/,
+            use: [
+              {
+                loader: 'svg-url-loader',
+                options: {
+                  limit: 10 * 1024,
+                  noquotes: true,
+                },
+              },
+              'image-webpack-loader',
+            ],
           },
           {
-            loader: 'sass-loader',
-            options: {
-              sourceMap: true,
-            },
+            test: /\.tsx?$/,
+            exclude: /node_modules/,
+            use: [
+              {
+                loader: 'babel-loader',
+                options: {
+                  babelrc: false,
+                  configFile: false,
+                  cacheDirectory: true,
+                  cacheCompression: !isProd,
+                  compact: !isProd,
+                  ...babelOptions(isServer),
+                },
+              },
+              {
+                loader: 'ts-loader',
+                options: {
+                  transpileOnly: true,
+                  experimentalWatchApi: !isProd,
+                  configFile: path.resolve(`tsconfig.${isServer ? 'server' : 'client'}.json`),
+                },
+              },
+            ],
+          },
+          {
+            test: /\.scss$/,
+            sideEffects: true,
+            use: [
+              ...(isServer
+                ? []
+                : [
+                    isProd
+                      ? { loader: MiniCssExtract.loader, options: { esModule: !isServer } }
+                      : { loader: 'style-loader', options: { esModule: !isServer } },
+                  ]),
+              'css-modules-types-generator-loader',
+              {
+                loader: 'css-loader',
+                options: {
+                  importLoaders: 2,
+                  sourceMap: true,
+                  onlyLocals: isServer,
+                  esModule: !isServer,
+                  modules: {
+                    localIdentName: isProd ? '_[hash:base64:5]' : '[path]__[local]--[hash:base64:5]',
+                  },
+                },
+              },
+              {
+                loader: 'postcss-loader',
+                options: postcssOptions,
+              },
+              {
+                loader: 'sass-loader',
+                options: {
+                  sourceMap: true,
+                },
+              },
+            ],
+          },
+          {
+            exclude: [/\.(js|mjs|ts|tsx|scss|html|json)$/],
+            use: [
+              {
+                loader: 'file-loader',
+                options: {
+                  name: 'assets/[name].[contenthash:8].[ext]',
+                  emitFile: !isServer,
+                },
+              },
+              'image-webpack-loader',
+            ],
           },
         ],
-      },
-      {
-        loader: 'file-loader',
-        exclude: [/\.(js|mjs|ts|tsx|scss|html|json)$/],
-        options: {
-          name: 'assets/[name].[contenthash:8].[ext]',
-          emitFile: !isServer,
-        },
       },
     ],
   },

@@ -1,11 +1,13 @@
 process.env.NODE_ENV = 'production';
-const fs = require('fs-extra');
+process.noDeprecation = true;
+
 const chalk = require('chalk');
-const webpack = require('webpack');
-const printErrors = require('razzle-dev-utils/printErrors');
+const fs = require('fs-extra');
 const logger = require('razzle-dev-utils/logger');
+const printErrors = require('razzle-dev-utils/printErrors');
 const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
 const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
+const webpack = require('webpack');
 
 const { measureFileSizesBeforeBuild } = FileSizeReporter;
 const { printFileSizesAfterBuild } = FileSizeReporter;

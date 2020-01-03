@@ -1,7 +1,7 @@
 /* eslint-disable no-console */
-const path = require('path');
-const glob = require('glob');
 const fs = require('fs');
+const glob = require('glob');
+const path = require('path');
 
 console.log('-> Creating new Migration:', process.argv[2]);
 

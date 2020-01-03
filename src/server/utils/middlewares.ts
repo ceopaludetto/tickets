@@ -1,10 +1,9 @@
 import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
-import { static as Static } from 'express';
-
-import Cookie from 'cookie-parser';
-import Helmet from 'helmet';
 import Compression from 'compression';
+import Cookie from 'cookie-parser';
+import { static as Static } from 'express';
+import Helmet from 'helmet';
 
 import { IS_PRODUCTION, PUBLIC_PATH, STATIC_FOLDER } from '@/server/utils/constants';
 

@@ -1,9 +1,10 @@
-import React from 'react';
 import clsx from 'clsx';
+import React from 'react';
 import { FiCheck } from 'react-icons/fi';
 
-import s from './checkbox.scss';
 import { Label } from '@/client/components/typography';
+
+import s from './checkbox.scss';
 
 export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;

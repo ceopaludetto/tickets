@@ -1,4 +1,5 @@
 import { IsString, IsEnum, IsBoolean, IsOptional } from 'class-validator';
+
 import { IsShortID } from '@/server/utils/isShortid';
 
 export enum EnumTipoAcesso {

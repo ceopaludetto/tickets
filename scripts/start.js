@@ -1,18 +1,21 @@
 // eslint-disable-next-line no-unused-expressions
 process.env.NODE_ENV === 'development';
+process.noDeprecation = true;
+
+process.env.INSPECT_BRK = process.argv.find(arg => arg.match(/--inspect-brk(=|$)/)) || '';
+process.env.INSPECT = process.argv.find(arg => arg.match(/--inspect(=|$)/)) || '';
 
 const fs = require('fs-extra');
-const webpack = require('webpack');
-const printErrors = require('razzle-dev-utils/printErrors');
-const DevServer = require('webpack-dev-server');
 const logger = require('razzle-dev-utils/logger');
+const printErrors = require('razzle-dev-utils/printErrors');
 const setPorts = require('razzle-dev-utils/setPorts');
+const clearConsole = require('react-dev-utils/clearConsole');
+const webpack = require('webpack');
+const DevServer = require('webpack-dev-server');
 
 const envs = require('../configuration/envs');
 const clientConfig = require('../configuration/webpack.config.client');
 const serverConfig = require('../configuration/webpack.config.server');
-
-process.noDeprecation = true;
 
 function compile(config) {
   let compiler;
@@ -26,6 +29,8 @@ function compile(config) {
 }
 
 function main() {
+  clearConsole();
+  logger.start('Compiling...');
   fs.emptyDirSync(serverConfig.output.path);
 
   const clientCompiler = compile(clientConfig);

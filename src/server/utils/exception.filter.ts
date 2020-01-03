@@ -1,7 +1,7 @@
 import { Catch, ExceptionFilter, ArgumentsHost, HttpStatus, HttpException } from '@nestjs/common';
 import { ValidationError } from 'class-validator';
-import { BaseError as SequelizeError } from 'sequelize';
 import { Response } from 'express';
+import { BaseError as SequelizeError } from 'sequelize';
 
 import { IS_PRODUCTION } from '@/server/utils/constants';
 

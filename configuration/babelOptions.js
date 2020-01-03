@@ -58,7 +58,7 @@ module.exports = (isServer = false, isTest = false) => ({
     ],
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
-    ['@babel/plugin-transform-runtime', { corejs: false, regenerator: true }],
+    ['@babel/plugin-transform-runtime', { corejs: false, regenerator: true, useESModules: !isServer }],
     ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }],
     ['transform-react-remove-prop-types', { mode: 'remove', removeImport: true }],
     [

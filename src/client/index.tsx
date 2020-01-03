@@ -1,14 +1,15 @@
+import { loadableReady } from '@loadable/component';
 import React from 'react';
 import { hydrate } from 'react-dom';
-import { BrowserRouter } from 'react-router-dom';
-import { loadableReady } from '@loadable/component';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
+import { BrowserRouter } from 'react-router-dom';
 
 import App from '@/client/bootstrap';
-import { createReduxStore } from '@/client/providers/store';
 import { ApiContext } from '@/client/providers/api';
+import { createReduxStore } from '@/client/providers/store';
 import { IS_PRODUCTION } from '@/client/utils/constants';
+
 import * as serviceWorker from './registerServiceWorker';
 
 const { store, api } = createReduxStore(((window as unknown) as any).__PRELOADED_STATE__);

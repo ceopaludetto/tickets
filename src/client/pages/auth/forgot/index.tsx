@@ -1,11 +1,11 @@
-import React from 'react';
 import { Formik } from 'formik';
+import React from 'react';
 
-import c from '@/client/scss/utils.scss';
 import { Button, Title, Overline, FormControl, Form } from '@/client/components';
-import { useThunkDispatch, useTypedSelector } from '@/client/utils';
-import { ForgotValidationSchema } from '@/client/services/validations';
+import c from '@/client/scss/utils.scss';
 import { requestLogin } from '@/client/services/ducks/auth';
+import { ForgotValidationSchema } from '@/client/services/validations';
+import { useThunkDispatch, useTypedSelector } from '@/client/utils';
 
 interface ForgotData {
   email: string;

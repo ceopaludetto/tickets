@@ -1,10 +1,11 @@
-import { composeWithDevTools } from 'redux-devtools-extension';
-import { createStore, applyMiddleware } from 'redux';
 import { AxiosInstance } from 'axios';
+import { createStore, applyMiddleware } from 'redux';
+import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk, { ThunkMiddleware } from 'redux-thunk';
 
 import { reducers, AllReducers, AllActions } from '@/client/services/ducks';
 import { IS_PRODUCTION } from '@/client/utils/constants';
+
 import { createApi } from './api';
 
 export type ThunkType = ThunkMiddleware<AllReducers, AllActions, AxiosInstance>;

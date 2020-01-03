@@ -1,5 +1,5 @@
-import { resolve } from 'path';
 import { Module, Global } from '@nestjs/common';
+import { resolve } from 'path';
 
 import { ConfigurationService } from './configuration.service';
 

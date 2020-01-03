@@ -1,8 +1,8 @@
 process.env.ONLY = 'server';
 const fs = require('fs-extra');
 const logger = require('razzle-dev-utils/logger');
-const webpack = require('webpack');
 const printErrors = require('razzle-dev-utils/printErrors');
+const webpack = require('webpack');
 
 const serverConfig = require('../configuration/webpack.config.server');
 

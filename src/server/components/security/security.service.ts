@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { ReturnModelType } from '@typegoose/typegoose';
-import { InjectModel } from 'nestjs-typegoose';
 import { ApolloError, UserInputError } from 'apollo-server-express';
+import { InjectModel } from 'nestjs-typegoose';
 
 import { Perfil, PerfilInput } from '@/server/models';
 import { ID } from '@/server/utils/common.dto';

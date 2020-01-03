@@ -1,5 +1,5 @@
-import { Role, CustomMatcherOptions } from '@/server/utils/common.dto';
 import { UsuarioDoc } from '@/server/models';
+import { Role, CustomMatcherOptions } from '@/server/utils/common.dto';
 
 export interface SecurityMatcherOptions {
   usuario: UsuarioDoc;

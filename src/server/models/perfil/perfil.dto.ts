@@ -1,7 +1,7 @@
 import { IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
 
+import { PoliticaInput, PoliticaInputDTO } from '@/server/models/politica';
 import { IsShortID } from '@/server/utils/isShortid';
-import { PoliticaInput, PoliticaInputDTO } from './politica.dto';
 
 export interface PerfilInputDTO {
   nome?: string;

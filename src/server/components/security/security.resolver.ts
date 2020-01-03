@@ -1,12 +1,13 @@
 import { UseGuards } from '@nestjs/common';
 import { Resolver, Query, Mutation, Args } from '@nestjs/graphql';
 
+import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
 import { Perfil, PerfilInput, PerfilUpdateArgs, AcaoEnum, RecursoEnum, AnyOrOwnEnum, Empresa } from '@/server/models';
 import { CommonFindAllArgs, CommonFindOneArgs } from '@/server/utils/common.dto';
-import { SecurityService } from './security.service';
-import { SecurityGuard } from './security.guard';
+
 import { UseRole } from './security.decorators';
-import { GqlAuthGuard } from '@/server/components/auth/auth.guard';
+import { SecurityGuard } from './security.guard';
+import { SecurityService } from './security.service';
 
 @Resolver(() => Perfil)
 export class SecurityResolver {

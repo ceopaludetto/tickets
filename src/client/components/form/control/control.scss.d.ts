@@ -13,6 +13,7 @@ export interface ControlStyles {
 	'error': string;
 	'helper': string;
 	'input': string;
+	'no-label': string;
 	'append': string;
 }
 

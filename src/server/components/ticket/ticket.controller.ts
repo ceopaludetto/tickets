@@ -1,8 +1,9 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 
-import { TicketService } from './ticket.service';
-import { TicketInput } from './ticket.dto';
+import { TicketInput } from '@/server/models/ticket';
 import { FindOneParam } from '@/server/utils/common.dto';
+
+import { TicketService } from './ticket.service';
 
 @Controller('/api/ticket')
 export class TicketController {

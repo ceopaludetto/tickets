@@ -38,6 +38,7 @@
             }
             &::after {
               transform: translateX(18px);
+              background-color: get-theme-color($k, "contrast");
             }
           }
         }
@@ -72,7 +73,11 @@
       height: calc(100% - 8px);
       background-color: get-theme-color("primary", "contrast");
       border-radius: 50%;
-      transition: create-transition((transform), 100ms, ease-in-out);
+      transition: create-transition(
+        (transform, background-color),
+        100ms,
+        ease-in-out
+      );
     }
   }
   .label {

@@ -1,7 +1,8 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 
+import { EmpresaInput } from '@/server/models/empresa';
 import { FindOneParam } from '@/server/utils/common.dto';
-import { EmpresaInput } from './empresa.dto';
+
 import { EmpresaService } from './empresa.service';
 
 @Controller('/api/empresa')

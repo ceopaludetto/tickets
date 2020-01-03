@@ -1,8 +1,10 @@
 import React from 'react';
 
+import { AlignToCenter } from '@/client/utils/storybook.decorators';
+
 import { Button } from './index';
 
-export default { title: 'Button' };
+export default { title: 'F3Desk|Form/Button', component: Button, decorators: [AlignToCenter] };
 
 export const normal = () => <Button>Hello Button</Button>;
 

@@ -3,6 +3,8 @@ const path = require("path");
 const babelOptions = require("../configuration/babelOptions");
 
 module.exports = ({ config }) => {
+  config.devtool = 'source-map'
+
   config.module.rules.push({
     test: /\.stories\.(ts|tsx)?$/,
     use: [
@@ -42,7 +44,6 @@ module.exports = ({ config }) => {
     test: /\.s?css$/,
     use: [
       "style-loader",
-      "css-modules-types-generator-loader",
       {
         loader: "css-loader",
         options: {

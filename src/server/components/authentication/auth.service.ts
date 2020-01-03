@@ -1,9 +1,10 @@
+import { MailerService } from '@nest-modules/mailer';
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { JwtService } from '@nestjs/jwt';
-import { MailerService } from '@nest-modules/mailer';
 import { Response } from 'express';
 
-import { Usuario, UsuarioService, UsuarioInput } from '@/server/components/usuario';
+import { UsuarioService } from '@/server/components/usuario';
+import { Usuario, UsuarioInput } from '@/server/models/usuario';
 
 @Injectable()
 export class AuthService {

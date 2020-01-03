@@ -2,12 +2,13 @@
 import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
 import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
-import { Request } from 'express';
 import { AuthenticationError } from 'apollo-server-express';
+import { Request } from 'express';
 
+import { UsuarioService } from '@/server/components/usuario/usuario.service';
 import { ContextType, PayloadType, Role, CustomMatcherOptions } from '@/server/utils/common.dto';
 import { SECURITY_ROLE_DECORATOR, SECURITY_CUSTOM_MATCHER_DECORATOR } from '@/server/utils/constants';
-import { UsuarioService } from '@/server/components/usuario/usuario.service';
+
 import { SecurityMatcher } from './security.matcher';
 
 @Injectable()

@@ -2,11 +2,16 @@ import React from 'react'
 import { configure, addDecorator } from "@storybook/react";
 import { withA11y } from "@storybook/addon-a11y";
 import { HelmetProvider } from 'react-helmet-async'
+import { Provider } from 'react-redux'
+import { BrowserRouter } from 'react-router-dom'
 
 import { ThemeChanger } from '@/client/components/logic'
+import { createReduxStore } from '@/client/providers/store';
 import '@/client/scss/normalize.scss';
 
-addDecorator((storyFn) => <HelmetProvider><ThemeChanger>{storyFn()}</ThemeChanger></HelmetProvider>)
+const { store } = createReduxStore();
+
+addDecorator((storyFn) => <HelmetProvider><Provider store={store}><BrowserRouter><ThemeChanger>{storyFn()}</ThemeChanger></BrowserRouter></Provider></HelmetProvider>)
 
 addDecorator(withA11y);
 

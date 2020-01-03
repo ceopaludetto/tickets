@@ -2,8 +2,9 @@ import { useContext } from 'react';
 import { useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 
-import { ApiContext } from '@/client/providers/api';
 import { ProgressContext } from '@/client/components';
+import { ApiContext } from '@/client/providers/api';
+
 import { preloadRouteComponent } from '../prefetch.routes';
 
 export function usePreload(to?: string, onClick?: (e: React.MouseEvent<any>) => any) {

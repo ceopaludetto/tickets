@@ -1,10 +1,11 @@
 import { Module } from '@nestjs/common';
 
-import { Perfil } from './perfil.entity';
-import { Politica } from './politica.entity';
-import { PerfilService } from './perfil.service';
-import { PerfilController } from './perfil.controller';
 import { DatabaseModule } from '@/server/components/database';
+import { Perfil } from '@/server/models/perfil';
+import { Politica } from '@/server/models/politica';
+
+import { PerfilController } from './perfil.controller';
+import { PerfilService } from './perfil.service';
 
 @Module({
   imports: [DatabaseModule.forFeature([() => Perfil, () => Politica])],

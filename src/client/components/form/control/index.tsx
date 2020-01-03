@@ -1,10 +1,11 @@
+import clsx from 'clsx';
 import React, { forwardRef, cloneElement } from 'react';
 import MaskInput, { MaskedInputProps } from 'react-text-mask';
-import clsx from 'clsx';
+
+import { Label } from '@/client/components/typography';
+import c from '@/client/scss/utils.scss';
 
 import s from './control.scss';
-import c from '@/client/scss/utils.scss';
-import { Label } from '@/client/components/typography';
 
 export interface ControlProps
   extends React.InputHTMLAttributes<HTMLInputElement>,
@@ -40,7 +41,13 @@ export const Control = forwardRef(
   ) => {
     return (
       <div className={s.container}>
-        <div className={clsx(s['form-group'], s[color], { [s.error]: error, [s.disabled]: disabled })}>
+        <div
+          className={clsx(s['form-group'], s[color], {
+            [s.error]: error,
+            [s.disabled]: disabled,
+            [s['no-label']]: !label,
+          })}
+        >
           <>
             {mask ? (
               <MaskInput

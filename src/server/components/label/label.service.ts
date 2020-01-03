@@ -1,8 +1,8 @@
 import { Injectable, BadRequestException } from '@nestjs/common';
 
 import { InjectModel } from '@/server/components/database';
-import { Ticket } from '@/server/components/ticket';
-import { Label } from './label.entity';
+import { Label } from '@/server/models/label';
+import { Ticket } from '@/server/models/ticket';
 
 @Injectable()
 export class LabelService {

@@ -1,8 +1,9 @@
-import { useImmer } from 'use-immer';
 import { useDeepCompareEffect } from 'react-use';
+import { useImmer } from 'use-immer';
+
+import { AllReducers } from '@/client/services/ducks';
 
 import { ApiError } from '../error';
-import { AllReducers } from '@/client/services/ducks';
 
 interface ErrorMappingState {
   hasError: boolean;

@@ -1,4 +1,4 @@
-import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
+import clsx from 'clsx';
 import {
   format,
   addDays,
@@ -11,29 +11,33 @@ import {
   isSameDay,
   isSameMonth,
   isSameYear,
+  isAfter,
+  isBefore,
   setYear,
+  setHours,
   getYear,
 } from 'date-fns';
 import ptBR from 'date-fns/locale/pt-BR';
-import produce from 'immer';
-import clsx from 'clsx';
-import { useMeasure, useMedia } from 'react-use';
-import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
 import { motion, AnimatePresence, HTMLMotionProps } from 'framer-motion';
+import produce from 'immer';
+import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
+import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
+import { useMeasure, useMedia } from 'react-use';
 
-import s from './calendar.scss';
-import u from '@/client/scss/utils.scss';
+import { Button } from '@/client/components/form/button';
+import { IconButton } from '@/client/components/form/iconbutton';
 import { Grid } from '@/client/components/layout/grid';
 import { Paper } from '@/client/components/layout/paper';
-import { IconButton } from '@/client/components/form/iconbutton';
-import { Button } from '@/client/components/form/button';
+import u from '@/client/scss/utils.scss';
+
+import s from './calendar.scss';
 
 interface CalendarProps extends Omit<HTMLMotionProps<'div'>, 'onChange' | 'onSubmit'> {
   float?: boolean;
   value?: Date;
   showButtons?: boolean;
-  enableBefore?: boolean;
-  enableAfter?: boolean;
+  disablePast?: boolean;
+  disableFuture?: boolean;
   minDate?: Date;
   maxDate?: Date;
   onChange?: (v: Date) => void;
@@ -41,41 +45,87 @@ interface CalendarProps extends Omit<HTMLMotionProps<'div'>, 'onChange' | 'onSub
   onSubmit?: (d: Date, e: React.MouseEvent) => void;
 }
 
+const animationVariants = {
+  animate: {
+    x: '0%',
+    opacity: 1,
+    transition: { duration: 0.2, ease: [0.35, 0.8, 0.4, 1] },
+  },
+  initial: (isPreviousAfter: boolean) => ({
+    opacity: 0,
+    x: isPreviousAfter ? '-10%' : '10%',
+  }),
+  exit: (isPreviousAfter: boolean) => ({
+    opacity: 0,
+    x: isPreviousAfter ? '10%' : '-10%',
+    transition: { duration: 0.2, ease: [0.35, 0.8, 0.4, 1] },
+  }),
+};
+
 export function Calendar({
   value = new Date(),
   float = false,
   showButtons = true,
-  enableAfter = true,
-  enableBefore = true,
-  minDate = setYear(new Date(), 1899),
-  maxDate = setYear(new Date(), 2099),
+  disablePast = false,
+  disableFuture = false,
+  minDate = new Date('01-01-1899'),
+  maxDate = new Date('12-31-2099'),
   onChange,
   onCancel,
   onSubmit,
   ...rest
 }: CalendarProps) {
+  const currDate = new Date();
   const [ref, { height }] = useMeasure();
   const [selected, setSelected] = useState(value);
-  const [showingDate, setShowingDate] = useState(new Date());
+  const [showingDate, setShowingDate] = useState(currDate);
   const [type, setType] = useState<'d' | 'y'>('d');
   const showingFormatted = useMemo(() => format(showingDate, 'MMM yyyy', { locale: ptBR }), [showingDate]);
   const formattedYear = useMemo(() => format(selected, 'yyyy', { locale: ptBR }), [selected]);
   const formattedDate = useMemo(() => format(selected, "eee, d 'de' MMMM", { locale: ptBR }), [selected]);
-  const currentYear = useMemo(() => getYear(new Date()), []);
+  const currentYear = useMemo(() => getYear(currDate), [currDate]);
   const minYear = useMemo(() => getYear(minDate), [minDate]);
   const maxYear = useMemo(() => getYear(maxDate), [maxDate]);
   const smallWindow = useMedia('(max-width: 375px)');
   const selectedYearRef = useRef<HTMLButtonElement>();
   const [isPreviousAfter, setIsPreviousAfter] = useState(false);
+  const shouldMoveToNextMonth = useMemo(
+    () => (!disableFuture ? !isAfter(showingDate, maxDate) : !isAfter(showingDate, setHours(currDate, 0))),
+    [showingDate, maxDate, disableFuture, currDate]
+  );
+  const shouldMoveToPrevMonth = useMemo(
+    () => (!disablePast ? !isBefore(showingDate, minDate) : !isBefore(showingDate, setHours(currDate, 24))),
+    [showingDate, minDate, !disablePast, currDate]
+  );
+  const resolveButtonDisabled = useCallback(
+    (d: Date) => {
+      const isAfterOk = !disableFuture ? isAfter(d, maxDate) : isAfter(d, currDate);
+      const isBeforeOk = !disablePast ? isBefore(d, minDate) : isBefore(d, currDate);
+
+      return !isSameDay(d, currDate) && (isAfterOk || isBeforeOk);
+    },
+    [currDate]
+  );
+
+  async function changePreviousAfter(v: boolean) {
+    return new Promise(resolve => {
+      if (isPreviousAfter !== v) {
+        setIsPreviousAfter(v);
+      }
+      resolve();
+    });
+  }
 
   function nextMonth() {
-    setIsPreviousAfter(false);
-    setShowingDate(addMonths(showingDate, 1));
+    changePreviousAfter(false).then(() => {
+      setShowingDate(addMonths(showingDate, 1));
+    });
   }
 
   function prevMonth() {
-    setIsPreviousAfter(true);
-    setShowingDate(subMonths(showingDate, 1));
+    changePreviousAfter(true).then(() => {
+      setShowingDate(subMonths(showingDate, 1));
+    });
   }
 
   function handleDate(d: Date, t?: 'd' | 'y') {
@@ -138,7 +188,7 @@ export function Calendar({
         draft.push(
           <div className={u['xs:grid-column-1']}>
             <Button
-              disabled={!isSameMonth(cloneDate, monthStart)}
+              disabled={!isSameMonth(cloneDate, monthStart) || resolveButtonDisabled(cloneDate)}
               variant={isSameDay(cloneDate, selected) ? 'contained' : 'flat'}
               key={format(day, 'd/M/Y')}
               onClick={() => handleDate(cloneDate)}
@@ -175,7 +225,7 @@ export function Calendar({
     let months: React.ReactNodeArray = [];
 
     months = produce(months, draft => {
-      for (let i = enableBefore ? minYear : currentYear; i <= (enableAfter ? maxYear : currentYear); i += 1) {
+      for (let i = !disablePast ? minYear : currentYear; i <= (!disableFuture ? maxYear : currentYear); i += 1) {
         const cloneDate = setYear(yearStart, i);
         const isYearSelected = isSameYear(cloneDate, selected);
         draft.push(
@@ -228,35 +278,36 @@ export function Calendar({
           <div ref={ref}>
             <div className={clsx(u['xs:d-flex'], u['-xs:mx-3'], u['xs:ai-center'], u['xs:pb-2'])}>
               <div className={u['xs:px-3']}>
-                <IconButton onClick={prevMonth}>
+                <IconButton aria-label="Mês anterior" disabled={!shouldMoveToPrevMonth} onClick={prevMonth}>
                   <FiArrowLeft />
                 </IconButton>
               </div>
-              <div className={clsx(u['xs:px-3'], u['xs:col'], u['xs:ta-center'], s['button-like'])}>
-                {showingFormatted}
-              </div>
+              <AnimatePresence exitBeforeEnter initial={false}>
+                <motion.div
+                  variants={animationVariants}
+                  custom={isPreviousAfter}
+                  animate="animate"
+                  initial="initial"
+                  exit="exit"
+                  key={showingFormatted}
+                  className={clsx(u['xs:px-3'], u['xs:col'], u['xs:ta-center'], s['button-like'])}
+                >
+                  {showingFormatted}
+                </motion.div>
+              </AnimatePresence>
               <div className={u['xs:px-3']}>
-                <IconButton onClick={nextMonth}>
+                <IconButton aria-label="Próximo mês" disabled={!shouldMoveToNextMonth} onClick={nextMonth}>
                   <FiArrowRight />
                 </IconButton>
               </div>
             </div>
             <AnimatePresence exitBeforeEnter initial={false}>
               <motion.div
-                animate={{
-                  x: '0%',
-                  opacity: 1,
-                  transition: { duration: 0.2, ease: 'easeInOut' },
-                }}
-                initial={{
-                  x: isPreviousAfter ? '-10%' : '10%',
-                  opacity: 0,
-                }}
-                exit={{
-                  x: isPreviousAfter ? '10%' : '-10%',
-                  opacity: 0,
-                  transition: { duration: 0.2, ease: 'easeInOut' },
-                }}
+                variants={animationVariants}
+                custom={isPreviousAfter}
+                animate="animate"
+                initial="initial"
+                exit="exit"
                 key={showingFormatted}
                 className={clsx(s.week, s.gap, u['xs:ta-center'])}
               >

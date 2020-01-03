@@ -1,6 +1,6 @@
 import axios, { AxiosInstance, AxiosError } from 'axios';
-import { createContext } from 'react';
 import { cacheAdapterEnhancer, throttleAdapterEnhancer } from 'axios-extensions';
+import { createContext } from 'react';
 
 import { ApiError } from '@/client/utils/error';
 

@@ -1,8 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 
 import { InjectModel } from '@/server/components/database';
-import { UsuarioInput } from './usuario.dto';
-import { Usuario } from './usuario.entity';
+import { UsuarioInput, Usuario } from '@/server/models/usuario';
 
 @Injectable()
 export class UsuarioService {

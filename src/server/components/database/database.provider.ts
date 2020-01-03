@@ -1,8 +1,8 @@
 import { Provider } from '@nestjs/common';
 import { Sequelize } from 'sequelize-typescript';
 
-import { Entities } from '@/server/components';
 import { ConfigurationService } from '@/server/components/configuration';
+import { Entities } from '@/server/models';
 import { SEQUELIZE_PROVIDER } from '@/server/utils/constants';
 
 export const DatabaseProvider: Provider = {
@@ -16,6 +16,7 @@ export const DatabaseProvider: Provider = {
       database,
       password,
       port,
+      logging: false,
     });
 
     sequelize.addModels(Entities);

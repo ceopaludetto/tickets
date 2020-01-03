@@ -1,6 +1,6 @@
-import React, { forwardRef } from 'react';
-import { motion, HTMLMotionProps } from 'framer-motion';
 import clsx from 'clsx';
+import { motion, HTMLMotionProps } from 'framer-motion';
+import React, { forwardRef } from 'react';
 
 import s from './paper.scss';
 

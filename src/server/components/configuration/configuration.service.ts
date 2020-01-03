@@ -1,6 +1,6 @@
-import yaml from 'yaml';
-import path from 'path';
 import fs from 'fs';
+import path from 'path';
+import yaml from 'yaml';
 import * as Yup from 'yup';
 
 interface EnvConfig {

@@ -1,6 +1,6 @@
+import { AxiosInstance } from 'axios';
 import { Action } from 'redux';
 import { ThunkDispatch } from 'redux-thunk';
-import { AxiosInstance } from 'axios';
 
 import { AllReducers, AllActions } from '@/client/services/ducks';
 

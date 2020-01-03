@@ -12,8 +12,8 @@ import {
   DeletedAt,
 } from 'sequelize-typescript';
 
+import { Label } from '@/server/models/label';
 import { TICKET, SHORTID } from '@/server/utils/constants';
-import { Label } from '@/server/components/label';
 
 @DefaultScope({
   include: [() => Label],

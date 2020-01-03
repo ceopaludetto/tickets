@@ -3,11 +3,11 @@ import { NestExpressApplication } from '@nestjs/platform-express';
 import { useContainer as injectApplicationModule } from 'class-validator';
 
 import { ApplicationModule } from '@/server/app.module';
-import { installMiddlewares } from '@/server/utils/middlewares';
 import { ErrorFormatter } from '@/server/utils/exception.filter';
+import { installMiddlewares } from '@/server/utils/middlewares';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(ApplicationModule, { logger: true });
+  const app = await NestFactory.create<NestExpressApplication>(ApplicationModule, { logger: false });
   installMiddlewares(app);
   injectApplicationModule(app.select(ApplicationModule), { fallbackOnErrors: true });
 

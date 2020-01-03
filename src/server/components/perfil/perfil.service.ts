@@ -1,10 +1,9 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 
 import { InjectModel, InjectSequelize, Sequelize } from '@/server/components/database';
-import { Empresa } from '@/server/components/empresa';
-import { PerfilInput } from './perfil.dto';
-import { Politica } from './politica.entity';
-import { Perfil } from './perfil.entity';
+import { Empresa } from '@/server/models/empresa';
+import { Perfil, PerfilInput } from '@/server/models/perfil';
+import { Politica } from '@/server/models/politica';
 
 @Injectable()
 export class PerfilService {

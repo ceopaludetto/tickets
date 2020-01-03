@@ -1,5 +1,5 @@
-import { matchPath } from 'react-router';
 import { AxiosInstance } from 'axios';
+import { matchPath } from 'react-router';
 import { ThunkDispatch } from 'redux-thunk';
 
 import { routes as allRoutes, Route } from '@/client/providers/route';

@@ -80,6 +80,11 @@
         }
       }
     }
+    &.no-label {
+      .input {
+        padding: 1rem 0.65rem;
+      }
+    }
     &.disabled {
       background-color: get-theme-color("disabled");
       border-color: get-theme-color("disabled", "active");

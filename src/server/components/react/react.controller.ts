@@ -1,8 +1,9 @@
 import { Controller, Get, Req, Res, Next } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
-import { ReactService } from './react.service';
 import { STATIC_FOLDER } from '@/server/utils/constants';
+
+import { ReactService } from './react.service';
 
 function filter(wildcard: string, str: string) {
   const re = new RegExp(`^${wildcard.replace(/\*/g, '.*').replace(/\?/g, '.')}$`, 'i');

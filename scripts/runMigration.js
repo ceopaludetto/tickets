@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
-const path = require('path');
 const childProcess = require('child_process');
+const path = require('path');
 const { promisify } = require('util');
 
 console.log('-> Running migrations');

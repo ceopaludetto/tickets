@@ -1,8 +1,9 @@
-import React from 'react';
 import clsx from 'clsx';
+import React from 'react';
+
+import { Label } from '@/client/components/typography';
 
 import s from './switch.scss';
-import { Label } from '@/client/components/typography';
 
 interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
   label?: string;

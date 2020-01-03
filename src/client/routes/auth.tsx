@@ -1,6 +1,6 @@
+import { AnimatePresence, motion } from 'framer-motion';
 import React, { useMemo } from 'react';
 import { Switch, Route } from 'react-router-dom';
-import { AnimatePresence, motion } from 'framer-motion';
 
 import { nested } from '@/client/utils/nested.routes';
 

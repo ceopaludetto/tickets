@@ -1,9 +1,9 @@
 import immer from 'immer';
 import { Reducer } from 'redux';
 
-import { LoginInputDTO } from '@/server/components/authentication/auth.dto';
-import { ApiError } from '@/client/utils/error';
 import { Thunk } from '@/client/utils/common.dto';
+import { ApiError } from '@/client/utils/error';
+import { LoginInputDTO } from '@/server/components/authentication/auth.dto';
 
 export const enum AuthTypes {
   REQUEST_LOGIN = 'AUTH:REQUEST_LOGIN',

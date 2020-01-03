@@ -21,6 +21,7 @@ export interface UtilsStyles {
 	'xs:pb-2': string;
 	'xs:px-3': string;
 	'xs:mw-4': string;
+	'xs:mw-8': string;
 	'xs:grid-column-1': string;
 	'xs:grid-column-3': string;
 	'xs:grid-column-9': string;

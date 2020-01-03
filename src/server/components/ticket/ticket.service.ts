@@ -1,15 +1,14 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 
 import { InjectModel, InjectSequelize, Sequelize } from '@/server/components/database';
-import { TicketInput } from './ticket.dto';
-import { Ticket } from './ticket.entity';
-import { Label } from '@/server/components/label';
+import { Label } from '@/server/models/label';
+import { TicketInput, Ticket } from '@/server/models/ticket';
 
 @Injectable()
 export class TicketService {
   public constructor(
-    @InjectModel(() => Ticket) private readonly ticketsRepository: typeof Ticket,
     @InjectModel(() => Label) private readonly labelRepository: typeof Label,
+    @InjectModel(() => Ticket) private readonly ticketsRepository: typeof Ticket,
     @InjectSequelize() private readonly sequelize: Sequelize
   ) {}
 

@@ -1,3 +1,4 @@
+import { compare, hash } from 'bcryptjs';
 import {
   Table,
   Column,
@@ -12,7 +13,6 @@ import {
   AllowNull,
   PrimaryKey,
 } from 'sequelize-typescript';
-import { compare, hash } from 'bcryptjs';
 
 import { USUARIO, SHORTID } from '@/server/utils/constants';
 

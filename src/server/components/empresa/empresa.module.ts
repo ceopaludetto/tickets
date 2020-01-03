@@ -1,9 +1,10 @@
 import { Module } from '@nestjs/common';
 
 import { DatabaseModule } from '@/server/components/database';
+import { Empresa } from '@/server/models/empresa';
+
 import { EmpresaController } from './empresa.controller';
 import { EmpresaService } from './empresa.service';
-import { Empresa } from './empresa.entity';
 
 @Module({
   imports: [DatabaseModule.forFeature([() => Empresa])],

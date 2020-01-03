@@ -11,7 +11,7 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 
-import { Ticket } from '@/server/components/ticket';
+import { Ticket } from '@/server/models/ticket';
 import { LABEL, SHORTID } from '@/server/utils/constants';
 
 @Table({ modelName: LABEL, tableName: LABEL })

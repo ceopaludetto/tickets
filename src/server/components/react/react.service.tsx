@@ -1,17 +1,17 @@
 /* eslint-disable react/no-danger */
+import { ChunkExtractorManager, ChunkExtractor } from '@loadable/server';
+import { Injectable, BadRequestException } from '@nestjs/common';
 import React from 'react';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
-import { StaticRouter } from 'react-router-dom';
-import { Injectable, BadRequestException } from '@nestjs/common';
-import { ChunkExtractorManager, ChunkExtractor } from '@loadable/server';
 import { HelmetProvider, FilledContext } from 'react-helmet-async';
 import { Provider } from 'react-redux';
+import { StaticRouter } from 'react-router-dom';
 
 import ReactApp from '@/client/bootstrap';
 import { createReduxStore } from '@/client/providers/store';
 import { AuthTypes } from '@/client/services/ducks/auth';
-import { ContextType, ReactContextType } from '@/server/utils/common.dto';
 import { getInitialContent } from '@/client/utils/prefetch.routes';
+import { ContextType, ReactContextType } from '@/server/utils/common.dto';
 
 @Injectable()
 export class ReactService {
