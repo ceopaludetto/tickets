@@ -2,7 +2,7 @@
 // This file was automatically generated and should not be edited.
 export interface FormStyles {
   [index: string]: string;
-  error: string;
+	'error': string;
 }
 
 export type IFormStyles = FormStyles;

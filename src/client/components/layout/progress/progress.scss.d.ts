@@ -2,9 +2,9 @@
 // This file was automatically generated and should not be edited.
 export interface ProgressStyles {
   [index: string]: string;
-  root: string;
-  bar: string;
-  peg: string;
+	'root': string;
+	'bar': string;
+	'peg': string;
 }
 
 export type IProgressStyles = ProgressStyles;

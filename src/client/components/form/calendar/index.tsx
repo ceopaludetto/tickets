@@ -215,6 +215,7 @@ export function Calendar({
             variant={isSameDay(cloneDate, selected) ? 'contained' : 'flat'}
             key={format(day, 'd/M/Y')}
             className={clsx(s['week-button'], s['hidden-button'])}
+            aria-hidden
           />
         );
         day = addDays(day, 1);

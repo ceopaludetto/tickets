@@ -17,8 +17,7 @@
     "test:server": "TARGET=server node scripts/test.js",
     "lint": "eslint --fix \"src/**/*\"",
     "migrate:create": "node ./scripts/generateMigration.js",
-    "migrate:run": "node ./scripts/runMigration.js",
-    "postbuild": "yarn build:storybook"
+    "migrate:run": "node ./scripts/runMigration.js"
   },
   "keywords": [],
   "author": "",
@@ -60,6 +59,7 @@
     "@types/nodemailer": "^6.2.2",
     "@types/passport-jwt": "^3.0.3",
     "@types/react": "^16.9.5",
+    "@types/react-axe": "^3.1.0",
     "@types/react-dom": "^16.8.4",
     "@types/react-helmet": "^5.0.14",
     "@types/react-redux": "^7.1.5",
@@ -120,6 +120,7 @@
     "prettier": "^1.18.2",
     "prop-types": "^15.7.2",
     "razzle-dev-utils": "^3.0.0",
+    "react-axe": "^3.3.0",
     "react-dev-utils": "^9.1.0",
     "redux-devtools-extension": "^2.13.8",
     "sass-loader": "^8.0.0",

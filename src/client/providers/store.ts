@@ -1,5 +1,5 @@
 import { AxiosInstance } from 'axios';
-import { createStore, applyMiddleware } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import thunk, { ThunkMiddleware } from 'redux-thunk';
 
@@ -13,12 +13,12 @@ export type ThunkType = ThunkMiddleware<AllReducers, AllActions, AxiosInstance>;
 export function createReduxStore(initialState?: any) {
   const api = createApi();
 
+  const middlewares = [thunk.withExtraArgument(api)];
+
   const store = createStore(
     reducers,
     initialState,
-    IS_PRODUCTION
-      ? applyMiddleware(thunk.withExtraArgument(api) as ThunkType)
-      : composeWithDevTools(applyMiddleware(thunk.withExtraArgument(api) as ThunkType))
+    IS_PRODUCTION ? compose(applyMiddleware(...middlewares)) : composeWithDevTools(applyMiddleware(...middlewares))
   );
 
   if (module.hot) {
