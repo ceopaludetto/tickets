@@ -52,10 +52,10 @@ module.exports = {
         groups: [
           '/^react/',
           'module',
-          ['/(?=.*@\\/\\S)(?!.*\\.scss).*/', 'parent', 'sibling', 'index'],
-          '/\.scss/'
+          '/^@\\//',
+          ['parent', 'sibling', 'index'],
         ],
-        alphabetize: {order: 'asc', ignoreCase: true}
+        alphabetize: { order: 'asc', ignoreCase: true }
       }
     ],
     "react/jsx-filename-extension": [

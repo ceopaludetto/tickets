@@ -1,13 +1,14 @@
-const LoadablePlugin = require('@loadable/webpack-plugin');
-const CompressionPlugin = require('compression-webpack-plugin');
-const CopyWebpackPlugin = require('copy-webpack-plugin');
-const MiniCssExtract = require('mini-css-extract-plugin');
-const path = require('path');
 const errorOverlayMiddleware = require('react-dev-utils/errorOverlayMiddleware');
 const evalSourceMapMiddleware = require('react-dev-utils/evalSourceMapMiddleware');
 const ModuleNotFoundPlugin = require('react-dev-utils/ModuleNotFoundPlugin');
 const noopServiceWorkerMiddleware = require('react-dev-utils/noopServiceWorkerMiddleware');
 const WatchMissingNodeModulesPlugin = require('react-dev-utils/WatchMissingNodeModulesPlugin');
+
+const LoadablePlugin = require('@loadable/webpack-plugin');
+const CompressionPlugin = require('compression-webpack-plugin');
+const CopyWebpackPlugin = require('copy-webpack-plugin');
+const MiniCssExtract = require('mini-css-extract-plugin');
+const path = require('path');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
 const { GenerateSW } = require('workbox-webpack-plugin');
@@ -48,7 +49,10 @@ module.exports = merge(baseConfig(false), {
     libraryTarget: 'var',
     filename: isProd ? 'js/[name].[contenthash:8].js' : 'index.js',
     chunkFilename: isProd ? 'js/[name].[contenthash:8].js' : '[name].chunk.js',
-    devtoolModuleFilenameTemplate: info => path.resolve(info.resourcePath).replace(/\\/g, '/'),
+    futureEmitAssets: true,
+    devtoolModuleFilenameTemplate: isProd
+      ? info => path.resolve(path.resolve('src'), info.absoluteResourcePath).replace(/\\/g, '/')
+      : info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
   },
   devServer: {
     disableHostCheck: true,

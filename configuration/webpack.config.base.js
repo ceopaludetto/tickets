@@ -1,12 +1,14 @@
 /* eslint-disable global-require, @typescript-eslint/camelcase */
+const eslintFormatter = require('react-dev-utils/eslintFormatter');
+
 const LodashPlugin = require('lodash-webpack-plugin');
 const MiniCssExtract = require('mini-css-extract-plugin');
 const OptimizeCSSAssetsPlugin = require('optimize-css-assets-webpack-plugin');
 const path = require('path');
 const safePostCssParser = require('postcss-safe-parser');
-const eslintFormatter = require('react-dev-utils/eslintFormatter');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
+const WebpackBar = require('webpackbar');
 
 const babelOptions = require('./babelOptions');
 const envs = require('./envs');
@@ -42,7 +44,7 @@ const postcssOptions = {
 module.exports = (isServer = false) => ({
   bail: isProd,
   name: isServer ? 'Server' : 'Client',
-  devtool: isProd ? 'source-map' : 'inline-source-map',
+  devtool: 'source-map',
   mode: isProd ? 'production' : 'development',
   performance: false,
   watchOptions: {
@@ -236,5 +238,11 @@ module.exports = (isServer = false) => ({
       PROTOCOL: envs.PROTOCOL,
     }),
     new LodashPlugin(),
+    new WebpackBar({
+      compiledIn: true,
+      minimal: true,
+      color: isServer ? '#ffc100' : '#42a5f5',
+      name: isServer ? 'Server' : 'Client',
+    }),
   ],
 });

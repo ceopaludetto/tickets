@@ -3,9 +3,11 @@ import { useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
 import { useIsomorphicLayoutEffect, useToggle, useTimeoutFn } from 'react-use';
 
+import { ProgressContext } from '@/client/components';
+import { Actions } from '@/client/services/ducks';
+
 import { preloadRouteComponent } from '../prefetch.routes';
 import { useTypedSelector } from './use.typed.selector';
-import { ProgressContext } from '@/client/components';
 
 export function usePreload(to?: string, onClick?: (e: React.MouseEvent<any>) => any) {
   const globalState = useTypedSelector(state => state.Global);
@@ -31,6 +33,7 @@ export function usePreload(to?: string, onClick?: (e: React.MouseEvent<any>) => 
     if (to) {
       reset();
       e.preventDefault();
+      dispatch(Actions.loadRequest());
       await preloadRouteComponent(dispatch, to);
 
       if (onClick) {

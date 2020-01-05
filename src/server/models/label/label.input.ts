@@ -1,7 +1,8 @@
 import { IsString, IsOptional, IsHexColor } from 'class-validator';
 
-import { LabelInputDTO } from './label.dto';
 import { IsShortID } from '@/server/utils/isShortid';
+
+import { LabelInputDTO } from './label.dto';
 
 export class LabelInput implements LabelInputDTO {
   @IsString()

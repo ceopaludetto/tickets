@@ -13,9 +13,10 @@ import {
   Model,
 } from 'sequelize-typescript';
 
-import { EnumNivelAcesso, EnumTipoAcesso } from './politica.dto';
 import { Perfil } from '@/server/models/perfil';
 import { POLITICA, SHORTID } from '@/server/utils/constants';
+
+import { EnumNivelAcesso, EnumTipoAcesso } from './politica.dto';
 
 @Table({ modelName: POLITICA, tableName: POLITICA })
 export class Politica extends Model<Politica> {

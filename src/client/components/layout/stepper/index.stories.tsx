@@ -2,9 +2,10 @@ import React from 'react';
 
 import { OutlinePerson, OutlineLock, OutlineBusiness } from 'mdi-norm';
 
-import { Stepper } from './index';
 import { useStepper } from '@/client/utils';
 import { AlignToCenterWithMaxWidth } from '@/client/utils/storybook.decorators';
+
+import { Stepper } from './index';
 
 export default {
   title: 'F3Desk|Layout/Stepper',

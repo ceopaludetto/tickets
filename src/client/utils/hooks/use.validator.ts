@@ -2,8 +2,9 @@ import { useDeepCompareEffect } from 'react-use';
 
 import { useImmer } from 'use-immer';
 
-import { ApiError } from '../error';
 import { ApplicationState } from '@/client/services/ducks';
+
+import { ApiError } from '../error';
 
 interface ErrorMappingState {
   hasError: boolean;

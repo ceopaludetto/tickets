@@ -4,6 +4,7 @@ import { Dispatch } from 'redux';
 import { END } from 'redux-saga';
 
 import { routes as allRoutes, Route } from '@/client/providers/route';
+import { Actions } from '@/client/services/ducks';
 
 export function findRoute(path: string, routes: Route[]): Route {
   const cleanPath = path.split('?')[0];
@@ -32,9 +33,18 @@ export async function preloadRouteComponent(dispatch: Dispatch, to: string | { p
   const matchingRoute = findRoute(path, allRoutes);
 
   if (matchingRoute && matchingRoute?.component?.load) {
-    matchingRoute?.dispatches?.forEach?.(d => dispatch(d.action({ ...d.data, shouldToggleProgress: true }))); // eslint-disable-line no-unused-expressions
+    if (matchingRoute?.dispatches?.length) {
+      matchingRoute?.dispatches?.forEach?.(d => dispatch(d.action({ ...d.data, shouldToggleProgress: true }))); // eslint-disable-line no-unused-expressions
+      return matchingRoute?.component?.load?.();
+    }
 
-    return matchingRoute?.component?.load?.();
+    return new Promise(resolve => {
+      // eslint-disable-next-line no-unused-expressions
+      matchingRoute?.component?.load?.().then(() => {
+        dispatch(Actions.loadSuccess());
+        resolve();
+      });
+    });
   }
 
   throw new Error('Route not found');

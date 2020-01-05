@@ -5,11 +5,10 @@ import { useHistory } from 'react-router-dom';
 import { useFormik, FormikContext } from 'formik';
 
 import { Button, Title, Overline, FormControl, Form, Link } from '@/client/components';
+import u from '@/client/scss/utils.scss';
 import { ApplicationState, AuthActions } from '@/client/services/ducks';
 import { LoginValidationSchema } from '@/client/services/validations';
 import { useVisibility, useQueryParameter } from '@/client/utils';
-
-import u from '@/client/scss/utils.scss';
 
 interface LoginData {
   email: string;

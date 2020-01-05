@@ -1,8 +1,9 @@
 import { Controller, Get, Put, Delete, Body, Param } from '@nestjs/common';
 
-import { UsuarioService } from './usuario.service';
 import { UsuarioInput } from '@/server/models/usuario';
 import { FindOneParam } from '@/server/utils/common.dto';
+
+import { UsuarioService } from './usuario.service';
 
 @Controller('/api/usuario')
 export class UsuarioController {

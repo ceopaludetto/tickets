@@ -2,7 +2,7 @@
 // This file was automatically generated and should not be edited.
 export interface GridStyles {
   [index: string]: string;
-  grid: string;
+	'grid': string;
 }
 
 export type IGridStyles = GridStyles;

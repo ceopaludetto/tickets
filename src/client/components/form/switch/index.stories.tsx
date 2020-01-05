@@ -1,7 +1,8 @@
 import React from 'react';
 
-import { Switch } from './index';
 import { AlignToCenter } from '@/client/utils/storybook.decorators';
+
+import { Switch } from './index';
 
 export default { title: 'F3Desk|Form/Switch', component: Switch, decorators: [AlignToCenter] };
 

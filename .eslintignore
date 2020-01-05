@@ -2,3 +2,4 @@
 *.hbs
 *.scss
 *.png
+*.scss.d.ts

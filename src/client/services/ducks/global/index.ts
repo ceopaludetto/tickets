@@ -30,4 +30,3 @@ export default createReducer<GlobalState, ActionType<typeof Actions>>(INITIAL_ST
 });
 
 export { Actions as GlobalActions, GlobalTypes };
-export { stopLoad, startLoad } from './sagas';

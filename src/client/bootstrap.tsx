@@ -5,7 +5,7 @@ import { useToggle } from 'react-use';
 import favicon from '@/client/assets/favicon.png';
 import { Progress, ProgressContext } from '@/client/components/layout';
 import { MainRoutes } from '@/client/routes/main';
-import { IS_PRODUCTION, PUBLIC_URL } from '@/client/utils/constants';
+import { PUBLIC_URL } from '@/client/utils/constants';
 import '@/client/scss/normalize.scss';
 
 export default function App() {
@@ -16,7 +16,7 @@ export default function App() {
       <>
         <Progress />
         <Helmet defaultTitle="F3Desk" titleTemplate="%s | F3Desk">
-          {IS_PRODUCTION && <link rel="manifest" href={`${PUBLIC_URL}/public/manifest.json`} />}
+          {process.env.NODE_ENV === 'production' && <link rel="manifest" href={`${PUBLIC_URL}/public/manifest.json`} />}
           <link rel="icon" href={favicon} />
           <meta charSet="UTF-8" />
           <meta name="viewport" content="minimum-scale=1, initial-scale=1, width=device-width, shrink-to-fit=no" />

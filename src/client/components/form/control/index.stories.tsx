@@ -2,9 +2,10 @@ import React from 'react';
 
 import { OutlineVisibility } from 'mdi-norm';
 
+import { AlignToCenter } from '@/client/utils/storybook.decorators';
+
 import { IconButton } from '../iconbutton';
 import { Control } from './index';
-import { AlignToCenter } from '@/client/utils/storybook.decorators';
 
 export default { title: 'F3Desk|Form/Control', component: Control, decorators: [AlignToCenter] };
 

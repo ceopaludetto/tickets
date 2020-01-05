@@ -1,6 +1,7 @@
 process.env.ONLY = 'server';
+const clearConsole = require('react-dev-utils/clearConsole');
+
 const fs = require('fs-extra');
-const logger = require('razzle-dev-utils/logger');
 const printErrors = require('razzle-dev-utils/printErrors');
 const webpack = require('webpack');
 
@@ -20,8 +21,7 @@ function compile(config) {
 }
 
 function main() {
-  logger.start('Compiling...');
-
+  clearConsole();
   fs.emptyDirSync(serverConfig.output.path);
 
   const serverCompiler = compile(serverConfig);

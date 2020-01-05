@@ -5,11 +5,12 @@ process.noDeprecation = true;
 process.env.INSPECT_BRK = process.argv.find(arg => arg.match(/--inspect-brk(=|$)/)) || '';
 process.env.INSPECT = process.argv.find(arg => arg.match(/--inspect(=|$)/)) || '';
 
+const clearConsole = require('react-dev-utils/clearConsole');
+
 const fs = require('fs-extra');
 const logger = require('razzle-dev-utils/logger');
 const printErrors = require('razzle-dev-utils/printErrors');
 const setPorts = require('razzle-dev-utils/setPorts');
-const clearConsole = require('react-dev-utils/clearConsole');
 const webpack = require('webpack');
 const DevServer = require('webpack-dev-server');
 
@@ -30,7 +31,6 @@ function compile(config) {
 
 function main() {
   clearConsole();
-  logger.start('Compiling...');
   fs.emptyDirSync(serverConfig.output.path);
 
   const clientCompiler = compile(clientConfig);

@@ -3,8 +3,6 @@ import { ValidationError } from 'class-validator';
 import { Response } from 'express';
 import { BaseError as SequelizeError } from 'sequelize';
 
-import { IS_PRODUCTION } from '@/server/utils/constants';
-
 export interface F3DeskError {
   status?: HttpStatus;
   type?: 'ClassValidator' | 'Sequelize' | 'Http' | 'Other';
@@ -35,7 +33,7 @@ export class ErrorFormatter implements ExceptionFilter {
   }
 
   private removeContext = (formatted: F3DeskError) => {
-    if (IS_PRODUCTION) {
+    if (process.env.NODE_ENV === 'production') {
       delete formatted.context;
       return formatted;
     }

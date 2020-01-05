@@ -29,9 +29,9 @@ import { Button } from '@/client/components/form/button';
 import { IconButton } from '@/client/components/form/iconbutton';
 import { Grid } from '@/client/components/layout/grid';
 import { Paper } from '@/client/components/layout/paper';
+import u from '@/client/scss/utils.scss';
 
 import s from './calendar.scss';
-import u from '@/client/scss/utils.scss';
 
 interface CalendarProps extends Omit<HTMLMotionProps<'div'>, 'onChange' | 'onSubmit'> {
   float?: boolean;

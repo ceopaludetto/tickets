@@ -2,7 +2,6 @@
  * Envs const
  */
 // eslint-disable-next-line no-unneeded-ternary
-export const IS_PRODUCTION = process.env.NODE_ENV === 'production' ? true : false;
 export const PUBLIC_PATH = process.env.PUBLIC_PATH as string;
 export const STATIC_FOLDER = process.env.STATIC_FOLDER as string;
 

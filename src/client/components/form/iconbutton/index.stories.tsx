@@ -2,8 +2,9 @@ import React from 'react';
 
 import { OutlineSettings } from 'mdi-norm';
 
-import { IconButton } from './index';
 import { AlignToCenter } from '@/client/utils/storybook.decorators';
+
+import { IconButton } from './index';
 
 export default { title: 'F3Desk|Form/IconButton', component: IconButton, decorators: [AlignToCenter] };
 

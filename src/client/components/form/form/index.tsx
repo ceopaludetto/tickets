@@ -5,11 +5,11 @@ import { ValidationError } from 'class-validator/validation/ValidationError';
 import clsx from 'clsx';
 import { useFormikContext, Form as FormikForm } from 'formik';
 
+import u from '@/client/scss/utils.scss';
 import { ApplicationState } from '@/client/services/ducks';
 import { useValidator } from '@/client/utils';
 
 import s from './form.scss';
-import u from '@/client/scss/utils.scss';
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   error?: string;

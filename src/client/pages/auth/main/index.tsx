@@ -6,9 +6,9 @@ import clsx from 'clsx';
 
 import { Paper } from '@/client/components/layout';
 import { AuthRoutes } from '@/client/routes/auth';
+import c from '@/client/scss/utils.scss';
 
 import s from './auth.scss';
-import c from '@/client/scss/utils.scss';
 
 export default function AuthMain() {
   const { height: windowHeight } = useWindowSize();
@@ -23,16 +23,7 @@ export default function AuthMain() {
       })}
     >
       <Paper
-        initial={{
-          height: 'auto',
-          maxWidth: isRegister ? 900 : 500,
-        }}
-        animate={{
-          height: height + 64,
-          maxWidth: isRegister ? 900 : 500,
-          transition: { ease: 'easeInOut', duration: 0.2 },
-        }}
-        className={clsx(c['xs:w-100'], s.paper, {
+        className={clsx(c['xs:w-100'], isRegister ? c['xs:mw-9'] : c['xs:mw-5'], s.paper, {
           [s['paper-force']]: isGTDevice,
         })}
         elevate={!isRegister}

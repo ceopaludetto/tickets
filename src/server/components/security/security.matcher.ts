@@ -1,5 +1,8 @@
 import { AuthenticationError } from 'apollo-server-express';
 
+import { AssociacaoEnum } from '@/server/models/associacao/associacao.dto';
+import { AnyOrOwnEnum, AcaoEnum } from '@/server/models/politica/politica.dto';
+
 import {
   SecurityMatcherOptions,
   SecurityCustomMatcherOptions,
@@ -8,8 +11,6 @@ import {
   PerfilDoc,
   AssociacaoDoc,
 } from './security.dto';
-import { AssociacaoEnum } from '@/server/models/associacao/associacao.dto';
-import { AnyOrOwnEnum, AcaoEnum } from '@/server/models/politica/politica.dto';
 
 export class SecurityMatcher {
   // Validador é chamado

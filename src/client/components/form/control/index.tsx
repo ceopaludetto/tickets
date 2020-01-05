@@ -4,9 +4,9 @@ import MaskInput, { MaskedInputProps } from 'react-text-mask';
 import clsx from 'clsx';
 
 import { Label } from '@/client/components/typography';
+import c from '@/client/scss/utils.scss';
 
 import s from './control.scss';
-import c from '@/client/scss/utils.scss';
 
 export interface ControlProps
   extends React.InputHTMLAttributes<HTMLInputElement>,

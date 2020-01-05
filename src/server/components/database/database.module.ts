@@ -1,7 +1,8 @@
 import { Module, DynamicModule, Provider, Global } from '@nestjs/common';
 
-import { DatabaseProvider } from './database.provider';
 import { SEQUELIZE_PROVIDER } from '@/server/utils/constants';
+
+import { DatabaseProvider } from './database.provider';
 
 @Global()
 @Module({

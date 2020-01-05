@@ -4,10 +4,9 @@ import { useSelector } from 'react-redux';
 import { Formik } from 'formik';
 
 import { Button, Title, Overline, FormControl, Form } from '@/client/components';
+import c from '@/client/scss/utils.scss';
 import { ApplicationState } from '@/client/services/ducks';
 import { ForgotValidationSchema } from '@/client/services/validations';
-
-import c from '@/client/scss/utils.scss';
 
 interface ForgotData {
   email: string;

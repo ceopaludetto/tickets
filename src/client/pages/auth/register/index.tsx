@@ -1,4 +1,4 @@
-import React, { cloneElement, useCallback, useMemo } from 'react';
+import React, { cloneElement, useCallback, useMemo, useState } from 'react';
 import { useMeasure, useIsomorphicLayoutEffect } from 'react-use';
 
 import clsx from 'clsx';
@@ -18,33 +18,33 @@ import {
   FormCheckbox,
   List,
 } from '@/client/components';
+import u from '@/client/scss/utils.scss';
 import { RegisterValidationSchema, telMask, dateMask, cnpjMask, cepMask } from '@/client/services/validations';
 import { useStepper, useMultipleVisibility } from '@/client/utils';
 
-import u from '@/client/scss/utils.scss';
-
 const animationVariants = {
-  initial: {
-    x: '5%',
+  initial: (isPreviousAfter?: boolean) => ({
+    x: isPreviousAfter ? '-5%' : '5%',
     opacity: 0,
     transition: { duration: 0.25 },
-  },
+  }),
   enter: {
     x: '0%',
     opacity: 1,
     transition: { duration: 0.25 },
   },
-  exit: {
-    x: '-5%',
+  exit: (isPreviousAfter?: boolean) => ({
+    x: isPreviousAfter ? '5%' : '-5%',
     opacity: 0,
     transition: { duration: 0.25 },
-  },
+  }),
 };
 
 export default function AuthRegister() {
   const { mapVisibilityProps } = useMultipleVisibility<('senha' | 'rsenha')[]>(['senha', 'rsenha']);
   const [ref, { height }] = useMeasure();
   const { currentPage, togglePage, totalPages, nextPage, prevPage, isFirst, isLast } = useStepper(3);
+  const [isPreviousAfter, setIsPreviousAfter] = useState(false);
   const formik = useFormik({
     validationSchema: RegisterValidationSchema,
     initialValues: {
@@ -102,6 +102,13 @@ export default function AuthRegister() {
     await submitForm();
   };
 
+  async function setIsPreviousPromise(v: boolean) {
+    return new Promise(resolve => {
+      setIsPreviousAfter(v);
+      resolve();
+    });
+  }
+
   const renderPage = useCallback(
     (pages: React.ReactElement<any>[]) =>
       cloneElement(pages[currentPage], {
@@ -130,7 +137,13 @@ export default function AuthRegister() {
           <motion.div animate={{ height, transition: { ease: 'easeInOut', duration: 0.2 } }}>
             <AnimatePresence exitBeforeEnter initial={false}>
               {renderPage([
-                <motion.div variants={animationVariants} initial="initial" animate="enter" exit="exit">
+                <motion.div
+                  custom={isPreviousAfter}
+                  variants={animationVariants}
+                  initial="initial"
+                  animate="enter"
+                  exit="exit"
+                >
                   <Grid ref={ref}>
                     <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
                       <FormControl required name="nome" label="Nome" id="nome" />
@@ -155,7 +168,13 @@ export default function AuthRegister() {
                     </div>
                   </Grid>
                 </motion.div>,
-                <motion.div variants={animationVariants} initial="initial" animate="enter" exit="exit">
+                <motion.div
+                  custom={isPreviousAfter}
+                  variants={animationVariants}
+                  initial="initial"
+                  animate="enter"
+                  exit="exit"
+                >
                   <Grid ref={ref}>
                     <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
                       <>
@@ -181,7 +200,13 @@ export default function AuthRegister() {
                     </div>
                   </Grid>
                 </motion.div>,
-                <motion.div variants={animationVariants} initial="initial" animate="enter" exit="exit">
+                <motion.div
+                  custom={isPreviousAfter}
+                  variants={animationVariants}
+                  initial="initial"
+                  animate="enter"
+                  exit="exit"
+                >
                   <Grid ref={ref}>
                     <div className={u['xs:grid-column-12']}>
                       <FormCheckbox labelPlacement="right" name="hasEmpresa" label="Criar empresa?" id="hasEmpresa" />
@@ -232,7 +257,12 @@ export default function AuthRegister() {
             <>
               {!isFirst && (
                 <>
-                  <Button onClick={prevPage} variant="flat" color="secondary" type="button">
+                  <Button
+                    onClick={() => setIsPreviousPromise(true).then(() => prevPage())}
+                    variant="flat"
+                    color="secondary"
+                    type="button"
+                  >
                     Anterior
                   </Button>{' '}
                 </>
@@ -243,7 +273,11 @@ export default function AuthRegister() {
                 </Button>
               )}
               {!isLast && (
-                <Button onClick={nextPage} variant="contained" type="button">
+                <Button
+                  onClick={() => setIsPreviousPromise(false).then(() => nextPage())}
+                  variant="contained"
+                  type="button"
+                >
                   Próximo
                 </Button>
               )}

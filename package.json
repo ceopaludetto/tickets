@@ -21,6 +21,7 @@
   },
   "husky": {
     "hooks": {
+      "pre-commit": "yarn lint",
       "commit-msg": "commitlint -E HUSKY_GIT_PARAMS",
       "prepare-commit-msg": "exec < /dev/tty && git cz --hook || true"
     }
@@ -158,6 +159,7 @@
     "webpack-dev-server": "^3.7.2",
     "webpack-merge": "^4.2.1",
     "webpack-node-externals": "^1.7.2",
+    "webpackbar": "^4.0.0",
     "workbox-webpack-plugin": "^4.3.1"
   },
   "dependencies": {

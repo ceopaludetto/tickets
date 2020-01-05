@@ -1,5 +1,5 @@
-const FriendlyErrorsPlugin = require('friendly-errors-webpack-plugin');
 const path = require('path');
+const FriendlyErrorsPlugin = require('razzle-dev-utils/FriendlyErrorsPlugin');
 const StartServerPlugin = require('start-server-webpack-plugin');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
@@ -42,16 +42,18 @@ module.exports = merge(baseConfig(true), {
     publicPath: isProd ? '/static/' : `http://${envs.HOST}:${envs.DEV_PORT}/static/`,
     libraryTarget: 'commonjs2',
     filename: 'index.js',
-    pathinfo: false,
+    pathinfo: true,
+    // futureEmitAssets: true,
+    devtoolModuleFilenameTemplate: isProd
+      ? info => path.resolve(path.resolve('src'), info.absoluteResourcePath).replace(/\\/g, '/')
+      : info => path.resolve(info.absoluteResourcePath).replace(/\\/g, '/'),
   },
   plugins: [
     ...(isProd
       ? []
       : [
           new FriendlyErrorsPlugin({
-            compilationSuccessInfo: {
-              messages: [`The application is available in ${envs.PROTOCOL}://${envs.HOST}:${envs.PORT}`],
-            },
+            onSuccessMessage: `The application is available in ${envs.PROTOCOL}://${envs.HOST}:${envs.PORT}`,
           }),
           new webpack.HotModuleReplacementPlugin({ quiet: true }),
           new StartServerPlugin({

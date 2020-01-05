@@ -2,6 +2,7 @@
 
 .root {
   background-color: get-theme-color("background");
+  overflow: hidden;
   transition: create-transition(
     (background-color),
     300ms,

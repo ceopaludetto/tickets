@@ -11,9 +11,10 @@ import {
   BelongsTo,
 } from 'sequelize-typescript';
 
-import { LabelDTO } from './label.dto';
 import { Ticket } from '@/server/models/ticket';
 import { LABEL, SHORTID } from '@/server/utils/constants';
+
+import { LabelDTO } from './label.dto';
 
 @Table({ modelName: LABEL, tableName: LABEL })
 export class Label extends Model<Label> implements LabelDTO {

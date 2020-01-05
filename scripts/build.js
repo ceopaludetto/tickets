@@ -1,12 +1,14 @@
 process.env.NODE_ENV = 'production';
 process.noDeprecation = true;
 
+const clearConsole = require('react-dev-utils/clearConsole');
+const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
+const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
+
 const chalk = require('chalk');
 const fs = require('fs-extra');
 const logger = require('razzle-dev-utils/logger');
 const printErrors = require('razzle-dev-utils/printErrors');
-const FileSizeReporter = require('react-dev-utils/FileSizeReporter');
-const formatWebpackMessages = require('react-dev-utils/formatWebpackMessages');
 const webpack = require('webpack');
 
 const { measureFileSizesBeforeBuild } = FileSizeReporter;
@@ -16,6 +18,18 @@ const clientConfig = require('../configuration/webpack.config.client');
 const serverConfig = require('../configuration/webpack.config.server');
 
 const reg = /mini-css-extract-plugin/g;
+
+function normalizeFileSizes(prevFileSizes, isServer = false) {
+  if (isServer) Object.keys(prevFileSizes.sizes).forEach(x => (x !== '/index.js' ? delete prevFileSizes.sizes[x] : {}));
+  const arr = Object.keys(prevFileSizes.sizes).map(x => x);
+
+  let newPrev = {};
+  arr.forEach(a => {
+    newPrev = { ...newPrev, [a[0] === '/' ? a.substr(1) : a]: prevFileSizes.sizes[a] };
+  });
+
+  prevFileSizes.sizes = newPrev;
+}
 
 function compile(config, cb) {
   let compiler;
@@ -65,13 +79,15 @@ Promise.all([
   measureFileSizesBeforeBuild(clientConfig.output.path),
 ])
   .then(prevFileSizes => {
+    clearConsole();
     fs.emptyDir(serverConfig.output.path);
-    logger.start('Compiling...');
     return prevFileSizes;
   })
-  .then(prevFileSizes =>
-    Promise.all([build(prevFileSizes[0], serverConfig, true), build(prevFileSizes[1], clientConfig, false)])
-  )
+  .then(prevFileSizes => {
+    normalizeFileSizes(prevFileSizes[0], true);
+    normalizeFileSizes(prevFileSizes[1]);
+    return Promise.all([build(prevFileSizes[0], serverConfig, true), build(prevFileSizes[1], clientConfig, false)]);
+  })
   .then(
     info => {
       info.forEach(({ stats, previousFileSizes, warnings }, i) => {

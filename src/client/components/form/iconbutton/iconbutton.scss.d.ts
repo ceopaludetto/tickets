@@ -2,14 +2,12 @@
 // This file was automatically generated and should not be edited.
 export interface IconbuttonStyles {
   [index: string]: string;
-  button: string;
-  primary: string;
-  secondary: string;
-  background: string;
-  paper: string;
-  danger: string;
-  disabled: string;
-  'disabled-text': string;
+	'button': string;
+	'primary': string;
+	'secondary': string;
+	'background': string;
+	'paper': string;
+	'disabled': string;
 }
 
 export type IIconbuttonStyles = IconbuttonStyles;

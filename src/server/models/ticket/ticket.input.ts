@@ -1,7 +1,8 @@
 import { IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
 
-import { TicketInputDTO } from './ticket.dto';
 import { LabelInput } from '@/server/models/label';
+
+import { TicketInputDTO } from './ticket.dto';
 
 export class TicketInput implements TicketInputDTO {
   @IsString()

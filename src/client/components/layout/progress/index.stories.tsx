@@ -3,9 +3,10 @@ import { useToggle } from 'react-use';
 
 import { generate } from 'shortid';
 
-import { Progress, ProgressContext } from './index';
 import { Button } from '@/client/components/form';
 import { AlignToCenter } from '@/client/utils/storybook.decorators';
+
+import { Progress, ProgressContext } from './index';
 
 export default {
   title: 'F3Desk|Layout/Progress',

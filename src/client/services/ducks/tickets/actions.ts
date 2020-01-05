@@ -1,10 +1,10 @@
 import { action } from 'typesafe-actions';
 
-import { TicketsTypes, TicketDTO } from './types';
 import { ApiError } from '@/client/utils/error';
 
-export const loadRequest = (shouldToggleProgress?: boolean) =>
-  action(TicketsTypes.LOAD_REQUEST, { shouldToggleProgress });
+import { TicketsTypes, TicketDTO } from './types';
+
+export const loadRequest = () => action(TicketsTypes.LOAD_REQUEST);
 
 export const loadSuccess = (data: TicketDTO[]) => action(TicketsTypes.LOAD_SUCCESS, { data });
 

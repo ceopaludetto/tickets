@@ -12,9 +12,10 @@ import {
   DeletedAt,
 } from 'sequelize-typescript';
 
-import { TicketDTO } from './ticket.dto';
 import { Label } from '@/server/models/label';
 import { TICKET, SHORTID } from '@/server/utils/constants';
+
+import { TicketDTO } from './ticket.dto';
 
 @DefaultScope({
   include: [() => Label],

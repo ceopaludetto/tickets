@@ -4,9 +4,9 @@ import { createStore, applyMiddleware, compose, Store } from 'redux';
 import { composeWithDevTools } from 'redux-devtools-extension';
 import createSagaMiddleware, { Task } from 'redux-saga';
 
-import { createApi } from './api';
 import RootReducer, { RootSaga, ApplicationState } from '@/client/services/ducks';
-import { IS_PRODUCTION } from '@/client/utils/constants';
+
+import { createApi } from './api';
 
 export function createReduxStore(initialState?: any) {
   const api = createApi();
@@ -17,7 +17,9 @@ export function createReduxStore(initialState?: any) {
   const store: Store<ApplicationState> = createStore(
     RootReducer,
     initialState,
-    IS_PRODUCTION ? compose(applyMiddleware(...middlewares)) : composeWithDevTools(applyMiddleware(...middlewares))
+    process.env.NODE_ENV === 'production'
+      ? compose(applyMiddleware(...middlewares))
+      : composeWithDevTools(applyMiddleware(...middlewares))
   );
 
   const tasks = saga.run(RootSaga);

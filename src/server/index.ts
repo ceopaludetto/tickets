@@ -7,7 +7,9 @@ import { ErrorFormatter } from '@/server/utils/exception.filter';
 import { installMiddlewares } from '@/server/utils/middlewares';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(ApplicationModule, { logger: false });
+  const app = await NestFactory.create<NestExpressApplication>(ApplicationModule, {
+    logger: process.env.NODE_ENV === 'production',
+  });
   installMiddlewares(app);
   injectApplicationModule(app.select(ApplicationModule), { fallbackOnErrors: true });
 

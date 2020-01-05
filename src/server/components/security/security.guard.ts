@@ -5,10 +5,11 @@ import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
 import { AuthenticationError } from 'apollo-server-express';
 import { Request } from 'express';
 
-import { SecurityMatcher } from './security.matcher';
 import { UsuarioService } from '@/server/components/usuario/usuario.service';
 import { ContextType, PayloadType, Role, CustomMatcherOptions } from '@/server/utils/common.dto';
 import { SECURITY_ROLE_DECORATOR, SECURITY_CUSTOM_MATCHER_DECORATOR } from '@/server/utils/constants';
+
+import { SecurityMatcher } from './security.matcher';
 
 @Injectable()
 export class SecurityGuard implements CanActivate {

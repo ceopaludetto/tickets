@@ -1,9 +1,10 @@
 import { Module, NestModule, MiddlewareConsumer } from '@nestjs/common';
 
-import { ReactController } from './react.controller';
-import { ReactService } from './react.service';
 import { AuthMiddleware, AuthModule } from '@/server/components/authentication';
 import { UsuarioModule } from '@/server/components/usuario';
+
+import { ReactController } from './react.controller';
+import { ReactService } from './react.service';
 
 @Module({
   imports: [AuthModule, UsuarioModule],
