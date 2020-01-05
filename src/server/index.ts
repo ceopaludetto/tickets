@@ -1,15 +1,16 @@
 import { NestFactory } from '@nestjs/core';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import { useContainer as injectApplicationModule } from 'class-validator';
+import { Logger } from 'nestjs-pino';
 
 import { ApplicationModule } from '@/server/app.module';
 import { ErrorFormatter } from '@/server/utils/exception.filter';
 import { installMiddlewares } from '@/server/utils/middlewares';
 
 async function bootstrap() {
-  const app = await NestFactory.create<NestExpressApplication>(ApplicationModule, {
-    logger: process.env.NODE_ENV === 'production',
-  });
+  const app = await NestFactory.create<NestExpressApplication>(ApplicationModule, { logger: false });
+  const logger = app.get(Logger);
+  app.useLogger(logger);
   installMiddlewares(app);
   injectApplicationModule(app.select(ApplicationModule), { fallbackOnErrors: true });
 

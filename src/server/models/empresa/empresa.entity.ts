@@ -13,8 +13,10 @@ import {
 import { Perfil } from '@/server/models/perfil';
 import { EMPRESA, SHORTID } from '@/server/utils/constants';
 
+import { EmpresaDTO } from './empresa.dto';
+
 @Table({ modelName: EMPRESA, tableName: EMPRESA })
-export class Empresa extends Model<Empresa> {
+export class Empresa extends Model<Empresa> implements EmpresaDTO {
   @PrimaryKey
   @Default(SHORTID)
   @Column

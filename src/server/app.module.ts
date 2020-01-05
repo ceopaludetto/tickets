@@ -1,5 +1,6 @@
 import { MailerModule, HandlebarsAdapter } from '@nest-modules/mailer';
 import { Module } from '@nestjs/common';
+import { LoggerModule } from 'nestjs-pino';
 
 import {
   ReactModule,
@@ -17,6 +18,19 @@ import {
 
 @Module({
   imports: [
+    LoggerModule.forRoot({
+      name: 'F3Desk',
+      level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
+      prettyPrint:
+        process.env.NODE_ENV !== 'production'
+          ? {
+              translateTime: 'dd/mm/yyyy, h:MM:ss:l',
+              ignore: 'context,pid',
+              levelFirst: true,
+            }
+          : false,
+      useLevelLabels: true,
+    }),
     ConfigurationModule,
     DatabaseModule,
     MailerModule.forRootAsync({

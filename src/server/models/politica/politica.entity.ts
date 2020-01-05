@@ -16,10 +16,10 @@ import {
 import { Perfil } from '@/server/models/perfil';
 import { POLITICA, SHORTID } from '@/server/utils/constants';
 
-import { EnumNivelAcesso, EnumTipoAcesso } from './politica.dto';
+import { EnumNivelAcesso, EnumTipoAcesso, PoliticaDTO } from './politica.dto';
 
 @Table({ modelName: POLITICA, tableName: POLITICA })
-export class Politica extends Model<Politica> {
+export class Politica extends Model<Politica> implements PoliticaDTO {
   @PrimaryKey
   @Default(SHORTID)
   @Column
@@ -33,9 +33,9 @@ export class Politica extends Model<Politica> {
   @Column(DataType.ENUM(EnumTipoAcesso.Qualquer, EnumTipoAcesso.Proprio))
   public tipo!: EnumTipoAcesso;
 
-  @Default(EnumNivelAcesso.Ler)
-  @Column(DataType.ENUM(EnumNivelAcesso.Ler, EnumNivelAcesso.Escrever, EnumNivelAcesso.Excluir))
-  public nivel!: EnumNivelAcesso;
+  @Default([EnumNivelAcesso.Ler])
+  @Column(DataType.ARRAY(DataType.ENUM(EnumNivelAcesso.Ler, EnumNivelAcesso.Escrever, EnumNivelAcesso.Excluir)))
+  public nivel!: EnumNivelAcesso[];
 
   @Default(false)
   @Column

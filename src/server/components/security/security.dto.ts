@@ -1,12 +1,11 @@
-import { UsuarioDoc } from '@/server/models';
+import { Usuario } from '@/server/models/usuario';
 import { Role, CustomMatcherOptions } from '@/server/utils/common.dto';
 
 export interface SecurityMatcherOptions {
-  usuario: UsuarioDoc;
+  usuario: Usuario;
   role: Role;
   empresa?: string;
   isSameUser?: boolean;
-
   args?: any;
 }
 
@@ -14,7 +13,7 @@ export type SecurityCustomMatcherOptions = Pick<SecurityMatcherOptions, 'usuario
   customMatcher: CustomMatcherOptions;
 };
 
-export { Empresa } from '@/server/components';
+export { Perfil } from '@/server/models/perfil';
 
 export { Role };
 export { CustomMatcherOptions };

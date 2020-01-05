@@ -1,24 +1,18 @@
 import SequelizeStatic, { QueryInterface } from 'sequelize';
 
-import { TICKET, SHORTID } from '@/server/utils/constants';
+import { TICKET } from '@/server/utils/constants';
+import { migrationDefaults } from '@/server/utils/migration.defaults';
 
 export default {
   async up(queryInterface: QueryInterface, Sequelize: typeof SequelizeStatic) {
     await queryInterface.createTable(TICKET, {
-      id: {
-        primaryKey: true,
-        type: Sequelize.STRING,
-        defaultValue: SHORTID,
-      },
+      ...migrationDefaults(Sequelize),
       nome: {
         type: Sequelize.STRING,
         allowNull: true,
       },
       descricao: Sequelize.STRING,
       dataNascimento: Sequelize.DATE,
-      dataCriacao: Sequelize.DATE,
-      dataAtualizacao: Sequelize.DATE,
-      dataExclusao: Sequelize.DATE,
     });
   },
 

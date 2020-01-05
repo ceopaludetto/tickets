@@ -38,6 +38,7 @@ module.exports = (isServer = false, isTest = false) => ({
     '@babel/plugin-transform-react-constant-elements',
     '@babel/plugin-transform-react-inline-elements',
     '@babel/plugin-proposal-optional-chaining',
+    '@babel/plugin-proposal-nullish-coalescing-operator',
     [
       '@babel/plugin-transform-destructuring',
       {
@@ -58,7 +59,16 @@ module.exports = (isServer = false, isTest = false) => ({
     ],
     ['@babel/plugin-proposal-decorators', { legacy: true }],
     ['@babel/plugin-proposal-class-properties', { loose: true }],
-    ['@babel/plugin-transform-runtime', { corejs: false, regenerator: true, useESModules: !isServer }],
+    [
+      '@babel/plugin-transform-runtime',
+      {
+        corejs: false,
+        regenerator: true,
+        helpers: true,
+        useESModules: !isServer,
+        version: require('@babel/runtime/package.json').version, // eslint-disable-line global-require
+      },
+    ],
     ['@babel/plugin-proposal-object-rest-spread', { useBuiltIns: true }],
     ['transform-react-remove-prop-types', { mode: 'remove', removeImport: true }],
     [

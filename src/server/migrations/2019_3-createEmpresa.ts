@@ -1,22 +1,16 @@
 import SequelizeStatic, { QueryInterface } from 'sequelize';
 
-import { EMPRESA, SHORTID } from '@/server/utils/constants';
+import { EMPRESA } from '@/server/utils/constants';
+import { migrationDefaults } from '@/server/utils/migration.defaults';
 
 export default {
   async up(queryInterface: QueryInterface, Sequelize: typeof SequelizeStatic) {
     await queryInterface.createTable(EMPRESA, {
-      id: {
-        primaryKey: true,
-        type: Sequelize.STRING,
-        defaultValue: SHORTID,
-      },
+      ...migrationDefaults(Sequelize),
       razaoSocial: Sequelize.STRING,
       cnpj: Sequelize.STRING,
       cep: Sequelize.STRING,
       telefone: Sequelize.STRING,
-      dataCriacao: Sequelize.DATE,
-      dataAtualizacao: Sequelize.DATE,
-      dataExclusao: Sequelize.DATE,
     });
   },
 

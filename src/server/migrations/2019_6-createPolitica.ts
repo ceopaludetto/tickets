@@ -1,24 +1,20 @@
 import SequelizeStatic, { QueryInterface } from 'sequelize';
 
 import { EnumNivelAcesso, EnumTipoAcesso } from '@/server/models/politica';
-import { POLITICA, SHORTID, PERFIL } from '@/server/utils/constants';
+import { POLITICA, PERFIL } from '@/server/utils/constants';
+import { migrationDefaults } from '@/server/utils/migration.defaults';
 
 export default {
   async up(queryInterface: QueryInterface, Sequelize: typeof SequelizeStatic) {
     await queryInterface.createTable(POLITICA, {
-      id: {
-        primaryKey: true,
-        type: Sequelize.STRING,
-        defaultValue: SHORTID,
-      },
+      ...migrationDefaults(Sequelize),
       descricao: Sequelize.STRING,
       tipo: {
         type: Sequelize.ENUM(EnumTipoAcesso.Qualquer, EnumTipoAcesso.Proprio),
         defaultValue: EnumTipoAcesso.Qualquer,
       },
       nivel: {
-        type: Sequelize.ENUM(EnumNivelAcesso.Ler, EnumNivelAcesso.Escrever, EnumNivelAcesso.Excluir),
-        defaultValue: EnumNivelAcesso.Ler,
+        type: Sequelize.ARRAY(Sequelize.ENUM(EnumNivelAcesso.Ler, EnumNivelAcesso.Escrever, EnumNivelAcesso.Excluir)),
       },
       negacao: {
         type: Sequelize.BOOLEAN,
@@ -31,9 +27,6 @@ export default {
           key: 'id',
         },
       },
-      dataCriacao: Sequelize.DATE,
-      dataAtualizacao: Sequelize.DATE,
-      dataExclusao: Sequelize.DATE,
     });
   },
 

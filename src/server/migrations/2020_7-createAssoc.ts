@@ -1,21 +1,12 @@
 import SequelizeStatic, { QueryInterface } from 'sequelize';
 
-import { PERFIL, EMPRESA } from '@/server/utils/constants';
+import { ASSOCIACAO, EMPRESA, USUARIO, PERFIL } from '@/server/utils/constants';
 import { migrationDefaults } from '@/server/utils/migration.defaults';
 
 export default {
   async up(queryInterface: QueryInterface, Sequelize: typeof SequelizeStatic) {
-    await queryInterface.createTable(PERFIL, {
+    await queryInterface.createTable(ASSOCIACAO, {
       ...migrationDefaults(Sequelize),
-      nome: Sequelize.STRING,
-      descricao: Sequelize.STRING,
-      herdaID: {
-        type: Sequelize.STRING,
-        references: {
-          model: PERFIL,
-          key: 'id',
-        },
-      },
       empresaID: {
         type: Sequelize.STRING,
         references: {
@@ -23,10 +14,24 @@ export default {
           key: 'id',
         },
       },
+      usuarioID: {
+        type: Sequelize.STRING,
+        references: {
+          model: USUARIO,
+          key: 'id',
+        },
+      },
+      perfilID: {
+        type: Sequelize.STRING,
+        references: {
+          model: PERFIL,
+          key: 'id',
+        },
+      },
     });
   },
 
   async down(queryInterface: QueryInterface) {
-    await queryInterface.dropTable(PERFIL);
+    await queryInterface.dropTable(ASSOCIACAO);
   },
 };

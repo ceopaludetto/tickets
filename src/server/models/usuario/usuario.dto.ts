@@ -1,3 +1,4 @@
+import { AssociacaoDTO, AssociacaoInputDTO } from '@/server/models/associacao';
 import { BaseEntityDTO } from '@/server/utils/common.dto';
 
 export interface UsuarioDTO extends BaseEntityDTO {
@@ -7,6 +8,7 @@ export interface UsuarioDTO extends BaseEntityDTO {
   senha: string;
   telefone?: string;
   dataNascimento: Date;
+  associacoes: AssociacaoDTO[];
 }
 
 export interface UsuarioInputDTO {
@@ -16,4 +18,5 @@ export interface UsuarioInputDTO {
   senha?: string;
   telefone?: string;
   dataNascimento?: Date;
+  associacoes?: AssociacaoInputDTO[];
 }

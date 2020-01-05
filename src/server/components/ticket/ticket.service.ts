@@ -28,14 +28,14 @@ export class TicketService {
     }
   }
 
-  public async createOrUpdate({ label, ...rest }: TicketInput, id?: string) {
+  public async createOrUpdate({ labels, ...rest }: TicketInput, id?: string) {
     try {
       if (!id) {
         return this.sequelize.transaction(async t => {
           const ticket = await this.ticketsRepository.create(rest, { transaction: t });
-          if (label && label.length) {
+          if (labels && labels.length) {
             await Promise.all(
-              label.map(async l => this.labelRepository.create({ ...l, ticketID: ticket.id }, { transaction: t }))
+              labels.map(async l => this.labelRepository.create({ ...l, ticketID: ticket.id }, { transaction: t }))
             );
           }
           return ticket;
@@ -48,12 +48,12 @@ export class TicketService {
           throw new NotFoundException('Falha ao encontrar ticket');
         }
 
-        if (label && label.length) {
+        if (labels && labels.length) {
           await this.labelRepository.destroy({ where: { ticketID: ticket.id }, transaction: t });
-          const labels = await Promise.all(
-            label.map(async l => this.labelRepository.create({ ...l, ticketID: ticket.id }, { transaction: t }))
+          const label = await Promise.all(
+            labels.map(async l => this.labelRepository.create({ ...l, ticketID: ticket.id }, { transaction: t }))
           );
-          ticket.labels = labels;
+          ticket.labels = label;
         }
         const updated = await ticket.update(rest, { transaction: t });
         return updated.reload({ transaction: t });

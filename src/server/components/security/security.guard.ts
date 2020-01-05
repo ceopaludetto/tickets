@@ -1,12 +1,10 @@
 /* eslint-disable no-underscore-dangle */
-import { Injectable, CanActivate, ExecutionContext } from '@nestjs/common';
+import { Injectable, CanActivate, ExecutionContext, UnauthorizedException } from '@nestjs/common';
 import { Reflector } from '@nestjs/core';
-import { GqlExecutionContext, GraphQLExecutionContext } from '@nestjs/graphql';
-import { AuthenticationError } from 'apollo-server-express';
 import { Request } from 'express';
 
-import { UsuarioService } from '@/server/components/usuario/usuario.service';
-import { ContextType, PayloadType, Role, CustomMatcherOptions } from '@/server/utils/common.dto';
+import { UsuarioService } from '@/server/components/usuario';
+import { Role, CustomMatcherOptions } from '@/server/utils/common.dto';
 import { SECURITY_ROLE_DECORATOR, SECURITY_CUSTOM_MATCHER_DECORATOR } from '@/server/utils/constants';
 
 import { SecurityMatcher } from './security.matcher';
@@ -24,13 +22,8 @@ export class SecurityGuard implements CanActivate {
     this.reflector = reflector;
   }
 
-  private createContext = (context: ExecutionContext) => {
-    const ctx = GqlExecutionContext.create(context);
-    return ctx;
-  };
-
-  private getRequest = (ctx: GraphQLExecutionContext) => {
-    const { req } = ctx.getContext<ContextType>();
+  private getRequest = (ctx: ExecutionContext) => {
+    const req = ctx.switchToHttp().getRequest();
     return req;
   };
 
@@ -39,24 +32,23 @@ export class SecurityGuard implements CanActivate {
     return empresa;
   };
 
-  private getArgs = (ctx: GraphQLExecutionContext) => {
+  private getArgs = (ctx: ExecutionContext) => {
     const args = ctx.getArgs();
     return args;
   };
 
   public async canActivate(context: ExecutionContext) {
-    const ctx = this.createContext(context); // Cria o contexto
-    const req = this.getRequest(ctx); // Captura a requisição
-    const empresa = this.getEmpresa(req); // Captura o header empresa
-    const args = this.getArgs(ctx); // Captura os argumentos do resolver
+    const req: Request = this.getRequest(context); // Captura a requisição
+    const empresa: string = this.getEmpresa(req); // Captura o header empresa
+    const args: any = this.getArgs(context); // Captura os argumentos do resolver
 
     // Verifica se há usuario
     if (!req.user) {
-      throw new AuthenticationError('Usuário inválido');
+      throw new UnauthorizedException('Usuário inválido');
     }
 
     // Captura informações do usuário
-    const usuario = await this.usuarioService.findOne((req.user as PayloadType)._id);
+    const usuario = await this.usuarioService.findOne(req.user.id);
 
     // Verifica se as informações foram capturadas
     if (!usuario) {
@@ -74,7 +66,7 @@ export class SecurityGuard implements CanActivate {
     if (role) {
       // Verifica se o usuário logado tenta alterar suas próprias informações, se a opção useUserID esta marcada, sera usado o ID do usuario logado
       // Caso contrario, sera usado o _id do argumento
-      const isSameUser = role.useUserID ? !!req.user._id : req.user._id === args._id;
+      const isSameUser = role.useUserID ? !!req.user.id : req.user.id === args.id;
 
       // Chama o validador
       const isValid = await this.securityMatcher.isRoleValid({
@@ -96,6 +88,6 @@ export class SecurityGuard implements CanActivate {
       });
     }
 
-    throw new AuthenticationError('UseRole or UseCustomMatcher not provided');
+    throw new UnauthorizedException('UseRole or UseCustomMatcher not provided');
   }
 }

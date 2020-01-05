@@ -18,11 +18,13 @@ import { Empresa } from '@/server/models/empresa';
 import { Politica } from '@/server/models/politica'; // eslint-disable-line import/no-cycle
 import { PERFIL, SHORTID } from '@/server/utils/constants';
 
+import { PerfilDTO } from './perfil.dto';
+
 @DefaultScope({
   include: [() => Politica, () => Empresa],
 })
 @Table({ modelName: PERFIL, tableName: PERFIL })
-export class Perfil extends Model<Perfil> {
+export class Perfil extends Model<Perfil> implements PerfilDTO {
   @PrimaryKey
   @Default(SHORTID)
   @Column

@@ -1,6 +1,9 @@
 import { IsString } from 'class-validator';
 import { Request, Response } from 'express';
 
+import { EnumNivelAcesso, EnumTipoAcesso } from '@/server/models/politica';
+import { Usuario } from '@/server/models/usuario';
+
 import { IsShortID } from './isShortid';
 
 export class FindOneParam {
@@ -28,4 +31,15 @@ export interface BaseEntityDTO {
   dataCriacao: Date;
   dataAtualizacao: Date;
   dataExclusao: Date;
+}
+
+export interface Role {
+  nivel: EnumNivelAcesso;
+  tipo: EnumTipoAcesso;
+  useUserID: boolean;
+}
+
+export interface CustomMatcherOptions {
+  customMatcher: (usuario: Usuario, args: any) => boolean;
+  errorText?: string;
 }

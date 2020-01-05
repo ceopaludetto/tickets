@@ -12,8 +12,10 @@ import {
   Unique,
   AllowNull,
   PrimaryKey,
+  HasMany,
 } from 'sequelize-typescript';
 
+import { Associacao } from '@/server/models/associacao';
 import { USUARIO, SHORTID } from '@/server/utils/constants';
 
 import { UsuarioDTO } from './usuario.dto';
@@ -41,6 +43,13 @@ export class Usuario extends Model<Usuario> implements UsuarioDTO {
   @AllowNull
   @Column
   public telefone?: string;
+
+  @Default(false)
+  @Column
+  public sysAdmin!: boolean;
+
+  @HasMany(() => Associacao)
+  public associacoes!: Associacao[];
 
   @Column
   public dataNascimento!: Date;

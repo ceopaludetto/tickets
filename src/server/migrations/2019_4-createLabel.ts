@@ -1,15 +1,12 @@
 import SequelizeStatic, { QueryInterface } from 'sequelize';
 
-import { LABEL, TICKET, SHORTID } from '@/server/utils/constants';
+import { LABEL, TICKET } from '@/server/utils/constants';
+import { migrationDefaults } from '@/server/utils/migration.defaults';
 
 export default {
   async up(queryInterface: QueryInterface, Sequelize: typeof SequelizeStatic) {
     await queryInterface.createTable(LABEL, {
-      id: {
-        primaryKey: true,
-        type: Sequelize.STRING,
-        defaultValue: SHORTID,
-      },
+      ...migrationDefaults(Sequelize),
       descricao: Sequelize.STRING,
       cor: Sequelize.STRING,
       ticketID: {
@@ -19,9 +16,6 @@ export default {
           key: 'id',
         },
       },
-      dataCriacao: Sequelize.DATE,
-      dataAtualizacao: Sequelize.DATE,
-      dataExclusao: Sequelize.DATE,
     });
   },
 

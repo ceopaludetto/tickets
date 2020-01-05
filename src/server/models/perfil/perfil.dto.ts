@@ -1,7 +1,16 @@
-import { IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
+import { EmpresaDTO } from '@/server/models/empresa';
+import { PoliticaInputDTO, PoliticaDTO } from '@/server/models/politica';
+import { BaseEntityDTO } from '@/server/utils/common.dto';
 
-import { PoliticaInput, PoliticaInputDTO } from '@/server/models/politica';
-import { IsShortID } from '@/server/utils/isShortid';
+export interface PerfilDTO extends BaseEntityDTO {
+  nome: string;
+  descricao: string;
+  herdaID: string;
+  herda: PerfilDTO;
+  politica: PoliticaDTO[];
+  empresaID: string;
+  empresa: EmpresaDTO;
+}
 
 export interface PerfilInputDTO {
   nome?: string;
@@ -9,29 +18,4 @@ export interface PerfilInputDTO {
   herda?: string;
   politica?: PoliticaInputDTO[];
   empresa?: string;
-}
-
-export class PerfilInput implements PerfilInputDTO {
-  @IsString()
-  @IsOptional()
-  public nome?: string;
-
-  @IsString()
-  @IsOptional()
-  public descricao?: string;
-
-  @IsString()
-  @IsShortID()
-  @IsOptional()
-  public herda?: string;
-
-  @IsArray()
-  @IsOptional()
-  @ValidateNested({ each: true })
-  public politica?: PoliticaInput[];
-
-  @IsString()
-  @IsShortID()
-  @IsOptional()
-  public empresa?: string;
 }

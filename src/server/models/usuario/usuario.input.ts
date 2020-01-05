@@ -1,4 +1,6 @@
-import { IsOptional, IsString, IsEmail, Matches } from 'class-validator';
+import { IsOptional, IsString, IsEmail, Matches, IsArray, ValidateNested } from 'class-validator';
+
+import { AssociacaoInput } from '@/server/models/associacao';
 
 import { UsuarioInputDTO } from './usuario.dto';
 
@@ -27,4 +29,9 @@ export class UsuarioInput implements UsuarioInputDTO {
 
   @IsOptional()
   public dataNascimento?: Date;
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  public associacoes?: AssociacaoInput[];
 }

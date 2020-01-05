@@ -1,6 +1,5 @@
-import { IsString, IsEnum, IsBoolean, IsOptional } from 'class-validator';
-
-import { IsShortID } from '@/server/utils/isShortid';
+import { PerfilDTO } from '@/server/models/perfil';
+import { BaseEntityDTO } from '@/server/utils/common.dto';
 
 export enum EnumTipoAcesso {
   Proprio = 'PROPRIO',
@@ -13,33 +12,19 @@ export enum EnumNivelAcesso {
   Excluir = 'EXCLUIR',
 }
 
+export interface PoliticaDTO extends BaseEntityDTO {
+  descricao: string;
+  tipo: EnumTipoAcesso;
+  nivel: EnumNivelAcesso[];
+  negacao: boolean;
+  perfilID: string;
+  perfil: PerfilDTO;
+}
+
 export interface PoliticaInputDTO {
   descricao?: string;
   tipo?: EnumTipoAcesso;
-  nivel?: EnumNivelAcesso;
+  nivel?: EnumNivelAcesso[];
   negacao?: boolean;
   perfilID?: string;
-}
-
-export class PoliticaInput {
-  @IsString()
-  @IsOptional()
-  public descricao?: string;
-
-  @IsOptional()
-  @IsEnum(EnumTipoAcesso)
-  public tipo?: EnumTipoAcesso;
-
-  @IsOptional()
-  @IsEnum(EnumNivelAcesso)
-  public nivel?: EnumNivelAcesso;
-
-  @IsBoolean()
-  @IsOptional()
-  negacao?: boolean;
-
-  @IsString()
-  @IsShortID()
-  @IsOptional()
-  public perfilID?: string;
 }
