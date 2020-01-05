@@ -1,7 +1,7 @@
 $colors: (
   light: (
     primary: #1e1e24,
-    secondary: #2196f3,
+    secondary: #1976d2,
     background: #fafafa,
     paper: #ffffff,
     danger: #ef3054,
@@ -10,7 +10,7 @@ $colors: (
   ),
   dark: (
     primary: #f7f7f2,
-    secondary: #2196f3,
+    secondary: #42a5f5,
     background: #2a2a2a,
     paper: #303030,
     danger: #ef3054,
@@ -38,6 +38,14 @@ $breakpoints: (
   md: 768px,
   lg: 992px,
   xl: 1200px
+);
+
+$baselines: (
+  xs: 1.4,
+  sm: 1.5,
+  md: 1.6,
+  lg: 1.7,
+  xl: 1.8
 );
 
 $utils-props: (

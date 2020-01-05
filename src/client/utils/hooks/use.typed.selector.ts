@@ -1,5 +1,5 @@
-import { useSelector } from 'react-redux';
+import { TypedUseSelectorHook, useSelector } from 'react-redux';
 
-import { AllReducers } from '@/client/services/ducks';
+import { ApplicationState } from '@/client/services/ducks';
 
-export const useTypedSelector = <T>(selector: (state: AllReducers) => T) => useSelector<AllReducers, T>(selector);
+export const useTypedSelector: TypedUseSelectorHook<ApplicationState> = useSelector;

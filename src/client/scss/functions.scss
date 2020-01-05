@@ -16,17 +16,19 @@
 
 @mixin generate-theme-definition() {
   @each $theme, $values in $colors {
-    :root[data-theme="#{$theme}"] {
-      @each $k, $v in $values {
-        --#{$k}: #{$v};
-        --#{$k}-hover: #{darken($v, 2.5%)};
-        --#{$k}-active: #{darken($v, 5%)};
-        --#{$k}-contrast: #{color-yiq($v, #000000, #ffffff)};
-        @for $i from 1 through 3 {
-          --#{$k}-shadow-#{$i}: #{rgba($v, $i / 10)};
+    @media (prefers-color-scheme: #{$theme}) {
+      :root {
+        @each $k, $v in $values {
+          --#{$k}: #{$v};
+          --#{$k}-hover: #{darken($v, 2.5%)};
+          --#{$k}-active: #{darken($v, 5%)};
+          --#{$k}-contrast: #{color-yiq($v, #000000, #ffffff)};
+          @for $i from 1 through 3 {
+            --#{$k}-shadow-#{$i}: #{rgba($v, $i / 10)};
+          }
         }
+        --paper-shadow: #{map-get($paper-shadow, $theme)};
       }
-      --paper-shadow: #{map-get($paper-shadow, $theme)};
     }
   }
 }
@@ -47,7 +49,12 @@
   @return map-get($breakpoints, $bk);
 }
 
-@function create-transition($props, $dur: 125ms, $fn: ease-in-out, $delay: 0ms) {
+@function create-transition(
+  $props,
+  $dur: 125ms,
+  $fn: ease-in-out,
+  $delay: 0ms
+) {
   $res: unquote("");
   @for $i from 1 through length($props) {
     $res: unquote(

@@ -1,8 +1,7 @@
 import { Controller, Get, Param } from '@nestjs/common';
 
-import { FindOneParam } from '@/server/utils/common.dto';
-
 import { LabelService } from './label.service';
+import { FindOneParam } from '@/server/utils/common.dto';
 
 @Controller('/api/label')
 export class LabelController {

@@ -1,6 +1,7 @@
-import clsx from 'clsx';
 import React from 'react';
 import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
+
+import clsx from 'clsx';
 
 import { usePreload } from '@/client/utils';
 

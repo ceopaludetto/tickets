@@ -22,3 +22,10 @@ export interface ContextType {
 export interface ReactContextType {
   url?: string;
 }
+
+export interface BaseEntityDTO {
+  id: string;
+  dataCriacao: Date;
+  dataAtualizacao: Date;
+  dataExclusao: Date;
+}

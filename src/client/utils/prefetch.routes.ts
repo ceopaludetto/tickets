@@ -1,13 +1,15 @@
-import { AxiosInstance } from 'axios';
 import { matchPath } from 'react-router';
-import { ThunkDispatch } from 'redux-thunk';
+
+import { Dispatch } from 'redux';
+import { END } from 'redux-saga';
 
 import { routes as allRoutes, Route } from '@/client/providers/route';
-import { AllActions, AllReducers } from '@/client/services/ducks';
 
 export function findRoute(path: string, routes: Route[]): Route {
+  const cleanPath = path.split('?')[0];
+
   const matchingRoute = routes.find(rt =>
-    matchPath(path, {
+    matchPath(cleanPath, {
       path: rt.path,
       exact: rt.exact,
     })
@@ -24,46 +26,32 @@ export function findRoute(path: string, routes: Route[]): Route {
   return matchingRoute as Route;
 }
 
-interface GetInitialContentOptions {
-  dispatch: ThunkDispatch<AllReducers, AxiosInstance, AllActions>;
-  getState: () => AllReducers;
-  api: AxiosInstance;
-}
-
-export async function preloadRouteComponent(
-  { dispatch, getState, api }: GetInitialContentOptions,
-  to: string | { pathname: string }
-) {
+export async function preloadRouteComponent(dispatch: Dispatch, to: string | { pathname: string }) {
   const path = typeof to === 'string' ? to : to.pathname;
 
   const matchingRoute = findRoute(path, allRoutes);
 
-  if (matchingRoute && matchingRoute.component.load) {
-    if (matchingRoute.thunks && matchingRoute.thunks.length) {
-      await Promise.all(matchingRoute.thunks.map(async t => t()(dispatch, getState, api)));
-    }
+  if (matchingRoute && matchingRoute?.component?.load) {
+    matchingRoute?.dispatches?.forEach?.(d => dispatch(d.action({ ...d.data, shouldToggleProgress: true }))); // eslint-disable-line no-unused-expressions
 
-    return matchingRoute.component.load();
+    return matchingRoute?.component?.load?.();
   }
 
   throw new Error('Route not found');
 }
 
-export async function getInitialContent(
-  { dispatch, getState, api }: GetInitialContentOptions,
-  currentRoute: string | { pathname: string }
-) {
+export async function getInitialContent(dispatch: Dispatch, currentRoute: string | { pathname: string }) {
   const path = typeof currentRoute === 'string' ? currentRoute : currentRoute.pathname;
 
   if (!path.includes('/api')) {
     const matchingRoute = findRoute(path, allRoutes);
 
-    if (matchingRoute && matchingRoute.component.load) {
-      const c = await matchingRoute.component.load();
+    if (matchingRoute && matchingRoute?.component?.load) {
+      matchingRoute?.dispatches?.forEach?.(d => dispatch(d.action(d.data))); // eslint-disable-line no-unused-expressions
 
-      if (matchingRoute.thunks && matchingRoute.thunks.length) {
-        await Promise.all(matchingRoute.thunks.map(async t => t()(dispatch, getState, api)));
-      }
+      const c = await matchingRoute?.component?.load?.();
+
+      dispatch(END);
 
       return c;
     }

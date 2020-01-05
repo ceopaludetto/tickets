@@ -1,9 +1,10 @@
+import React, { cloneElement, useCallback, useMemo } from 'react';
+import { useMeasure, useIsomorphicLayoutEffect } from 'react-use';
+
 import clsx from 'clsx';
 import { useFormik, FormikContext } from 'formik';
 import { motion, AnimatePresence } from 'framer-motion';
-import React, { cloneElement, useCallback, useMemo } from 'react';
-import { FiUser, FiLock, FiBriefcase } from 'react-icons/fi';
-import { useMeasure, useIsomorphicLayoutEffect } from 'react-use';
+import { OutlinePerson, OutlineLock, OutlineBusiness } from 'mdi-norm';
 
 import {
   FormControl,
@@ -17,9 +18,10 @@ import {
   FormCheckbox,
   List,
 } from '@/client/components';
-import u from '@/client/scss/utils.scss';
 import { RegisterValidationSchema, telMask, dateMask, cnpjMask, cepMask } from '@/client/services/validations';
 import { useStepper, useMultipleVisibility } from '@/client/utils';
+
+import u from '@/client/scss/utils.scss';
 
 const animationVariants = {
   initial: {
@@ -115,9 +117,9 @@ export default function AuthRegister() {
         <Title gutterBottom>Vamos começar!</Title>
         <Stepper
           labels={[
-            { text: 'Usuário', icon: FiUser },
-            { text: 'Senha', icon: FiLock },
-            { text: 'Empresa', icon: FiBriefcase },
+            { text: 'Usuário', icon: OutlinePerson },
+            { text: 'Senha', icon: OutlineLock },
+            { text: 'Empresa', icon: OutlineBusiness },
           ]}
           currentPage={currentPage}
           togglePage={togglePage}

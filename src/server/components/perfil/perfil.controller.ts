@@ -1,9 +1,8 @@
 import { Controller, Get, Post, Put, Delete, Param, Body } from '@nestjs/common';
 
+import { PerfilService } from './perfil.service';
 import { PerfilInput } from '@/server/models/perfil';
 import { FindOneParam } from '@/server/utils/common.dto';
-
-import { PerfilService } from './perfil.service';
 
 @Controller('/api/perfil')
 export class PerfilController {

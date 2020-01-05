@@ -1,3 +1,6 @@
+import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
+import { useMeasure, useMedia } from 'react-use';
+
 import clsx from 'clsx';
 import {
   format,
@@ -20,17 +23,15 @@ import {
 import ptBR from 'date-fns/locale/pt-BR';
 import { motion, AnimatePresence, HTMLMotionProps } from 'framer-motion';
 import produce from 'immer';
-import React, { useCallback, useState, useMemo, useEffect, useRef } from 'react';
-import { FiArrowLeft, FiArrowRight } from 'react-icons/fi';
-import { useMeasure, useMedia } from 'react-use';
+import { ArrowBack, ArrowForward } from 'mdi-norm';
 
 import { Button } from '@/client/components/form/button';
 import { IconButton } from '@/client/components/form/iconbutton';
 import { Grid } from '@/client/components/layout/grid';
 import { Paper } from '@/client/components/layout/paper';
-import u from '@/client/scss/utils.scss';
 
 import s from './calendar.scss';
+import u from '@/client/scss/utils.scss';
 
 interface CalendarProps extends Omit<HTMLMotionProps<'div'>, 'onChange' | 'onSubmit'> {
   float?: boolean;
@@ -286,7 +287,7 @@ export function Calendar({
             <div className={clsx(u['xs:d-flex'], u['-xs:mx-3'], u['xs:ai-center'], u['xs:pb-2'])}>
               <div className={u['xs:px-3']}>
                 <IconButton aria-label="Mês anterior" disabled={!shouldMoveToPrevMonth} onClick={prevMonth}>
-                  <FiArrowLeft />
+                  <ArrowBack />
                 </IconButton>
               </div>
               <AnimatePresence exitBeforeEnter initial={false}>
@@ -304,7 +305,7 @@ export function Calendar({
               </AnimatePresence>
               <div className={u['xs:px-3']}>
                 <IconButton aria-label="Próximo mês" disabled={!shouldMoveToNextMonth} onClick={nextMonth}>
-                  <FiArrowRight />
+                  <ArrowForward />
                 </IconButton>
               </div>
             </div>

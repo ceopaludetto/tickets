@@ -12,6 +12,7 @@ import {
   DeletedAt,
 } from 'sequelize-typescript';
 
+import { TicketDTO } from './ticket.dto';
 import { Label } from '@/server/models/label';
 import { TICKET, SHORTID } from '@/server/utils/constants';
 
@@ -19,7 +20,7 @@ import { TICKET, SHORTID } from '@/server/utils/constants';
   include: [() => Label],
 })
 @Table({ modelName: TICKET, tableName: TICKET })
-export class Ticket extends Model<Ticket> {
+export class Ticket extends Model<Ticket> implements TicketDTO {
   @PrimaryKey
   @Default(SHORTID)
   @Column

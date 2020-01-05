@@ -2,10 +2,9 @@ import { Controller, Post, Body, Get, UseGuards, Req, Res } from '@nestjs/common
 import { AuthGuard } from '@nestjs/passport';
 import { Request, Response } from 'express';
 
-import { UsuarioInput } from '@/server/models/usuario';
-
-import { LoginInput } from './auth.dto';
+import { LoginInput } from './auth.input';
 import { AuthService } from './auth.service';
+import { UsuarioInput } from '@/server/models/usuario';
 
 @Controller('/api/auth')
 export class AuthController {

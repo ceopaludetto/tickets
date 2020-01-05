@@ -1,6 +1,7 @@
-import { AnimatePresence, motion } from 'framer-motion';
 import React, { useMemo } from 'react';
-import { Switch, Route, useLocation } from 'react-router-dom';
+import { Switch, Route, useLocation, Redirect } from 'react-router-dom';
+
+import { AnimatePresence, motion } from 'framer-motion';
 
 import { nested } from '@/client/utils/nested.routes';
 
@@ -20,7 +21,7 @@ const routeVariants = {
 };
 
 export function AuthRoutes() {
-  const routes = useMemo(() => nested([1, 'children']), []);
+  const routes = useMemo(() => nested([2, 'children']), []);
   const location = useLocation();
 
   return (
@@ -31,11 +32,17 @@ export function AuthRoutes() {
             path={r.path}
             exact={r.exact}
             strict={r.strict}
-            render={() => (
-              <motion.div variants={routeVariants} exit="exit" animate="enter" initial="initial">
-                <r.component />
-              </motion.div>
-            )}
+            render={() => {
+              if (r.component) {
+                return (
+                  <motion.div variants={routeVariants} exit="exit" animate="enter" initial="initial">
+                    <r.component />
+                  </motion.div>
+                );
+              }
+
+              return <Redirect to="/app" />;
+            }}
           />
         ))}
       </Switch>

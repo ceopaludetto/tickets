@@ -1,25 +1,15 @@
-import { IsString, IsOptional, IsHexColor } from 'class-validator';
+import { TicketDTO } from '@/server/models/ticket';
+import { BaseEntityDTO } from '@/server/utils/common.dto';
 
-import { IsShortID } from '@/server/utils/isShortid';
+export interface LabelDTO extends BaseEntityDTO {
+  descricao: string;
+  cor: string;
+  ticketID: string;
+  ticket: TicketDTO;
+}
 
 export interface LabelInputDTO {
   descricao?: string;
   cor?: string;
   ticketID?: string;
-}
-
-export class LabelInput implements LabelInputDTO {
-  @IsString()
-  @IsOptional()
-  public descricao?: string;
-
-  @IsString()
-  @IsOptional()
-  @IsHexColor()
-  public cor?: string;
-
-  @IsShortID()
-  @IsString()
-  @IsOptional()
-  public ticketID?: string;
 }

@@ -1,13 +1,12 @@
 import { Controller, Get, Req, Res, Next } from '@nestjs/common';
 import { Request, Response, NextFunction } from 'express';
 
-import { STATIC_FOLDER } from '@/server/utils/constants';
-
 import { ReactService } from './react.service';
+import { STATIC_FOLDER } from '@/server/utils/constants';
 
 function filter(wildcard: string, str: string) {
   const re = new RegExp(`^${wildcard.replace(/\*/g, '.*').replace(/\?/g, '.')}$`, 'i');
-  return re.test(str); // remove last 'i' above to have case sensitive
+  return re.test(str);
 }
 
 @Controller('')

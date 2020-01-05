@@ -1,11 +1,15 @@
-import { Formik } from 'formik';
-import React from 'react';
+import React, { useEffect } from 'react';
+import { useDispatch, useSelector } from 'react-redux';
+import { useHistory } from 'react-router-dom';
+
+import { useFormik, FormikContext } from 'formik';
 
 import { Button, Title, Overline, FormControl, Form, Link } from '@/client/components';
-import c from '@/client/scss/utils.scss';
-import { requestLogin } from '@/client/services/ducks/auth';
+import { ApplicationState, AuthActions } from '@/client/services/ducks';
 import { LoginValidationSchema } from '@/client/services/validations';
-import { useVisibility, useThunkDispatch, useTypedSelector } from '@/client/utils';
+import { useVisibility, useQueryParameter } from '@/client/utils';
+
+import u from '@/client/scss/utils.scss';
 
 interface LoginData {
   email: string;
@@ -13,16 +17,31 @@ interface LoginData {
 }
 
 export default function AuthLogin() {
-  const authState = useTypedSelector(state => state.auth);
-  const dispatch = useThunkDispatch();
+  const authState = useSelector((state: ApplicationState) => state.Auth);
+  const dispatch = useDispatch();
+  const { push } = useHistory();
   const { mapVisibilityProps } = useVisibility();
+  const formik = useFormik({
+    onSubmit: (values: LoginData) => {
+      dispatch(AuthActions.loginRequest(values));
+    },
+    initialValues: { email: '', senha: '' },
+    validationSchema: LoginValidationSchema,
+  });
+  const parsed = useQueryParameter();
+
+  useEffect(() => {
+    if (authState.data) {
+      if (parsed.from) {
+        push(parsed.from as string);
+      } else {
+        push('/app');
+      }
+    }
+  }, [authState]);
 
   return (
-    <Formik
-      onSubmit={(values: LoginData) => dispatch(requestLogin(values))}
-      initialValues={{ email: '', senha: '' }}
-      validationSchema={LoginValidationSchema}
-    >
+    <FormikContext.Provider value={formik}>
       <>
         <Overline>Login</Overline>
         <Title gutterBottom>Bem vindo!</Title>
@@ -41,7 +60,7 @@ export default function AuthLogin() {
               disabled={authState.loading}
               {...mapVisibilityProps()}
             />
-            <div className={c['xs:ta-right']}>
+            <div className={u['xs:ta-right']}>
               <Button to="/auth/register" variant="flat" color="secondary">
                 Criar conta
               </Button>{' '}
@@ -50,6 +69,6 @@ export default function AuthLogin() {
           </>
         </Form>
       </>
-    </Formik>
+    </FormikContext.Provider>
   );
 }

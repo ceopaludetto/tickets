@@ -1,18 +1,19 @@
-import { ValidationError } from 'class-validator/validation/ValidationError';
-import clsx from 'clsx';
-import { useFormikContext, Form as FormikForm } from 'formik';
 import React, { useMemo } from 'react';
 import { useDeepCompareEffect } from 'react-use';
 
-import u from '@/client/scss/utils.scss';
-import { AllReducers } from '@/client/services/ducks';
+import { ValidationError } from 'class-validator/validation/ValidationError';
+import clsx from 'clsx';
+import { useFormikContext, Form as FormikForm } from 'formik';
+
+import { ApplicationState } from '@/client/services/ducks';
 import { useValidator } from '@/client/utils';
 
 import s from './form.scss';
+import u from '@/client/scss/utils.scss';
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   error?: string;
-  statesToValidate?: AllReducers[keyof AllReducers][];
+  statesToValidate?: ApplicationState[keyof ApplicationState][];
 }
 
 export function Form({ children, error, statesToValidate, ...rest }: FormProps) {

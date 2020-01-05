@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
-import { FiEye, FiEyeOff } from 'react-icons/fi';
+
+import { OutlineVisibility, OutlineVisibilityOff } from 'mdi-norm';
 
 import { IconButton } from '@/client/components/form';
 
@@ -12,7 +13,7 @@ export function useVisibility() {
     if (is && isNot) {
       return isVisible ? is : isNot;
     }
-    return isVisible ? <FiEyeOff /> : <FiEye />;
+    return isVisible ? <OutlineVisibilityOff /> : <OutlineVisibility />;
   };
 
   const mapVisibilityProps = () => ({
@@ -46,7 +47,7 @@ export function useMultipleVisibility<T extends any[]>(visibilities: T) {
     if (is && isNot) {
       return isVisible[v] ? is : isNot;
     }
-    return isVisible[v] ? <FiEyeOff /> : <FiEye />;
+    return isVisible[v] ? <OutlineVisibilityOff /> : <OutlineVisibility />;
   };
 
   const mapVisibilityProps = (v: T[number]) => ({

@@ -1,5 +1,6 @@
-import clsx from 'clsx';
 import React, { cloneElement } from 'react';
+
+import clsx from 'clsx';
 
 import s from './iconbutton.scss';
 
@@ -12,7 +13,7 @@ export function IconButton({ children, color = 'primary', ...rest }: IconButtonP
   return (
     <button className={clsx(s.button, s[color])} {...rest}>
       {cloneElement(children, {
-        size: 20,
+        size: 24,
       })}
     </button>
   );

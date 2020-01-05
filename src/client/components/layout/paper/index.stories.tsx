@@ -1,8 +1,7 @@
 import React from 'react';
 
-import { AlignToCenter } from '@/client/utils/storybook.decorators';
-
 import { Paper } from './index';
+import { AlignToCenter } from '@/client/utils/storybook.decorators';
 
 export default {
   title: 'F3Desk|Layout/Paper',

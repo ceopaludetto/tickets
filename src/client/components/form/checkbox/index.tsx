@@ -1,6 +1,7 @@
-import clsx from 'clsx';
 import React from 'react';
-import { FiCheck } from 'react-icons/fi';
+
+import clsx from 'clsx';
+import { RoundCheck } from 'mdi-norm';
 
 import { Label } from '@/client/components/typography';
 
@@ -27,7 +28,7 @@ export function Checkbox({ label, id, color = 'secondary', labelPlacement = 'top
           <>
             <input id={id} type="checkbox" className={clsx(s.input, s[color])} {...rest} />
             <div className={s.switch}>
-              <FiCheck className={s.icon} />
+              <RoundCheck className={s.icon} />
             </div>
           </>
         </div>

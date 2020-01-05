@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { DatabaseModule } from '@/server/components/database';
-import { Label } from '@/server/models/label';
-
 import { LabelController } from './label.controller';
 import { LabelService } from './label.service';
+import { DatabaseModule } from '@/server/components/database';
+import { Label } from '@/server/models/label';
 
 @Module({
   imports: [DatabaseModule.forFeature([() => Label])],

@@ -4,8 +4,12 @@
   border: none;
   border-radius: 6px;
   background-color: transparent;
-  transition: create-transition((background-color, box-shadow), 100ms, ease-in-out);
-  padding: 0.5rem;
+  transition: create-transition(
+    (background-color, box-shadow),
+    100ms,
+    ease-in-out
+  );
+  padding: 0.375rem;
   height: 36px;
   &:focus {
     outline: none;
@@ -25,5 +29,10 @@
         }
       }
     }
+  }
+  &:disabled {
+    cursor: not-allowed;
+    background-color: transparent;
+    color: get-theme-color("disabled-text");
   }
 }

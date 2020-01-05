@@ -72,6 +72,11 @@ module.exports = (isServer = false, isTest = false) => ({
           transform: isServer ? 'date-fns/${member}' : 'date-fns/esm/${member}',
           preventFullImport: true,
         },
+        'mdi-norm': {
+          transform: isServer ? 'mdi-norm/lib/${member}' : 'mdi-norm/es/${member}',
+          preventFullImport: true,
+          skipDefaultConversion: true,
+        },
       },
     ],
     ...(isTest

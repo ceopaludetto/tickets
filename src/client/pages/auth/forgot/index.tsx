@@ -1,24 +1,25 @@
-import { Formik } from 'formik';
 import React from 'react';
+import { useSelector } from 'react-redux';
+
+import { Formik } from 'formik';
 
 import { Button, Title, Overline, FormControl, Form } from '@/client/components';
-import c from '@/client/scss/utils.scss';
-import { requestLogin } from '@/client/services/ducks/auth';
+import { ApplicationState } from '@/client/services/ducks';
 import { ForgotValidationSchema } from '@/client/services/validations';
-import { useThunkDispatch, useTypedSelector } from '@/client/utils';
+
+import c from '@/client/scss/utils.scss';
 
 interface ForgotData {
   email: string;
 }
 
 export default function AuthForgot() {
-  const authState = useTypedSelector(state => state.auth);
-  const dispatch = useThunkDispatch();
+  const authState = useSelector((state: ApplicationState) => state.Auth);
 
   return (
     <Formik
       initialValues={{ email: '' }}
-      onSubmit={(values: ForgotData) => dispatch(requestLogin(values))}
+      onSubmit={(values: ForgotData) => console.log(values)} // eslint-disable-line no-console
       validationSchema={ForgotValidationSchema}
     >
       <>

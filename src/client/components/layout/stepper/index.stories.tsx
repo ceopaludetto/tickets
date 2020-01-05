@@ -1,10 +1,10 @@
 import React from 'react';
-import { FiUmbrella, FiFeather, FiFastForward } from 'react-icons/fi';
 
-import { useStepper } from '@/client/utils';
-import { AlignToCenterWithMaxWidth } from '@/client/utils/storybook.decorators';
+import { OutlinePerson, OutlineLock, OutlineBusiness } from 'mdi-norm';
 
 import { Stepper } from './index';
+import { useStepper } from '@/client/utils';
+import { AlignToCenterWithMaxWidth } from '@/client/utils/storybook.decorators';
 
 export default {
   title: 'F3Desk|Layout/Stepper',
@@ -23,16 +23,16 @@ export const Normal = () => {
       nextPage={nextPage}
       labels={[
         {
-          text: 'Umbrella Corp.',
-          icon: FiUmbrella,
+          text: 'User',
+          icon: OutlinePerson,
         },
         {
-          text: 'Feather Icons',
-          icon: FiFeather,
+          text: 'Password',
+          icon: OutlineLock,
         },
         {
-          text: 'Git Merge',
-          icon: FiFastForward,
+          text: 'Enterprise',
+          icon: OutlineBusiness,
         },
       ]}
     />

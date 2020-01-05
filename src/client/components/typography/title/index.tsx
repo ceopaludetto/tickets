@@ -1,9 +1,9 @@
-import clsx from 'clsx';
 import React from 'react';
 
-import c from '@/client/scss/utils.scss';
+import clsx from 'clsx';
 
 import s from './title.scss';
+import c from '@/client/scss/utils.scss';
 
 interface TitleProps extends React.HTMLAttributes<HTMLHeadingElement> {
   gutterBottom?: boolean;

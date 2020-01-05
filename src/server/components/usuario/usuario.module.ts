@@ -1,10 +1,9 @@
 import { Module } from '@nestjs/common';
 
-import { DatabaseModule } from '@/server/components/database';
-import { Usuario } from '@/server/models/usuario';
-
 import { UsuarioController } from './usuario.controller';
 import { UsuarioService } from './usuario.service';
+import { DatabaseModule } from '@/server/components/database';
+import { Usuario } from '@/server/models/usuario';
 
 @Module({
   imports: [DatabaseModule.forFeature([() => Usuario])],

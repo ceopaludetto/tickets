@@ -1,20 +1,24 @@
 /* eslint-disable react/no-danger */
-import { ChunkExtractorManager, ChunkExtractor } from '@loadable/server';
-import { Injectable, BadRequestException } from '@nestjs/common';
 import React from 'react';
 import { renderToStaticMarkup, renderToString } from 'react-dom/server';
 import { HelmetProvider, FilledContext } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { StaticRouter } from 'react-router-dom';
 
+import { ChunkExtractorManager, ChunkExtractor } from '@loadable/server';
+import { Injectable, BadRequestException } from '@nestjs/common';
+
 import ReactApp from '@/client/bootstrap';
 import { createReduxStore } from '@/client/providers/store';
-import { AuthTypes } from '@/client/services/ducks/auth';
+import { loginSuccess } from '@/client/services/ducks/auth/actions';
 import { getInitialContent } from '@/client/utils/prefetch.routes';
+import { UsuarioService } from '@/server/components/usuario';
 import { ContextType, ReactContextType } from '@/server/utils/common.dto';
 
 @Injectable()
 export class ReactService {
+  public constructor(private readonly usuarioService: UsuarioService) {}
+
   public async render({ req, res }: ContextType) {
     try {
       const extractor = new ChunkExtractor({
@@ -22,16 +26,20 @@ export class ReactService {
       });
       const context: ReactContextType = {};
       const helmetContext: FilledContext | {} = {};
-      const { store, api } = createReduxStore();
+      const { store, tasks } = createReduxStore();
 
       if (req.user) {
-        store.dispatch({
-          type: AuthTypes.SUCCESS_LOGIN,
-          payload: {
-            data: req.user,
-          },
-        });
+        const user = await this.usuarioService.findOne(req.user.id);
+
+        if (!user) {
+          throw new BadRequestException('Erro ao encontrar usuário');
+        }
+
+        store.dispatch(loginSuccess(user));
       }
+
+      await getInitialContent(store.dispatch, req.url);
+      await tasks.toPromise();
 
       const markup = renderToString(
         <ChunkExtractorManager extractor={extractor}>
@@ -48,8 +56,6 @@ export class ReactService {
       if (context.url) {
         return res.redirect(context.url);
       }
-
-      await getInitialContent({ dispatch: store.dispatch, getState: store.getState, api }, req.url);
 
       const initialState = store.getState();
 

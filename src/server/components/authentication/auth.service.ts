@@ -72,10 +72,9 @@ export class AuthService {
   //   return funcionario;
   // }
 
-  public async generateAndRegisterToken({ id, email }: Usuario, res: Response) {
+  public async generateAndRegisterToken({ id }: Usuario, res: Response) {
     const token = await this.jwtService.signAsync({
       id,
-      email,
     });
 
     res.cookie('auth', token, {

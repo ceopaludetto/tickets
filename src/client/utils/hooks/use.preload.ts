@@ -1,36 +1,43 @@
 import { useContext } from 'react';
 import { useStore } from 'react-redux';
 import { useHistory } from 'react-router-dom';
-
-import { ProgressContext } from '@/client/components';
-import { ApiContext } from '@/client/providers/api';
+import { useIsomorphicLayoutEffect, useToggle, useTimeoutFn } from 'react-use';
 
 import { preloadRouteComponent } from '../prefetch.routes';
+import { useTypedSelector } from './use.typed.selector';
+import { ProgressContext } from '@/client/components';
 
 export function usePreload(to?: string, onClick?: (e: React.MouseEvent<any>) => any) {
-  const { api } = useContext(ApiContext);
+  const globalState = useTypedSelector(state => state.Global);
+  const [hasFinished, setHasFinished] = useToggle(false);
   const { toggleAnimation } = useContext(ProgressContext);
-  const { getState, dispatch } = useStore();
+  const { dispatch } = useStore();
   const { push } = useHistory();
+  const [isReady, cancel, reset] = useTimeoutFn(() => {
+    if (!hasFinished && globalState.loading) toggleAnimation(true);
+  }, 250);
+
+  useIsomorphicLayoutEffect(() => {
+    if (hasFinished && !globalState.loading) {
+      if (isReady() === false) {
+        cancel();
+      }
+      toggleAnimation(false);
+      if (to) push(to);
+    }
+  }, [globalState, hasFinished]);
 
   async function handleClick(e: React.MouseEvent<HTMLButtonElement>) {
     if (to) {
-      let cancel = false;
-      setTimeout(() => {
-        if (!cancel) {
-          toggleAnimation(true);
-        }
-      }, 200);
+      reset();
       e.preventDefault();
-      await preloadRouteComponent({ api, getState, dispatch }, to);
+      await preloadRouteComponent(dispatch, to);
 
       if (onClick) {
         onClick(e);
       }
 
-      push(to);
-      toggleAnimation(false);
-      cancel = true;
+      setHasFinished(true);
     }
   }
 

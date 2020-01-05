@@ -1,9 +1,9 @@
-import { action } from '@storybook/addon-actions';
 import React from 'react';
 
-import { AlignToCenter } from '@/client/utils/storybook.decorators';
+import { action } from '@storybook/addon-actions';
 
 import { Calendar } from './index';
+import { AlignToCenter } from '@/client/utils/storybook.decorators';
 
 export default { title: 'F3Desk|Form/Calendar', component: Calendar, decorators: [AlignToCenter] };
 

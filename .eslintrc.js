@@ -50,9 +50,10 @@ module.exports = {
       {
         newlinesBetween: 'always',
         groups: [
+          '/^react/',
           'module',
-          '/^@\\//',
-          ['parent', 'sibling', 'index']
+          ['/(?=.*@\\/\\S)(?!.*\\.scss).*/', 'parent', 'sibling', 'index'],
+          '/\.scss/'
         ],
         alphabetize: {order: 'asc', ignoreCase: true}
       }

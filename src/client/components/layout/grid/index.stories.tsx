@@ -1,8 +1,8 @@
 import React from 'react';
 
-import u from '@/client/scss/utils.scss';
-
 import { Grid } from './index';
+
+import u from '@/client/scss/utils.scss';
 
 export default { title: 'F3Desk|Layout/Grid', component: Grid };
 

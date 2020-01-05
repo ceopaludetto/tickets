@@ -1,10 +1,22 @@
 import { combineReducers } from 'redux';
 
-import { auth, AuthState, AuthActions } from './auth';
-import { ticket, TicketState, TicketActions } from './tickets';
+import Auth, { AuthActions } from './auth';
+import { AuthState } from './auth/types';
+import Global, { GlobalActions as Actions } from './global';
+import { GlobalState } from './global/types';
+import Ticket, { TicketsActions } from './tickets';
+import { TicketsState } from './tickets/types';
 
-export const reducers = combineReducers({ auth, ticket });
+export default combineReducers({ Auth, Ticket, Global });
 
-export type AllReducers = { auth: AuthState; ticket: TicketState };
+export { RootSaga } from './saga';
 
-export type AllActions = AuthActions & TicketActions;
+export interface ApplicationState {
+  Auth: AuthState;
+  Ticket: TicketsState;
+  Global: GlobalState;
+}
+
+export { AuthActions, TicketsActions, Actions };
+
+export type ApplicationActions = typeof AuthActions & typeof TicketsActions;

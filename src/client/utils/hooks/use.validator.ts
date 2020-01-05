@@ -1,9 +1,9 @@
 import { useDeepCompareEffect } from 'react-use';
+
 import { useImmer } from 'use-immer';
 
-import { AllReducers } from '@/client/services/ducks';
-
 import { ApiError } from '../error';
+import { ApplicationState } from '@/client/services/ducks';
 
 interface ErrorMappingState {
   hasError: boolean;
@@ -15,7 +15,7 @@ interface ErrorMappingState {
   fieldLevelError?: boolean;
 }
 
-export function useValidator(s: AllReducers[keyof AllReducers][] = []) {
+export function useValidator(s: Omit<ApplicationState, 'Global'>[keyof Omit<ApplicationState, 'Global'>][] = []) {
   const [errorMapping, setErrorMapping] = useImmer<ErrorMappingState[]>([]);
 
   useDeepCompareEffect(() => {
@@ -30,7 +30,7 @@ export function useValidator(s: AllReducers[keyof AllReducers][] = []) {
             };
           }
 
-          if (item.failure && item.data instanceof ApiError) {
+          if (item.error && item.data instanceof ApiError) {
             draft[i].hasError = true;
             draft[i].errorInfo = item.data as ApiError;
 

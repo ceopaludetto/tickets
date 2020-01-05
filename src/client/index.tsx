@@ -1,10 +1,11 @@
-import { loadableReady } from '@loadable/component';
 import React from 'react';
 import axe from 'react-axe';
 import ReactDom from 'react-dom';
 import { HelmetProvider } from 'react-helmet-async';
 import { Provider } from 'react-redux';
 import { BrowserRouter } from 'react-router-dom';
+
+import { loadableReady } from '@loadable/component';
 
 import App from '@/client/bootstrap';
 import { ApiContext } from '@/client/providers/api';

@@ -88,6 +88,9 @@ module.exports = (isServer = false) => ({
             annotation: true,
           },
         },
+        cssProcessorPluginOptions: {
+          preset: ['advanced', { discardComments: { removeAll: true } }],
+        },
       }),
     ],
   },

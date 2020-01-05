@@ -14,10 +14,11 @@ import {
   PrimaryKey,
 } from 'sequelize-typescript';
 
+import { UsuarioDTO } from './usuario.dto';
 import { USUARIO, SHORTID } from '@/server/utils/constants';
 
 @Table({ modelName: USUARIO, tableName: USUARIO })
-export class Usuario extends Model<Usuario> {
+export class Usuario extends Model<Usuario> implements UsuarioDTO {
   @PrimaryKey
   @Default(SHORTID)
   @Column

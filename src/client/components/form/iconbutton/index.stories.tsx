@@ -1,37 +1,37 @@
 import React from 'react';
-import { FiSettings } from 'react-icons/fi';
 
-import { AlignToCenter } from '@/client/utils/storybook.decorators';
+import { OutlineSettings } from 'mdi-norm';
 
 import { IconButton } from './index';
+import { AlignToCenter } from '@/client/utils/storybook.decorators';
 
 export default { title: 'F3Desk|Form/IconButton', component: IconButton, decorators: [AlignToCenter] };
 
 export const normal = () => (
   <IconButton>
-    <FiSettings />
+    <OutlineSettings />
   </IconButton>
 );
 
 export const desabilitado = () => (
   <IconButton disabled>
-    <FiSettings />
+    <OutlineSettings />
   </IconButton>
 );
 
 export const cores = () => (
   <>
     <IconButton color="primary">
-      <FiSettings />
+      <OutlineSettings />
     </IconButton>
     <IconButton color="secondary">
-      <FiSettings />
+      <OutlineSettings />
     </IconButton>
     <IconButton color="background">
-      <FiSettings />
+      <OutlineSettings />
     </IconButton>
     <IconButton color="paper">
-      <FiSettings />
+      <OutlineSettings />
     </IconButton>
   </>
 );
