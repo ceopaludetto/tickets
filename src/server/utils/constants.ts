@@ -15,12 +15,13 @@ export const APP_NAME = 'F3Desk';
  * Sequelize
  */
 export const SEQUELIZE_PROVIDER = 'SEQUELIZE';
-export const POLITICA = 'Politica';
-export const PERFIL = 'Perfil';
+export const RECURSO = 'Recurso';
+export const SUB_RECURSO = 'SubRecurso';
+export const PERMISSAO = 'Permissao';
 export const EMPRESA = 'Empresa';
 export const USUARIO = 'Usuario';
 export const ASSOCIACAO = 'Associacao';
-export const LABEL = 'Label';
+export const ROTULO = 'Rotulo';
 export const TICKET = 'Ticket';
 
 /**

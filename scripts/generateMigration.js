@@ -1,6 +1,6 @@
 /* eslint-disable no-console */
+const fns = require('date-fns');
 const fs = require('fs');
-const glob = require('glob');
 const path = require('path');
 
 console.log('-> Creating new Migration:', process.argv[2]);
@@ -22,9 +22,12 @@ export default {
 const migrationsPath = path.resolve('src', 'server', 'migrations');
 
 const date = new Date();
-const number = glob.sync(`${migrationsPath}/*.ts`).length + 1;
-const format = `${date.getFullYear()}_${number}`;
+const format = `${fns.format(date, 'dd:MM:yyyy_HH:mm:ss')}`;
 
-fs.writeFileSync(`${migrationsPath}/${format}-${process.argv[2] || ''}.ts`, model);
+function capitalize(str) {
+  return `${str[0].toUpperCase()}${str.substr(1)}`;
+}
+
+fs.writeFileSync(`${migrationsPath}/${format}-${capitalize(process.argv[2]) || ''}.ts`, model);
 
 console.log('<- Migration created successfully');
