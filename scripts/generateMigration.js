@@ -8,6 +8,9 @@ console.log('-> Creating new Migration:', process.argv[2]);
 const model = `
 import SequelizeStatic, { QueryInterface } from 'sequelize';
 
+import { migrationDefaults } from '@/server/utils/migration.defaults';
+import {} from '@/server/utils/constants';
+
 export default {
   async up(queryInterface: QueryInterface, Sequelize: typeof SequelizeStatic) {
     // Write migration code here.

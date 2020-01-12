@@ -4,7 +4,7 @@ import { Request, Response } from 'express';
 import { EnumNivelAcesso, EnumTipoAcesso } from '@/server/models/politica';
 import { Usuario } from '@/server/models/usuario';
 
-import { IsShortID } from './isShortid';
+import { IsShortID } from './validations/isShortid';
 
 export class FindOneParam {
   @IsShortID()

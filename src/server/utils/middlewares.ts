@@ -2,6 +2,7 @@ import { ValidationPipe } from '@nestjs/common';
 import { NestExpressApplication } from '@nestjs/platform-express';
 import Compression from 'compression';
 import Cookie from 'cookie-parser';
+import Csurf from 'csurf';
 import { static as Static } from 'express';
 import Helmet from 'helmet';
 
@@ -11,6 +12,13 @@ export function installMiddlewares(app: NestExpressApplication) {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   app.use(Cookie());
+  app.use(
+    Csurf({
+      cookie: {
+        key: 'XSRF-TOKEN',
+      },
+    })
+  );
 
   if (process.env.NODE_ENV === 'production') {
     app.use(Compression());

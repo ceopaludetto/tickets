@@ -1,16 +1,5 @@
-import {
-  Table,
-  Column,
-  PrimaryKey,
-  Default,
-  CreatedAt,
-  UpdatedAt,
-  DeletedAt,
-  Model,
-  HasMany,
-} from 'sequelize-typescript';
+import { Table, Column, PrimaryKey, Default, CreatedAt, UpdatedAt, DeletedAt, Model } from 'sequelize-typescript';
 
-import { Perfil } from '@/server/models/perfil';
 import { EMPRESA, SHORTID } from '@/server/utils/constants';
 
 import { EmpresaDTO } from './empresa.dto';
@@ -23,19 +12,31 @@ export class Empresa extends Model<Empresa> implements EmpresaDTO {
   public id!: string;
 
   @Column
+  public cnpj!: string;
+
+  @Column
   public razaoSocial!: string;
 
   @Column
-  public cnpj!: string;
+  public nomeFantasia!: string;
+
+  @Column
+  public nomeCompleto!: string;
+
+  @Column
+  public telefone!: string;
+
+  @Column
+  public site!: string;
+
+  @Column
+  public email!: string;
 
   @Column
   public cep!: string;
 
   @Column
-  public telefone!: string;
-
-  @HasMany(() => Perfil)
-  public perfis!: Perfil[];
+  public endereco!: string;
 
   @CreatedAt
   public dataCriacao!: Date;

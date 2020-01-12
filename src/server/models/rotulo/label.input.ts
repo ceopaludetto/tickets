@@ -1,6 +1,6 @@
 import { IsString, IsOptional, IsHexColor } from 'class-validator';
 
-import { IsShortID } from '@/server/utils/isShortid';
+import { IsShortID } from '@/server/utils/validations/isShortid';
 
 import { LabelInputDTO } from './label.dto';
 

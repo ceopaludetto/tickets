@@ -11,6 +11,7 @@ function injectErrorType(error: AxiosError) {
 
 export function createApi() {
   const api = axios.create({
+    xsrfCookieName: 'XSRF-TOKEN',
     baseURL: `${process.env.URL}/api`,
     adapter: !axios.defaults.adapter
       ? undefined

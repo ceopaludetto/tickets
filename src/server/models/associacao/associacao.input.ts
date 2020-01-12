@@ -1,6 +1,6 @@
 import { IsString, IsOptional } from 'class-validator';
 
-import { IsShortID } from '@/server/utils/isShortid';
+import { IsShortID } from '@/server/utils/validations/isShortid';
 
 import { AssociacaoInputDTO } from './associacao.dto';
 

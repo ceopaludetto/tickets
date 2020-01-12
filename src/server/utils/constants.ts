@@ -23,6 +23,10 @@ export const USUARIO = 'Usuario';
 export const ASSOCIACAO = 'Associacao';
 export const ROTULO = 'Rotulo';
 export const TICKET = 'Ticket';
+export const STATUS = 'Status';
+export const ASSOCIACAO_PERMISSAO = 'AssociacaoPermissao';
+export const PERMISSAO_SUB_RECURSO = 'PermissaoSubRecurso';
+export const ROTULO_TICKET = 'RotuloTicket';
 
 /**
  * SecurityModule

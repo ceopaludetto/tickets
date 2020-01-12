@@ -7,11 +7,17 @@ import {
 } from 'class-validator';
 import { isValid } from 'shortid';
 
-@ValidatorConstraint()
+@ValidatorConstraint({ async: true })
 @Injectable()
 export class IsShortidConstraint implements ValidatorConstraintInterface {
-  public validate = (id: string) => {
-    return isValid(id);
+  public validate = (id: string): Promise<boolean> => {
+    return new Promise(resolve => {
+      if (isValid(id)) {
+        return resolve(true);
+      }
+
+      return resolve(false);
+    });
   };
 
   public defaultMessage = () => {

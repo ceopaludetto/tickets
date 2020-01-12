@@ -28,6 +28,8 @@ export class ReactService {
       const helmetContext: FilledContext | {} = {};
       const { store, tasks } = createReduxStore();
 
+      req.csrfToken();
+
       if (req.user) {
         const user = await this.usuarioService.findOne(req.user.id);
 
