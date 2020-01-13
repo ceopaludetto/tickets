@@ -1,16 +1,14 @@
-import { Table, Column, PrimaryKey, Default, CreatedAt, UpdatedAt, DeletedAt, Model } from 'sequelize-typescript';
+import { Table, Column, AllowNull, BelongsToMany } from 'sequelize-typescript';
 
-import { EMPRESA, SHORTID } from '@/server/utils/constants';
+import { Associacao } from '@/server/models/associacao';
+import { Usuario } from '@/server/models/usuario';
+import { BaseModel } from '@/server/utils/base.model';
+import { EMPRESA } from '@/server/utils/constants';
 
 import { EmpresaDTO } from './empresa.dto';
 
 @Table({ modelName: EMPRESA, tableName: EMPRESA })
-export class Empresa extends Model<Empresa> implements EmpresaDTO {
-  @PrimaryKey
-  @Default(SHORTID)
-  @Column
-  public id!: string;
-
+export class Empresa extends BaseModel<Empresa> implements EmpresaDTO {
   @Column
   public cnpj!: string;
 
@@ -20,14 +18,16 @@ export class Empresa extends Model<Empresa> implements EmpresaDTO {
   @Column
   public nomeFantasia!: string;
 
+  @AllowNull
   @Column
-  public nomeCompleto!: string;
+  public nomeCompleto?: string;
 
   @Column
   public telefone!: string;
 
+  @AllowNull
   @Column
-  public site!: string;
+  public site?: string;
 
   @Column
   public email!: string;
@@ -38,12 +38,11 @@ export class Empresa extends Model<Empresa> implements EmpresaDTO {
   @Column
   public endereco!: string;
 
-  @CreatedAt
-  public dataCriacao!: Date;
-
-  @UpdatedAt
-  public dataAtualizacao!: Date;
-
-  @DeletedAt
-  public dataExclusao!: Date;
+  @BelongsToMany(() => Usuario, {
+    through: () => Associacao,
+    foreignKey: 'empresaID',
+    otherKey: 'usuarioID',
+    as: 'usuarios',
+  })
+  public usuarios!: (Usuario & { associacao: Associacao })[];
 }

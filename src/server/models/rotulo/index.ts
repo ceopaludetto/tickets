@@ -1,3 +1,3 @@
-export * from './label.entity';
-export * from './label.dto';
-export * from './label.input';
+export * from './rotulo.entity';
+export * from './rotulo.dto';
+export * from './rotulo.input';

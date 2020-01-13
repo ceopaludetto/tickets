@@ -10,6 +10,7 @@ export default {
       nome: Sequelize.STRING,
       sobrenome: Sequelize.STRING,
       dataNascimento: Sequelize.DATE,
+      senha: Sequelize.STRING,
       email: {
         type: Sequelize.STRING,
         unique: true,

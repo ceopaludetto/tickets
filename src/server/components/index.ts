@@ -9,5 +9,5 @@ export { ReactModule } from './react';
 export { UsuarioModule, UsuarioService } from './usuario';
 export { EmpresaModule, EmpresaService } from './empresa';
 export { TicketModule, TicketService } from './ticket';
-export { LabelModule, LabelService } from './label';
-export { PerfilModule, PerfilService } from './perfil';
+export { RotuloModule, RotuloService } from './rotulo';
+export { PermissaoModule, PermissaoService } from './permissao';

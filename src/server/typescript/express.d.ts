@@ -5,7 +5,7 @@ declare module 'express' {
     empresa: string;
     user: PayloadType;
     cookies: {
-      auth: string;
+      AUTH: string;
     };
   }
 }

@@ -1,6 +1,7 @@
 import { Injectable, NotFoundException, BadRequestException, UnauthorizedException } from '@nestjs/common';
 
 import { InjectModel } from '@/server/components/database';
+import { Empresa } from '@/server/models/empresa';
 import { UsuarioInput, Usuario } from '@/server/models/usuario';
 
 @Injectable()
@@ -9,7 +10,7 @@ export class UsuarioService {
 
   public async findAll() {
     try {
-      return this.usuarioRepository.findAll();
+      return this.usuarioRepository.findAll({ include: [Empresa] });
     } catch (err) {
       throw new BadRequestException(err);
     }
@@ -17,7 +18,7 @@ export class UsuarioService {
 
   public async findOne(id: string) {
     try {
-      return this.usuarioRepository.findByPk(id);
+      return this.usuarioRepository.findByPk(id, { include: [Empresa] });
     } catch (err) {
       throw new BadRequestException(err);
     }
@@ -25,10 +26,10 @@ export class UsuarioService {
 
   public async createOrUpdate(data: UsuarioInput, id?: string) {
     if (!id) {
-      return this.usuarioRepository.create(data);
+      return this.usuarioRepository.create(data, { include: [Empresa] });
     }
 
-    const usuario = await this.usuarioRepository.findByPk(id);
+    const usuario = await this.usuarioRepository.findByPk(id, { include: [Empresa] });
     if (!usuario) {
       throw new NotFoundException('Falha ao encontrar Usuário');
     }
@@ -37,7 +38,7 @@ export class UsuarioService {
 
   public async login(email: string, senha: string) {
     try {
-      const usuario = await this.usuarioRepository.findOne({ where: { email } });
+      const usuario = await this.usuarioRepository.findOne({ where: { email }, include: [Empresa] });
       if (!usuario) {
         throw new NotFoundException('Falha ao encontrar Usuário');
       }
@@ -54,7 +55,7 @@ export class UsuarioService {
 
   public async delete(id?: string) {
     try {
-      const usuario = await this.usuarioRepository.findByPk(id);
+      const usuario = await this.usuarioRepository.findByPk(id, { include: [Empresa] });
       if (!usuario) {
         throw new NotFoundException('Usuário não encontrado');
       }

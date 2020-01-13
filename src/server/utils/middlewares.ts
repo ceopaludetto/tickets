@@ -12,15 +12,15 @@ export function installMiddlewares(app: NestExpressApplication) {
   app.useGlobalPipes(new ValidationPipe({ transform: true }));
 
   app.use(Cookie());
-  app.use(
-    Csurf({
-      cookie: {
-        key: 'XSRF-TOKEN',
-      },
-    })
-  );
 
   if (process.env.NODE_ENV === 'production') {
+    app.use(
+      Csurf({
+        cookie: {
+          key: '_CSRF',
+        },
+      })
+    );
     app.use(Compression());
     app.use(Helmet());
   }

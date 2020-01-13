@@ -77,7 +77,7 @@ export class AuthService {
       id,
     });
 
-    res.cookie('auth', token, {
+    res.cookie('AUTH', token, {
       maxAge: 1000 * 60 * 60,
       path: '/',
     });

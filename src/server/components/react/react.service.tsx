@@ -28,7 +28,9 @@ export class ReactService {
       const helmetContext: FilledContext | {} = {};
       const { store, tasks } = createReduxStore();
 
-      req.csrfToken();
+      if (process.env.NODE_ENV === 'production') {
+        res.cookie('XSRF-TOKEN', req.csrfToken());
+      }
 
       if (req.user) {
         const user = await this.usuarioService.findOne(req.user.id);

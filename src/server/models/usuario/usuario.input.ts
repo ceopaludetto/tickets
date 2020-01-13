@@ -1,6 +1,7 @@
 import { IsOptional, IsString, IsEmail, Matches, IsArray, ValidateNested } from 'class-validator';
 
 import { AssociacaoInput } from '@/server/models/associacao';
+import { EmpresaInput } from '@/server/models/empresa';
 
 import { UsuarioInputDTO } from './usuario.dto';
 
@@ -33,5 +34,5 @@ export class UsuarioInput implements UsuarioInputDTO {
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
-  public associacoes?: AssociacaoInput[];
+  public empresas?: (EmpresaInput & { associacao: AssociacaoInput })[];
 }

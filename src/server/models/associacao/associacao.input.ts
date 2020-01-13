@@ -14,9 +14,4 @@ export class AssociacaoInput implements AssociacaoInputDTO {
   @IsOptional()
   @IsShortID()
   public usuarioID?: string;
-
-  @IsString()
-  @IsOptional()
-  @IsShortID()
-  public perfilID?: string;
 }

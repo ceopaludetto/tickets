@@ -7,7 +7,7 @@ export default {
   async up(queryInterface: QueryInterface, Sequelize: typeof SequelizeStatic) {
     return queryInterface.createTable(EMPRESA, {
       ...migrationDefaults(Sequelize),
-      CNPJ: {
+      cnpj: {
         type: Sequelize.STRING,
         unique: true,
       },
@@ -20,7 +20,7 @@ export default {
         allowNull: true,
       },
       email: Sequelize.STRING,
-      CEP: Sequelize.STRING,
+      cep: Sequelize.STRING,
       endereco: Sequelize.STRING,
     });
   },

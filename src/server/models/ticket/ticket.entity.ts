@@ -1,32 +1,15 @@
-import {
-  Table,
-  Column,
-  PrimaryKey,
-  Default,
-  AllowNull,
-  HasMany,
-  DefaultScope,
-  Model,
-  CreatedAt,
-  UpdatedAt,
-  DeletedAt,
-} from 'sequelize-typescript';
+import { Table, Column, AllowNull, BelongsToMany, BelongsTo, ForeignKey } from 'sequelize-typescript';
 
-import { Label } from '@/server/models/label';
-import { TICKET, SHORTID } from '@/server/utils/constants';
+import { Rotulo } from '@/server/models/rotulo';
+import { RotuloTicket } from '@/server/models/rotuloTicket';
+import { Status } from '@/server/models/status';
+import { BaseModel } from '@/server/utils/base.model';
+import { TICKET } from '@/server/utils/constants';
 
 import { TicketDTO } from './ticket.dto';
 
-@DefaultScope({
-  include: [() => Label],
-})
 @Table({ modelName: TICKET, tableName: TICKET })
-export class Ticket extends Model<Ticket> implements TicketDTO {
-  @PrimaryKey
-  @Default(SHORTID)
-  @Column
-  public id!: string;
-
+export class Ticket extends BaseModel<Ticket> implements TicketDTO {
   @AllowNull
   @Column
   public nome?: string;
@@ -34,15 +17,18 @@ export class Ticket extends Model<Ticket> implements TicketDTO {
   @Column
   public descricao!: string;
 
-  @HasMany(() => Label)
-  public labels!: Label[];
+  @BelongsToMany(() => Rotulo, {
+    through: () => RotuloTicket,
+    foreignKey: 'ticketID',
+    otherKey: 'rotuloID',
+    as: 'rotulos',
+  })
+  public rotulos!: (Rotulo & { rotuloTicket: RotuloTicket })[];
 
-  @CreatedAt
-  public dataCriacao!: Date;
+  @ForeignKey(() => Status)
+  @Column
+  public statusID!: string;
 
-  @UpdatedAt
-  public dataAtualizacao!: Date;
-
-  @DeletedAt
-  public dataExclusao!: Date;
+  @BelongsTo(() => Status)
+  public status!: Status;
 }

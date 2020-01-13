@@ -1,6 +1,8 @@
 import { IsString, IsOptional, IsArray, ValidateNested } from 'class-validator';
 
-import { LabelInput } from '@/server/models/label';
+import { RotuloInput } from '@/server/models/rotulo';
+import { RotuloTicketInput } from '@/server/models/rotuloTicket';
+import { IsShortID } from '@/server/utils/validations/isShortid';
 
 import { TicketInputDTO } from './ticket.dto';
 
@@ -16,5 +18,10 @@ export class TicketInput implements TicketInputDTO {
   @IsArray()
   @IsOptional()
   @ValidateNested({ each: true })
-  public labels?: LabelInput[];
+  public rotulos?: (RotuloInput & { rotuloTicket: RotuloTicketInput })[];
+
+  @IsString()
+  @IsOptional()
+  @IsShortID()
+  public statusID?: string;
 }

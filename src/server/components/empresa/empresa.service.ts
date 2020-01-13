@@ -2,6 +2,7 @@ import { Injectable, BadRequestException, NotFoundException } from '@nestjs/comm
 
 import { InjectModel } from '@/server/components/database';
 import { Empresa, EmpresaInput } from '@/server/models/empresa';
+import { Usuario } from '@/server/models/usuario';
 
 @Injectable()
 export class EmpresaService {
@@ -9,7 +10,7 @@ export class EmpresaService {
 
   public async findAll() {
     try {
-      return this.empresaRepository.findAll();
+      return this.empresaRepository.findAll({ include: [Usuario] });
     } catch (err) {
       throw new BadRequestException(err);
     }
@@ -17,7 +18,7 @@ export class EmpresaService {
 
   public async findOne(id: string) {
     try {
-      return this.empresaRepository.findByPk(id);
+      return this.empresaRepository.findByPk(id, { include: [Usuario] });
     } catch (err) {
       throw new BadRequestException(err);
     }
@@ -26,10 +27,10 @@ export class EmpresaService {
   public async createOrUpdate(data: EmpresaInput, id?: string) {
     try {
       if (!id) {
-        return this.empresaRepository.create(data);
+        return this.empresaRepository.create(data, { include: [Usuario] });
       }
 
-      const empresa = await this.empresaRepository.findByPk(id);
+      const empresa = await this.empresaRepository.findByPk(id, { include: [Usuario] });
       if (!empresa) {
         throw new NotFoundException('Falha ao encontrar empresa');
       }
@@ -42,7 +43,7 @@ export class EmpresaService {
 
   public async delete(id: string) {
     try {
-      const empresa = await this.empresaRepository.findByPk(id);
+      const empresa = await this.empresaRepository.findByPk(id, { include: [Usuario] });
       if (!empresa) {
         throw new NotFoundException('Falha ao encontrar empresa');
       }

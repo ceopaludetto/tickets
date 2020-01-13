@@ -1,4 +1,7 @@
-import { IsString, IsOptional, IsUrl, IsEmail, Matches } from 'class-validator';
+import { IsString, IsOptional, IsUrl, IsEmail, IsArray, ValidateNested, Matches } from 'class-validator';
+
+import { AssociacaoInput } from '@/server/models/associacao';
+import { UsuarioInputDTO } from '@/server/models/usuario';
 
 import { EmpresaInputDTO } from './empresa.dto';
 
@@ -42,4 +45,9 @@ export class EmpresaInput implements EmpresaInputDTO {
   @IsString()
   @IsOptional()
   public endereco?: string;
+
+  @IsArray()
+  @IsOptional()
+  @ValidateNested({ each: true })
+  public usuarios?: (UsuarioInputDTO & { associacao: AssociacaoInput })[];
 }

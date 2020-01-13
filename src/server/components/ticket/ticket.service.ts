@@ -1,13 +1,13 @@
 import { Injectable, BadRequestException, NotFoundException } from '@nestjs/common';
 
 import { InjectModel, InjectSequelize, Sequelize } from '@/server/components/database';
-import { Label } from '@/server/models/label';
+import { Rotulo } from '@/server/models/rotulo';
 import { TicketInput, Ticket } from '@/server/models/ticket';
 
 @Injectable()
 export class TicketService {
   public constructor(
-    @InjectModel(() => Label) private readonly labelRepository: typeof Label,
+    @InjectModel(() => Rotulo) private readonly rotuloRepository: typeof Rotulo,
     @InjectModel(() => Ticket) private readonly ticketsRepository: typeof Ticket,
     @InjectSequelize() private readonly sequelize: Sequelize
   ) {}
@@ -28,14 +28,14 @@ export class TicketService {
     }
   }
 
-  public async createOrUpdate({ labels, ...rest }: TicketInput, id?: string) {
+  public async createOrUpdate({ rotulos, ...rest }: TicketInput, id?: string) {
     try {
       if (!id) {
         return this.sequelize.transaction(async t => {
           const ticket = await this.ticketsRepository.create(rest, { transaction: t });
-          if (labels && labels.length) {
+          if (rotulos && rotulos.length) {
             await Promise.all(
-              labels.map(async l => this.labelRepository.create({ ...l, ticketID: ticket.id }, { transaction: t }))
+              rotulos.map(async r => this.rotuloRepository.create({ ...r, ticketID: ticket.id }, { transaction: t }))
             );
           }
           return ticket;
@@ -48,12 +48,12 @@ export class TicketService {
           throw new NotFoundException('Falha ao encontrar ticket');
         }
 
-        if (labels && labels.length) {
-          await this.labelRepository.destroy({ where: { ticketID: ticket.id }, transaction: t });
-          const label = await Promise.all(
-            labels.map(async l => this.labelRepository.create({ ...l, ticketID: ticket.id }, { transaction: t }))
+        if (rotulos && rotulos.length) {
+          await this.rotuloRepository.destroy({ where: { ticketID: ticket.id }, transaction: t });
+          const rotulo = await Promise.all(
+            rotulos.map(async r => this.rotuloRepository.create({ ...r, ticketID: ticket.id }, { transaction: t }))
           );
-          ticket.labels = label;
+          ticket.rotulos = rotulo;
         }
         const updated = await ticket.update(rest, { transaction: t });
         return updated.reload({ transaction: t });

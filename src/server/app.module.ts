@@ -12,14 +12,15 @@ import {
   UsuarioModule,
   EmpresaModule,
   TicketModule,
-  PerfilModule,
-  LabelModule,
+  RotuloModule,
+  PermissaoModule,
 } from '@/server/components';
 
 @Module({
   imports: [
     LoggerModule.forRoot({
       name: 'F3Desk',
+      autoLogging: false,
       level: process.env.NODE_ENV !== 'production' ? 'debug' : 'info',
       prettyPrint:
         process.env.NODE_ENV !== 'production'
@@ -57,8 +58,8 @@ import {
     EmpresaModule,
     UsuarioModule,
     TicketModule,
-    LabelModule,
-    PerfilModule,
+    RotuloModule,
+    PermissaoModule,
     // SecurityModule
     ReactModule,
   ],

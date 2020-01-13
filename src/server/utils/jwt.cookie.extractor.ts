@@ -11,11 +11,11 @@ export function ExtractAuthTokenFromCookie(
     shouldThrowException: false,
   }
 ) {
-  const { auth } = req.cookies;
+  const { AUTH } = req.cookies;
 
-  if (!auth && shouldThrowException) {
+  if (!AUTH && shouldThrowException) {
     throw new UnauthorizedException('Falha na autenticação');
   }
 
-  return auth;
+  return AUTH;
 }

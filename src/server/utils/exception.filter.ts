@@ -20,7 +20,7 @@ export class ErrorFormatter implements ExceptionFilter {
 
     if (error instanceof SequelizeError) {
       formatted = this.isSequelize(error);
-    } else if (error.message.message[0] instanceof ValidationError) {
+    } else if (error?.message?.message?.[0] instanceof ValidationError) {
       formatted = this.isClassValidator(error.message.message as ValidationError[]);
     } else if (error instanceof HttpException) {
       formatted = this.isHttp(error);
@@ -69,6 +69,8 @@ export class ErrorFormatter implements ExceptionFilter {
 
   private isSequelize = (error: SequelizeError) => {
     const formatted: F3DeskError = {};
+
+    console.log(error); // eslint-disable-line
 
     formatted.type = 'Sequelize';
     formatted.status = HttpStatus.BAD_REQUEST;
