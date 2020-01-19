@@ -1,7 +1,6 @@
 import React, { cloneElement, useCallback, useMemo, useState } from 'react';
 import { useMeasure, useIsomorphicLayoutEffect } from 'react-use';
 
-import clsx from 'clsx';
 import { useFormik, FormikContext } from 'formik';
 import { motion, AnimatePresence } from 'framer-motion';
 import { OutlinePerson, OutlineLock, OutlineBusiness } from 'mdi-norm';
@@ -12,6 +11,7 @@ import {
   Overline,
   Title,
   Grid,
+  GridItem,
   Button,
   Stepper,
   Paper,
@@ -145,19 +145,19 @@ export default function AuthRegister() {
                   exit="exit"
                 >
                   <Grid ref={ref}>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <FormControl required name="nome" label="Nome" id="nome" />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <FormControl required name="sobrenome" label="Sobrenome" id="sobrenome" />
-                    </div>
-                    <div className={u['xs:grid-column-12']}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12 }}>
                       <FormControl required name="email" label="Email" id="email" type="email" />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <FormControl name="telefone" label="Telefone" mask={telMask} id="telefone" type="tel" />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <FormControl
                         required
                         name="dataNascimento"
@@ -165,7 +165,7 @@ export default function AuthRegister() {
                         mask={dateMask}
                         id="dataNascimento"
                       />
-                    </div>
+                    </GridItem>
                   </Grid>
                 </motion.div>,
                 <motion.div
@@ -176,7 +176,7 @@ export default function AuthRegister() {
                   exit="exit"
                 >
                   <Grid ref={ref}>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <>
                         <FormControl required name="senha" label="Senha" id="senha" {...mapVisibilityProps('senha')} />
                         <FormControl
@@ -187,8 +187,8 @@ export default function AuthRegister() {
                           {...mapVisibilityProps('rsenha')}
                         />
                       </>
-                    </div>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <Paper small border>
                         <Overline gutterBottom>Dicas de senha</Overline>
                         <List>
@@ -197,7 +197,7 @@ export default function AuthRegister() {
                           <List.Item disabled={number}>Pelo menos um número</List.Item>
                         </List>
                       </Paper>
-                    </div>
+                    </GridItem>
                   </Grid>
                 </motion.div>,
                 <motion.div
@@ -208,19 +208,19 @@ export default function AuthRegister() {
                   exit="exit"
                 >
                   <Grid ref={ref}>
-                    <div className={u['xs:grid-column-12']}>
+                    <GridItem size={{ xs: 12 }}>
                       <FormCheckbox labelPlacement="right" name="hasEmpresa" label="Criar empresa?" id="hasEmpresa" />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <FormControl required={hasEmpresa} name="cnpj" label="CNPJ" id="cnpj" mask={cnpjMask} />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <FormControl required={hasEmpresa} name="razaoSocial" label="Razão Social" id="razaoSocial" />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <FormControl required={hasEmpresa} name="nomeFantasia" label="Nome Fantasia" id="nomeFantasia" />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <FormControl
                         required={hasEmpresa}
                         name="empresaTelefone"
@@ -229,25 +229,25 @@ export default function AuthRegister() {
                         type="tel"
                         mask={telMask}
                       />
-                    </div>
-                    <div className={u['xs:grid-column-12']}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12 }}>
                       <FormControl name="nomeCompleto" label="Nome Completo" id="nomeCompleto" />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <FormControl name="site" label="Site" id="site" type="url" />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <FormControl required={hasEmpresa} name="empresaEmail" label="Email" id="empresaEmail" />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-12'], u['md:grid-column-6'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 12, md: 6 }}>
                       <FormControl required={hasEmpresa} name="cep" label="CEP" id="cep" mask={cepMask} />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-9'], u['md:grid-column-4'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 9, md: 4 }}>
                       <FormControl required={hasEmpresa} name="endereco" label="Endereço" id="endereco" />
-                    </div>
-                    <div className={clsx(u['xs:grid-column-3'], u['md:grid-column-2'])}>
+                    </GridItem>
+                    <GridItem size={{ xs: 3, md: 2 }}>
                       <FormControl required={hasEmpresa} name="numero" label="Nº" id="numero" />
-                    </div>
+                    </GridItem>
                   </Grid>
                 </motion.div>,
               ])}

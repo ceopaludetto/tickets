@@ -33,8 +33,9 @@ module.exports = (isServer = false, isTest = false) => ({
   ],
   plugins: [
     'lodash',
-    '@loadable/babel-plugin',
     'optimize-clsx',
+    'styled-components',
+    '@loadable/babel-plugin',
     '@babel/plugin-transform-react-constant-elements',
     '@babel/plugin-transform-react-inline-elements',
     '@babel/plugin-proposal-optional-chaining',

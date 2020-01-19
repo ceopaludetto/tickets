@@ -8,7 +8,6 @@ const path = require('path');
 const safePostCssParser = require('postcss-safe-parser');
 const TerserPlugin = require('terser-webpack-plugin');
 const webpack = require('webpack');
-const WebpackBar = require('webpackbar');
 
 const babelOptions = require('./babelOptions');
 const envs = require('./envs');
@@ -238,11 +237,5 @@ module.exports = (isServer = false) => ({
       PROTOCOL: envs.PROTOCOL,
     }),
     new LodashPlugin(),
-    new WebpackBar({
-      compiledIn: true,
-      minimal: true,
-      color: isServer ? '#ffc100' : '#42a5f5',
-      name: isServer ? 'Server' : 'Client',
-    }),
   ],
 });
