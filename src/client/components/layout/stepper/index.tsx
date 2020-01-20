@@ -1,19 +1,7 @@
 import React from 'react';
 
-import clsx from 'clsx';
-
-import s from './stepper.scss';
-
-interface StepperProps extends React.HTMLAttributes<HTMLDivElement> {
-  currentPage: number;
-  totalPages: number;
-  nextPage: () => void;
-  togglePage: (value: number) => void;
-  labels: {
-    text: string;
-    icon: React.ElementType<any>;
-  }[];
-}
+import { StepperProps } from './index.dto';
+import { Container, Item, Icon, Text, Divider } from './styles';
 
 export function Stepper({ totalPages, labels, currentPage, togglePage, nextPage, ...rest }: StepperProps) {
   if (labels.length !== totalPages) {
@@ -27,26 +15,24 @@ export function Stepper({ totalPages, labels, currentPage, togglePage, nextPage,
   };
 
   return (
-    <div className={s.stepper} {...rest}>
+    <Container {...rest}>
       {labels.map((l, i) => (
         <React.Fragment key={l.text}>
-          <div
+          <Item
+            active={i <= currentPage}
             tabIndex={0}
             role="button"
             onKeyUp={handleKeyUp}
             onClick={() => togglePage(i)}
-            className={clsx(s.item, { [s.active]: i <= currentPage })}
           >
-            <div className={s.icon}>
+            <Icon>
               <l.icon size={24} />
-            </div>
-            <span className={s.text}>{l.text}</span>
-          </div>
-          {i + 1 !== totalPages && (
-            <div role="status" className={clsx(s.divider, { [s.active]: i + 1 <= currentPage })} />
-          )}
+            </Icon>
+            <Text>{l.text}</Text>
+          </Item>
+          {i + 1 !== totalPages && <Divider role="status" active={i + 1 <= currentPage} />}
         </React.Fragment>
       ))}
-    </div>
+    </Container>
   );
 }

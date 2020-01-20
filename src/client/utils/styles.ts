@@ -1,3 +1,4 @@
+import { kebabCase } from 'lodash';
 import { parseToRgb, darken, rgbToColorString } from 'polished';
 import { RgbColor, RgbaColor } from 'polished/lib/types/color';
 import { withProp, theme } from 'styled-tools';
@@ -65,4 +66,19 @@ export function getColors(colors: ColorType, currTheme: ThemeType) {
 
 export function getThemeColor(value: string, customProp = 'color') {
   return withProp(customProp, p => theme(`colors.${p}.${value}`));
+}
+
+export function withResponsiveProps<T extends any[]>(
+  ps: T,
+  cb: (p: T[number], v: any, r?: 'xs' | 'sm' | 'md' | 'lg' | 'xl') => any
+) {
+  return <Props>(props: Props) => {
+    return (ps as any).map((p: T[number]) => {
+      if (props[p]) {
+        return Object.keys(props[p]).map(r => cb(kebabCase(p), (props as any)[p][r], r as any));
+      }
+
+      return null;
+    });
+  };
 }

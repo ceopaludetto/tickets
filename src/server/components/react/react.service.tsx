@@ -7,6 +7,7 @@ import { StaticRouter } from 'react-router-dom';
 
 import { ChunkExtractorManager, ChunkExtractor } from '@loadable/server';
 import { Injectable, BadRequestException } from '@nestjs/common';
+import { ServerStyleSheet, StyleSheetManager } from 'styled-components';
 
 import ReactApp from '@/client/bootstrap';
 import { createReduxStore } from '@/client/providers/store';
@@ -20,6 +21,7 @@ export class ReactService {
   public constructor(private readonly usuarioService: UsuarioService) {}
 
   public async render({ req, res }: ContextType) {
+    const sheet = new ServerStyleSheet();
     try {
       const extractor = new ChunkExtractor({
         statsFile: process.env.MANIFEST as string,
@@ -47,13 +49,15 @@ export class ReactService {
 
       const markup = renderToString(
         <ChunkExtractorManager extractor={extractor}>
-          <HelmetProvider context={helmetContext}>
-            <StaticRouter context={context} location={req.url}>
-              <Provider store={store}>
-                <ReactApp />
-              </Provider>
-            </StaticRouter>
-          </HelmetProvider>
+          <StyleSheetManager sheet={sheet.instance}>
+            <HelmetProvider context={helmetContext}>
+              <StaticRouter context={context} location={req.url}>
+                <Provider store={store}>
+                  <ReactApp />
+                </Provider>
+              </StaticRouter>
+            </HelmetProvider>
+          </StyleSheetManager>
         </ChunkExtractorManager>
       );
 
@@ -63,18 +67,27 @@ export class ReactService {
 
       const initialState = store.getState();
 
-      return res.send(this.html(markup, initialState, extractor, (helmetContext as FilledContext).helmet));
+      return res.send(this.html(markup, initialState, extractor, (helmetContext as FilledContext).helmet, sheet));
     } catch (err) {
       throw new BadRequestException(err);
+    } finally {
+      sheet.seal();
     }
   }
 
-  private html = (markup: string, initialState: {}, extractor: ChunkExtractor, helmet: FilledContext['helmet']) => {
+  private html = (
+    markup: string,
+    initialState: {},
+    extractor: ChunkExtractor,
+    helmet: FilledContext['helmet'],
+    sheet: ServerStyleSheet
+  ) => {
     const { htmlAttributes, bodyAttributes } = helmet;
 
     const linkEls = extractor.getLinkElements();
     const styleEls = extractor.getStyleElements();
     const scriptEls = extractor.getScriptElements();
+    const styledEls = sheet.getStyleElement();
 
     return '<!DOCTYPE html>'.concat(
       renderToStaticMarkup(
@@ -85,6 +98,7 @@ export class ReactService {
             {helmet.link.toComponent()}
             {linkEls}
             {styleEls}
+            {styledEls}
           </head>
           <body {...bodyAttributes.toComponent()}>
             <div id="app" dangerouslySetInnerHTML={{ __html: markup }} />

@@ -1,15 +1,7 @@
 import styled, { css } from 'styled-components';
 import { theme, withProp } from 'styled-tools';
 
-export interface GridItemProps extends React.HTMLAttributes<HTMLDivElement> {
-  size?: {
-    xs?: number;
-    sm?: number;
-    md?: number;
-    lg?: number;
-    xl?: number;
-  };
-}
+import { GridItemProps } from './index.dto';
 
 export const Container = styled.div`
   display: grid;

@@ -3,7 +3,8 @@ import { Link } from 'react-router-dom';
 
 import { usePreload } from '@/client/utils';
 
-import { Container, ButtonProps, PrefetchLinkProps } from './styles';
+import { ButtonProps, PrefetchLinkProps } from './index.dto';
+import { Container } from './styles';
 
 type Overload = {
   (props: ButtonProps): JSX.Element;

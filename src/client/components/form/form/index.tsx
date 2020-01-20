@@ -2,14 +2,12 @@ import React, { useMemo } from 'react';
 import { useDeepCompareEffect } from 'react-use';
 
 import { ValidationError } from 'class-validator/validation/ValidationError';
-import clsx from 'clsx';
 import { useFormikContext, Form as FormikForm } from 'formik';
 
-import u from '@/client/scss/utils.scss';
 import { ApplicationState } from '@/client/services/ducks';
 import { useValidator } from '@/client/utils';
 
-import s from './form.scss';
+import { Error } from './styles';
 
 interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
   error?: string;
@@ -50,7 +48,7 @@ export function Form({ children, error, statesToValidate, ...rest }: FormProps) 
   return (
     <FormikForm {...rest}>
       <>
-        {!!mappedError && <span className={clsx(s.error, u['xs:mt-1'], u['xs:mb-2'])}>{mappedError}</span>}
+        {!!mappedError && <Error>{mappedError}</Error>}
         {children}
       </>
     </FormikForm>

@@ -4,11 +4,7 @@ import { switchProp, theme } from 'styled-tools';
 import { Label as DefaultLabel } from '@/client/components/typography';
 import { getThemeColor } from '@/client/utils/styles';
 
-export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  label?: string;
-  color?: 'primary' | 'secondary' | 'background' | 'paper';
-  labelPlacement?: 'top' | 'right';
-}
+import { CheckboxProps } from './index.dto';
 
 export const Wrapper = styled.div`
   height: 22px;

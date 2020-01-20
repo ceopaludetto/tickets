@@ -2,7 +2,8 @@ import React from 'react';
 
 import { RoundCheck } from 'mdi-norm';
 
-import { FormGroup, Label, Wrapper, Input, Icon, Switch, CheckboxProps } from './styles';
+import { CheckboxProps } from './index.dto';
+import { FormGroup, Label, Wrapper, Input, Icon, Switch } from './styles';
 
 export function Checkbox({ label, id, color = 'secondary', labelPlacement = 'top', ...rest }: CheckboxProps) {
   return (

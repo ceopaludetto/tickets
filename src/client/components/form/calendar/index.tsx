@@ -27,11 +27,11 @@ import { ArrowBack, ArrowForward } from 'mdi-norm';
 
 import { Button } from '@/client/components/form/button';
 import { IconButton } from '@/client/components/form/iconbutton';
-import { Grid } from '@/client/components/layout/grid';
-import { Paper } from '@/client/components/layout/paper';
+import { Flex, Grid, GridItem } from '@/client/components/layout';
 import u from '@/client/scss/utils.scss';
 
 import s from './calendar.scss';
+import { Container, NoPaddingButton, ShowingDate, Week } from './styles';
 
 interface CalendarProps extends Omit<HTMLMotionProps<'div'>, 'onChange' | 'onSubmit'> {
   float?: boolean;
@@ -193,7 +193,7 @@ export function Calendar({
       while (day <= endDate) {
         const cloneDate = day;
         draft.push(
-          <div className={u['xs:grid-column-1']}>
+          <GridItem size={{ xs: 1 }}>
             <Button
               disabled={!isSameMonth(cloneDate, monthStart) || resolveButtonDisabled(cloneDate)}
               variant={isSameDay(cloneDate, selected) ? 'contained' : 'flat'}
@@ -203,7 +203,7 @@ export function Calendar({
             >
               {format(day, dateFormat, { locale: ptBR })}
             </Button>
-          </div>
+          </GridItem>
         );
         day = addDays(day, 1);
       }
@@ -258,33 +258,23 @@ export function Calendar({
   }, [showingDate, selected, smallWindow]);
 
   return (
-    <Paper className={clsx(u['xs:mw-4'], u['xs:w-100'])} small={float} {...rest}>
+    <Container small={float} {...rest}>
       <>
-        <div className={clsx(u['xs:d-flex'], u['-xs:mx-3'], u['xs:ai-center'], u['xs:pb-1'], u['xs:fw-wrap'])}>
-          <div className={clsx(u['xs:px-3'], u['xs:col-12'], u['xs:mb-1'])}>
-            <Button
-              color={type === 'y' ? 'secondary' : 'primary'}
-              className={u['xs:p-0']}
-              onClick={() => setType('y')}
-              variant="flat"
-            >
+        <Flex alignItems={{ xs: 'center' }} flexWrap={{ xs: 'wrap' }}>
+          <Flex.Item size={{ xs: 12 }}>
+            <NoPaddingButton color={type === 'y' ? 'secondary' : 'primary'} onClick={() => setType('y')} variant="flat">
               {formattedYear}
-            </Button>
-          </div>
-          <div className={clsx(u['xs:px-3'], u['xs:col-12'])}>
-            <Button
-              color={type === 'd' ? 'secondary' : 'primary'}
-              className={clsx(u['xs:p-0'], s['showing-date'])}
-              onClick={() => setType('d')}
-              variant="flat"
-            >
+            </NoPaddingButton>
+          </Flex.Item>
+          <Flex.Item size={{ xs: 12 }}>
+            <ShowingDate color={type === 'd' ? 'secondary' : 'primary'} onClick={() => setType('d')} variant="flat">
               {formattedDate}
-            </Button>
-          </div>
-        </div>
+            </ShowingDate>
+          </Flex.Item>
+        </Flex>
         {type === 'd' && (
           <div ref={ref}>
-            <div className={clsx(u['xs:d-flex'], u['-xs:mx-3'], u['xs:ai-center'], u['xs:pb-2'])}>
+            <Flex alignItems={{ xs: 'center' }}>
               <div className={u['xs:px-3']}>
                 <IconButton aria-label="Mês anterior" disabled={!shouldMoveToPrevMonth} onClick={prevMonth}>
                   <ArrowBack />
@@ -308,20 +298,19 @@ export function Calendar({
                   <ArrowForward />
                 </IconButton>
               </div>
-            </div>
+            </Flex>
             <AnimatePresence exitBeforeEnter initial={false}>
-              <motion.div
+              <Week
                 variants={animationVariants}
                 custom={isPreviousAfter}
                 animate="animate"
                 initial="initial"
                 exit="exit"
                 key={showingFormatted}
-                className={clsx(s.week, s.gap, u['xs:ta-center'])}
               >
                 {renderWeekDays()}
                 {renderCells()}
-              </motion.div>
+              </Week>
             </AnimatePresence>
           </div>
         )}
@@ -343,6 +332,6 @@ export function Calendar({
           </div>
         )}
       </>
-    </Paper>
+    </Container>
   );
 }
