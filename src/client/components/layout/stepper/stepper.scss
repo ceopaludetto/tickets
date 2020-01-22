@@ -1,0 +1,43 @@
+@import '~@/client/scss/functions';
+
+.stepper {
+  display: flex;
+  margin: #{0 -1rem}; // avoid sass calculate
+  align-items: center;
+  padding: 0.5rem 0 1.5rem;
+  .item {
+    cursor: pointer;
+    display: flex;
+    padding: 0 1rem;
+    align-items: center;
+    &:focus {
+      outline: none;
+    }
+    .text {
+      font-size: 1.25rem;
+      color: get-theme-color("disabled-text");
+    }
+    .icon {
+      padding-right: 0.5rem;
+      display: flex;
+      color: get-theme-color("disabled-text");
+    }
+    &.active {
+      .text {
+        color: get-theme-color("primary");
+      }
+      .icon{
+        color: get-theme-color("primary");
+      }
+    }
+  }
+  .divider {
+    height: 2px;
+    border-radius: 6px;
+    flex: 1;
+    background-color: get-theme-color("disabled-text");
+    &.active {
+      background-color: get-theme-color("primary");
+    }
+  }
+}

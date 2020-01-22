@@ -1,0 +1,87 @@
+@import "~@/client/scss/functions";
+
+.form-group {
+  margin-bottom: 1rem;
+  position: relative;
+  .wrapper {
+    height: 26px;
+    width: 40px;
+    position: relative;
+  }
+  .input {
+    cursor: pointer;
+    opacity: 0;
+    position: absolute;
+    left: 0;
+    top: 0;
+    width: 100%;
+    height: 100%;
+    &:active {
+      & + .switch {
+        &::before {
+          background-color: get-theme-color("background");
+        }
+      }
+    }
+    @each $k, $v in map-get($colors, "light") {
+      &.#{$k} {
+        &:focus {
+          & + .switch::before {
+            box-shadow: 0 0 0 3px get-theme-color($k, "shadow-3");
+          }
+        }
+        &:checked {
+          & + .switch {
+            &::before {
+              border-color: get-theme-color($k, "active");
+              background-color: get-theme-color($k);
+            }
+            &::after {
+              transform: translateX(18px);
+              background-color: get-theme-color($k, "contrast");
+            }
+          }
+        }
+      }
+    }
+  }
+  .switch {
+    pointer-events: none;
+    &::before {
+      content: "";
+      position: absolute;
+      left: 0;
+      top: 0;
+      width: 100%;
+      height: calc(100% - 4px);
+      background-color: get-theme-color("background", "hover");
+      border: 2px solid;
+      border-color: get-theme-color("background", "active");
+      border-radius: 20px;
+      transition: create-transition(
+        (background-color, border-color, box-shadow),
+        100ms,
+        ease-in-out
+      );
+    }
+    &::after {
+      content: "";
+      position: absolute;
+      left: 4px;
+      top: 4px;
+      width: 18px;
+      height: calc(100% - 8px);
+      background-color: get-theme-color("primary", "contrast");
+      border-radius: 50%;
+      transition: create-transition(
+        (transform, background-color),
+        100ms,
+        ease-in-out
+      );
+    }
+  }
+  .label {
+    display: inline-block;
+    margin-bottom: 0.25rem;
+  }
+}

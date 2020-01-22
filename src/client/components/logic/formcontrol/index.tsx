@@ -2,8 +2,7 @@ import React from 'react';
 
 import { useField, useFormikContext } from 'formik';
 
-import { Control } from '@/client/components/form/control';
-import { ControlProps } from '@/client/components/form/control/index.dto';
+import { Control, ControlProps } from '@/client/components/form/control';
 
 export function FormControl({ name, helperText, ...rest }: Omit<ControlProps, 'ref' | 'name'> & { name: string }) {
   const [field, meta] = useField(name);

@@ -1,7 +1,16 @@
 import React, { forwardRef } from 'react';
 
-import { PaperProps } from './index.dto';
-import { Container, Inner } from './styles';
+import clsx from 'clsx';
+import { motion, HTMLMotionProps } from 'framer-motion';
+
+import s from './paper.scss';
+
+interface PaperProps extends HTMLMotionProps<'div'> {
+  border?: boolean;
+  elevate?: boolean;
+  hasInner?: boolean;
+  small?: boolean;
+}
 
 export function Paper({
   children,
@@ -9,22 +18,35 @@ export function Paper({
   elevate = false,
   small = false,
   hasInner = false,
+  className,
   ...rest
 }: PaperProps) {
   return (
-    <Container border={border} elevate={elevate} hasInner={hasInner} small={small} {...rest}>
+    <motion.div
+      className={clsx(
+        s.paper,
+        {
+          [s.border]: border,
+          [s.elevate]: elevate,
+          [s.inner]: !hasInner && !small,
+          [s['inner-small']]: !hasInner && small,
+        },
+        className
+      )}
+      {...rest}
+    >
       {children}
-    </Container>
+    </motion.div>
   );
 }
 
 Paper.Inner = forwardRef(
   (
-    { children, small = false, ...rest }: React.HTMLAttributes<HTMLDivElement> & Pick<PaperProps, 'small'>,
+    { children, className, small = false, ...rest }: React.HTMLAttributes<HTMLDivElement> & Pick<PaperProps, 'small'>,
     ref: React.Ref<HTMLDivElement>
   ) => (
-    <Inner ref={ref} small={small} {...rest}>
+    <div ref={ref} className={clsx({ [s.inner]: !small, [s['inner-small']]: small }, className)} {...rest}>
       {children}
-    </Inner>
+    </div>
   )
 );

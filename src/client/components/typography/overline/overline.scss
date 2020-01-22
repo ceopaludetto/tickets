@@ -1,0 +1,13 @@
+@import "~@/client/scss/functions";
+
+.overline {
+  color: get-theme-color("secondary");
+  font-size: nth($font-sizes, 2);
+  font-weight: get-font-weight("medium");
+  text-transform: uppercase;
+  letter-spacing: 1.1px;
+  &.margin {
+    display: inline-block;
+    margin-bottom: 1rem;
+  }
+}

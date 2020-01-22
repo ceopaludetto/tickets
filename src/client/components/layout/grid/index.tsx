@@ -1,7 +1,6 @@
 import React, { forwardRef } from 'react';
 
-import { GridItemProps } from './index.dto';
-import { Container, Item } from './styles';
+import { Container, Item, GridItemProps } from './styles';
 
 export const Grid = forwardRef(
   ({ children, ...rest }: React.HTMLAttributes<HTMLDivElement>, ref: React.Ref<HTMLDivElement>) => (

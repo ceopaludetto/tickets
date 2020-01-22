@@ -1,20 +1,29 @@
 import React from 'react';
 
-import { ListProps, ListItemProps } from './index.dto';
-import { Container, Item } from './styles';
+import clsx from 'clsx';
+
+import s from './list.scss';
+
+interface ListProps extends React.HTMLAttributes<HTMLUListElement> {
+  gutterBottom?: boolean;
+}
 
 export function List({ children, gutterBottom = false, ...rest }: ListProps) {
   return (
-    <Container gutterBottom={gutterBottom} {...rest}>
+    <ul className={clsx(s.list, { [s.margin]: gutterBottom })} {...rest}>
       {children}
-    </Container>
+    </ul>
   );
+}
+
+interface ListItemProps extends React.LiHTMLAttributes<HTMLLIElement> {
+  disabled?: boolean;
 }
 
 List.Item = ({ children, disabled, ...rest }: ListItemProps) => {
   return (
-    <Item disabled={disabled} {...rest}>
+    <li className={clsx(s.item, { [s.disabled]: disabled })} {...rest}>
       {children}
-    </Item>
+    </li>
   );
 };

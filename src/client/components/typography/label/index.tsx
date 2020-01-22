@@ -1,11 +1,15 @@
 import React from 'react';
 
-import { Container } from './styles';
+import clsx from 'clsx';
 
-export function Label({ children, htmlFor, ...rest }: React.LabelHTMLAttributes<HTMLLabelElement>) {
+import styles from './label.scss';
+
+export function Label({ children, className, htmlFor, ...rest }: React.LabelHTMLAttributes<HTMLLabelElement>) {
+  const classes = clsx(styles.label, className);
+
   return (
-    <Container htmlFor={htmlFor} {...rest}>
+    <label htmlFor={htmlFor} className={classes} {...rest}>
       {children}
-    </Container>
+    </label>
   );
 }

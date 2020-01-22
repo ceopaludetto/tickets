@@ -1,12 +1,17 @@
 import React from 'react';
 
-import { OverlineProps } from './index.dto';
-import { Container } from './styles';
+import clsx from 'clsx';
 
-export function Overline({ children, gutterBottom = false, ...rest }: OverlineProps) {
+import s from './overline.scss';
+
+interface OverlineProps extends React.HTMLAttributes<HTMLParagraphElement> {
+  gutterBottom?: boolean;
+}
+
+export function Overline({ children, className, gutterBottom = false, ...rest }: OverlineProps) {
   return (
-    <Container gutterBottom={gutterBottom} {...rest}>
+    <small className={clsx(s.overline, { [s.margin]: gutterBottom }, className)} {...rest}>
       {children}
-    </Container>
+    </small>
   );
 }

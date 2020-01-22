@@ -1,0 +1,18 @@
+@import "~@/client/scss/functions";
+
+.list {
+  margin: 0;
+  padding-left: 1.5rem;
+  &.margin {
+    margin-bottom: 1rem;
+  }
+  .item {
+    font-size: nth($font-sizes, 2);
+    padding-left: 0.25rem;
+    line-height: 1.25;
+    &.disabled {
+      text-decoration: line-through;
+      color: get-theme-color("disabled-text");
+    }
+  }
+}

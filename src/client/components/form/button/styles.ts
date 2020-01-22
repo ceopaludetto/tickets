@@ -1,9 +1,19 @@
+import { LinkProps } from 'react-router-dom';
+
 import styled, { css } from 'styled-components';
 import { theme, switchProp } from 'styled-tools';
 
 import { getThemeColor } from '@/client/utils/styles';
 
-import { ButtonProps, PrefetchLinkProps } from './index.dto';
+export interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  variant?: 'contained' | 'flat';
+  color?: 'primary' | 'secondary' | 'background' | 'paper';
+}
+
+export interface PrefetchLinkProps extends LinkProps {
+  variant?: 'contained' | 'flat';
+  color?: 'primary' | 'secondary' | 'background' | 'paper';
+}
 
 export const Container = styled.button<ButtonProps | PrefetchLinkProps>`
   border: none;

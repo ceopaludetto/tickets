@@ -1,14 +1,20 @@
 import React, { cloneElement } from 'react';
 
-import { IconButtonProps } from './index.dto';
-import { Container } from './styles';
+import clsx from 'clsx';
+
+import s from './iconbutton.scss';
+
+interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
+  children: React.ReactElement<{ size: number }>;
+  color?: 'primary' | 'secondary' | 'background' | 'paper';
+}
 
 export function IconButton({ children, color = 'primary', ...rest }: IconButtonProps) {
   return (
-    <Container color={color} {...rest}>
+    <button className={clsx(s.button, s[color])} {...rest}>
       {cloneElement(children, {
         size: 24,
       })}
-    </Container>
+    </button>
   );
 }

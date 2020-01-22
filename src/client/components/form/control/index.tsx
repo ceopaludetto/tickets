@@ -1,8 +1,7 @@
 import React, { forwardRef, cloneElement } from 'react';
 import MaskInput from 'react-text-mask';
 
-import { ControlProps } from './index.dto';
-import { Container, FormGroup, Input, Label, Helper, Append } from './styles';
+import { Container, FormGroup, Input, Label, Helper, Append, ControlProps } from './styles';
 
 export const Control = forwardRef(
   (

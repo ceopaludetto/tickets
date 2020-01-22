@@ -2,19 +2,24 @@ import React, { createContext, useContext } from 'react';
 import { useLocation } from 'react-router-dom';
 import { useInterval, usePrevious, useIsomorphicLayoutEffect } from 'react-use';
 
-import { HTMLMotionProps, useMotionValue, useTransform } from 'framer-motion';
+import clsx from 'clsx';
+import { motion, HTMLMotionProps, useMotionValue, useTransform } from 'framer-motion';
 
 import { useSSR } from '@/client/utils';
 
-import { ProgressContextProps } from './index.dto';
-import { Container, Peg, Bar } from './styles';
+import s from './progress.scss';
+
+interface ProgressContextProps {
+  isAnimating: boolean;
+  toggleAnimation: (value?: boolean) => void;
+}
 
 export const ProgressContext = createContext<ProgressContextProps>({
   isAnimating: false,
   toggleAnimation: () => {},
 });
 
-export function Progress(props: HTMLMotionProps<'div'>) {
+export function Progress({ className, ...rest }: HTMLMotionProps<'div'>) {
   const location = useLocation();
   const { isBrowser } = useSSR();
   const { isAnimating } = useContext(ProgressContext);
@@ -64,9 +69,15 @@ export function Progress(props: HTMLMotionProps<'div'>) {
   }, 500);
 
   return (
-    <Container role="status" style={{ width, opacity }} key={location.pathname} {...props}>
-      <Bar />
-      <Peg />
-    </Container>
+    <motion.div
+      role="status"
+      style={{ width, opacity }}
+      key={location.pathname}
+      className={clsx(s.root, className)}
+      {...rest}
+    >
+      <div className={s.bar} />
+      <div className={s.peg} />
+    </motion.div>
   );
 }

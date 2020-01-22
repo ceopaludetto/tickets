@@ -1,16 +1,28 @@
 import React from 'react';
+import { Link as RouterLink, LinkProps as RouterLinkProps } from 'react-router-dom';
+
+import clsx from 'clsx';
 
 import { usePreload } from '@/client/utils';
 
-import { LinkProps } from './index.dto';
-import { Container } from './styles';
+import s from './index.scss';
+
+interface LinkProps extends RouterLinkProps {
+  gutterBottom?: boolean;
+  color?: 'primary' | 'secondary' | 'background' | 'paper';
+}
 
 export function Link({ children, gutterBottom, color = 'primary', to, onClick, ...rest }: LinkProps) {
   const { handleClick } = usePreload(to as string, onClick);
 
   return (
-    <Container to={to} onClick={handleClick as any} gutterBottom={gutterBottom} color={color} {...rest}>
+    <RouterLink
+      to={to}
+      onClick={handleClick as any}
+      className={clsx(s.link, s[color], { [s['gutter-bottom']]: gutterBottom })}
+      {...rest}
+    >
       {children}
-    </Container>
+    </RouterLink>
   );
 }
