@@ -1,4 +1,5 @@
 const path = require('path');
+const FriendlyErrorsPlugin = require('razzle-dev-utils/FriendlyErrorsPlugin');
 const StartServerPlugin = require('start-server-webpack-plugin');
 const webpack = require('webpack');
 const merge = require('webpack-merge');
@@ -18,8 +19,8 @@ if (process.env.INSPECT_BRK) {
 }
 
 module.exports = merge(baseConfig(true), {
-  name: 'server',
   watch: !isProd,
+  name: 'server',
   target: 'node',
   node: {
     __console: false,
@@ -51,6 +52,9 @@ module.exports = merge(baseConfig(true), {
     ...(isProd
       ? []
       : [
+          new FriendlyErrorsPlugin({
+            onSuccessMessage: `The application is available in ${envs.PROTOCOL}://${envs.HOST}:${envs.PORT}`,
+          }),
           new webpack.HotModuleReplacementPlugin({ quiet: true }),
           new StartServerPlugin({
             name: 'index.js',

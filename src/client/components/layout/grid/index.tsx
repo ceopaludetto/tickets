@@ -1,17 +1,13 @@
 import React, { forwardRef } from 'react';
 
-import { Container, Item, GridItemProps } from './styles';
+import clsx from 'clsx';
+
+import s from './grid.scss';
 
 export const Grid = forwardRef(
-  ({ children, ...rest }: React.HTMLAttributes<HTMLDivElement>, ref: React.Ref<HTMLDivElement>) => (
-    <Container ref={ref} {...rest}>
+  ({ children, className, ...rest }: React.HTMLAttributes<HTMLDivElement>, ref: React.Ref<HTMLDivElement>) => (
+    <div ref={ref} className={clsx(s.grid, className)} {...rest}>
       {children}
-    </Container>
+    </div>
   )
-);
-
-export const GridItem = ({ size, children, ...rest }: GridItemProps) => (
-  <Item size={size} {...rest}>
-    {children}
-  </Item>
 );

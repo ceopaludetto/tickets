@@ -19,7 +19,6 @@ const baseConfig = require('./webpack.config.base');
 const isProd = process.env.NODE_ENV === 'production';
 
 module.exports = merge(baseConfig(false), {
-  name: 'client',
   target: 'web',
   entry: [...(isProd ? [] : ['razzle-dev-utils/webpackHotDevClient']), path.resolve('src', 'client', 'index.tsx')],
   optimization: {

@@ -1,23 +1,38 @@
 import React from 'react';
 
+import clsx from 'clsx';
 import { RoundCheck } from 'mdi-norm';
 
-import { FormGroup, Label, Wrapper, Input, Icon, Switch, CheckboxProps } from './styles';
+import { Label } from '@/client/components/typography';
+
+import s from './checkbox.scss';
+
+export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
+  label?: string;
+  color?: 'primary' | 'secondary' | 'background' | 'paper';
+  labelPlacement?: 'top' | 'right';
+}
 
 export function Checkbox({ label, id, color = 'secondary', labelPlacement = 'top', ...rest }: CheckboxProps) {
   return (
-    <FormGroup labelPlacement={labelPlacement}>
+    <div
+      className={clsx(s['form-group'], { [s.top]: labelPlacement === 'top', [s.right]: labelPlacement === 'right' })}
+    >
       <>
-        {label && <Label htmlFor={id}>{label}</Label>}
-        <Wrapper>
+        {label && (
+          <Label htmlFor={id} className={s.label}>
+            {label}
+          </Label>
+        )}
+        <div className={s.wrapper}>
           <>
-            <Input color={color} id={id} type="checkbox" {...rest} />
-            <Switch>
-              <Icon as={RoundCheck} />
-            </Switch>
+            <input id={id} type="checkbox" className={clsx(s.input, s[color])} {...rest} />
+            <div className={s.switch}>
+              <RoundCheck className={s.icon} />
+            </div>
           </>
-        </Wrapper>
+        </div>
       </>
-    </FormGroup>
+    </div>
   );
 }

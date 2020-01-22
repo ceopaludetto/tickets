@@ -1,7 +1,22 @@
 import React, { forwardRef, cloneElement } from 'react';
-import MaskInput from 'react-text-mask';
+import MaskInput, { MaskedInputProps } from 'react-text-mask';
 
-import { Container, FormGroup, Input, Label, Helper, Append, ControlProps } from './styles';
+import clsx from 'clsx';
+
+import { Label } from '@/client/components/typography';
+import c from '@/client/scss/utils.scss';
+
+import s from './control.scss';
+
+export interface ControlProps
+  extends React.InputHTMLAttributes<HTMLInputElement>,
+    Pick<MaskedInputProps, 'guide' | 'mask' | 'placeholderChar' | 'keepCharPositions' | 'pipe' | 'showMask'> {
+  label?: string;
+  append?: React.ReactElement<any>;
+  color?: 'primary' | 'secondary' | 'background' | 'paper';
+  error?: boolean;
+  helperText?: React.ReactNode;
+}
 
 export const Control = forwardRef(
   (
@@ -26,8 +41,14 @@ export const Control = forwardRef(
     ref: React.Ref<HTMLInputElement> | React.Ref<MaskInput>
   ) => {
     return (
-      <Container>
-        <FormGroup color={color} noLabel={!label} disabled={!!disabled} error={error}>
+      <div className={s.container}>
+        <div
+          className={clsx(s['form-group'], s[color], {
+            [s.error]: error,
+            [s.disabled]: disabled,
+            [s['no-label']]: !label,
+          })}
+        >
           <>
             {mask ? (
               <MaskInput
@@ -40,29 +61,37 @@ export const Control = forwardRef(
                 ref={ref as React.Ref<MaskInput>}
                 {...rest}
                 render={(innerRef, innerProps) => (
-                  <Input ref={innerRef} placeholder={placeholder} disabled={disabled} id={id} {...innerProps} />
+                  <input
+                    ref={innerRef}
+                    placeholder={placeholder}
+                    disabled={disabled}
+                    className={s.input}
+                    id={id}
+                    {...innerProps}
+                  />
                 )}
               />
             ) : (
-              <Input
+              <input
                 ref={ref as React.Ref<HTMLInputElement>}
                 placeholder={placeholder}
                 disabled={disabled}
+                className={s.input}
                 id={id}
                 {...rest}
               />
             )}
             {label && (
-              <Label htmlFor={id}>
+              <Label className={s.label} htmlFor={id}>
                 {label}
                 {required && '*'}
               </Label>
             )}
-            {append && <Append>{cloneElement(append, { disabled })}</Append>}
+            {append && <div className={s.append}>{cloneElement(append, { disabled })}</div>}
           </>
-        </FormGroup>
-        {helperText && <Helper>{helperText}</Helper>}
-      </Container>
+        </div>
+        {helperText && <div className={clsx(c['xs:mt-1'], s.helper)}>{helperText}</div>}
+      </div>
     );
   }
 );

@@ -1,16 +1,17 @@
 /* tslint:disable */
 // This file was automatically generated and should not be edited.
-export interface IndexStyles {
+export interface ButtonStyles {
   [index: string]: string;
-	'link': string;
-	'gutter-bottom': string;
+	'button': string;
+	'contained': string;
 	'primary': string;
+	'flat': string;
 	'secondary': string;
 	'background': string;
 	'paper': string;
 	'disabled': string;
 }
 
-export type IIndexStyles = IndexStyles;
-export const locals: IndexStyles;
+export type IButtonStyles = ButtonStyles;
+export const locals: ButtonStyles;
 export default locals;
