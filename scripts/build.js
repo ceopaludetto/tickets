@@ -80,6 +80,7 @@ Promise.all([
 ])
   .then(prevFileSizes => {
     clearConsole();
+    logger.start('Compiling...');
     fs.emptyDir(serverConfig.output.path);
     return prevFileSizes;
   })

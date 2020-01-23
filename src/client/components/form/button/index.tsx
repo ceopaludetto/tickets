@@ -1,26 +1,12 @@
 import React from 'react';
-import { Link, LinkProps } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 
 import clsx from 'clsx';
 
 import { usePreload } from '@/client/utils';
 
 import s from './button.scss';
-
-interface ButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  variant?: 'contained' | 'flat';
-  color?: 'primary' | 'secondary' | 'background' | 'paper';
-}
-
-interface PrefetchLinkProps extends LinkProps {
-  variant?: 'contained' | 'flat';
-  color?: 'primary' | 'secondary' | 'background' | 'paper';
-}
-
-type Overload = {
-  (props: ButtonProps): JSX.Element;
-  (props: PrefetchLinkProps): JSX.Element;
-};
+import { Overload, ButtonProps, PrefetchLinkProps } from './index.dto';
 
 export const Button: Overload = ({ onClick, className, ...rest }: ButtonProps | PrefetchLinkProps) => {
   const { handleClick } = usePreload((rest as PrefetchLinkProps).to as string, onClick as any);

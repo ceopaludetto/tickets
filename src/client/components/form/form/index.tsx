@@ -6,15 +6,10 @@ import clsx from 'clsx';
 import { useFormikContext, Form as FormikForm } from 'formik';
 
 import u from '@/client/scss/utils.scss';
-import { ApplicationState } from '@/client/services/ducks';
 import { useValidator } from '@/client/utils';
 
 import s from './form.scss';
-
-interface FormProps extends React.FormHTMLAttributes<HTMLFormElement> {
-  error?: string;
-  statesToValidate?: ApplicationState[keyof ApplicationState][];
-}
+import { FormProps } from './index.dto';
 
 export function Form({ children, error, statesToValidate, ...rest }: FormProps) {
   const { setFieldError } = useFormikContext();

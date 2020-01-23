@@ -6,17 +6,23 @@ import { RoundCheck } from 'mdi-norm';
 import { Label } from '@/client/components/typography';
 
 import s from './checkbox.scss';
+import { CheckboxProps } from './index.dto';
 
-export interface CheckboxProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  label?: string;
-  color?: 'primary' | 'secondary' | 'background' | 'paper';
-  labelPlacement?: 'top' | 'right';
-}
-
-export function Checkbox({ label, id, color = 'secondary', labelPlacement = 'top', ...rest }: CheckboxProps) {
+export function Checkbox({
+  label,
+  id,
+  color = 'secondary',
+  className,
+  labelPlacement = 'top',
+  ...rest
+}: CheckboxProps) {
   return (
     <div
-      className={clsx(s['form-group'], { [s.top]: labelPlacement === 'top', [s.right]: labelPlacement === 'right' })}
+      className={clsx(
+        s['form-group'],
+        { [s.top]: labelPlacement === 'top', [s.right]: labelPlacement === 'right' },
+        className
+      )}
     >
       <>
         {label && (

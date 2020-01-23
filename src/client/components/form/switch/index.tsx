@@ -4,12 +4,8 @@ import clsx from 'clsx';
 
 import { Label } from '@/client/components/typography';
 
+import { SwitchProps } from './index.dto';
 import s from './switch.scss';
-
-interface SwitchProps extends Omit<React.InputHTMLAttributes<HTMLInputElement>, 'type'> {
-  label?: string;
-  color?: 'primary' | 'secondary' | 'background' | 'paper';
-}
 
 export function Switch({ color = 'primary', label, id, ...rest }: SwitchProps) {
   return (

@@ -1,11 +1,7 @@
 import React, { useEffect } from 'react';
 import { useIsomorphicLayoutEffect } from 'react-use';
 
-interface NoSSRProps {
-  children: React.ReactNode;
-  defer?: boolean;
-  fallback?: React.ReactNode;
-}
+import { NoSSRProps } from './index.dto';
 
 export function NoSSR({ children, defer, fallback }: NoSSRProps) {
   const [mountedState, setMountedState] = React.useState(false);

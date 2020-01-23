@@ -3,11 +3,7 @@ import React, { cloneElement } from 'react';
 import clsx from 'clsx';
 
 import s from './iconbutton.scss';
-
-interface IconButtonProps extends React.ButtonHTMLAttributes<HTMLButtonElement> {
-  children: React.ReactElement<{ size: number }>;
-  color?: 'primary' | 'secondary' | 'background' | 'paper';
-}
+import { IconButtonProps } from './index.dto';
 
 export function IconButton({ children, color = 'primary', ...rest }: IconButtonProps) {
   return (

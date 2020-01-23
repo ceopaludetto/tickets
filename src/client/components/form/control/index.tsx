@@ -1,5 +1,5 @@
 import React, { forwardRef, cloneElement } from 'react';
-import MaskInput, { MaskedInputProps } from 'react-text-mask';
+import MaskInput from 'react-text-mask';
 
 import clsx from 'clsx';
 
@@ -7,16 +7,7 @@ import { Label } from '@/client/components/typography';
 import c from '@/client/scss/utils.scss';
 
 import s from './control.scss';
-
-export interface ControlProps
-  extends React.InputHTMLAttributes<HTMLInputElement>,
-    Pick<MaskedInputProps, 'guide' | 'mask' | 'placeholderChar' | 'keepCharPositions' | 'pipe' | 'showMask'> {
-  label?: string;
-  append?: React.ReactElement<any>;
-  color?: 'primary' | 'secondary' | 'background' | 'paper';
-  error?: boolean;
-  helperText?: React.ReactNode;
-}
+import { ControlProps } from './index.dto';
 
 export const Control = forwardRef(
   (
