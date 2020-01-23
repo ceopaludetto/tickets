@@ -10,6 +10,8 @@ export interface ControlStyles {
 	'secondary': string;
 	'background': string;
 	'paper': string;
+	'danger': string;
+	'disabled-text': string;
 	'error': string;
 	'helper': string;
 	'input': string;

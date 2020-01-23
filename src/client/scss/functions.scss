@@ -1,4 +1,5 @@
-@import "~@/client/scss/variables";
+@import '~@/client/scss/variables';
+@import '~csstyle/csstyle';
 
 @function color-yiq($color, $if-true, $if-false) {
   $r: red($color);
@@ -33,15 +34,15 @@
   }
 }
 
-@function get-theme-color($color, $type: "") {
-  @if $type == "" {
+@function get-theme-color($color, $type: '') {
+  @if $type == '' {
     @return var(--#{$color});
   } @else {
     @return var(--#{$color}-#{$type});
   }
 }
 
-@function get-font-weight($weight: "regular") {
+@function get-font-weight($weight: 'regular') {
   @return map-get($font-weights, $weight);
 }
 
@@ -55,7 +56,7 @@
   $fn: ease-in-out,
   $delay: 0ms
 ) {
-  $res: unquote("");
+  $res: unquote('');
   @for $i from 1 through length($props) {
     $res: unquote(
       "#{$res} #{nth($props, $i)} #{if(type-of($dur) == 'list', nth($dur, $i), $dur)} #{if(type-of($fn) == 'list', nth($fn, $i), $fn)} #{if(type-of($delay) == 'list', nth($delay, $i), $delay)},"

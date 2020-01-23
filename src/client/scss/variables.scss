@@ -1,3 +1,5 @@
+$csstyle-option-symbol: '';
+
 $colors: (
   light: (
     primary: #1e1e24,
@@ -6,7 +8,7 @@ $colors: (
     paper: #ffffff,
     danger: #ef3054,
     disabled: rgba(0, 0, 0, 0.12),
-    disabled-text: rgba(0, 0, 0, 0.26)
+    disabled-text: rgba(0, 0, 0, 0.26),
   ),
   dark: (
     primary: #f7f7f2,
@@ -15,20 +17,20 @@ $colors: (
     paper: #303030,
     danger: #ef3054,
     disabled: rgba(255, 255, 255, 0.12),
-    disabled-text: rgba(255, 255, 255, 0.3)
-  )
+    disabled-text: rgba(255, 255, 255, 0.3),
+  ),
 );
 
 $paper-shadow: (
   light: rgba(18, 38, 63, 0.03),
-  dark: rgba(18, 38, 63, 0.01)
+  dark: rgba(18, 38, 63, 0.01),
 );
 
 $font-family: Roboto;
 $font-weights: (
   light: 300,
   regular: 400,
-  medium: 500
+  medium: 500,
 );
 $font-sizes: 0.875rem, 1rem, 1.25rem, 1.5rem, 1.75rem, 2rem;
 
@@ -37,7 +39,7 @@ $breakpoints: (
   sm: 576px,
   md: 768px,
   lg: 992px,
-  xl: 1200px
+  xl: 1200px,
 );
 
 $baselines: (
@@ -45,68 +47,68 @@ $baselines: (
   sm: 1.5,
   md: 1.6,
   lg: 1.7,
-  xl: 1.8
+  xl: 1.8,
 );
 
 $utils-props: (
   d: (
-    prop: "display",
+    prop: 'display',
     values: (
       block,
       inline-block,
       flex,
-      inline-flex
-    )
+      inline-flex,
+    ),
   ),
   jc: (
-    prop: "justify-content",
+    prop: 'justify-content',
     values: (
       flex-start,
       flex-end,
       center,
       space-around,
-      space-between
-    )
+      space-between,
+    ),
   ),
   ai: (
-    prop: "align-items",
+    prop: 'align-items',
     values: (
       flex-start,
       flex-end,
       center,
       stretch,
-      baseline
-    )
+      baseline,
+    ),
   ),
   fw: (
-    prop: "flex-wrap",
+    prop: 'flex-wrap',
     values: (
       wrap,
       nowrap,
-      wrap-reverse
-    )
+      wrap-reverse,
+    ),
   ),
   po: (
-    prop: "position",
+    prop: 'position',
     values: (
       relative,
       absolute,
-      fixed
-    )
+      fixed,
+    ),
   ),
   ta: (
-    prop: "text-align",
+    prop: 'text-align',
     values: (
       left,
       center,
-      right
-    )
-  )
+      right,
+    ),
+  ),
 );
 
 $space-props: (
   m: (
-    prop: "margin",
+    prop: 'margin',
     values: (
       0.5rem,
       0.75rem,
@@ -114,11 +116,11 @@ $space-props: (
       1.25rem,
       1.5rem,
       1.75rem,
-      2rem
-    )
+      2rem,
+    ),
   ),
   p: (
-    prop: "padding",
+    prop: 'padding',
     values: (
       0.5rem,
       0.75rem,
@@ -126,12 +128,12 @@ $space-props: (
       1.25rem,
       1.5rem,
       1.75rem,
-      2rem
-    )
-  )
+      2rem,
+    ),
+  ),
 );
 
 $max-props: (
-  mw: "max-width",
-  mh: "max-height"
+  mw: 'max-width',
+  mh: 'max-height',
 );

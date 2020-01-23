@@ -175,6 +175,7 @@
     "clsx": "^1.0.4",
     "compression": "^1.7.4",
     "cookie-parser": "^1.4.4",
+    "csstyle": "^2.0.2",
     "csurf": "^1.10.0",
     "date-fns": "^2.8.1",
     "express": "^4.17.1",

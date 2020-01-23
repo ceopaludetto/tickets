@@ -4402,6 +4402,11 @@ cssstyle@^1.0.0:
   dependencies:
     cssom "0.3.x"
 
+csstyle@^2.0.2:
+  version "2.0.2"
+  resolved "https://registry.yarnpkg.com/csstyle/-/csstyle-2.0.2.tgz#e8fc461101206d9a1a31db6dc641299ba61161fa"
+  integrity sha512-rG4uXtj6juoUjg3V2l4+GyVSUpjP73Um6huQsgFH0gadzHVGSlltNurrIGcnjYXIKiL0g0d4c97in391A4C20g==
+
 csstype@^2.2.0, csstype@^2.5.5:
   version "2.6.7"
   resolved "https://registry.yarnpkg.com/csstype/-/csstype-2.6.7.tgz#20b0024c20b6718f4eda3853a1f5a1cce7f5e4a5"
